@@ -45,7 +45,7 @@ sw <- read_csv("https://raw.githubusercontent.com/gastonstat/stat133/master/data
 # who has of smallest height
 
 
-# who has of smallest height
+# who has of largest height
 
 
 # sort height

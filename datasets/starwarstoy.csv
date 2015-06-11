@@ -1,1 +1,9 @@
-name,gender,height,weight,jedi,species,weapon"Luke Skywalker",male,1.72,77,jedi,human,lightsaber"Leia Skywalker",female,1.5,49,no_jedi,human,blaster"Obi-Wan Kenobi",male,1.82,77,jedi,human,lightsaber"Han Solo",male,1.8,80,no_jedi,human,blaster"R2-D2",male,0.96,32,no_jedi,droid,unarmed"C-3PO",male,1.67,75,no_jedi,droid,unarmed"Yoda",male,0.66,17,jedi,yoda,lightsaber"Chewbacca",male,2.28,112,no_jedi,wookiee,bowcaster
+name,gender,height,weight,jedi,species,weapon
+"Luke Skywalker",male,1.72,77,jedi,human,lightsaber
+"Leia Skywalker",female,1.5,49,no_jedi,human,blaster
+"Obi-Wan Kenobi",male,1.82,77,jedi,human,lightsaber
+"Han Solo",male,1.8,80,no_jedi,human,blaster
+"R2-D2",male,0.96,32,no_jedi,droid,unarmed
+"C-3PO",male,1.67,75,no_jedi,droid,unarmed
+"Yoda",male,0.66,17,jedi,yoda,lightsaber
+"Chewbacca",male,2.28,112,no_jedi,wookiee,bowcaster

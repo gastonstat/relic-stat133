@@ -1,5 +1,6 @@
 # =====================================================
 # Stat133: Lab 2
+# Author: Gaston Sanchez
 # Description: Basics of data frames
 # Data: Star Wars characters
 # =====================================================
@@ -42,10 +43,10 @@ sw <- read_csv("https://raw.githubusercontent.com/gastonstat/stat133/master/data
 # what's the average height
 
 
-# who has of smallest height
+# who has the smallest height
 
 
-# who has of largest height
+# who has the largest height
 
 
 # sort height
@@ -54,14 +55,14 @@ sw <- read_csv("https://raw.githubusercontent.com/gastonstat/stat133/master/data
 # sort weight in decrasing order
 
 
-# are there any subjects with weapon knife
+# are there any subjects with weapon "knife"
 
 
 # are there any subjects with height > 2 meters
 
 
-# are there any subjects with height < 0.5 meters
-# or weight < 50 kg
+# are there any subjects with 
+# height < 0.5 or weight < 50
 
 
 # what are the unique weapons
@@ -75,22 +76,24 @@ sw <- read_csv("https://raw.githubusercontent.com/gastonstat/stat133/master/data
 # Subsetting operations (without using subset())
 # =====================================================
 
-# first row
+# select the first row
 
 
-# Han Solo's info
+# select Han Solo's information (i.e. row)
 
 
-# subject's info of smallest height
+# select subject's info of smallest height
 
 
-# male subjects
+# get the data of male subjects
 
 
-# less than 1.7 m height
+# get the data for those subjects 
+# with height less than 1.7 
 
 
-# less than 1.7 m height, and less than 50 g weight
+# get the data for subjects with 
+# height less than 1.7 and weight less than 50
 
 
 # select data of droids or humans
@@ -102,6 +105,7 @@ sw <- read_csv("https://raw.githubusercontent.com/gastonstat/stat133/master/data
 
 # =====================================================
 # Subsetting operations using subset()
+# Perform the same tasks but now using 'subset()'
 # =====================================================
 
 # Han Solo's info
@@ -113,16 +117,16 @@ sw <- read_csv("https://raw.githubusercontent.com/gastonstat/stat133/master/data
 # male subjects
 
 
-# less than 1.7 m height
+# height less than 1.7
 
 
-# less than 1.7 m height, and less than 50 g weight
+# height less than 1.7 and weight less than 50
 
 
-# select data of droids or humans
+# data of droids or humans
 
 
-# select data of non-humans
+# data of non-humans
 
 
 
@@ -147,10 +151,10 @@ sw <- read_csv("https://raw.githubusercontent.com/gastonstat/stat133/master/data
 # Additional questions
 # =====================================================
 
-# information of jedis
+# get data of jedis
 
 
-# names of non-jedis
+# get the names of non-jedis
 
 
 # data of non humans

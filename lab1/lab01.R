@@ -1,5 +1,6 @@
 # ===================================================
 # Stat133: Lab 1
+# Author: Gaston Sanchez
 # Description: R basics with numeric vectors
 # Data: Raiders statistics from season 2014-2015
 # ===================================================

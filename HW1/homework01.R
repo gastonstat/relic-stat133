@@ -4,8 +4,8 @@
 # Data: Teams that played the superbowl
 # =====================================================
 
-# Please submit your own R script file to the 
-# Dropbox folder
+# Please submit your own R script file to the shared Dropbox folder
+# If you don't have access to such folder, contact the instructor
 
 # Write your name
 # Name:

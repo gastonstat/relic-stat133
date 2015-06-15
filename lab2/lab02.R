@@ -160,7 +160,7 @@ sw <- read_csv("https://raw.githubusercontent.com/gastonstat/stat133/master/data
 # data of non humans
 
 
-# who are above average weight?
+# get the data of those above the average weight?
 
 
 # how many unarmed humans?
@@ -183,7 +183,7 @@ sw <- read_csv("https://raw.githubusercontent.com/gastonstat/stat133/master/data
 
 
 
-# make a plot with height and weight
+# use plot() to make a scatter plot of height and weight
 
 
 # create a new variable "newvar": height divided by weight

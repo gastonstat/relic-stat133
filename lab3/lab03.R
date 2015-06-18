@@ -152,7 +152,7 @@ permits <- read.csv(permits_url)
 # OPTION 1
 # One solution is to download the file to your computer
 # and then use read.csv()
-# Assuming that the downloaded file is in your workin directory:
+# Assuming that the downloaded file is in your working directory:
 pt <- read.csv("Permit_Types.csv")
 
 
@@ -173,7 +173,7 @@ head(perms)
 
 # OPTION 3 (my preferred one)
 # Another solution is to use the package 'readr'
-# (remember to install it first)
+# (if you don't have it yet, remember to install it first)
 library(readr)
 permits <- read_csv(permits_url)
 head(permits)

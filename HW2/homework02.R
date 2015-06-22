@@ -1,6 +1,7 @@
 # =====================================================
 # Stat133: HW 2
-# Description: Graphics
+# Description: Basic manipulation of data structures
+#              and creation of simple graphics
 # Data: Camping Tents
 # =====================================================
 
@@ -9,19 +10,22 @@
 # Write your name
 # Name:
 
-# load the package "ggplot2"
-library(ggplot2)
 
-
+# =====================================================
+# Reading the Data Into R
 # =====================================================
 # We'll be working with the dataset 'tents1.csv'
 # (available in the folder 'datasets' in the 
 # github repository of the course)
 # =====================================================
-# read the dataset in R; use whatever method you like 
+
+# read the file 'tents1.csv' in R and assign it to an object
+# called 'tents' ---this will be the main data frame--- 
+# Character strings must NOT be converted to factors!
+# (use whatever method you like to import the data)
 
 
-# inspect the data structure with str()
+# inspect the data structure of 'tents'
 
 
 # how many rows in the dataset?
@@ -33,33 +37,35 @@ library(ggplot2)
 # names of columns
 
 
+# take a look at the first 6 rows
+
+
 
 # =====================================================
 # Quantitative Variables:
-# Let's practice some basic manipulations
-# of data structures
 # =====================================================
-# 'tents1.csv' contains three quantitative variables:
+# We'll start by exploring the quantiative variables
 # 1) price
 # 2) weight
 # 3) height
+# =====================================================
 
-# get numeric summaries of each variable
+# get numeric summaries of each quantitative variable
 
 
 
 # weight is given in grams
-# add a new variable to tents for weight expressed in pounds
+# add a new variable to 'tents' for weight expressed in pounds
 
 
 # height is given in centimeters
-# add a new variable to tents for height expressed in inches
+# add a new variable to 'tents' for height expressed in inches
 
 
 # how many tents have price less than $300
 
 
-# how many tents have price less than $300
+# how many tents have price greater than $400
 
 
 # what's the name of the tent with maximum price
@@ -74,8 +80,8 @@ library(ggplot2)
 # what's the name of the tent with minimum weight
 
 
-# select the data of tents with price > $400 and 
-# weight < 1500 grams
+# select the data of tents with 
+# price > $400 AND weight < 1500 grams
 
 
 # subset those tents with brand 'big-agnes'
@@ -96,28 +102,24 @@ library(ggplot2)
 
 
 
-
 # =====================================================
-# Quantitative Variables:
-# Statistical graphics
+# Statistical graphics of Quantitative Variables
 # =====================================================
 # for each quantitative variable, obtain the following plots:
 # - histogram
 # - boxplot
 # - density curve
+# (look at each graphic carefully and see what types 
+# of distribution patterns show each variable)
+# =====================================================
 
 
 
 
-
-# Obtain a scatter plot of height and weight such that:
-# Axis are labeled with the corresponding variable name
-# Points are colored with alpha transparency
-# (choose a color of your preference)
-# x-axis ranges from 80 to 220
-# y-axis ranges from 0 to 10000
-# include a title
-
+# Obtain scatter plots of:
+# price, height
+# price, weight
+# height, weight
 
 
 
@@ -125,39 +127,85 @@ library(ggplot2)
 
 
 
+# =====================================================
+# Plot challenge: 
+# Here's a small graphic challenge; you'll need to 
+# read the documentation of plot() and par()
+# =====================================================
+# Obtain a scatter plot of height and weight such that:
+# - Axis are labeled with the corresponding variable name
+# - Points are colored with alpha transparency
+#   (choose a color of your preference)
+# - The symbol of points are squares
+# - x-axis ranges from 80 to 220
+# - y-axis ranges from 0 to 10000
+# - Include a title
+
+
+
+
 
 # =====================================================
 # Qualitative Variables
 # =====================================================
-# 'tents1.csv' contains four qualitative variables:
+# Now let's focus on the qualitative variables:
 # 1) brand
 # 2) bestuse
 # 3) seasons
 # 4) capacity
+# =====================================================
 
+# get frequency tables of each qualitative variable
+
+
+
+# what is the brand with less number of tents
+
+
+# are there any tents of brand 'rei'?
+# and if so, how many?
+
+
+
+# are there any tents of brand 'millet'
+# and if so, how many?
+
+
+# how many 'north-face' tents are intended to be
+# used ('bestuse') for Mountaineering
+
+
+# what brands have tents intended to be used for 'Mountaineering'
+
+
+
+# =====================================================
+# Statistical graphics of Qualitative Variables
+# =====================================================
 # for 'bestuse', 'seasons', and 'capacity' obtain 
 # the following plots:
 # - bar plot
 # - dot chart
 # - pie chart
 # (feel free to change colors, add titles, and rank values)
+# =====================================================
 
 
 
 
-# --------------------------------------
-# Bar chart of brands
-# --------------------------------------
-# Plot a barplot for 'brand" such that:
+
+# =====================================================
+# Plot challenge: 
+# =====================================================
+# Make a barplot for 'brand' such that:
 # - bars are horizontally oriented
-# - bars arranged in decreasing order
-# - labels perpendicular to the axis
+# - bars are arranged in decreasing order
+# - bars without a border
+# - brand labels are perpendicular to the y-axis
 #   (i.e. labels horizontally oriented)
 # - modify margins in order to have enough room for labels 
 # - x-axis ranges from 0 to 25
 # - include a title
-
-
 
 
 
@@ -173,10 +221,9 @@ library(ggplot2)
 # summary of 'price' of rei tents
 
 
-# which brands have tents 'bestuse' for Mountaineering
-
-
 # cross-table of seasons and bestuse
+
+
 
 
 
@@ -196,82 +243,46 @@ library(ggplot2)
 
 
 
-
-# =====================================================
-# Graphics with 'ggplot2'
-# Boxplots of price
-# =====================================================
-
-# boxplot of price by brand
+# make a scatter-plot of height and weight, using 
+# 'capacity' as a factor for the color argument
 
 
-
-# boxplot of price by bestuse
-
-
-
-# boxplot of price by capacity
+# get the same scatter plot but now pass 'bestuse'
+# as a factor for the color argument
 
 
+# remember that factors are internally stored as
+# integer vectors. To get the integers associated to the 
+# levels of a factor you can use unclass(). For instance:
+unclass(factor(tents$bestuse))
 
-# boxplot of price by seasons
+# make the same scatter plot, using 'bestuse' as factor for colors,
+# and using the integers associated to factor 'bestuse' for the
+# argument that changes the type of plotted symbol
 
 
 
 
 # =====================================================
-# Graphics with 'ggplot2'
-# Boxplots of weight
+# Plot challenge: 
 # =====================================================
 
-# boxplot of weight by brand (with fill color by brand)
+# obtain a new data frame by subsetting tents of brand 'rei'
 
 
-
-# boxplot of weight by capacity (with fill color by capacity)
-
-
-
-# boxplot of weight by bestuse (with fill color by bestuse)
-
-
-
-
-# =====================================================
-# Graphics with 'ggplot2'
-# Scatter plots
-# =====================================================
-
-# get a scatter plot of height and price
-
-
-
-# get a scatter plot of height and price
-# coloring points by seasons
-
-
-
-# get a scatter plot of weight and price
-
-
-
-# get a scatter plot of weight and price
-# coloring points by bestuse
+# create a vector of colors for each rei tent according to 'bestuse':
+# 'Carcamping' tents in color 'tomato'
+# 'Backpacking' tents in color 'orange'
+# 'Mountaineering' tents in color 'blue'
 
 
 
 
-
-# faceting
-# scatter plot of weight -vs- height 
-# coloring by bestuse and
-# faceting by capacity
-
-
-
-
-
-
-
-
+# Make a scatter plot of 'height' and 'weight' (of 'rei' tents)
+# The background of the entire plot must be of color 'gray99'
+# Instead of points, show the name of each rei tent
+# Use the vector of colors to color tent names
+# Include a legend in the top left corner indicating the 
+# 'bestuse' types and their corresponding colors
+# Add a title
 

@@ -4,7 +4,7 @@
 ### Homework Assignments and Project
 
 - [HW1](https://github.com/gastonstat/stat133/tree/master/HW1)
-- HW2
+- [HW2](https://github.com/gastonstat/stat133/tree/master/HW2)
 - HW3
 - HW4
 - HW5

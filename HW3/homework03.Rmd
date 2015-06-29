@@ -17,7 +17,7 @@ Submit your assignment to bcourses, specifically turn in your __Rmd__ (R markdow
 
 ## Last Element
 
-Write a function ```last()``` that takes a vector (or factor) and returns the last element in the vector. For instance:
+Write a function ```last()``` that takes a vector (or factor) and returns the last element in the vector.
 ```{r}
 # write your function
 # last()
@@ -35,7 +35,7 @@ last(c(2, 4, 6, 8, 10))
 
 ## If-then-else
 
-Write a function ```multfive()``` that takes a number and determines whether the number is multiple of 5. If the provided number is multiple of five, then the output must be: ```it is multiple of five```. Conversely, if the provided number is not a multiple of five, then the output must be: ```it's not a multiple of 5```. For example:
+Write a function ```multfive()``` that takes a number and determines whether the number is multiple of 5. If the provided number is multiple of five, then the output must be: ```it is multiple of five```. Conversely, if the provided number is not a multiple of five, then the output must be: ```it's not a multiple of 5```.
 ```{r}
 # write your function
 # multfive()
@@ -115,7 +115,7 @@ to_rankine(34)
 
 ## Using switch()
 
-Create a function ```convert()``` that converts Fahrenheit degrees into the specified scale. Use ```switch()``` and the previously defined functions---```to_celsius()```, ```to_kelvin()```, ```to_reaumur()``` and ```to_rankine()```---to define ```convert()```. Use two arguments: ```x``` and ```to```, like this:
+Create a function ```convert()``` that converts Fahrenheit degrees into the specified scale. Use ```switch()``` and the previously defined functions---```to_celsius()```, ```to_kelvin()```, ```to_reaumur()``` and ```to_rankine()```---to define ```convert()```. Use two arguments: ```x``` and ```to```
 ```{r}
 # write your function
 # convert()

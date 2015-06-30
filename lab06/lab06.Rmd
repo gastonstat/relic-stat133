@@ -1,0 +1,181 @@
+---
+title: "lab06"
+author: "Your Name Here"
+output: html_document
+---
+
+Before we begin, make sure that you have installed the R Markdown package. Use the following command:
+
+```{r, eval = FALSE}
+install.packages("rmarkdown")
+```
+
+Here `eval = FALSE` is used to ensure that this R chunk is not evaluated when the document is generated.
+
+## Introduction to R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Control Flow Structures
+
+Onto the lab!
+
+### Conditional Expressions
+
+If-else statements are perhaps the simplest type of control flow structure:
+
+```{r}
+x <- 1 # Change this value!
+if (x > 0) {
+  print("positive")
+} else {
+  print("not positive")
+}
+```
+
+Of course, the else is not necessary (if you don't want anything to occur otherwise), or you can chain multiple if-else statements:
+
+```{r}
+y <- 1 # Change this value!
+if (y > 0) {
+  print("positive")
+} else if (y < 0) {
+  print("negative")
+} else {
+  print("zero?")
+}
+```
+
+
+Your turn!
+Write R code that will "squish" a number into the interval [0, 100], so that a number less than 0 is replaced by 0 and a number greater than 100 is replaced by 100.
+
+```{r}
+z <- 100*pi
+# Fill in the following if-else statements. You may (or may not) have to add or subtract else if or else statements.
+if (TRUE) { # Replace TRUE with a condition.
+  
+} else if (TRUE) { # Replace TRUE with a condition.
+  
+} else {
+  
+}
+```
+
+If you find yourself using many if-else statements with identical structure for slightly different cases, you may want to consider a switch statement instead.
+
+```{r}
+# Convert the day of the week into a number.
+day <- "Tuesday" # Change this value!
+switch(day, # The expression to be evaluated.
+  Sunday = 1,
+  Monday = 2,
+  Tuesday = 3,
+  Wednesday = 4,
+  Thursday = 5,
+  Friday = 6,
+  Saturday = 7,
+  NA) # an (optional) default value if there are no matches
+```
+
+Switch statements can also accept integer arguments, which will act as indices to choose a corresponding element:
+
+```{r}
+# Convert a number into a day of the week.
+day_num <- 3 # Change this value!
+switch(day_num,
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday")
+```
+
+Your turn again!
+Write a switch statement to determine if a given lowercase letter is a vowel. Assume that "y" is not a vowel.
+
+```{r}
+letter <- "e" # Change this value!
+switch(letter,
+  a = "vowel") # Modify as necessary.
+```
+
+### Loops
+
+Loops are used when you want to perform a given task many times.
+
+The simplest type of loop in R is the repeat loop, which will repeatedly evaluate a set of expressions until it is told to stop.
+
+```{r}
+# Divide a number by 2 until it becomes odd.
+val_rep <- 898128000 # Change this value!
+repeat {
+  print(val_rep)
+  if (val_rep %% 2 == 1) { # If val_rep is odd,
+    break                  # end the loop.
+  }
+  val_rep <- val_rep / 2 # Divide val_rep by 2 since val_rep was even.
+  # When the end of the loop is reached, return to the beginning of the loop.
+}
+```
+
+Often you will want to perform a loop until some condition is satisfied, or as long as a condition as satisfied. In that case, a while loop may be more appropriate.
+
+```{r}
+val_while <- 898128000 # Change this value!
+while (val_while %% 2 == 0) { # Continue the loop as long as val_while is even.
+  print(val_while)
+  val_while <- val_while / 2
+}
+print(val_while)
+```
+
+Notice that the while loop code is more compact (ignoring the print statements), since the stopping condition has been encoded in the loop itself.
+
+Your turn!
+Write R code which multiplies a positive number by 3 and adds 1 until the result is greater than 10000. For example, 2015 -> 6046 -> 18139. Write both a repeat loop and a while loop.
+
+```{r}
+n_rep <- 314 # Change this value!
+repeat {
+  break # Replace this with your code.
+}
+n_while <- 314 # Change this value!
+while (FALSE) { # Replace FALSE with your stopping condition.
+  # Fill in.
+}
+```
+
+Sometimes instead of performing an action until a condition is satisfied, you just want to perform it a specified number of times. In these cases, a for loop is appropriate.
+
+```{r}
+for (i in 1:10) { # Repeat 10 times.
+  print("Hello world!")
+}
+```
+
+Your turn again!
+Write a for loop to add 1 to every element of a vector.
+
+```{r}
+vec <- c(3, 1, 4) # Change this value!
+for (j in c()) { # Replace c() with an appropriate sequence.
+  # Fill in.
+}
+```

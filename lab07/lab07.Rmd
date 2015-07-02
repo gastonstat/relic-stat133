@@ -1,0 +1,132 @@
+---
+title: "lab07"
+author: "Your Name"
+output: html_document
+---
+
+## Writing Functions
+
+In this lab, we'll focus on writing functions, with fewer examples and more time writing code.
+
+### Basic Functions, with Control Flow Structures
+
+Often you will find that it is easier to begin writing code for a specific task, with specific variables, before generalizing the code into a function. Last lab, we saw the following code, which divides a positive integer by 2 until it becomes odd.
+
+```{r}
+x <- 898128000 # Change this value!
+while (x %% 2 == 0) {
+  print(x)
+  x <- x / 2
+}
+print(x)
+```
+
+Your turn!
+Now generalize the above code to create a function which performs the same operation. (You should change very little.)
+
+```{r}
+reduce <- function(x) {
+  # Fill in.
+}
+
+reduce(898128000)
+```
+
+How about something a little bit more complicated? Write a function ```f``` which, given a positive integer ```n```, returns ```n / 2``` if ```n``` was even or ```3 * n + 1``` if ```n``` was odd.
+
+```{r}
+f <- function(n) {
+  # Fill in.
+}
+
+f(6)
+f(19)
+f(27)
+```
+
+Now create function ```g``` which applies ```f()``` to a positive integer ```n``` until it becomes 1, and returns the number of iterations until this occurs.
+
+```{r}
+g <- function(n) {
+  # Fill in.
+}
+
+g(6)
+g(19)
+g(27)
+```
+
+If you didn't earlier, try also writing the same function, but now create ```f()``` as a nested function.
+
+```{r}
+h <- function(n) {
+  f <- function(m) {
+    # Fill in.
+  }
+  # Fill in.
+}
+
+h(6)
+h(19)
+h(27)
+```
+
+### Default Arguments
+
+As you probably know by now, many functions come with default arguments, which can be left unspecified without affecting the execution of the function.
+
+The following function attempts to compute the length of the hypotenuse of a right triangle, but will accept one or two leg lengths.
+
+```{r}
+pythagoras <- function(a, b = a) {
+  return(sqrt(a^2 + b^2))
+}
+
+pythagoras(3, 4)
+pythagoras(5)
+```
+
+__Your turn!__
+Write a function which adds together the elements of a vector raised to a certain power. Use a loop instead of vectorized operations. Include two arguments: ```vec``` and ```pow```. Give ```pow``` a default value of 2.
+
+```{r, eval = FALSE}
+# Remove eval = FALSE or set eval = TRUE when you have completed this function.
+powersum <- function() { # Fill in arguments.
+  # Fill in.
+}
+
+powersum(1:5) # Should return 55.
+powersum(1:5, 4) # Should return 979.
+```
+
+### Ellipsis (...)
+
+Finally, in addition to normal and default arguments, the ```...``` argument allows a function to take any number of arguments.
+
+The following function simply counts the number of arguments given.
+
+```{r}
+countargs <- function(...) {
+  print(paste("This function received", length(list(...)), "arguments."))
+}
+
+countargs(0)
+countargs(1L, 5, 3 + 5i, TRUE, "yosemite")
+countargs(c(1, 2, 3, 4, 5), factor(c("one", "two", "three")))
+```
+
+More commonly, however, the ```...``` is simply passed as optional arguments to another function.
+
+__Your turn!__
+Write a function which produces a histogram of a random process. The first argument should be ```n```, the number of observations. The second argument should be one of the following: ```"Uniform", "Binomial", "Poisson"```. These should correspond, respectively, to: ```runif(n), rbinom(n, 100, 0.5), rpois(n, 1)```. Finally, include the ```...``` argument to be passed into the histogram function.
+
+```{r, eval = FALSE}
+# Remove eval = FALSE or set eval = TRUE when you have completed this function.
+randhist <- function() { # Fill in arguments.
+  # Fill in.
+}
+
+randhist(10, "Uniform", breaks = seq(0, 1, 0.1))
+randhist(10, "Binomial", col = "blue")
+randhist(10, "Poisson")
+```

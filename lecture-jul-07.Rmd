@@ -55,9 +55,17 @@ convert(30, 'CELSIUS')
 # function convert
 convert <- function(x, to = "celsius") {
   # fill in
+#  to <- tolower(to)
+  switch(tolower(to),
+         "celsius" = to_celsius(x),
+         "kelvin" = to_kelvin(x),
+         "reaumur" = to_reaumur(x),
+         "rankine" = to_rankine(x))
 }
 
 convert(30, 'celsius')
+convert(30, 'Celsius')
+convert(30, 'cElSiuS')
 ```
 
 -----
@@ -69,6 +77,9 @@ Imagine that you need to generate the names of 10 data files (with .csv extensio
 How can you generate a character vector with these names in R? Write a script with as many different ways to get such a vector:
 ```{r}
 # vector of names
+files <- c('file1.csv', 'file2.csv')
+
+sprintf('file%s.csv', 1:10)
 ```
 
 -----
@@ -88,7 +99,7 @@ cat("\n", file = outfile, append = TRUE)
 cat("A 2nd line", file = "output.txt", append = TRUE)
 # insert 2 new lines
 cat("\n\n", file = outfile, append = TRUE)
-cat("The quick brown fox jumps over the lazy dog",
+cat("\nThe quick brown fox jumps over the lazy dog\n",
     file = outfile, append = TRUE)
 ```
 
@@ -113,7 +124,7 @@ Write a function ```is_color()``` to test if a given name---in English---is a va
 ```{r, eval=FALSE}
 is_color <- function(x) {
   # fill in
-  
+  x %in% colors()
 }
 
 # TRUE

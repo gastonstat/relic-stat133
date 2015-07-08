@@ -1,0 +1,274 @@
+---
+title: "Stat 133 HW04: String Manipulation and Regex"
+author: "Your name and SID"
+output: pdf_document
+---
+
+## Introduction
+
+This assignment has two purposes:
+
+a) to familiarize you with manipulating character strings
+b) to introduce you to regular expressions in R
+
+Submit your assignment to bcourses, specifically turn in your __Rmd__ (R markdown) file as well as the produced pdf file. Make sure to change the argument ```eval=TRUE``` inside every testing code chunk.
+
+
+-----
+
+## Names of Files
+
+Imagine that you need to generate the names of 4 data files (with .csv extension). All the files have the same prefix name but each of them has a different number: ```file01.csv```, ```file02.csv```, ```file03.csv```, and ```file04.csv```. We can generate a character vector with these names in R. One naive solution would be to write something like this:
+```{r}
+files <- c('file01.csv', 'file02.csv', 'file03.csv', 'file04.csv')
+```
+
+Now imagine that you need to generate 100 file names. You could write a vector with 100 file names but it's going to take you a while.
+
+How would you generate the corresponding character vector ```files``` in R containing 100 files names:  ```file01.csv, file02.csv, file03.csv, ..., file99.csv, file100.csv```? Notice that the numbers of the first 9 files start with 0.
+
+```{r}
+# vector of file names
+```
+
+-----
+
+## USA States Names 
+
+One of the datasets that come in R is ```USArrests```. The row names of this data correspond to the 50 states. We can create a vector ```states``` with the row names:
+```{r}
+states <- rownames(USArrests)
+head(states, n = 5)
+```
+
+Use ```nchar()``` to answer the following questions:
+
+- Obtain a frequency table with the number of characters of the states' names
+- What are the states with the longest names?
+- What are the states with the shortest names?
+- What's the most common length of names (i.e. the mode)?
+
+```{r}
+# your answers
+```
+
+
+### Using ```grep()```
+
+You can use the function ```grep()``` to know if there are any states containing the letter "z".
+```{r}
+# states containing the letter 'z'
+grep(pattern = 'z', x = states)
+```
+In this case there is just one state (the third one) which corresponds to `r states[grep(pattern = 'z', x = states)]`
+
+You can also use ```grep()``` with its argument ```value = TRUE``` to obtain the value of the matched pattern:
+```{r}
+# states containing the letter 'z'
+grep(pattern = 'z', x = states, value = TRUE)
+```
+
+__Your turn__. Use ```grep()```---and maybe other functions---to write the commands that answer the following questions:
+
+- How many states contain the letter ```i```?
+- How many states contain the letter ```q```?
+- How many states do not contain the letter ```a```?
+- Which states contain the letter ```j```?
+- Which states contain the letter ```x```?
+- Which states are formed by two words?
+- Which states start with ```W``` and end with a vowel?
+- Which states start with ```W``` and end with a consonant?
+- Which states contain at least three ```i``` (e.g. Illinois)?
+- Which states contain five vowels (e.g. California)?
+- Which states have three vowels next to each other (e.g. Hawaii)?
+
+Tip: You can use ```grep()```'s argument ```ignore.case``` to ignore letters in lower or upper case.
+```{r}
+# your answers
+```
+
+-----
+
+## Starts with ... 
+
+Write a function ```starts_with()``` such that, given a character string and a single character, it determines whether the string starts with the provided character. 
+
+```{r}
+# starts_with
+```
+
+Test it:
+```{r, eval=FALSE}
+starts_with("Hello", 'H')  # TRUE
+
+starts_with("Good morning", 'H')  # FALSE
+```
+
+-----
+
+## Ends with ... 
+
+Now write a function ```ends_with()``` such that, given a character string and a single character, it determines whether the string ends with the provided character. 
+
+```{r}
+# ends_with
+```
+
+Test it:
+```{r, eval=FALSE}
+ends_with("Hello", 'o')  # TRUE
+
+ends_with("Good morning", 'o')  # FALSE
+```
+
+-----
+
+## Colors in Hexadecimal Notation
+
+Write a function ```is_hex()``` that checks whether the input is a valid color in hexadecimal notation. Remember that a hex color starts with a hash ```#``` symbol followed by six hexadecimal digits: 0 to 9, and the first six letters A, B, C, D, E, F. Since R accepts hex-colors with lower case letters (a, b, c, d, e, f) your function should work with both upper and lower case letters.
+```{r}
+# is_hex()
+```
+
+Test it:
+```{r, eval=FALSE}
+is_hex("#FF00A7")  # TRUE
+is_hex("#ff0000")  # TRUE
+is_hex("#123456")  # TRUE
+is_hex("#12Fb56")  # TRUE
+
+is_hex("FF0000")   # FALSE
+is_hex("#1234GF")  # FALSE
+is_hex("#09892")   # FALSE
+is_hex("blue")     # FALSE
+```
+
+-----
+
+## Hexadecimal Colors with Transparency
+
+Write a function ```is_hex_alpha()``` that determines whether the provided input is a hex color with alpha transparency. Remember that such a color has 8 hexadecimal digits instead of just 6.
+
+```{r}
+# is_hex_alph()
+
+```
+
+Test it:
+```{r, eval=FALSE}
+is_hex_alpha("#FF000078")  # TRUE
+
+is_hex_alpha("#FF0000")   # FALSE
+```
+
+-----
+
+## Splitting Characters
+
+Create a function ```split_chars()``` that splits a character string into one single character elements.
+
+```{r}
+# split_chars()
+```
+
+Test it:
+```{r, eval=FALSE}
+split_chars('Go Bears!')
+
+split_chars('Expecto Patronum')
+```
+
+Note that ```split_chars()``` returns the output in a single vector. Each element is a single character.
+
+-----
+
+## Number of Vowels
+
+Create a function ```num_vowels()``` that returns the number of vowels of a character vector. In this case, the input is a vector in which each element is a single character.
+
+```{r}
+# num_vowels()
+```
+
+Test it:
+```{r, eval=FALSE}
+vec <- c('G', 'o', ' ', 'B', 'e', 'a', 'r', 's', '!')
+num_vowels(vec)
+```
+
+Notice that the output is a numeric vector with five elements. Each element has the name of the corresponding vowel.
+
+-----
+
+## Counting Vowels
+
+Use the functions ```split_chars()``` and ```num_vowels()``` to write a function ```count_vowels()``` that computes the number of vowels of a character string:
+
+```{r}
+# count_vowels()
+```
+
+Test it:
+```{r, eval=FALSE}
+count_vowels("The quick brown fox jumps over the lazy dog")
+```
+
+Make sure that ```count_vowels()``` counts vowels in both lower and upper case letters:
+
+```{r, eval=FALSE}
+count_vowels("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG")
+```
+
+-----
+
+## Number of Consonants
+
+Write a function ```num_cons()``` that counts the number of consonants regardless of whether thery are in upper or lower case (just the number, not the counts of each letter)
+```{r, eval=FALSE}
+# num_cons()
+```
+
+Test it:
+```{r, eval=FALSE}
+fox <- "The quick brown fox jumps over the lazy dog"
+num_cons(fox)
+```
+
+-----
+
+## Reversing Characters
+
+Write a function that reverses a string by characters
+
+```{r}
+# reverse_chars()
+```
+
+Test it:
+```{r, eval=FALSE}
+reverse_chars("gattaca")
+reverse_chars("Lumox Maxima")
+```
+
+-----
+
+## Reversing Sentences by Words
+
+Write a function ```reverse_words()``` that reverses a string (i.e. a sentence) by words
+
+```{r}
+# reverse_words()
+```
+
+Test it:
+```{r, eval=FALSE}
+reverse_words("sentence! this reverse")
+```
+
+If the string is just one word then there's basically no reversing:
+```{r, eval=FALSE}
+reverse_words("string")
+```
+
+-----
+

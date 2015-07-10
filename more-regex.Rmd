@@ -1,0 +1,214 @@
+---
+title: "Stat 133: Regex"
+author: "Gaston Sanchez"
+output: html_document
+---
+
+-----
+
+## Hands-on with Regular Expressions
+
+Packages for this practice:
+```{r}
+library(readr)
+library(stringr)
+```
+
+
+## Bike Accidents in the Bay Area
+
+Read the data `bike-accidents.csv` from the github repository:
+```{r}
+df <- read_csv("https://raw.githubusercontent.com/gastonstat/stat133/master/datasets/bike-accidents.csv")
+df <- read.csv("~/Documents/stat133/stat133/datasets/bike-accidents.csv", stringsAsFactors = FALSE, nrows = 1000)
+
+```
+
+The first column in `bike-accidents.csv` is `DateTime` that contains the date and time of each event.
+```{r}
+head(df$DateTime)
+```
+
+__The ultimate goal is to separate dates from times (more on this later).__
+
+-----
+
+Some functions that you may need to use:
+
+| Base R       | "stringr"       |
+| -------------|-----------------|
+| `paste()`    | `str_c()`       |
+| `grep()`     | `str_extract()` |
+| `substr()`   | `str_sub()`     |
+| `sub()`      | `str_replace()` |
+| `strsplit()` | `str_split()`   |
+| `nchar()`    | `str_length()`  |
+
+
+Regex quantifiers:
+
+- `*`: matches at least 0 times.   
+- `+`: matches at least 1 times.     
+- `?`: matches at most 1 times.    
+- `{n}`: matches exactly n times.    
+- `{n,}`: matches at least n times.    
+- `{n,m}`: matches between n and m times.     
+
+-----
+
+## Dates and Times
+
+Let's start small by taking a sample of 10 values from the `DateTime` column:
+```{r}
+# sample of date-times
+set.seed(10)
+x <- sample(df$DateTime, size = 10)
+x
+```
+
+Looking at the values in `DateTime` they all have a similar format. 
+
+
+1. How would you get the __date__ values from `x`? e.g. `08/18/07`
+```{r}
+# dates from x (by position)
+substr(x, start = 1, stop = 8)
+
+# dates from x (regex pattern)
+str_extract(x, '[0-9]{2}/[0-9]{2}/[0-9]{2}')
+str_extract(x, '\\d{2}/\\d{2}/\\d{2}')
+```
+
+2. How would you get the __months__ from `x`? e.g. `08`
+```{r}
+# months from x
+substr(x, start = 1, stop = 2)
+```
+
+3. How would you get the __days__ from `x`? e.g. `18`
+```{r}
+# days from x
+substr(x, start = 4, stop = 5)
+```
+
+4. How would you get the __years__ from `x`? e.g. `07`
+```{r}
+# years from x
+substr(x, start = 7, stop = 8)
+```
+
+5. How would you form __complete years__? e.g. `2007`
+```{r}
+# complete years
+paste(20, substr(x, start = 7, stop = 8), sep = '')
+```
+
+6. How would you get the __times__ (hour and minutes): e.g. `7:55`?
+```{r}
+# times from x (by pattern)
+str_extract(x, '[0-9]{1,}:[0-9]{2}')
+str_extract(x, '[0-9]+:[0-9]{2}')
+
+# by position
+substr(x, 11, nchar(x) - 4)
+```
+
+7. How would you get the __time period__: e.g. `p.m.`?
+```{r}
+# time periods from x (by position)
+str_sub(x, start = -4, end = -1)
+
+# time periods from x (by pattern)
+str_extract(x, '[ap].m.')
+str_extract(x, '(a|p).m.')
+```
+
+
+-----
+
+## Dates and Times
+
+Now that you know how to get dates, times, and related values from `x`, let's work on the entire data frame and add new columns to `df`
+
+1. Add a column `Date` with just the date values
+```{r}
+# add Date
+df$Date <- substr(df$DateTime, start = 1, stop = 8)
+```
+
+2. Add a column `Month` with just the month number (as numeric)
+```{r}
+# add Month
+df$Month <- as.numeric(substr(df$DateTime, start = 1, stop = 2))
+```
+
+3. Add a column `Day` with just the day number (as numeric)
+```{r}
+# add Day
+df$Day <- as.numeric(substr(df$DateTime, start = 4, stop = 5))
+```
+
+4. Add a column `Year` with just the full year number (as numeric)
+```{r}
+# add Year
+df$Year <- as.numeric(
+  paste(20, substr(df$DateTime, start = 7, stop = 8), sep = '')
+)
+```
+
+5. Add a column `Time` with just the time (NO time periods a.m. or p.m.)
+```{r}
+# add Time
+df$Time <- str_extract(df$DateTime, '[0-9]+:[0-9]{2}')
+```
+
+6. Add a column `Period` with just the time period (a.m. or p.m.)
+```{r}
+# add Period
+df$Period <- str_sub(df$DateTime, start = -4, end = -1)
+```
+
+7. Add a column `Hour` with just the hour in 24hr value (as numeric)
+```{r}
+# add Hour
+df$Hour <- as.numeric(str_extract(df$Time, '[0-9]+'))
+```
+
+8. Add a column `Minute` with just the minute value (as numeric)
+```{r}
+# add Minute
+df$Minute <- as.numeric(str_extract(df$Time, '[^:][0-9]+'))
+```
+
+
+-----
+
+## Bonus questions
+
+If you still have time left, here are some extra questions related to the type of road where accidents occurred (i.e. type of street):
+
+- How many accidents took place on a __Boulevard__ in `Street1`?
+```{r}
+length(grep(' Bl', df$Street1))
+```
+
+- How many accidents took place on an __Avenue__ in `Street1` (e.g. Wilkinson Av)?
+```{r}
+length(grep(' Av', df$Street1))
+```
+
+- How many accidents took place on a __Drive__ in `Street1` (e.g. North Point Dr)?
+```{r}
+length(grep(' Dr', df$Street1))
+```
+
+- How many accidents took place on a __Road__ in `Street1` (e.g. South King Rd)?
+```{r}
+length(grep(' Rd', df$Street1))
+```
+
+- How many accidents took place on __numbered streets__ in `Street1` (e.g. 12th St, 13th Avenue) ?
+```{r}
+length(grep('[0-9]+', df$Street1))
+```
+

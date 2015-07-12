@@ -6,8 +6,8 @@
 - [HW1](https://github.com/gastonstat/stat133/tree/master/HW1)
 - [HW2](https://github.com/gastonstat/stat133/tree/master/HW2)
 - [HW3](htpps://github.com/gastonstat/stat133/tree/master/HW3)
-- HW4
-- HW5
+- [HW4](htpps://github.com/gastonstat/stat133/tree/master/HW4)
+- [HW5](htpps://github.com/gastonstat/stat133/tree/master/HW5)
 - HW6
 - HW7
 - HW8

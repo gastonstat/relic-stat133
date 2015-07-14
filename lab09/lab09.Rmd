@@ -1,0 +1,194 @@
+---
+title: "Lab 9"
+author: "Your Name"
+date: "July 14, 2015"
+output: html_document
+---
+
+## Apply Functions
+
+### Introduction
+
+Apply functions are typically used to vectorize functions instead of using loops.
+As you may know, many of the built-in functions in R are already vectorized.
+
+```{r}
+x <- 1:10
+y <- sqrt(x)
+print(y)
+```
+
+As you also know, this operation could have been performed with a simple loop.
+
+```{r}
+x <- 1:10
+y <- numeric(length(x))
+for (i in 1:length(x)) {
+  y[i] <- sqrt(x[i])
+}
+print(y)
+```
+
+However, if the operation in question were not already vectorized, we could still avoid using a loop. A similar technique would work if `x` were a list instead of a vector.
+
+```{r}
+x <- 1:10
+y <- sapply(x, sqrt)
+print(y)
+```
+
+### lapply and sapply
+
+The simplest apply function is lapply. lapply is typically used for simple one-argument functions that you want to apply to the elements of a vector or list. Built-in functions that are vectorized for vectors can also operate over lists with lapply.
+
+```{r}
+x <- as.list(1:10)
+# y <- sqrt(x)    # What happens when you run this line?
+y <- lapply(x, sqrt)
+print(y)
+```
+
+sapply functions similarly to lapply but simplifies the output if possible.
+
+```{r}
+x <- as.list(1:10)
+y <- sapply(x, sqrt)
+print(y)
+```
+
+Of course, you can also use lapply and sapply with your own functions.
+
+```{r}
+sq <- function(x) {
+  return(x^2)
+}
+x <- 1:10
+y <- sapply(x, sq)
+print(y)
+```
+
+Your turn!
+
+The function below "squishes" a number into the interval [0, 100] (as in Lab 6).
+
+```{r}
+squish <- function(x) {
+  if (x < 0) {
+    x <- 0
+  } else if (x > 100) {
+    x <- 100
+  }
+  return(x)
+}
+```
+
+Use an apply function to apply squish to an entire vector.
+
+```{r}
+x <- (1:12)^2 - 22
+# Fill this in.
+```
+
+Here is a for loop which performs a certain operation.
+
+```{r}
+set.seed(0)
+x <- rnorm(10)
+y <- numeric(length(x))
+for (i in 1:length(x)) {
+  y[i] <- (x[i] - min(x)) / (max(x) - min(x))
+}
+```
+
+Replace the above code with equivalent code which does not use a loop. You may wish to write an explicit or anonymous function.
+
+```{r}
+set.seed(0)
+x <- rnorm(10)
+# Fill this in.
+```
+
+### Other Basic Apply Functions
+
+lapply and sapply are best suited for one-dimensional data structures (i.e. vectors and lists).
+If you want to use an apply function for a multidimensional data structure, the simplest apply function is apply.
+apply has an additional argument corresponding to the dimension (or dimensions) over which you want to apply the function.
+
+```{r}
+set.seed(0)
+x <- matrix(rnorm(10), nrow = 2, ncol = 5)
+y <- apply(x, 1, mean)
+print(y)
+z <- apply(x, 2, mean)
+print(z)
+```
+
+tapply has an additional argument which can be one or more factors to apply separately.
+
+```{r}
+set.seed(0)
+df <- data.frame(x = rnorm(10), ltr = factor(sample(c("a", "b", "c"), 10, replace = TRUE)), nmbr = sample(c(1, 2, 3), 10, replace = TRUE))
+byltr <- tapply(df$x, df$ltr, mean)
+print(byltr)
+# If the second argument is not a factor, it will be coerced to a factor.
+bynmbr <- tapply(df$x, df$nmbr, mean)
+print(bynmbr)
+# Multiple factors can be included in a list or data frame.
+byboth <- tapply(df$x, df[, c("ltr", "nmbr")], mean)
+print(byboth)
+```
+
+Your turn!
+
+Perform the listed operations on the HairEyeColor dataset.
+
+```{r, eval = FALSE}
+# Remove eval = FALSE or set eval = TRUE when you have completed this code chunk.
+hec <- HairEyeColor
+print(hec)
+# First create a two-dimensional version of the dataset called hec2d, which does not separate the data by sex.
+hec2d <- # Fill this in.
+# Now use an apply function to determine the most common eye color for each hair color.
+# You may wish to write an explicit or anonymous function.
+# Fill this in.
+```
+
+Finally, mapply is similar to sapply, but can use functions with multiple arguments.
+
+```{r}
+x <- 1:10
+y <- 11:20
+geommean <- function(x, y) {
+  return(sqrt(x*y))
+}
+# This function will actually work without mapply, since sqrt and * are already vectorized.
+z <- mapply(geommean, x, y)
+print(z)
+```
+
+### Related Functions
+
+aggregate works similarly to tapply on a greater variety of data structures.
+
+```{r}
+set.seed(0)
+df <- data.frame(x = rnorm(10), y = rnorm(10), ltr = factor(sample(c("a", "b", "c"), 10, replace = TRUE)), nmbr = sample(c(1, 2, 3), 10, replace = TRUE))
+z <- aggregate(df[, c("x", "y")], df[, c("ltr", "nmbr")], mean)
+print(z)
+```
+
+sweep can be used to normalize datasets.
+
+```{r}
+x <- matrix(1:10, nrow = 2, ncol = 5)
+xmean1 <- apply(x, 1, mean)
+xmean2 <- apply(x, 2, mean)
+# Subtract off the mean of each row/column.
+y <- sweep(x, 1, xmean1)
+print(y)
+z <- sweep(x, 2, xmean2)
+print(z)
+# Multiply by the mean of each column (for some reason).
+w <- sweep(x, 2, xmean1, FUN = "*")
+print(w)
+```

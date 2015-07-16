@@ -1,0 +1,122 @@
+---
+title: "Lab 10"
+author: "Your Name"
+date: "July 16, 2015"
+output: html_document
+---
+
+## Merging Data
+
+### Appending Data
+
+The easiest way to merge two datasets is to simply append one to the other, either horizontally or vertically.
+Typically `cbind` or `rbind`, respectively, are used for this type of merge.
+
+```{r}
+A <- data.frame(city = c("Norfolk", "Indianapolis", "Boston", "Albuquerque"),
+  state = c("Virginia", "Indiana", "Massachusetts", "New Mexico"))
+B <- data.frame(city = c("Houston", "Atlanta", "Dallas", "Spokane"),
+  state = c("Texas", "Georgia", "Texas", "Washington"))
+horizAB <- cbind(A, B)
+print(horizAB)
+# In this case rbind probably makes more sense than cbind.
+vertAB <- rbind(A, B)
+print(vertAB)
+```
+
+Unfortunately this approach only works when both datasets have the same rows or columns.
+It also gives undesirable results when there are repeated rows or columns.
+
+```{r}
+C <- data.frame(city = c("Norfolk", "Indianapolis", "Detroit", "Buffalo"),
+  state = c("Virginia", "Indiana", "Michigan", "New York"))
+D <- data.frame(city = c("Richmond", "Honolulu", "Norfolk", "Charleston"),
+  state = c("Virginia", "Hawaii", "Virginia", "South Carolina"))
+vertCD <- rbind(C, D)
+# The first and seventh rows are identical.
+print(vertCD)
+```
+
+In either of these cases, `merge` may be a better choice.
+
+```{r}
+# More on `all = TRUE"`later.
+mergeCD <- merge(C, D, all = TRUE)
+print(mergeCD)
+```
+
+### `merge`
+
+The `merge` function combines two data frames by row.
+By default, it keeps only those rows which match in corresponding columns.
+
+```{r}
+E <- data.frame(city = c("Norfolk", "Indianapolis", "Boston", "Albuquerque"),
+  rain = c(44.7, 38.7, 42.5, 7.8))
+# `merge` matches based on the columns with the same name, in this case `city`.
+mergeAE <- merge(A, E)
+print(mergeAE)
+```
+
+The `by` argument in `merge` allows you to specify which columns are matched.
+If corresponding columns have different names in the two data frames, you can specify them separately using `by.x` (for the first data frame) and `by.y` (for the second).
+
+Your turn!
+
+The `precip` dataset in the base R package contains rainfall measurements for several US cities.
+We want to merge part of with `A` and `B` to create a data frame containing city name, state name, and rainfall.
+
+```{r, eval = FALSE}
+# Remove `eval = FALSE` or set `eval = TRUE` when you have completed this code chunk.
+# First examine the format of `precip`. You will find that it is a named vector.
+str(precip) # Feel free to examine `precip` in other ways.
+# In order to use `merge`, we need to create a data frame from `precip`.
+precipdf <- # Fill this in.
+# Now merge `precipdf` with data frames `A` and `B`.
+# You should obtain a data frame with 8 rows and 3 columns.
+# Fill this in.
+
+```
+
+The `all` argument in `merge` keeps all rows, even those which did not match; rows without a counterpart in the other data frame have NA for any additional columns.
+Similar to `by`, `all.x` and `all.y` keep all rows from the first data frame and second data frame, respectively.
+
+Repeat the previous merge, but keep all the cities in the `precip` dataset.
+
+```{r}
+# Fill this in.
+
+```
+
+### A More Complicated Task
+
+Here are two datasets with some US Census data.
+
+```{r}
+pop77 <- state.x77
+head(pop77)
+library("readr")
+pop14 <- read_csv("https://www.census.gov/popest/data/state/totals/2014/tables/NST-EST2014-01.csv", skip = 3)
+head(pop14)
+```
+
+First create a data frame from `pop77`.
+Make sure to include the state name as one of the columns.
+
+```{r, eval = FALSE}
+# Remove `eval = FALSE` or set `eval = TRUE` when you have completed this code chunk.
+pop77df <- # Fill this in.
+```
+
+Now modify the `pop14` data frame so that it contains only the state names and the 2014 population data.
+
+```{r}
+# Fill this in.
+```
+
+Finally merge the two data frames into one containing all of the data from `pop77` in addition to the the 2014 population data.
+The final result should contain 50 rows and 10 columns.
+
+```{r}
+# Fill this in.
+```

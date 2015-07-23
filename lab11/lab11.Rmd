@@ -1,0 +1,89 @@
+---
+title: "Lab 11"
+author: "Your Name"
+date: "July 23, 2015"
+output: html_document
+---
+
+## Unix and Command Line
+
+Today's lab should be shorter than normal.
+We'll simply be trying to build a little familiarity with basic UNIX commands.
+We'll also include analogous R commands where possible.
+
+Before we begin, first open Terminal (if using Mac) or something similar---like Git Bash---(if using Windows).
+Navigate (using `cd`) to the directory containing this file.
+Also set your current working directory in RStudio to the one containing this file (using `setwd()`).
+If you are using a relative path, `pwd` (in Terminal, etc.) or `getwd()` (in RStudio) can be used to find your current directory.
+
+```{r, eval = FALSE}
+getwd()
+setwd(dir) # Replace dir with a path.
+```
+
+Let's create an empty text file in Terminal, etc.
+Call it `test.txt`.
+The `touch` command simply updates the access or modification time of a directory or file.
+If the file does not exist, it creates it.
+
+In R, the following command can be used to do the same.
+
+```{r, eval = FALSE}
+file.create("test.txt")
+```
+
+We can also create directories.
+The command `mkdir` creates a new directory.
+Create a subdirectory called `lab11`.
+
+In R, we can do the same.
+
+```{r, eval = FALSE}
+dir.create("lab11")
+```
+
+Now let's move some stuff around.
+In Terminal, etc., the commands `mv`, `cp`, and `rm` can be used.
+For example, The command `mv test.txt test2.txt` renames `test.txt` to `test2.txt`.
+The command `cp test2.txt test.txt` makes a copy of `test2.txt` and calls it `test.txt`.
+In both cases, if the second file already exists, it is overwritten.
+The command `rm test2.txt` would delete `test2.txt`; the command `rm -r lab11` would delete the subdirectory `lab11` and all of its contents.
+
+Analagous commands in R also exist:
+
+```{r, eval = FALSE}
+file.rename("test.txt", "test2.txt")
+file.copy("test2.txt", "test.txt")
+file.remove("test2.txt")
+unlink("lab11", recursive = TRUE)
+```
+
+We can also modify text files, without using a text editor.
+
+Using `>` or `>>` will take the output of a command and place it in a given text file.
+Use `>>` to append text, and `>` to overwrite any existing text.
+
+For example, first type the command `echo Hello world!`.
+Now create a text file named `test2.txt` containing the text `mkdir lab11`.
+
+In R:
+
+```{r, eval = FALSE}
+cat('mkdir lab11', file = "test2.txt")
+# To append text instead of overwriting it, set append = TRUE.
+```
+
+You should notice that the file just created actually contains a UNIX command.
+If you call `test2.txt` in Terminal, etc., its contents will be run.
+In this case the subdirectory `lab11` will be created.
+
+Your turn!
+
+Modify `test.txt` so that, when run, it performs the following actions:
+  1.  Makes a new subdirectory called `testdir`.
+  2.  Copies itself into that directory.
+  3.  Changes the current directory to the new subdirectory.
+  4.  Prints `Done!` when finished.
+Then run it once to make sure it works.
+
+For fun: Create a file `test3.txt` that prints `Looping ...` in an infinite loop.

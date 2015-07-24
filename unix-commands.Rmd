@@ -5,14 +5,14 @@ date: "July 24, 2015"
 output: html_document
 ---
 
-Practicing UNIX commands:
+## Practicing UNIX commands:
 
 Create a new directory:
 ```{r eval=FALSE}
 mkdir practice
 ```
 
-Change to the created directory
+Change your location to the created directory
 ```{r eval=FALSE}
 cd practice
 ```
@@ -37,6 +37,33 @@ Use `open` to see the downloaded image
 open vader.jpg
 ```
 
+If you have R installed in your computer, you can also open it from the command line by simply typing `R`:
+```{r eval=FALSE}
+R
+```
+When you open R from the command line, the current directory will be the one from where you called R (directory `practice` in this case).
+
+R has also the `system()` function that allows you to invoke OS commands from within R. For instance you can see the contents of your current directory:
+```{r eval=FALSE}
+# display contents
+system('ls')
+
+# get contents as a vector
+system('ls', intern = TRUE)
+```
+
+Here's another example:
+```{r eval=FALSE}
+# show first 3 rows in stars.csv
+system('head -3 stars.csv')
+```
+
+To quit R use the `quit()` function:
+```{r eval=FALSE}
+# quit R without saving workspace
+quit(save = 'no')
+```
+
 -----
 
 ## Basic inspection
@@ -57,7 +84,7 @@ head -5 stars.csv
 tail -4 stars.csv
 ```
 
-`wc` (word count) gives you information about the number of characters, lines, and words
+The command `wc` (word count) gives you information about the number of characters, lines, and words
 ```{r eval=FALSE}
 # default
 wc stars.csv
@@ -89,8 +116,11 @@ __Your turn__: Get the rows for:
 ```{r, eval=FALSE}
 # jedis
 
+
 # male subjects
 
+
+# ---
 ```
 
 ----- 
@@ -117,6 +147,17 @@ Columns 1 and 4:
 cut -f 1,8 -d ',' stars.csv
 ```
 
+__Your turn__: Get the first 5 columns and first 5 characters
+```{r, eval=FALSE}
+# first 5 columns
+
+
+# return just the first 5 characters (of each line)
+
+
+# ---
+```
+
 ----- 
 
 ## File Redirection
@@ -130,6 +171,8 @@ __Your turn__: create a new file `blaster.csv` containing those individuals with
 ```{r, eval = FALSE}
 # your command
 
+
+# ---
 ```
 
 ----- 
@@ -169,6 +212,13 @@ Sorting lines with `sort`
 | -t ","  | Use commas for delimiters instead of tabs or spaces   |
 | -u      | Return only a single unique representative            |
 
+Here's an example using `sort` to order the lines in alphabetical order (and display them with `less`)
+```{r, eval = FALSE}
+# sorting names
+sort stars.csv | less
+```
+
+Two more examples:
 ```{r, eval = FALSE}
 # sorting names
 cut -f 1 -d "," stars.csv | sort
@@ -181,6 +231,8 @@ __Your turn__: Select name and height, and sort lines by height
 ```{r, eval = FALSE}
 # your command
 
+
+# ---
 ```
 
 ----- 

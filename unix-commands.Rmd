@@ -1,0 +1,248 @@
+---
+title: "Command Line"
+author: "Gaston Sanchez"
+date: "July 24, 2015"
+output: html_document
+---
+
+Practicing UNIX commands:
+
+Create a new directory:
+```{r eval=FALSE}
+mkdir practice
+```
+
+Change to the created directory
+```{r eval=FALSE}
+cd practice
+```
+
+Let's download the dataset `starwars.csv` from the github repo. Use `curl` followed by the URL of the data file and indicate an output file (e.g. `stars.csv`):
+```{r eval=FALSE}
+curl "https://raw.githubusercontent.com/gastonstat/stat133/master/datasets/starwars.csv" -o stars.csv
+```
+
+Now check the contents of `practice`
+```{r eval=FALSE}
+ls practice
+```
+
+You can also use `curl` to download images:
+```{r eval=FALSE}
+curl 'http://40.media.tumblr.com/tumblr_m4ihtxcV021rprzhqo1_500.jpg' -o vader.jpg
+```
+
+Use `open` to see the downloaded image
+```{r eval=FALSE}
+open vader.jpg
+```
+
+-----
+
+## Basic inspection
+
+Let's start inspecting the file `stars.csv`.
+
+`cat` allows you to display the contents of the file on the terminal:
+```{r eval=FALSE}
+cat stars.csv
+```
+
+The commands `head` and `tail` let you look at the first and last observations:
+```{r eval=FALSE}
+# first 5 rows
+head -5 stars.csv
+
+# last 4 rows
+tail -4 stars.csv
+```
+
+`wc` (word count) gives you information about the number of characters, lines, and words
+```{r eval=FALSE}
+# default
+wc stars.csv
+
+# number of characters
+wc -c stars.csv
+
+# number of lines (i.e. rows)
+wc -l stars.csv
+
+# number of words (not very useful in this case)
+wc -w stars.csv
+```
+
+----- 
+
+## Using `grep`
+
+Search for different individuals:
+```{r eval=FALSE}
+# female subjects
+grep female stars.csv
+
+# droids
+grep droid stars.csv
+```
+
+__Your turn__: Get the rows for:
+```{r, eval=FALSE}
+# jedis
+
+# male subjects
+
+```
+
+----- 
+
+## Using `cut`
+
+`cut` allows you to retrive specific columns from a text file with delimiters:
+
+| Options | Description                                 |
+| ------- | ------------------------------------------- |
+| -f 1,3  | Return columns 1 and 3, delimited by tabs   |
+| -d ","  | use commas as delimiters instead of tabs    |
+| -c 3-8  | return characters 3 through 8 from the file |
+
+To get the first column type:
+```{r, eval=FALSE}
+# first column
+cut -f 1 -d ',' stars.csv
+```
+
+Columns 1 and 4:
+```{r, eval=FALSE}
+# name and planet
+cut -f 1,8 -d ',' stars.csv
+```
+
+----- 
+
+## File Redirection
+
+Let's subset the dataset and create a new file for non-humans
+```{r, eval = FALSE}
+grep human stars.csv > humans.csv
+```
+
+__Your turn__: create a new file `blaster.csv` containing those individuals with weapon "blaster" 
+```{r, eval = FALSE}
+# your command
+
+```
+
+----- 
+
+## Pipe Redirection
+
+Pipes allow us to combine different commands
+```{r, eval = FALSE}
+# names of first 5 rows
+head -5 stars.csv | cut -f 1 -d ","
+```
+
+If we want to exclude the name of the column `name` we can do something like this:
+```{r, eval = FALSE}
+# names of first 5 rows
+head -6 stars.csv | tail -5 | cut -f 1 -d ","
+```
+
+If we want to exclude the name of the column `name` we can do something like this:
+```{r, eval = FALSE}
+# names of female subjects
+grep female stars.csv | cut -f 1 -d ","
+```
+
+
+----- 
+
+## Filter `sort`
+
+Sorting lines with `sort` 
+
+| Options | Description                                           |
+| ------- | ----------------------------------------------------- |
+| -n      | Sort by numeric value rather than alphabetically      |
+| -r      | Sort in inverse order                                 |
+| -k 3    | Sort lines based on column 3 (space or tab delimiter) |
+| -t ","  | Use commas for delimiters instead of tabs or spaces   |
+| -u      | Return only a single unique representative            |
+
+```{r, eval = FALSE}
+# sorting names
+cut -f 1 -d "," stars.csv | sort
+
+# sorting names in reverse order
+cut -f 1 -d "," stars.csv | sort -r
+```
+
+__Your turn__: Select name and height, and sort lines by height
+```{r, eval = FALSE}
+# your command
+
+```
+
+----- 
+
+## Filter `uniq`
+
+Isolating unique lines with `uniq`: Another useful command for extracting a subset of values from a file is `uniq`. The way `uniq` works is by removing __consecutive__ identical lines from a file, leaving one unique representative.
+
+| Options | Description                                           |
+| ------- | ----------------------------------------------------- |
+| -c      | Count the number of occurrences of each unique line   |
+| -f 4    | Ignore the first 4 fields in determinind uniqueness   |
+| -i      | Ignore case when determining uniqueness               |
+
+One attempt to get unique species would be:
+```{r, eval = FALSE}
+# unique species (column 12)
+cut -f 12 -d "," stars.csv | uniq
+```
+But it doesn't work since values not all values appear consecutively
+
+So first we need to `sort` them:
+```{r, eval = FALSE}
+# unique species
+cut -f 12 -d "," stars.csv | sort | uniq
+```
+
+We can even get some frquencies:
+```{r, eval = FALSE}
+# counts of species
+cut -f 12 -d "," stars.csv | sort | uniq -c
+```
+
+Notice that in the obtained frequencies there's the label `species`. To get rid of it we can add another pipe:
+```{r, eval = FALSE}
+# counts of species
+tail -20 stars.csv | cut -f 12 -d "," | sort | uniq -c
+```
+
+-----
+
+## Test yourself
+
+```{r, eval = FALSE}
+# how many humans
+
+
+# how many jedis
+
+
+# names of jedis
+
+
+# names of jedis in alphabetical order
+
+
+# table of frequencies for weapons
+
+
+# table of frequencies for weapons in decreasing order
+
+
+# ---
+```
+

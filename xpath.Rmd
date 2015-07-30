@@ -1,0 +1,160 @@
+---
+title: "Getting Started with XPath"
+author: "Gaston Sanchez"
+date: "July 30, 2015"
+output: html_document
+---
+
+-----
+
+
+## Introduction
+
+Let's visit the website [http://www.berkeley.edu/atoz](http://www.berkeley.edu/atoz)
+
+How do we get all the links for the websites starting with __A__?
+
+First let's inspect the source html code.
+
+```{r}
+# load XML
+library(XML)
+
+# parsing html content
+doc <- htmlParse('http://www.berkeley.edu/atoz')
+```
+
+Let's begin by identifying the elements of the secondary navigation bar: `Map, Directory, bConnected, News`. To identify the corresponding node you can use the function `getNodeSet()`
+```{r}
+nav_node <- getNodeSet(
+  doc = doc, 
+  path = '//ul[@class="nav navbar-nav secondary-nav"]')
+
+nav_node
+```
+
+You can be more specific and get just the list items __li__:
+```{r}
+navbar_nodes <- getNodeSet(
+  doc = doc, 
+  path = '//ul[@class="nav navbar-nav secondary-nav"]/li')
+
+navbar_node
+```
+
+Now let's use `xpathSApply()` to retrieve the values for the elements in the secondary navigation bar:
+```{r}
+# secondary navigation
+xpathSApply(
+  doc = doc, 
+  path = '//ul[@class="nav navbar-nav secondary-nav"]',
+  fun = xmlValue)
+```
+
+Now let's get the __href__ links:
+```{r}
+# secondary navigation links
+xpathSApply(
+  doc = doc, 
+  path = '//ul[@class="nav navbar-nav secondary-nav"]/li/a',
+  fun = xmlAttrs)
+```
+
+__Your turn__: Get all the links for the sites starting with _A_
+```{r}
+# your code
+
+
+```
+
+
+-----
+
+## Faculty of the Department of Statistics
+
+[http://statistics.berkeley.edu/people/faculty](http://statistics.berkeley.edu/people/faculty)
+
+```{r}
+# parse faculty webpage
+
+
+# ---
+```
+
+
+Use xpath expressions to get the following information for each professor:
+
+- Name
+- Title
+- Office
+- email
+- website link
+
+```{r}
+# name
+
+
+
+# title
+
+
+
+# office
+
+
+
+# email
+
+
+
+# website link
+
+
+
+# ---
+```
+
+-----
+
+## Fall 2015 Courses (Department of Statistics)
+
+[http://statistics.berkeley.edu/courses/fall-2015](http://statistics.berkeley.edu/courses/fall-2015)
+
+```{r}
+# parse courses webpage
+
+
+# ---
+```
+
+Use xpath expressions to get the following information for each course:
+
+- Course name
+- Section
+- Days and Time
+- Room
+- Units
+
+```{r}
+# course name
+
+
+
+# section
+
+
+
+# days and time
+
+
+
+# room
+
+
+
+# units
+
+
+
+# ---
+```

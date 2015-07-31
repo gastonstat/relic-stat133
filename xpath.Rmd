@@ -39,7 +39,7 @@ navbar_nodes <- getNodeSet(
   doc = doc, 
   path = '//ul[@class="nav navbar-nav secondary-nav"]/li')
 
-navbar_node
+navbar_nodes
 ```
 
 Now let's use `xpathSApply()` to retrieve the values for the elements in the secondary navigation bar:
@@ -63,8 +63,10 @@ xpathSApply(
 __Your turn__: Get all the links for the sites starting with _A_
 ```{r}
 # your code
-
-
+Alinks <- xpathSApply(
+  doc = doc,
+  path = '//div[@class="list-content"]/p/a',
+  fun = xmlAttrs)
 ```
 
 
@@ -76,9 +78,7 @@ __Your turn__: Get all the links for the sites starting with _A_
 
 ```{r}
 # parse faculty webpage
-
-
-# ---
+fac <- htmlParse('http://statistics.berkeley.edu/people/faculty')
 ```
 
 
@@ -92,26 +92,38 @@ Use xpath expressions to get the following information for each professor:
 
 ```{r}
 # name
-
+xpathSApply(
+  doc = fac,
+  path = '//h2[@class="field-content"]',
+  xmlValue)
 
 
 # title
-
+xpathSApply(
+  doc = fac,
+  path = '//div[@class="views-field views-field-field-job-title"]',
+  xmlValue)
 
 
 # office
-
+xpathSApply(
+  doc = fac,
+  path = '//div[@class="views-field views-field-field-location"]',
+  xmlValue)
 
 
 # email
-
+xpathSApply(
+  doc = fac,
+  path = '//div[@class="views-field views-field-field-email"]',
+  xmlValue)
 
 
 # website link
-
-
-
-# ---
+xpathSApply(
+  doc = fac,
+  path = '//div[@class="views-field views-field-title"]/h2/a',
+  xmlAttrs)
 ```
 
 -----
@@ -122,9 +134,7 @@ Use xpath expressions to get the following information for each professor:
 
 ```{r}
 # parse courses webpage
-
-
-# ---
+courses <- htmlParse('http://statistics.berkeley.edu/courses/fall-2015')
 ```
 
 Use xpath expressions to get the following information for each course:
@@ -137,24 +147,36 @@ Use xpath expressions to get the following information for each course:
 
 ```{r}
 # course name
-
+xpathSApply(
+  doc = courses,
+  path = '//div[@class="field field-name-field-course-title field-type-text field-label-hidden"]',
+  xmlValue)
 
 
 # section
-
+xpathSApply(
+  doc = courses,
+  path = '//div[@class="course-section"]',
+  xmlValue)
 
 
 # days and time
-
+xpathSApply(
+  doc = courses,
+  path = '//div[@class="course-dayhour"]',
+  xmlValue)
 
 
 # room
-
+xpathSApply(
+  doc = courses,
+  path = '//div[@class="course-room"]',
+  xmlValue)
 
 
 # units
-
-
-
-# ---
+xpathSApply(
+  doc = courses,
+  path = '//div[@class="course-credit"]',
+  xmlValue)
 ```

@@ -60,14 +60,19 @@ page1 <- htmlParse('http://mailservices.berkeley.edu/incoming/mailcodes/list')
 How would you get the department names and codes?
 ```{r}
 # department names
+xpathSApply(
+  doc = page1,
+  path = '//td[@class="view-field view-field-node-title active"]',
+  fun = xmlValue)
+```
 
-
-
+Likewise, we can match each department's code node with the following __XPath__ pattern:
+```{r, eval=FALSE}
 # department codes
-
-
-
-# ----
+xpathSApply(
+  doc = page1,
+  path = '//td[@class="view-field view-field-node-data-field-code-field-code-value"]',
+  fun = xmlValue)
 ```
 
 
@@ -86,13 +91,31 @@ Brainstorm with your neighbors:
 - Think about the data objects you may use to store the scraped content
 
 ```{r}
-# scraping UC Berkeley Mail Codes
+# empty vectors to store results
+deps <- character(0)
+codes <- numeric(0)
 
+for (i in 0:4) {
+  # parsing each page
+  page <- htmlParse(paste0('http://mailservices.berkeley.edu/incoming/mailcodes/list?page=', i))
 
+  # department names
+  deps <- c(deps, xpathSApply(
+    doc = page,
+    path = '//td[@class="view-field view-field-node-title active"]',
+    fun = xmlValue))
 
+  # department codes
+  codes <- c(codes, xpathSApply(
+    doc = page,
+    path = '//td[@class="view-field view-field-node-data-field-code-field-code-value"]',
+    fun = xmlValue))
+}
 
-
-# ----
+# assembling a data.frame
+dep_code <- data.frame(
+  department = deps,
+  code = codes)
 ```
 
 -----
@@ -106,8 +129,6 @@ Instead of just scraping the first 5 pages, you'll have to crawl through every s
 
 ```{r}
 # scraping UC Berkeley Mail Codes
-
-
 
 
 

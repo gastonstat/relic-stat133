@@ -1,0 +1,47 @@
+---
+title: "Lab 13"
+author: "Donovan Lieu"
+date: "August 4, 2015"
+output: html_document
+---
+
+## Batch Mode in R
+
+### Basics
+
+In addition to running an interactive session (i.e. in RStudio), R code can also be run from the command line.
+
+In order to do so, you may find it useful to first add the R.exe file to your PATH.
+Also, find an R file that you'd like to run for testing purposes.
+
+You should now be able to run R code from the command line using the following command: `R CMD BATCH inputfile.R`, where `inputfile.R` is the file you wish to run.
+
+Try it!
+
+### A Little More In-Depth
+
+If you just ran an R file via the command line, check your current directory and the directory including the file.
+In the directory of the file you ran, you should see an output file of the same name, but with file type `.Rout`.
+Any other output (e.g. plots and .RData) will appear in your current directory.
+
+If you don't want an `.RData` file to be generated, then you can specify so as follows: 
+`R CMD BATCH --no-save inputfile.R`.
+
+Additionally, you can specify where you want the output file to be saved as follows: 
+`R CMD BATCH inputfile.R outputfile.txt`.
+
+Finally, appending `&` to the end of the command will make it run in the background.
+
+### Rscript
+
+The `Rscript` provides similar functionality to `R CMD BATCH`, but by default prints its output to the command line.
+This output can then be redirected as normal if desired (using e.g. `>`).
+
+In addition, one can append arguments to the command, to pass to the R file.
+For example, `Rscript inputfile.R arg1 arg2 arg3` runs `inputfile.R` and passes it the three arguments "arg1", "arg2", and "arg3".
+These arguments can be retrieved in a vector by calling `commandArgs(TRUE)`.
+
+Your turn!
+
+Create a simple R file that prints out its arguments in sorted order, and call it using the Rscript command.
+Then store this output in a text file.

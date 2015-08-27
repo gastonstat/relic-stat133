@@ -1,18 +1,6 @@
 ## STAT 133 - Concepts in Computing with Data
 
-
-### Homework Assignments and Project
-
-- [HW1](https://github.com/gastonstat/stat133/tree/master/HW1)
-- [HW2](https://github.com/gastonstat/stat133/tree/master/HW2)
-- [HW3](htpps://github.com/gastonstat/stat133/tree/master/HW3)
-- [HW4](htpps://github.com/gastonstat/stat133/tree/master/HW4)
-- [HW5](htpps://github.com/gastonstat/stat133/tree/master/HW5)
-- HW6
-- HW7
-- HW8
-- Data Project
-
+Homework and lab assignments for Stat 133
 
 ### Textbooks and Resources
 

@@ -1,6 +1,6 @@
-## STAT 133 - Concepts in Computing with Data
+## Github Repository of STAT 133 - Concepts in Computing with Data
 
-Homework and lab assignments for Stat 133
+Homework and lab assignments for Stat 133 (summer, fall 2015)
 
 ### Textbooks and Resources
 

@@ -4,8 +4,7 @@
 # Data: Teams that played the superbowl
 # =====================================================
 
-# Please submit your own R script file to the shared Dropbox folder
-# If you don't have access to such folder, contact the instructor
+# Please submit your own R script to bcourses
 
 # Write your name
 # Name:
@@ -37,11 +36,16 @@ load(url("http://gastonsanchez.com/teaching/stat133/superbowl_teams.RData"))
 # get the first 5 champions
 
 
-
 # get the last 5 champions
 
 
 # how many unique champions?
+
+
+# get the champions in even positions (2, 4, 6, 8, etc)
+
+
+# get the champions in odd positions (1, 3, 5, 7, etc)
 
 
 # use the function table() to get a 
@@ -105,8 +109,13 @@ par(op)
 # get the losing teams of the first 5 superbowls
 
 
-
 # get the losing teams of the last 5 superbowls
+
+
+# get the losing teams in even positions (2, 4, 6, 8, etc)
+
+
+# get the losing teams in odd positions (1, 3, 5, 7, etc)
 
 
 # create the frequency table 'los_freqs'

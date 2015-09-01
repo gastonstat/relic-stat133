@@ -6,14 +6,32 @@
 
 # Please submit your own R script to bcourses
 
-# Write your name
+# Write your full name
 # Name:
 
 
-# Start a new R session and load the data
-load(url("http://gastonsanchez.com/teaching/stat133/superbowl_teams.RData"))
+# =====================================================
+# Loading the Data in file "superbowl_teams.RData" 
+# superbowl_teams.RData contains 3 vectors:
+# 1) year:   year of superbowl from 1967 to 2015
+# 2) winner: champion teams
+# 3) loser:  losing teams
+# =====================================================
 
-# "superbowl_teams.RData" contains 3 vectors:
+# Start a new R session (in RStudio)
+# Install the package "httr", and load it
+install.packages("httr")
+library(httr)
+
+# now load the data from the github repository of the course
+response <- GET(url="https://github.com/gastonstat/stat133/raw/master/datasets/superbowl_teams.RData")
+load(rawConnection(response$content))
+rm(response)
+
+# inspect the objects with ls()
+# (you should be able to see three vectors)
+ls()
+
 # year: year of superbowl from 1967 to 2015
 # winner: champions
 # loser: losing teams
@@ -40,6 +58,12 @@ load(url("http://gastonsanchez.com/teaching/stat133/superbowl_teams.RData"))
 
 
 # how many unique champions?
+
+
+# sort unique champions alphabetically (from A to Z)
+
+
+# decreasingly sort unique champions alphabetically (from Z to A)
 
 
 # get the champions in even positions (2, 4, 6, 8, etc)
@@ -79,15 +103,13 @@ barplot(champions, horiz = TRUE, las = 2)
 par(op)
 
 
-# What are the championships of "San Francisco 49ers"
+# What are the championships (i.e. years) of "San Francisco 49ers"
 
 
-# What are the championships of "Oakland Raiders" 
+# What are the championships (i.e. years) of "Oakland Raiders" 
 
 
 # when was the last time Denver Broncos won a superbowl?
-
-
 
 
 # create 'winner2', a copy of the vector 'winner'
@@ -155,13 +177,20 @@ par(op)
 # what team lost the superbowl in 2000
 
 
+# What are the champions of years 1970, 1980, 1990, 2000 & 2010?
+
+
 # what teams won the superbowl in the 1970s (1970-1979)
 
 
 # what teams lost the superbowl in the 1990s (1990-1999)
 
 
-# create a data frame 'superbowl' with the three vectors:
+# create a data frame 'superbowl_df' with the three vectors:
 # year, winner, loser
+
+
+# create a list 'superbowl' with the three vectors:
+# year, winner, loser (each vector as an element of the list)
 
 

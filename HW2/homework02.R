@@ -1,14 +1,21 @@
 # =====================================================
 # Stat133: HW 2
-# Description: Basic manipulation of data structures
-#              and creation of simple graphics
+# Description: This assignment has 3 main purposes:
+#       - working with data frames, vectors and factors
+#       - practice basic manipulation of data structures
+#       - creation of simple graphics
+#
 # Data: Camping Tents
 # =====================================================
 
+
 # Please submit your own R script file to bcourses
+
 
 # Write your name
 # Name:
+
+
 
 
 # =====================================================
@@ -19,13 +26,17 @@
 # github repository of the course)
 # =====================================================
 
-# read the file 'tents1.csv' in R and assign it to an object
+
+# Read the file 'tents1.csv' in R and assign it to an object
 # called 'tents' ---this will be the main data frame--- 
 # Character strings must NOT be converted to factors!
 # (use whatever method you like to import the data)
 
 
 # inspect the data structure of 'tents'
+
+
+# check the class of the object 'tents'
 
 
 # how many rows in the dataset?
@@ -37,35 +48,55 @@
 # names of columns
 
 
-# take a look at the first 6 rows
+# take a look at the first 5 rows
+
+
+# take a look at the last 3 rows
+
 
 
 
 # =====================================================
 # Quantitative Variables:
 # =====================================================
-# We'll start by exploring the quantiative variables
+# We'll start by exploring the quantitative variables
 # 1) price
 # 2) weight
 # 3) height
 # =====================================================
 
+
 # get numeric summaries of each quantitative variable
 
 
-
-# weight is given in grams
-# add a new variable to 'tents' for weight expressed in pounds
-
-
-# height is given in centimeters
-# add a new variable to 'tents' for height expressed in inches
-
-
-# how many tents have price less than $300
+# instead of using the summary() function, find functions
+# that allow you to get the same results for 'price'
+# - minimum value
+# - first quartile (i.e. 25th percentile)
+# - median value (i.e. 50th percentile)
+# - mean value
+# - third quartile (i.e. 75th percentile)
+# - maximum value
 
 
-# how many tents have price greater than $400
+# weight is given in grams;
+# add a new variable 'weight_lbs' to 'tents' for weight in pounds
+
+
+# height is given in centimeters;
+# add a new variable 'height_in' to 'tents' for height in inches
+
+
+# how many tents have a price greater than $400
+
+
+# how many tents have a price less than or equal to $300
+
+
+# how many tents have a price between $300 and $400
+# (including both $300 and $400 prices)
+
+
 
 
 # what's the name of the tent with maximum price
@@ -84,11 +115,31 @@
 # price > $400 AND weight < 1500 grams
 
 
-# subset those tents with brand 'big-agnes'
+
+
+# calculate the 90th percentile for height and 
+# assign it to the object 'price_p90'
+
+
+# calculate the 90th percentile for weight and 
+# assign it to the object 'weight_p90'
+
+
+# select the data of tents with 
+# height > height_p90 AND weight > weight_p90
 
 
 
-# Create a factor of prices using the cut() function;
+
+# obtain a new data frame called 'rei' containing
+# the data of those tents with brand 'rei';
+# and inspect its dimension
+
+
+
+
+# Use the cut() function to create a factor 'price_cut' from 
+# all the tent prices;
 # for the argument 'breaks' give a vector of cutting points
 # such that the obtained levels are as follows:
 #    (0, 100]
@@ -98,6 +149,33 @@
 #  (400, 500]
 #  (500, 600]
 #  (600, 700]
+
+
+# use table() to check the obtained frequencies of 'price_cut'
+
+
+
+
+# Use cut() to create a factor 'weight_cut' by using the
+# breaking points and labels according to the following table:
+# ----------------------
+#     intervals | labels
+# --------------|-------
+#     (0, 1000] |  1kg
+#  (1000, 2000] |  2kg
+#  (2000, 3000] |  3kg
+#  (3000, 4000] |  4kg
+#  (4000, 5000] |  5kg
+#  (5000, 6000] |  6kg
+#  (6000, 7000] |  7kg
+#  (7000, 8000] |  8kg
+#  (8000, 9000] |  9kg
+# ----------------------
+
+
+# verify that the frequencies given by table(weight_cut) are:
+# 1kg 2kg 3kg 4kg 5kg 6kg 7kg 8kg 9kg 
+#   3  24  30   7   7   2   9   3   3 
 
 
 
@@ -116,6 +194,12 @@
 
 
 
+
+
+
+
+
+
 # Obtain scatter plots of:
 # price, height
 # price, weight
@@ -123,7 +207,9 @@
 
 
 
+
 # Obtain a scatter plot matrix of price, height, and weight
+
 
 
 
@@ -132,14 +218,15 @@
 # Here's a small graphic challenge; you'll need to 
 # read the documentation of plot() and par()
 # =====================================================
-# Obtain a scatter plot of height and weight such that:
+# Obtain a scatter plot of weight and height such that:
 # - Axis are labeled with the corresponding variable name
 # - Points are colored with alpha transparency
 #   (choose a color of your preference)
-# - The symbol of points are squares
-# - x-axis ranges from 80 to 220
-# - y-axis ranges from 0 to 10000
+# - The symbol of points are filled triangles
+# - x-axis ranges from 0 to 10000
+# - y-axis ranges from 80 to 220
 # - Include a title
+
 
 
 
@@ -155,8 +242,8 @@
 # 4) capacity
 # =====================================================
 
-# get frequency tables of each qualitative variable
 
+# get frequency tables of each qualitative variable
 
 
 # what is the brand with less number of tents
@@ -166,16 +253,16 @@
 # and if so, how many?
 
 
-
-# are there any tents of brand 'millet'
+# are there any tents of brand 'mountain-hardwear'
 # and if so, how many?
 
 
-# how many 'north-face' tents are intended to be
+# how many 'rei' tents are intended to be
 # used ('bestuse') for Mountaineering
 
 
-# what brands have tents intended to be used for 'Mountaineering'
+# what unique brands have tents intended to be used for 'Mountaineering'
+
 
 
 
@@ -189,6 +276,11 @@
 # - pie chart
 # (feel free to change colors, add titles, and rank values)
 # =====================================================
+
+
+
+
+
 
 
 
@@ -211,11 +303,15 @@
 
 
 
+
+
+
 # =====================================================
 # More basic manipulations
 # =====================================================
 
-# summary of 'price' of big agnes tents
+
+# summary of 'price' of big-agnes tents
 
 
 # summary of 'price' of rei tents
@@ -231,6 +327,7 @@
 # =====================================================
 # Bivariate Plots
 # =====================================================
+
 
 # use boxplot() to plot the distribution of 'weight' 
 # conditional to:
@@ -254,7 +351,7 @@
 # remember that factors are internally stored as
 # integer vectors. To get the integers associated to the 
 # levels of a factor you can use unclass(). For instance:
-unclass(factor(tents$bestuse))
+
 
 # make the same scatter plot, using 'bestuse' as factor for colors,
 # and using the integers associated to factor 'bestuse' for the
@@ -263,26 +360,30 @@ unclass(factor(tents$bestuse))
 
 
 
+
+
 # =====================================================
 # Plot challenge: 
 # =====================================================
 
-# obtain a new data frame by subsetting tents of brand 'rei'
+
+# obtain a new data frame called 'big_agnes'
+# by subsetting tents of brand 'big-agnes'
 
 
-# create a vector of colors for each rei tent according to 'bestuse':
+# create a vector of colors for big-agnes tents according to 'bestuse':
 # 'Carcamping' tents in color 'tomato'
 # 'Backpacking' tents in color 'orange'
-# 'Mountaineering' tents in color 'blue'
 
 
-
-
-# Make a scatter plot of 'height' and 'weight' (of 'rei' tents)
-# The background of the entire plot must be of color 'gray99'
-# Instead of points, show the name of each rei tent
+# Make a scatter plot of 'weight' and 'height' (of 'big-agnes' tents)
+# The background of the entire plot must be of color 'gray95'
+# Instead of points, show the name of each big-agnes tent
 # Use the vector of colors to color tent names
-# Include a legend in the top left corner indicating the 
+# Include a legend in the bottom-right corner indicating the 
 # 'bestuse' types and their corresponding colors
 # Add a title
+
+
+
 

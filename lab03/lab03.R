@@ -1,3 +1,4 @@
+
 # =====================================================
 # Stat133: Lab 3
 # Author: Gaston Sanchez
@@ -88,6 +89,11 @@ str(df2, vec.len = 1)
 head(df2)
 summary(df2)
 
+#how many unique species are there?
+
+
+#what are the names of the continents in the dataset?
+
 
 # Remove the column 'reference'
 df2$reference <- NULL
@@ -126,6 +132,13 @@ head(fish)
 tail(fish)
 summary(fish)
 
+#what are the column names?
+
+#how many unique fish species are there?
+
+#how many days does this data set span?
+
+#for which day do we have the most data?
 
 
 # =====================================================
@@ -178,3 +191,9 @@ library(readr)
 permits <- read_csv(permits_url)
 head(permits)
 
+##inspect with following functions:
+dim(permits)
+nrow(permits)
+ncol(permits)
+str(permits)
+summary(permits)

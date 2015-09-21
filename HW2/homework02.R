@@ -186,7 +186,7 @@ download.file(
 
 
 # calculate the 90th percentile for height and 
-# assign it to the object 'price_p90'
+# assign it to the object 'height_p90'
 
 
 # calculate the 90th percentile for weight and 

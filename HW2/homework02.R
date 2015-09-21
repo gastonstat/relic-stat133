@@ -1,11 +1,12 @@
 # =====================================================
-# Stat133: HW 2
+# Stat133: HW2
+# Author(s): Gaston Sanchez
 # Description: This assignment has 3 main purposes:
 #       - working with data frames, vectors and factors
 #       - practice basic manipulation of data structures
 #       - creation of simple graphics
-#
 # Data: Camping Tents
+# Packages: readr
 # =====================================================
 
 
@@ -19,18 +20,83 @@
 
 
 # =====================================================
-# Reading the Data Into R
+# Reading Datatables in R
 # =====================================================
-# We'll be working with the dataset 'tents1.csv'
+# We'll start practicing reading tables in R
+# The data for this assignment is in the file 'tents1.csv'
 # (available in the folder 'datasets' in the 
 # github repository of the course)
 # =====================================================
 
 
-# Read the file 'tents1.csv' in R and assign it to an object
-# called 'tents' ---this will be the main data frame--- 
-# Character strings must NOT be converted to factors!
-# (use whatever method you like to import the data)
+# First let's use download.file() to download 
+# the data file 'tents1.csv' to your computer;
+# You'll have to specify your own destination ('destfile')
+# e.g. in my case I'm specifying: "~/Downloads/tents1.csv"
+# (your 'destfile' will probably be different!)
+download.file(
+  url = 'https://raw.githubusercontent.com/gastonstat/stat133/master/datasets/tents1.csv', 
+  destfile = '~/Downloads/tents1.csv')
+
+
+# Importing Option 1:
+# Use read.csv() to import 'tents1.csv' and assign it to
+# an object called 'tdf1'
+
+
+
+
+# Importing Option 2:
+# Use read.csv() to import 'tents1.csv' and assign it to
+# an object called 'tdf2'.
+# In this case, strings must NOT be converted into factors!
+
+
+
+
+# Importing Option 3:
+# Create a character vector 'col_class' with the following classes
+# for the columns (to be used with argument 'colClasses')
+# - name:     character
+# - brand:    character
+# - price:    numeric
+# - weight:   numeric
+# - height:   integer
+# - bestuse:  factor
+# - seasons:  factor
+# - capacity: factor
+
+
+# Use read.table() to import 'tents1.csv' and assign it to 
+# an object called 'tdf3';
+# Pass the vector col_class to the argument 'colClasses',
+# and specify the right field separator, and header
+
+
+
+
+# Importing Option 4:
+# Use read_csv() from package "readr" to import 'tents1.csv'
+# and assign it to an object called 'tents'
+# Use the argument 'col_types' to specify column types:
+# - name:     character
+# - brand:    character
+# - price:    numeric
+# - weight:   numeric
+# - height:   integer
+# - bestuse:  character
+# - seasons:  character
+# - capacity: character
+
+
+
+
+# =====================================================
+# Inspecting data frames
+# =====================================================
+# Once you have your data frame 'tents', the next step 
+# involves performing a first exploration
+# =====================================================
 
 
 # inspect the data structure of 'tents'
@@ -59,7 +125,7 @@
 # =====================================================
 # Quantitative Variables:
 # =====================================================
-# We'll start by exploring the quantitative variables
+# Exploring the quantitative variables
 # 1) price
 # 2) weight
 # 3) height
@@ -70,13 +136,15 @@
 
 
 # instead of using the summary() function, find functions
-# that allow you to get the same results for 'price'
+# that allow you to get the following summaries for 'price'
 # - minimum value
 # - first quartile (i.e. 25th percentile)
 # - median value (i.e. 50th percentile)
 # - mean value
 # - third quartile (i.e. 75th percentile)
 # - maximum value
+# - inter-quartile range (IQR)
+# - standard deviation
 
 
 # weight is given in grams;

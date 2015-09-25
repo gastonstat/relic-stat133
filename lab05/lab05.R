@@ -98,6 +98,8 @@ ggplot(tents, aes(x = brand, fill = brand)) +
 # Try generating barcharts for 'bestuse' and seasons
 
 
+## generate a barchart for bestuse colored by brand
+
 
 
 # =====================================================
@@ -117,7 +119,11 @@ ggplot(tents, aes(x = capacity, y = weight, fill = capacity)) +
 ggplot(tents, aes(x = weight, group = bestuse)) +
   geom_density(aes(fill = bestuse), alpha = 0.7) 
 
+### Your turn!
+## densities of height by capacity (with fill color by capacity)
 
+
+##boxplot of height by capacity (with fill color by bestuse)
 
 
 # =====================================================
@@ -153,7 +159,6 @@ hw + geom_point(aes(size = price, color = bestuse))
 hw + geom_point(aes(size = price, 
                     color = bestuse,
                     shape = seasons))
-
 
 
 # =====================================================

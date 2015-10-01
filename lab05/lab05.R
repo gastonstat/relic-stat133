@@ -95,7 +95,7 @@ ggplot(tents, aes(x = brand, fill = brand)) +
 
 
 # Your Turn!
-# Try generating barcharts for 'bestuse' and seasons
+# Try generating separate barcharts for 'bestuse' and 'seasons'
 
 
 ## generate a barchart for bestuse colored by brand

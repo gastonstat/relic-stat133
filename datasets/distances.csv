@@ -1,0 +1,9 @@
+,Berkeley,SanFrancisco,Oakland,PaloAlto,SanMateo,Hayward,Richmond
+Berkeley,0,13.9,5.2,42.6,38.4,19.7,7.6
+SanFrancisco,13.9,0,12.3,33,19.1,26.9,17.8
+Oakland,5.2,12.3,0,34.7,30.5,17.9,11.7
+PaloAlto,42.6,33,34.7,0,15.7,21.5,46.9
+SanMateo,38.4,19.1,30.5,15.7,0,17.2,42.6
+Hayward,19.7,26.9,17.9,21.5,17.2,0,26.2
+Richmond,7.6,17.8,11.7,46.9,42.6,26.2,0
+

@@ -1,132 +1,193 @@
 ---
-title: "lab07"
+title: "Lab 7"
 author: "Your Name"
+date: "October 13th, 2015"
 output: html_document
 ---
 
-## Writing Functions
+## Regular Expressions
 
-In this lab, we'll focus on writing functions, with fewer examples and more time writing code.
+### Preliminaries
 
-### Basic Functions, with Control Flow Structures
-
-Often you will find that it is easier to begin writing code for a specific task, with specific variables, before generalizing the code into a function. Last lab, we saw the following code, which divides a positive integer by 2 until it becomes odd.
+First, load the data.
 
 ```{r}
-x <- 898128000 # Change this value!
-while (x %% 2 == 0) {
-  print(x)
-  x <- x / 2
-}
-print(x)
+library("readr")
+
+flags <- read_csv("https://raw.githubusercontent.com/gastonstat/stat133/master/datasets/flags.csv")
+```
+
+We'll be working only with the first column (the `name` column), which contains the names of countries.
+
+```{r}
+countries <- flags$name
+
+head(countries)
+```
+
+You may have noticed that in the `countries` vector, words in a country's name are separated by `-`.
+Let's replace them with spaces, so that for example `American-Samoa` becomes `American Samoa`. (More on this later.)
+
+```{r}
+# The syntax is gsub(pattern, replacement, x).
+countries <- gsub("-", " ", countries)
+
+# We also could have done chartr("-", " ", countries).
+
+head(countries)
+```
+
+### grep
+
+grep is the most basic regex function: it simply returns which elements of a vector match a particular pattern.
+For example, suppose we wanted to know which countries have the word `islands` in their name.
+
+```{r}
+grep("islands", countries)
+```
+
+It would appear that there are none. But that's not actually true.
+
+```{r}
+countries[33]
+```
+
+So grep failed to match the pattern `islands` to the word `Islands`. There are a couple of ways to fix that.
+
+```{r}
+grep("Islands", countries)
+
+# Or
+grep("islands", countries, ignore.case = TRUE)
+```
+
+The second way has the advantage of being able to match both `islands` and `Islands`, if necessary, as well as `IsLands`, etc.
+
+You can also view the country names instead of their indices.
+
+```{r}
+grep("islands", countries, ignore.case = TRUE, value = TRUE)
 ```
 
 Your turn!
-Now generalize the above code to create a function which performs the same operation. (You should change very little.)
+Use grep to find which countries have more than one word in their name. (Hint: What character is present in that case?)
 
 ```{r}
-reduce <- function(x) {
-  # Fill in.
-}
-
-reduce(898128000)
+# Fill in.
 ```
 
-How about something a little bit more complicated? Write a function ```f``` which, given a positive integer ```n```, returns ```n / 2``` if ```n``` was even or ```3 * n + 1``` if ```n``` was odd.
+### grep Variants
+
+There are several variants of grep suitable for other types of string manipulation.
+
+grepl is identical to grep, but returns a corresponding logical vector instead of a numeric vector.
+
+regexpr and gregexpr are useful for finding the particular location of a match.
+regexpr gives the index of the first match (if any) in each element of a vector, while gregexpr gives the indices of all matches and returns a list.
 
 ```{r}
-f <- function(n) {
-  # Fill in.
-}
+regexpr("an", head(countries), ignore.case = TRUE)
 
-f(6)
-f(19)
-f(27)
+gregexpr("an", head(countries), ignore.case = TRUE)
 ```
 
-Now create function ```g``` which applies ```f()``` to a positive integer ```n``` until it becomes 1, and returns the number of iterations until this occurs.
+sub and gsub are useful for replacing matches.
+sub replaces the first match (if any) in each element of a vector, while gsub replaces all matches.
 
 ```{r}
-g <- function(n) {
-  # Fill in.
-}
+sub("an", "BANANA", head(countries), ignore.case = TRUE)
 
-g(6)
-g(19)
-g(27)
+gsub("an", "BANANA", head(countries), ignore.case = TRUE)
 ```
 
-If you didn't earlier, try also writing the same function, but now create ```f()``` as a nested function.
+Your turn!
+Replace all instances of `us` (or `US`, etc.) with `United States`, but only output the countries whose names were changed.
+(Hint: How can you find which countries contain `us`?)
 
 ```{r}
-h <- function(n) {
-  f <- function(m) {
-    # Fill in.
-  }
-  # Fill in.
-}
-
-h(6)
-h(19)
-h(27)
+# Fill in.
 ```
 
-### Default Arguments
+### Metacharacters
 
-As you probably know by now, many functions come with default arguments, which can be left unspecified without affecting the execution of the function.
-
-The following function attempts to compute the length of the hypotenuse of a right triangle, but will accept one or two leg lengths.
+So far we only to know how to match literal strings, except for ignoring case.
+What if we wanted to know which countries' names start with `A`?
+The metacharacter `^` denotes the beginning of the string.
 
 ```{r}
-pythagoras <- function(a, b = a) {
-  return(sqrt(a^2 + b^2))
-}
-
-pythagoras(3, 4)
-pythagoras(5)
+grep("^A", countries, value = TRUE)
 ```
 
-__Your turn!__
-Write a function which adds together the elements of a vector raised to a certain power. Use a loop instead of vectorized operations. Include two arguments: ```vec``` and ```pow```. Give ```pow``` a default value of 2.
+Similarly, the metacharacter `$` denotes the end of the string.
 
-```{r, eval = FALSE}
-# Remove eval = FALSE or set eval = TRUE when you have completed this function.
-powersum <- function() { # Fill in arguments.
-  # Fill in.
-}
-
-powersum(1:5) # Should return 55.
-powersum(1:5, 4) # Should return 979.
-```
-
-### Ellipsis (...)
-
-Finally, in addition to normal and default arguments, the ```...``` argument allows a function to take any number of arguments.
-
-The following function simply counts the number of arguments given.
+Your turn!
+Find which countries' names end in `stan`.
 
 ```{r}
-countargs <- function(...) {
-  print(paste("This function received", length(list(...)), "arguments."))
-}
-
-countargs(0)
-countargs(1L, 5, 3 + 5i, TRUE, "yosemite")
-countargs(c(1, 2, 3, 4, 5), factor(c("one", "two", "three")))
+# Fill in.
 ```
 
-More commonly, however, the ```...``` is simply passed as optional arguments to another function.
+You may have noticed that metacharacters are not treated literally.
+If you want to match a metacharacter, make sure to precede it by `\\`, as in `\\^'.
+If you want to match `\`, use `\\\\`.
 
-__Your turn!__
-Write a function which produces a histogram of a random process. The first argument should be ```n```, the number of observations. The second argument should be one of the following: ```"Uniform", "Binomial", "Poisson"```. These should correspond, respectively, to: ```runif(n), rbinom(n, 100, 0.5), rpois(n, 1)```. Finally, include the ```...``` argument to be passed into the histogram function.
+```{r}
+# Switch dollar sign to letter s:
+word <- "Bo$$"
+gsub("$", "s", word) #wrong
+gsub("\\$", "s", word) #correct
+```
 
-```{r, eval = FALSE}
-# Remove eval = FALSE or set eval = TRUE when you have completed this function.
-randhist <- function() { # Fill in arguments.
-  # Fill in.
-}
+Suppose you wanted to know which countries' names start with `A` and whose third letter is `g`, but you didn't care about the second letter? The metacharacter `.` represents any character.
 
-randhist(10, "Uniform", breaks = seq(0, 1, 0.1))
-randhist(10, "Binomial", col = "blue")
-randhist(10, "Poisson")
+```{r}
+grep("^A.g", countries, value = TRUE)
+```
+
+The metacharacters `?`, `*`, and `+` modify the previous item: `?` matches zero or one times, `*` matches any number of times (including zero), and `+` matches at least once.
+So `.*` matches any character string, while `.+` matches any non-empty character string.
+
+Your turn!
+Find which countries' names start with `S` and have an `l` in their name.
+
+```{r}
+# Fill in.
+```
+
+### Character Classes
+
+What if you wanted to know which countries' names start with `A` or `Z`? The metacharacter `|` functions as a logical or.
+Left and right parentheses (`(` and `)`) are also metacharacters used for grouping.
+
+```{r}
+grep("^(A|Z)", countries, value = TRUE)
+```
+
+If you want to do this for, say, any vowel, you would have to write `(A|E|I|O|U)`, for example.
+Character classes simplify this: the character class for the preceding expression is just `[AEIOU]`.
+The previous code chunk can be equivalently written as follows:
+
+```{r}
+grep("^[AZ]", countries, value = TRUE)
+```
+
+Several character classes are predefined in R.
+For example, `[:digits:]` is equivalent to `0123456789`, and `[:lower:]` is equivalent to `abcdefghijklmnopqrstuvwxyz`.
+So the character class `[0123456789]` can be more easily written as `[[:digits:]]`, etc.
+See the regex documentation for R for a more extensive list of predefined character classes.
+
+Your turn!
+Find which countries' names start with two or more vowels.
+
+```{r}
+# Fill in.
+```
+
+Finally, when inside of a character class, `^` denotes negation, so `[^AZ]` matches any character except `A` or `Z`.
+
+Your turn!
+Find which countries' names start with a vowel and end in a consonant.
+
+```{r}
+# Fill in.
 ```

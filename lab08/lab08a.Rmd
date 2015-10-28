@@ -1,0 +1,208 @@
+---
+title: "Lab 9"
+author: "Your Name"
+output: html_document
+---
+
+## Strings Basics
+
+### Introduction
+
+The purpose of this lab is to work with some functions to do basic manipulation of strings. You will be using with the row names of the data frame `USArrests`
+
+```{r}
+head(USArrests)
+
+states <- rownames(USArrests)
+head(states)
+```
+
+Some functions that you may need to use:
+
+- `nchar()`
+- `tolower()`
+- `toupper()`
+- `casefold()`
+- `paste()`
+- `substr()`
+
+### Number of characters
+
+`nchar()` allows you to count the number of characters in a string. Use it to get the number of characters of each state:
+
+```{r}
+# number of characters
+
+```
+
+### Case folding
+
+There are 3 functions to do case-folding: `tolower()`, `toupper()`, and `casefold()`. Apply each function on `states` to see what happens:
+
+```{r}
+# to lower case
+
+```
+
+```{r}
+# to upper case
+
+```
+
+```{r}
+# case folding (upper = TRUE)
+
+```
+
+```{r}
+# case folding (upper = FALSE)
+
+```
+
+
+### Length of State Names
+
+We just saw how to use `nchar()` to count the number of characters in each state name:
+```{r}
+# number of charcaters
+num_chars <- nchar(states)
+```
+
+Use the vector `num_chars` to obtain a frequency table called `char_freqs`, and then plot the frequencies with a bar chart:
+```{r}
+# frequency table
+
+```
+
+```{r}
+# barchart of number-of-characters
+
+```
+
+
+
+### Pasting strings
+
+R provides the `paste()` function. This function allows you to __paste__ (i.e. append, concatenate) character vectors separated by a blank space:
+
+```{r}
+paste('Pumpkin', 'Pie')
+```
+
+You can give it any number of vector inputs
+```{r}
+paste('a', 'b', 'c', 'd', 'e')
+```
+
+You can change the separator with `sep`
+```{r}
+paste('a', 'b', 'c', 'd', 'e', sep = '-')
+```
+
+`paste()` is vectorized:
+```{r}
+paste('a', 1:5, sep = '.')
+```
+
+There's a special wrapper around `paste()` called `paste0()` which is 
+equivalent to `paste(..., sep = "")`
+
+```{r}
+# paste0() -vs- paste(..., sep = "")
+paste0('Pumpkin', 'Pie')
+paste('Pumpkin', 'Pie', sep = '')
+
+# paste0() is also vectorized
+paste0('a', 1:5)
+```
+
+
+__Your Turn:__ Use `paste()` to form a new vector with the first five states and their number of characters like this:
+
+`"Alabama = 7"  "Alaska = 6"  "Arizona = 7"  "Arkansas = 8"   "California = 10"`
+
+```{r}
+# paste names with their num-of-chars
+
+```
+
+Now use `paste90`'s argument `collapse = ''` to _collapse_ the first five states like this:
+
+`"AlabamaAlaskaArizonaArkansasCalifornia"`
+
+```{r}
+# collapse first 5 states
+
+```
+
+
+### Substrings
+
+R provieds the function `substr()` to extract substrings in a character vector:
+```{r}
+# extract first 3 characters
+substr('Berkeley', 1, 3)
+```
+
+Use `substr()` to shorten the state names using the first 3-letters:
+```{r}
+# shorten state names with first 3 characters
+
+```
+
+Use `substr()` to shorten the state names using the last 3-letters:
+```{r}
+# shorten state names with last 3 characters
+
+```
+
+How would you shorten the state names using the first letter and the last 3-letters? For instance:  `"Aama"` `"Aska"` `"Aona"` `"Asas"` etc.
+```{r}
+# shorten state names with first 3 characters
+
+
+```
+
+
+### Challenge
+
+We already obtained a frequency table `char_freqs` with the counts of state names by number of characters. You can use those frequencies to get those state-names with 4-characters or 10-characters:
+```{r}
+# 4-char states
+states[num_chars == 4]
+```
+
+```{r}
+# 10-char states
+states[num_chars == 10]
+```
+
+You can use `paste()` to join the 4-character states in one single string (i.e. _collapsing_) like this---separated by a comma and space---:
+```{r}
+# collapse 4-char states
+paste(states[num_chars == 4], collapse = ", ")
+```
+
+
+__Here's one challenge for you:__ write code (using a for-loop) to obtain a list `states_list` containing the collapsed names by number of characters. If the number of characters is an even number, then the state names should be in capital letters. Otherwise, they should be in lower case letters.
+
+Each list element of `states_list` must be named with the number of characters, followed by a dash, followed by the word `chars`: e.g. `'4-chars'`, `'5-chars'`, etc. In total, `states_list` should have the same length as `char_freqs`.
+
+Here's what `states_list` should look like for the first three elements:
+
+```
+$`4-chars`
+[1] "IOWA, OHIO, UTAH"
+
+$`5-chars`
+[1] "idaho, maine, texas"
+
+$`6-chars`
+[1] "ALASKA, HAWAII, KANSAS, NEVADA, OREGON"
+```
+
+
+```{r}
+# your code
+
+```

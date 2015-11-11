@@ -1,194 +1,199 @@
 ---
-title: "Lab 9"
-author: "Your Name"
-date: "July 14, 2015"
+title: "strings"
+date: "November 9, 2015"
 output: html_document
 ---
 
-## Apply Functions
+Today we'll practice some basic string manipulations.
 
-### Introduction
+## Converting from Fahrenheit Degrees
 
-Apply functions are typically used to vectorize functions instead of using loops.
-As you may know, many of the built-in functions in R are already vectorized.
-
-```{r}
-x <- 1:10
-y <- sqrt(x)
-print(y)
-```
-
-As you also know, this operation could have been performed with a simple loop.
+Here are four functions that convert from Fahrenheit degrees to other temperature scales:
 
 ```{r}
-x <- 1:10
-y <- numeric(length(x))
-for (i in 1:length(x)) {
-  y[i] <- sqrt(x[i])
+to_celsius <- function(x) {
+  (x - 32) * (5/9)
 }
-print(y)
-```
 
-However, if the operation in question were not already vectorized, we could still avoid using a loop. A similar technique would work if `x` were a list instead of a vector.
-
-```{r}
-x <- 1:10
-y <- sapply(x, sqrt)
-print(y)
-```
-
-### lapply and sapply
-
-The simplest apply function is lapply. lapply is typically used for simple one-argument functions that you want to apply to the elements of a vector or list. Built-in functions that are vectorized for vectors can also operate over lists with lapply.
-
-```{r}
-x <- as.list(1:10)
-# y <- sqrt(x)    # What happens when you run this line?
-y <- lapply(x, sqrt)
-print(y)
-```
-
-sapply functions similarly to lapply but simplifies the output if possible.
-
-```{r}
-x <- as.list(1:10)
-y <- sapply(x, sqrt)
-print(y)
-```
-
-Of course, you can also use lapply and sapply with your own functions.
-
-```{r}
-sq <- function(x) {
-  return(x^2)
+to_kelvin <- function(x) {
+  (x + 459.67) * (5/9)
 }
-x <- 1:10
-y <- sapply(x, sq)
-print(y)
-```
 
-Your turn!
+to_reaumur <- function(x) {
+  (x - 32) * (4/9)
+}
 
-The function below "squishes" a number into the interval [0, 100] (as in Lab 6).
-
-```{r}
-squish <- function(x) {
-  if (x < 0) {
-    x <- 0
-  } else if (x > 100) {
-    x <- 100
-  }
-  return(x)
+to_rankine <- function(x) {
+  x + 459.67
 }
 ```
 
-Use an apply function to apply squish to an entire vector.
-
+We can use the previous functions to create a more general function ```convert()```:
 ```{r}
-x <- (1:12)^2 - 22
-# Fill this in.
-```
-
-Here is a for loop which performs a certain operation.
-
-```{r}
-set.seed(0)
-x <- rnorm(10)
-y <- numeric(length(x))
-for (i in 1:length(x)) {
-  y[i] <- (x[i] - min(x)) / (max(x) - min(x))
+convert <- function(x, to = "celsius") {
+  switch(to,
+         "celsius" = to_celsius(x),
+         "kelvin" = to_kelvin(x),
+         "reaumur" = to_reaumur(x),
+         "rankine" = to_rankine(x))
 }
+
+convert(30, 'celsius')
 ```
 
-Replace the above code with equivalent code which does not use a loop. You may wish to write an explicit or anonymous function.
+`convert()` works fine when the argument `to = 'celsius'`. What happens if you try `convert(30, 'Celsius')` or `convert(30, 'CELSIUS')`?
+
+__Your turn__. Rewrite `convert()` such that the argument `to` can be given in upper or lower case letters. For instance, the following three calls should be equivalent:
+
+```{r, eval=FALSE}
+convert(30, 'celsius')
+convert(30, 'Celsius')
+convert(30, 'CELSIUS')
+```
 
 ```{r}
-set.seed(0)
-x <- rnorm(10)
-# Fill this in.
+# your function convert
+
+
 ```
 
-### Other Basic Apply Functions
+-----
 
-lapply and sapply are best suited for one-dimensional data structures (i.e. vectors and lists).
-If you want to use an apply function for a multidimensional data structure, the simplest apply function is apply.
-apply has an additional argument corresponding to the dimension (or dimensions) over which you want to apply the function.
+## Names of files
+
+Imagine that you need to generate the names of 10 data files (with .csv extension). All the files have the same prefix name but each of them has a different number: `file1.csv`, `file2.csv`, ... , `file10.csv`. 
+
+How can you generate a character vector with these names in R? Come up with at least three different ways to get such a vector:
+```{r}
+# vector of file names
+
+```
+
+Now imagine that you need to rename the characters `file` into `dataset`. In other words, you want the vector of file names to look like this: `dataset1.csv`, `dataset2.csv`, ... , `dataset10.csv`. Take the previous vector of file names and rename its elements:
 
 ```{r}
-set.seed(0)
-x <- matrix(rnorm(10), nrow = 2, ncol = 5)
-y <- apply(x, 1, mean)
-print(y)
-z <- apply(x, 2, mean)
-print(z)
+# rename vector of file names
+
 ```
 
-tapply has an additional argument which can be one or more factors to apply separately.
+-----
+
+## Using function `cat()`
+
+Run the following code:
+
+```{r, eval=FALSE}
+# name of output file
+outfile <- "output.txt"
+
+# writing to 'outfile.txt'
+cat("This is the first line", file = outfile)
+# insert new line
+cat("\n", file = outfile, append = TRUE)
+cat("A 2nd line", file = "output.txt", append = TRUE)
+# insert 2 new lines
+cat("\n\n", file = outfile, append = TRUE)
+cat("\nThe quick brown fox jumps over the lazy dog\n",
+    file = outfile, append = TRUE)
+```
+
+After running the previous code, look for the file `output.txt` in your working directory and open it. One of the uses of `cat()` is to write contents to a text file. Note that the first call to `cat()` does not include the argument `append`. The rest of the calls do include `append = TRUE`.
+
+__Your turn__. Modify the script such that the content of `output.txt` looks like the header of an `.Rmd` file with your information:
+
+```{r, eval= FALSE}
+---
+title: "Some title"
+author: "Your name and SID"
+date: "today's date"
+output: html_document
+---
+
+This is the first line
+A 2nd line
+
+
+The quick brown fox jumps over the lazy dog
+
+```
+
+-----
+
+## Valid Color Names
+
+Write a function `is_color()` to test if a given name---in English---is a valid R color. If the provided name is a valid R color, `is_color()` returns `TRUE`. If the provided name is not a valid R color `is_color()` returns `FALSE`.
+
+```{r, eval=FALSE}
+# your is_color() function
+
+
+
+# test it:
+is_color('yellow')  # TRUE
+
+is_color('blu')     # FALSE
+
+is_color('turkuiose') # FALSE
+```
+
+-----
+
+## Plot with a valid color
+
+Use `is_color()` to create the function `colplot()` that takes one argument `col` (the name of a color) to produce a simple scatter plot. If `col` is a valid name---say "blue"---, the scatterplot should show a title `"testing color blue"`. If the provided `col` is not a valid color name, e.g. "blu", then the function must stop, showing an __error message__ `"invalid color blu"`
+```{r, eval=FALSE}
+# your coloplot() function
+
+```
+
+```{r eval = FALSE}
+# this should plot
+colplot('tomato')
+
+# this stops with error message
+colplot('tomate')
+```
+
+-----
+
+## Counting number of vowels
+
+Consider the following vector `letrs` which contains various letters:
+```{r}
+# vector of letters
+set.seed(1)
+letrs <- sample(letters, size = 100, replace = TRUE)
+head(letrs)
+```
+
+If you were to count the number of vowels in `letrs` you would get the following counts:
+
+- a: 2
+- e: 2
+- i: 6
+- o: 2
+- u: 8
+
+Write some instructions in R to count the number of vowels in vector `letrs`. 
+```{r}
+# count number of vowels
+```
+
+Test your script with `letrs` and verify that you get the same counts for each vowel.
+
+
+-----
+
+## Number of letters, vowels, and consonants
+
+Write a script that given a vector of letters (e.g. ```letrs```) computes the total number of letters, the number of vowels, and the number of consonants. For instance, given the vector ```letrs```, the script will print on console:
+
+- ```"letters: 100"```
+- ```"vowels: 20"```
+- ```"consonants: 80"```
 
 ```{r}
-set.seed(0)
-df <- data.frame(x = rnorm(10), ltr = factor(sample(c("a", "b", "c"), 10, replace = TRUE)), nmbr = sample(c(1, 2, 3), 10, replace = TRUE))
-byltr <- tapply(df$x, df$ltr, mean)
-print(byltr)
-# If the second argument is not a factor, it will be coerced to a factor.
-bynmbr <- tapply(df$x, df$nmbr, mean)
-print(bynmbr)
-# Multiple factors can be included in a list or data frame.
-byboth <- tapply(df$x, df[, c("ltr", "nmbr")], mean)
-print(byboth)
+# your script
+
 ```
 
-Your turn!
-
-Perform the listed operations on the HairEyeColor dataset.
-
-```{r, eval = FALSE}
-# Remove eval = FALSE or set eval = TRUE when you have completed this code chunk.
-hec <- HairEyeColor
-print(hec)
-# First create a two-dimensional version of the dataset called hec2d, which does not separate the data by sex.
-hec2d <- # Fill this in.
-# Now use an apply function to determine the most common eye color for each hair color.
-# You may wish to write an explicit or anonymous function.
-# Fill this in.
-```
-
-Finally, mapply is similar to sapply, but can use functions with multiple arguments.
-
-```{r}
-x <- 1:10
-y <- 11:20
-geommean <- function(x, y) {
-  return(sqrt(x*y))
-}
-# This function will actually work without mapply, since sqrt and * are already vectorized.
-z <- mapply(geommean, x, y)
-print(z)
-```
-
-### Related Functions
-
-aggregate works similarly to tapply on a greater variety of data structures.
-
-```{r}
-set.seed(0)
-df <- data.frame(x = rnorm(10), y = rnorm(10), ltr = factor(sample(c("a", "b", "c"), 10, replace = TRUE)), nmbr = sample(c(1, 2, 3), 10, replace = TRUE))
-z <- aggregate(df[, c("x", "y")], df[, c("ltr", "nmbr")], mean)
-print(z)
-```
-
-sweep can be used to normalize datasets.
-
-```{r}
-x <- matrix(1:10, nrow = 2, ncol = 5)
-xmean1 <- apply(x, 1, mean)
-xmean2 <- apply(x, 2, mean)
-# Subtract off the mean of each row/column.
-y <- sweep(x, 1, xmean1)
-print(y)
-z <- sweep(x, 2, xmean2)
-print(z)
-# Multiply by the mean of each column (for some reason).
-w <- sweep(x, 2, xmean1, FUN = "*")
-print(w)
-```

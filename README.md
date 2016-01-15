@@ -1,4 +1,4 @@
-## Github Repository of STAT 133 - Concepts in Computing with Data
+## Github Repository of [STAT 133](http://gastonsanchez.com/stat133) - Concepts in Computing with Data (by [Gaston Sanchez](http://gastonsanchez.com))
 
 Homework and lab assignments for Stat 133 (summer, fall 2015)
 

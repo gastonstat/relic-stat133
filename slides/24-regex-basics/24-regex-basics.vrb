@@ -1,0 +1,16 @@
+\frametitle{Positions}
+
+\begin{center}
+ \begin{tabular}{c l}
+ \hline
+  Character & Description \\
+  \hline
+  \code{\^} & matches the start of the string \\
+  \code{\$} & matches the end of the string \\
+  \code{.} & matches any single character \\
+  \code{|} & ``OR'' operator, matches patterns \\
+  & on either side of the \code{|} \\
+  \hline
+ \end{tabular}
+\end{center}
+

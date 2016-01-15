@@ -1,0 +1,1372 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Advanced Loops}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Advanced Looping}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Outline}
+
+\bbi
+  \item Vectorizing a function
+  \item Loops over elements of data structures
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# fahrenheit to celsius}
+\hlstd{to_celsius} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlstd{(x} \hlopt{-} \hlnum{32}\hlstd{)} \hlopt{*} \hlstd{(}\hlnum{5}\hlopt{/}\hlnum{9}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The function \code{to\_celsius()} happens to be a vectorized function:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{to_celsius}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{32}\hlstd{,} \hlnum{40}\hlstd{,} \hlnum{50}\hlstd{,} \hlnum{60}\hlstd{,} \hlnum{70}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1]  0.000000  4.444444 10.000000 15.555556 21.111111
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+\bi
+  \item In general, R functions defined on scalar values are expected to be vectorized
+  \item You should have noticed that many functions in R are vectorized
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+What happens in this situation?
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# trying to_celsius() on a list}
+\hlkwd{to_celsius}\hlstd{(}\hlkwd{list}\hlstd{(}\hlnum{32}\hlstd{,} \hlnum{40}\hlstd{,} \hlnum{50}\hlstd{,} \hlnum{60}\hlstd{,} \hlnum{70}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# trying to_celsius() on a list}
+\hlkwd{to_celsius}\hlstd{(}\hlkwd{list}\hlstd{(}\hlnum{32}\hlstd{,} \hlnum{40}\hlstd{,} \hlnum{50}\hlstd{,} \hlnum{60}\hlstd{,} \hlnum{70}\hlstd{))}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in x - 32: non-numeric argument to binary operator}}\end{kframe}
+\end{knitrout}
+
+\code{to\_celsius()} does not work with a list
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+One solution is to use a {\hilit \code{for}} loop:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{temps_farhenheit} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlnum{32}\hlstd{,} \hlnum{40}\hlstd{,} \hlnum{50}\hlstd{,} \hlnum{60}\hlstd{,} \hlnum{70}\hlstd{)}
+
+\hlstd{temps_celsius} \hlkwb{<-} \hlkwd{numeric}\hlstd{(}\hlnum{5}\hlstd{)}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{) \{}
+  \hlstd{temps_celsius[i]} \hlkwb{<-} \hlkwd{to_celsius}\hlstd{(temps_farhenheit[[i]])}
+\hlstd{\}}
+
+\hlstd{temps_celsius}
+\end{alltt}
+\begin{verbatim}
+## [1]  0.000000  4.444444 10.000000 15.555556 21.111111
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectorizing Functions - Vectors}
+
+\bbi
+  \item R provides a set of functions to ``vectorize'' functions over the elements of data structures:
+  \bi
+    \item \code{lapply()}, \code{sapply()}, \code{apply()}, etc
+  \ei
+  \item These functions allow us to avoid writing loops
+  \item These are functions that have grown organically
+  \item They have common names but unfortunately not all of them use the same arguments naming conventions
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{lapply()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Loops over vectors or lists}
+
+\bi
+  \item The simplest apply function is {\hilit \code{lapply()}}
+  \item \code{lapply()} stands for \textbf{list apply}
+  \item It takes a list or vector and a function as inputs
+  \item It applies the function to each element of the list
+  \item The output is another list
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{players} \hlkwb{<-} \hlkwd{list}\hlstd{(}
+  \hlkwc{warriors} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'kurry'}\hlstd{,} \hlstr{'iguodala'}\hlstd{,} \hlstr{'thompson'}\hlstd{,} \hlstr{'green'}\hlstd{),}
+  \hlkwc{cavaliers} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'james'}\hlstd{,} \hlstr{'shumpert'}\hlstd{,} \hlstr{'thompson'}\hlstd{),}
+  \hlkwc{rockets} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'harden'}\hlstd{,} \hlstr{'howard'}\hlstd{)}
+\hlstd{)}
+
+\hlkwd{lapply}\hlstd{(players, length)}
+\end{alltt}
+\begin{verbatim}
+## $warriors
+## [1] 4
+## 
+## $cavaliers
+## [1] 3
+## 
+## $rockets
+## [1] 2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# convert to upper case}
+\hlkwd{lapply}\hlstd{(players, toupper)}
+\end{alltt}
+\begin{verbatim}
+## $warriors
+## [1] "KURRY"    "IGUODALA" "THOMPSON" "GREEN"   
+## 
+## $cavaliers
+## [1] "JAMES"    "SHUMPERT" "THOMPSON"
+## 
+## $rockets
+## [1] "HARDEN" "HOWARD"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+You can pass arguments to the applied functions
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# collapsing with paste()}
+\hlkwd{lapply}\hlstd{(players, paste,} \hlkwc{collapse} \hlstd{=} \hlstr{'-'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## $warriors
+## [1] "kurry-iguodala-thompson-green"
+## 
+## $cavaliers
+## [1] "james-shumpert-thompson"
+## 
+## $rockets
+## [1] "harden-howard"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+You can pass your own functions
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{num_chars} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlkwd{nchar}\hlstd{(x)}
+\hlstd{\}}
+
+\hlkwd{lapply}\hlstd{(players, num_chars)}
+\end{alltt}
+\begin{verbatim}
+## $warriors
+## [1] 5 8 8 5
+## 
+## $cavaliers
+## [1] 5 8 8
+## 
+## $rockets
+## [1] 6 6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{Anonymous functions}}
+
+You can define a function with no name (i.e. anonymous function):
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# anonymous function}
+\hlkwd{lapply}\hlstd{(players,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{paste}\hlstd{(}\hlstr{'mr'}\hlstd{, x))}
+\end{alltt}
+\begin{verbatim}
+## $warriors
+## [1] "mr kurry"    "mr iguodala" "mr thompson" "mr green"   
+## 
+## $cavaliers
+## [1] "mr james"    "mr shumpert" "mr thompson"
+## 
+## $rockets
+## [1] "mr harden" "mr howard"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{Anonymous functions}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# anonymous function}
+\hlkwd{lapply}\hlstd{(players,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{grep}\hlstd{(}\hlstr{'a'}\hlstd{, x,} \hlkwc{value} \hlstd{=} \hlnum{TRUE}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## $warriors
+## [1] "iguodala"
+## 
+## $cavaliers
+## [1] "james"
+## 
+## $rockets
+## [1] "harden" "howard"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+Remember that a \code{data.frame} is internally stored as a list:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{name} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'Luke'}\hlstd{,} \hlstr{'Leia'}\hlstd{,} \hlstr{'R2-D2'}\hlstd{,} \hlstr{'C-3PO'}\hlstd{),}
+  \hlkwc{gender} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'male'}\hlstd{,} \hlstr{'female'}\hlstd{,} \hlstr{'male'}\hlstd{,} \hlstr{'male'}\hlstd{),}
+  \hlkwc{height} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1.72}\hlstd{,} \hlnum{1.50}\hlstd{,} \hlnum{0.96}\hlstd{,} \hlnum{1.67}\hlstd{),}
+  \hlkwc{weight} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{77}\hlstd{,} \hlnum{49}\hlstd{,} \hlnum{32}\hlstd{,} \hlnum{75}\hlstd{)}
+\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+Remember that a \code{data.frame} is internally stored as a list:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{lapply}\hlstd{(df, class)}
+\end{alltt}
+\begin{verbatim}
+## $name
+## [1] "factor"
+## 
+## $gender
+## [1] "factor"
+## 
+## $height
+## [1] "numeric"
+## 
+## $weight
+## [1] "numeric"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{sapply()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Loops over vectors or lists}
+
+\bi
+  \item \code{sapply()} is a modified version of {\hilit \code{lapply()}}
+  \item \code{sapply()} stands for \textbf{simplified apply}
+  \item It takes a list or vector and a function as inputs
+  \item It applies the function to each element of the list
+  \item \code{sapply()} attempts to simplify the output (possibly as a vector or list)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{sapply()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{players} \hlkwb{<-} \hlkwd{list}\hlstd{(}
+  \hlkwc{warriors} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'kurry'}\hlstd{,} \hlstr{'iguodala'}\hlstd{,} \hlstr{'thompson'}\hlstd{,} \hlstr{'green'}\hlstd{),}
+  \hlkwc{cavaliers} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'james'}\hlstd{,} \hlstr{'shumpert'}\hlstd{,} \hlstr{'thompson'}\hlstd{),}
+  \hlkwc{rockets} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'harden'}\hlstd{,} \hlstr{'howard'}\hlstd{)}
+\hlstd{)}
+
+\hlkwd{sapply}\hlstd{(players, length)}
+\end{alltt}
+\begin{verbatim}
+##  warriors cavaliers   rockets 
+##         4         3         2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{sapply()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{sapply}\hlstd{(players, nchar)}
+\end{alltt}
+\begin{verbatim}
+## $warriors
+## [1] 5 8 8 5
+## 
+## $cavaliers
+## [1] 5 8 8
+## 
+## $rockets
+## [1] 6 6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+when the output cannot be simplified, \code{sapply()} returns the same output as \code{lapply()}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{apply()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Loops on matrices (or arrays)}
+
+Consider a matrix:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(m} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{20}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    5    9   13   17
+## [2,]    2    6   10   14   18
+## [3,]    3    7   11   15   19
+## [4,]    4    8   12   16   20
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+How can we get the median of each row?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Loops on matrices (or arrays)}
+
+We could write something like this (not recommended)
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{medians} \hlkwb{<-} \hlkwd{numeric}\hlstd{(}\hlkwd{nrow}\hlstd{(m))}
+
+\hlstd{medians[}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlkwd{median}\hlstd{(m[}\hlnum{1}\hlstd{, ])}
+\hlstd{medians[}\hlnum{2}\hlstd{]} \hlkwb{<-} \hlkwd{median}\hlstd{(m[}\hlnum{2}\hlstd{, ])}
+\hlstd{medians[}\hlnum{3}\hlstd{]} \hlkwb{<-} \hlkwd{median}\hlstd{(m[}\hlnum{3}\hlstd{, ])}
+\hlstd{medians[}\hlnum{4}\hlstd{]} \hlkwb{<-} \hlkwd{median}\hlstd{(m[}\hlnum{4}\hlstd{, ])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Loops on matrices (or arrays)}
+
+Repetition is error prone:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{medians} \hlkwb{<-} \hlkwd{numeric}\hlstd{(}\hlkwd{nrow}\hlstd{(m))}
+
+\hlstd{medians[}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlkwd{median}\hlstd{(m[}\hlnum{1}\hlstd{, ])}
+\hlstd{medians[}\hlnum{2}\hlstd{]} \hlkwb{<-} \hlkwd{median}\hlstd{(m[}\hlnum{2}\hlstd{, ])}
+\hlstd{medians[}\hlnum{3}\hlstd{]} \hlkwb{<-} \hlkwd{median}\hlstd{(m[}\hlnum{2}\hlstd{, ])}
+\hlstd{medians[}\hlnum{4}\hlstd{]} \hlkwb{<-} \hlkwd{median}\hlstd{(m[}\hlnum{4}\hlstd{, ])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Loops on matrices (or arrays)}
+
+We could also write a \code{for} loop
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{medians} \hlkwb{<-} \hlkwd{numeric}\hlstd{(}\hlkwd{nrow}\hlstd{(m))}
+
+\hlkwa{for} \hlstd{(r} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{nrow}\hlstd{(m)) \{}
+  \hlstd{medians[r]} \hlkwb{<-} \hlkwd{median}\hlstd{(m[r, ])}
+\hlstd{\}}
+
+\hlstd{medians}
+\end{alltt}
+\begin{verbatim}
+## [1]  9 10 11 12
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Or we could use the {\hilit \code{apply()}} function
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Loops over matrices or arrays}
+
+\bbi
+  \item {\hilit \code{apply()}} is perhaps the most popular apply function
+  \item It takes a matrix or array, an index and a function as inputs
+  \item Additionaly, it can take more arguments
+  \item The \code{MARGIN} index gives the subscript which the function will be applied over
+  \bi
+    \item \code{MARGIN = 1} indicates rows
+    \item \code{MARGIN = 2} indicates columns
+    \item \code{MARGIN = c(1, 2)} indicates both rows and columns
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{apply()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(m} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{20}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    5    9   13   17
+## [2,]    2    6   10   14   18
+## [3,]    3    7   11   15   19
+## [4,]    4    8   12   16   20
+\end{verbatim}
+\begin{alltt}
+\hlcom{# median of rows}
+\hlkwd{apply}\hlstd{(m,} \hlnum{1}\hlstd{, median)}
+\end{alltt}
+\begin{verbatim}
+## [1]  9 10 11 12
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{apply()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(m} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{20}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    5    9   13   17
+## [2,]    2    6   10   14   18
+## [3,]    3    7   11   15   19
+## [4,]    4    8   12   16   20
+\end{verbatim}
+\begin{alltt}
+\hlcom{# median of columns}
+\hlkwd{apply}\hlstd{(m,} \hlnum{2}\hlstd{, median)}
+\end{alltt}
+\begin{verbatim}
+## [1]  2.5  6.5 10.5 14.5 18.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{apply()}}
+
+\code{apply()} can be used on data frames
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mean height and weight (on columns)}
+\hlkwd{apply}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],} \hlnum{2}\hlstd{, mean)}
+\end{alltt}
+\begin{verbatim}
+##  height  weight 
+##  1.4625 58.2500
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{apply()}}
+
+\code{apply()} can be used on data frames
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# product of height and weight (on rows)}
+\hlkwd{apply}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],} \hlnum{1}\hlstd{, prod)}
+\end{alltt}
+\begin{verbatim}
+## [1] 132.44  73.50  30.72 125.25
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{tapply()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Loops over vectors split by a factor}
+
+\bbi
+  \item \code{tapply()} 
+  \item the name does not mean anything
+  \item very useful to \textbf{aggregate} data
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{tapply()}}
+
+Say you need to obtain average height and weight by gender
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##    name gender height weight
+## 1  Luke   male   1.72     77
+## 2  Leia female   1.50     49
+## 3 R2-D2   male   0.96     32
+## 4 C-3PO   male   1.67     75
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Without \code{tapply()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mean height by gender}
+\hlkwd{mean}\hlstd{(df}\hlopt{$}\hlstd{height[df}\hlopt{$}\hlstd{gender} \hlopt{==} \hlstr{'female'}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.5
+\end{verbatim}
+\begin{alltt}
+\hlkwd{mean}\hlstd{(df}\hlopt{$}\hlstd{height[df}\hlopt{$}\hlstd{gender} \hlopt{==} \hlstr{'male'}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.45
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Without \code{tapply()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mean weight by gender}
+\hlkwd{mean}\hlstd{(df}\hlopt{$}\hlstd{weight[df}\hlopt{$}\hlstd{gender} \hlopt{==} \hlstr{'female'}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+## [1] 49
+\end{verbatim}
+\begin{alltt}
+\hlkwd{mean}\hlstd{(df}\hlopt{$}\hlstd{weight[df}\hlopt{$}\hlstd{gender} \hlopt{==} \hlstr{'male'}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+## [1] 61.33333
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{tapply()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mean height by gender}
+\hlkwd{tapply}\hlstd{(df}\hlopt{$}\hlstd{height, df}\hlopt{$}\hlstd{gender, mean)}
+\end{alltt}
+\begin{verbatim}
+## female   male 
+##   1.50   1.45
+\end{verbatim}
+\begin{alltt}
+\hlcom{# mean weight by gender}
+\hlkwd{tapply}\hlstd{(df}\hlopt{$}\hlstd{weight, df}\hlopt{$}\hlstd{gender, mean)}
+\end{alltt}
+\begin{verbatim}
+##   female     male 
+## 49.00000 61.33333
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{mapply()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Multiple-Input Apply}
+
+\bbi
+  \item \code{lapply()} only accepts a single vector or list to loop over
+  \item \code{lapply()} does not give you access to the names of the elements
+  \item \code{mapply()} solves this issues
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Multiple-Input Apply}
+
+\bi
+  \item {\hilit \code{mapply()}} stands for \textbf{multiple argument list apply}
+  \item it lets you pass in as many vectors as you like
+  \item the first argument is the function to be applied
+  \item the following arguments are vectors
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{mapply()}}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# pasting player name and team}
+\hlkwd{mapply}\hlstd{(paste, players,} \hlkwd{names}\hlstd{(players))}
+\end{alltt}
+\begin{verbatim}
+## $warriors
+## [1] "kurry warriors"    "iguodala warriors" "thompson warriors"
+## [4] "green warriors"   
+## 
+## $cavaliers
+## [1] "james cavaliers"    "shumpert cavaliers" "thompson cavaliers"
+## 
+## $rockets
+## [1] "harden rockets" "howard rockets"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{mapply()}}
+
+How would you generate this list:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## [[1]]
+## [1] 1 1 1 1
+## 
+## [[2]]
+## [1] 2 2 2
+## 
+## [[3]]
+## [1] 3 3
+## 
+## [[4]]
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{mapply()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lst} \hlkwb{<-} \hlkwd{vector}\hlstd{(}\hlstr{'list'}\hlstd{,} \hlnum{4}\hlstd{)}
+\hlkwa{for} \hlstd{(k} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{) \{}
+  \hlstd{lst[[k]]} \hlkwb{<-} \hlkwd{rep}\hlstd{(k,} \hlnum{5}\hlopt{-}\hlstd{k)}
+\hlstd{\}}
+\hlstd{lst}
+\end{alltt}
+\begin{verbatim}
+## [[1]]
+## [1] 1 1 1 1
+## 
+## [[2]]
+## [1] 2 2 2
+## 
+## [[3]]
+## [1] 3 3
+## 
+## [[4]]
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{mapply()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# multiple input argument}
+\hlkwd{mapply}\hlstd{(rep,} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,} \hlnum{4}\hlopt{:}\hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [[1]]
+## [1] 1 1 1 1
+## 
+## [[2]]
+## [1] 2 2 2
+## 
+## [[3]]
+## [1] 3 3
+## 
+## [[4]]
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{apply()} Related Functions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Related Functions}
+
+Some convenient functions (faster than using \code{apply()})
+\bi
+  \item \code{colMeans()}
+  \item \code{rowMeans()}
+  \item \code{colSums()}
+  \item \code{rowSums()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{colMeans()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# column means of height and weight}
+\hlkwd{colMeans}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)])}
+\end{alltt}
+\begin{verbatim}
+##  height  weight 
+##  1.4625 58.2500
+\end{verbatim}
+\begin{alltt}
+\hlcom{# equivalent to:}
+\hlkwd{apply}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],} \hlnum{2}\hlstd{, mean)}
+\end{alltt}
+\begin{verbatim}
+##  height  weight 
+##  1.4625 58.2500
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{rowMeans()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# row means of height and weight}
+\hlkwd{rowMeans}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)])}
+\end{alltt}
+\begin{verbatim}
+## [1] 39.360 25.250 16.480 38.335
+\end{verbatim}
+\begin{alltt}
+\hlcom{# equivalent to:}
+\hlkwd{apply}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],} \hlnum{1}\hlstd{, mean)}
+\end{alltt}
+\begin{verbatim}
+## [1] 39.360 25.250 16.480 38.335
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{rowSums()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# row sums of height and weight}
+\hlkwd{rowSums}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)])}
+\end{alltt}
+\begin{verbatim}
+## [1] 78.72 50.50 32.96 76.67
+\end{verbatim}
+\begin{alltt}
+\hlcom{# equivalent to:}
+\hlkwd{apply}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],} \hlnum{1}\hlstd{, sum)}
+\end{alltt}
+\begin{verbatim}
+## [1] 78.72 50.50 32.96 76.67
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{colSums()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# column sums of height and weight}
+\hlkwd{colSums}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)])}
+\end{alltt}
+\begin{verbatim}
+## height weight 
+##   5.85 233.00
+\end{verbatim}
+\begin{alltt}
+\hlcom{# equivalent to:}
+\hlkwd{apply}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],} \hlnum{2}\hlstd{, sum)}
+\end{alltt}
+\begin{verbatim}
+## height weight 
+##   5.85 233.00
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{aggregate()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Apply a function to data subsets}
+
+\bi
+  \item \code{aggregate()} can be thought as a generalization of \code{tapply()}
+  \item It splits the data into subsets, and applies a function
+  \item The subsets must be provided as a list
+  \item The output is returned in a ``convenient'' form
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{aggregate()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{name} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'Luke'}\hlstd{,} \hlstr{'Leia'}\hlstd{,} \hlstr{'R2-D2'}\hlstd{,} \hlstr{'C-3PO'}\hlstd{),}
+  \hlkwc{gender} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'male'}\hlstd{,} \hlstr{'female'}\hlstd{,} \hlstr{'male'}\hlstd{,} \hlstr{'male'}\hlstd{),}
+  \hlkwc{species} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'human'}\hlstd{,} \hlstr{'human'}\hlstd{,} \hlstr{'robot'}\hlstd{,} \hlstr{'robot'}\hlstd{),}
+  \hlkwc{height} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1.72}\hlstd{,} \hlnum{1.50}\hlstd{,} \hlnum{0.96}\hlstd{,} \hlnum{1.67}\hlstd{),}
+  \hlkwc{weight} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{77}\hlstd{,} \hlnum{49}\hlstd{,} \hlnum{32}\hlstd{,} \hlnum{75}\hlstd{)}
+\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{aggregate()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mean height and weight by gender}
+\hlkwd{aggregate}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],}
+          \hlkwd{list}\hlstd{(df}\hlopt{$}\hlstd{gender), mean)}
+\end{alltt}
+\begin{verbatim}
+##   Group.1 height   weight
+## 1  female   1.50 49.00000
+## 2    male   1.45 61.33333
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{aggregate()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mean height and weight by species}
+\hlkwd{aggregate}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],}
+          \hlkwd{list}\hlstd{(df}\hlopt{$}\hlstd{species), mean)}
+\end{alltt}
+\begin{verbatim}
+##   Group.1 height weight
+## 1   human  1.610   63.0
+## 2   robot  1.315   53.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{aggregate()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mean height and weight by gender and species}
+\hlkwd{aggregate}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],}
+          \hlkwd{list}\hlstd{(df}\hlopt{$}\hlstd{gender, df}\hlopt{$}\hlstd{species), mean)}
+\end{alltt}
+\begin{verbatim}
+##   Group.1 Group.2 height weight
+## 1  female   human  1.500   49.0
+## 2    male   human  1.720   77.0
+## 3    male   robot  1.315   53.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{sweep()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Sweep out array summaries}
+
+\bbi
+  \item Sometimes we need to sweep out a summary statistic
+  \item e.g. removing the mean on each column
+  \item \code{sweep()} is specially designed for this
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{sweep()} mean}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mean height and weight}
+\hlstd{hw_mean} \hlkwb{<-} \hlkwd{colMeans}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)])}
+
+\hlcom{# centering height and weight}
+\hlkwd{sweep}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],} \hlnum{2}\hlstd{, hw_mean)}
+\end{alltt}
+\begin{verbatim}
+##    height weight
+## 1  0.2575  18.75
+## 2  0.0375  -9.25
+## 3 -0.5025 -26.25
+## 4  0.2075  16.75
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{sweep()} median}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mean height and weight}
+\hlstd{hw_median} \hlkwb{<-} \hlkwd{apply}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],} \hlnum{2}\hlstd{, median)}
+
+\hlcom{# centering height and weight}
+\hlkwd{sweep}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],} \hlnum{2}\hlstd{, hw_median)}
+\end{alltt}
+\begin{verbatim}
+##   height weight
+## 1  0.135     15
+## 2 -0.085    -13
+## 3 -0.625    -30
+## 4  0.085     13
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{R Package \code{"plyr"}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{R package \code{"plyr"}}
+
+\bi
+  \item \code{"plyr"} provides alternative functions to the apply-family functions in base R
+  \item Don't confuse \code{"plyr"} with \code{"dplyr"}
+  \item Functions in \code{"plyr"} are better designed, usually faster, and with better names of arguments
+  \item Read the paper \textbf{The Split-Apply-Combine Strategy for Data Analysis}
+  \item \url{http://www.jstatsoft.org/v40/i01}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

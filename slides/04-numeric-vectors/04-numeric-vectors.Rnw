@@ -1,0 +1,1033 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Numeric Vectors}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Types and Structures}
+
+To make the best of the R language, you'll need a strong understanding of the basic \textbf{data types} and \textbf{data structures} and how to operate on them.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Vectors}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Vectors Reminder}
+
+\bi
+  \item A vector is the most basic data structure in R
+  \item Vectors are contiguous cells containing data
+  \item Can be of any length (including zero)
+  \item R has five basic type of vectors: \\
+  integer, double, complex, logical, character
+  \item vectors are \textbf{atomic} structures
+  \item the values in a vector must be ALL of the same type 
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectors}
+
+The most simple type of vectors are scalars or single values:
+<<eval = FALSE>>=
+# integer
+x <- 1L
+# double (real)
+y <- 5
+# complex
+z <- 3 + 5i
+# logical
+a <- TRUE
+# character
+b <- "yosemite"
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectors}
+
+The function to create a vector from individual values is {\hilit \code{c()}}, short for \textbf{concatenate}:
+
+<<>>=
+# some vectors
+x <- c(1, 2, 3, 4, 5)
+
+y <- c("one", "two", "three")
+
+z <- c(TRUE, FALSE, FALSE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Atomic Vectors}
+
+If you mix different data values, R will coerce them so they are all of the same type
+<<>>=
+# mixing numbers and characters
+x <- c(1, 2, 3, "four", "five")
+
+# mixing numbers and logical values
+y <- c(TRUE, FALSE, 3, 4)
+
+# mixing numbers and logical values
+z <- c(TRUE, FALSE, "TRUE", "FALSE")
+
+# mixing integer, real, and complex numbers
+w <- c(1L, -0.5, 3 + 5i)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectors of a given class}
+
+Sometimes is useful to initialize vectors of a particular class by simply specifying the number of elements:
+<<eval = FALSE>>=
+# five element vectors 
+int <- integer(5)
+num <- numeric(5)
+comp <- complex(5)
+logi <- logical(5)
+char <- character(5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vector class functions}
+
+\bi
+  \item \code{integer()}, \code{is.integer()}, \code{as.integer()}
+  \item \code{numeric()}, \code{is.numeric()}, \code{as.numeric()}
+  \item \code{complex()}, \code{is.complex()}, \code{as.complex()}
+  \item \code{logical()}, \code{is.logical()}, \code{as.logical()}
+  \item \code{character()}, \code{is.character()}, \code{as.character()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Numeric Vectors}
+
+Vectors of sequence of \textbf{integers} can be created with the colon operator {\hilit \code{":"}}
+<<eval = FALSE>>=
+# positive: from 1 to 5
+1:5
+
+# negative: from -7 to -2
+-7:-2
+
+# decreasing: from 3 to -3
+3:-3
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Numeric Vectors}
+
+More vectors of numeric sequences (not only integers) can be created with the function {\hilit \code{seq()}}
+<<eval = FALSE>>=
+# sequences
+seq(1)
+seq(from = 1, to = 5)
+seq(from = -3, to = 9)
+seq(from = -3, to = 9, by = 2)
+seq(from = -3, to = 3, by = 0.5)
+seq(from = 1, to = 20, length.out = 5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sequence generation}
+
+Two sequencing variants of \code{seq()} are \code{seq\_along()} and \code{seq\_len()}
+\bi
+  \item \code{seq\_along()} returns a sequence of integers of the same length as its argument
+  \item \code{seq\_len()} generates a sequence from 1 to the value provided
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sequence generation}
+
+<<>>=
+# some flavors
+flavors <- c("chocolate", "vanilla", "lemon")
+
+# sequence of integers from flavors
+seq_along(flavors)
+
+# sequence from 1 to 5
+seq_len(5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replicate elements}
+
+Another way to create vectors is with the replicating function {\hilit \code{rep()}}
+<<eval = FALSE>>=
+rep(1, times = 5)
+rep(c(2, 4, 6), times = 2)
+rep(1:3, times = c(3, 2, 1))
+rep(c(2, 4, 6), each = 2)
+rep(c(2, 4, 6), length.out = 5)
+rep(c(2, 4, 6), each = 2, times = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Random Vectors}
+
+R provides a series of random number generation functions that can also be used to create numeric vectors
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   generator & distribution \\
+  \hline
+  \code{runif()} & uniform \\
+  \code{rnorm()} & normal \\
+  \code{rbinom()} & binomial \\  
+  \code{rbeta()} & beta \\
+  \code{rgamma()} & gamma \\
+  \code{rgeom()} & geometric \\
+  \hline
+ \end{tabular}
+\end{center}
+
+Check \code{help(?Distributions)} to see the list of all the available distributions
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Random Vectors}
+
+<<eval = FALSE>>=
+runif(n = 5, min = 0, max = 1)
+
+rnorm(n = 5, mean = 0, sd = 1)
+
+rbinom(n = 5, size = 1, prob = 0.5)
+
+rbeta(n = 5, shape1 = 0.5, shape2 = 0.5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sampled Vectors}
+
+There's also the function \code{sample()} that generates random samples (with and without replacement)
+<<eval = FALSE>>=
+# shuffle
+sample(1:10, size = 10)
+
+# sample with replacement
+values <- c(2, 3, 6, 7, 9)
+sample(values, size = 20, replace = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Vector Functions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Vector Functions}
+
+\bi
+  \item \code{length()}
+  \item \code{sort()}
+  \item \code{rev()}
+  \item \code{order()}
+  \item \code{unique()}
+  \item \code{duplicated()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Vector Functions}
+
+<<>>=
+# numeric vector
+num <- c(9, 4, 5, 1, 4, 1, 4, 7)
+
+# how many elements?
+length(num)
+
+# sorting elements
+sort(num)
+sort(num, decreasing = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Vector Functions}
+
+<<>>=
+# reversed elements
+rev(num)
+
+# position of sorted elements
+order(num)
+order(num, decreasing = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Vector Functions}
+
+<<>>=
+# unique elements
+unique(num)
+
+# duplicated elements
+duplicated(num)
+num[duplicated(num)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Math Operations}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Arithmetic Operators}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   operation & usage \\
+  \hline
+  unary + & \code{+ x} \\
+  unary - & \code{- x} \\
+  sum & \code{x + y} \\  
+  subtraction & \code{x - y} \\
+  multiplication & \code{x * y} \\
+  division & \code{x / y} \\
+  power & \code{x \^{} y} \\
+  modul0 (remainder) & \code{x \%\% y} \\
+  integer division & \code{x \%/\% y} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Arithmetic Operators}
+
+<<eval = FALSE>>=
++2 
+-2
+2 + 3
+2 - 3
+2 * 3
+2 / 3
+2 ^ 3
+2 %% 3
+2 %/% 3
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Math Functions}
+
+\bi
+  \item \code{abs(), sign(), sqrt()}
+  \item \code{ceiling(), floor(), trunc(), round(), signif()}
+  \item \code{cummax(), cummin(), cumprod(), cumsum()}
+  \item \code{log(), log10(), log2(), log1p()}
+  \item \code{sin(), cos(), tan()}
+  \item \code{acos(), acosh(), asin(), asinh(), atan(), atanh()}
+  \item \code{exp(), expm1()}
+  \item \code{gamma(), lgamma(), digamma(), trigamma()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Math Functions}
+
+<<>>=
+abs(c(-1, -0.5, 3, 0.5))
+sign(c(-1, -0.5, 3, 0.5))
+round(3.14159, 1)
+log10(10)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Vectorization}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectorized Operations}
+
+A vectorized computation is any computation that when applied to a vector operates on all of its elements
+<<>>=
+c(1, 2, 3) + c(3, 2, 1)
+c(1, 2, 3) * c(3, 2, 1)
+c(1, 2, 3) ^ c(3, 2, 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectorization}
+
+All arithmetic, trigonometric, math and other vector functions are vectorized:
+<<>>=
+log(c(1, 2, 3))
+cos(seq(1, 3))
+sqrt(1:3)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Recycling}
+
+When vectorized computations are applied, some problems may occur when dealing with two vectors of different length
+<<>>=
+c(2, 1) + c(1, 2, 3)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Recycling Rule}
+
+The recycling rule states that the shorter vector is replicated enough times so that the result has the length of the longer vector
+<<>>=
+c(1, 2, 3, 4) + c(2, 1)
+1:10 * 1:5
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Recycling Rule}
+
+The Recycling Rule can be very useful, like when operating between a vector and a ``scalar"
+<<>>=
+x <- c(2, 4, 6, 8)
+x + 3  # add 3 to all elements in x
+x / 3  # divide all elemnts by 3
+x ^ 3  # all elements to the power of 3
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Comparison Operators}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   operation & usage \\
+  \hline
+  less than & \code{x < x} \\
+  greater than & \code{x > y} \\
+  less than or equal & \code{x <= y} \\  
+  greater than or equal  & \code{x >= y} \\
+  equality & \code{x == y} \\
+  different & \code{x != y} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+Comparison operators produce logical values
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison Operators}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+<<eval = FALSE>>=
+5 > 1
+5 < 7
+5 > 10
+5 >= 5
+5 <= 5
+5 == 5
+5 != 3
+5 != 5
+@
+\end{column}
+
+\begin{column}{0.4\textwidth}
+<<eval = FALSE>>=
+TRUE > FALSE
+TRUE < FALSE
+TRUE == TRUE
+TRUE != FALSE
+TRUE != TRUE
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison Operators}
+
+Comparison Operators are also vectorized 
+<<>>=
+values <- -3:3
+
+values > 0
+values < 0
+values == 0
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison operators and recycling rule}
+
+<<eval = TRUE>>=
+c(1, 2, 3, 4, 5) > 2
+c(1, 2, 3, 4, 5) >= 2
+c(1, 2, 3, 4, 5) < 2
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison operators and recycling rule}
+
+<<eval = TRUE>>=
+c(1, 2, 3, 4, 5) <= 2
+c(1, 2, 3, 4, 5) == 2
+c(1, 2, 3, 4, 5) != 2
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison operators}
+
+When comparing vectors of different types, one is coerced to the type of the other, the (decreasing) order of precedence being character, complex, numeric, integer, logical
+
+<<eval = TRUE>>=
+'5' == 5
+5L == 5
+5 + 0i == 5
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison Operators}
+
+In addition to comparison operators, we have the functions \code{all()} and \code{any()}
+<<eval = FALSE>>=
+all(c(1, 2, 3, 4, 5) > 0)
+
+all(c(1, 2, 3, 4, 5) > 1)
+
+any(c(1, 2, 3, 4, 5) < 0)
+
+any(c(1, 2, 3, 4, 5) > 4)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Summary Functions}
+
+\bi
+  \item \code{max()} maximum
+  \item \code{min()} minimum
+  \item \code{range()} range
+  \item \code{mean()} mean
+  \item \code{var()} variance
+  \item \code{sd()} standard deviation
+  \item \code{prod()} product of all elements
+  \item \code{sum()} sum of all elements
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Summary Functions}
+
+<<eval = FALSE>>=
+x <- 1:7
+max(x)
+min(x)
+range(x)
+mean(x)
+var(x)
+sd(x)
+prod(x)
+sum(x)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Logical Operators}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   operation & usage \\
+  \hline
+  NOT & \code{!x} \\
+  AND (elementwise) & \code{x \& y} \\
+  AND (1st element) & \code{x \&\& y} \\  
+  OR (elementwise)  & \code{x | y} \\
+  OR (1st element) & \code{x || y} \\
+  exclusive OR & \code{xor(x, y)} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+Logical operators act on logical and number-like vectors
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Logical Operators}
+
+<<eval = FALSE>>=
+!TRUE
+!FALSE
+TRUE & TRUE
+TRUE & FALSE
+FALSE & FALSE
+TRUE | TRUE
+TRUE | FALSE
+FALSE | FALSE
+xor(TRUE, FALSE)
+xor(TRUE, TRUE)
+xor(FALSE, FALSE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Logical and Comparison Operators}
+
+Many operations involve using logical and comparison operators:
+<<eval=FALSE>>=
+x <- 5
+
+(x > 0) & (x < 10)
+(x > 0) | (x < 10)
+(-2 * x > 0) & (x/2 < 10)
+(-2 * x > 0) | (x/2 < 10)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{which()} functions}
+
+\bi
+  \item \code{which()}: which indices are \code{TRUE}
+  \item \code{which.min()}: location of first minimum
+  \item \code{which.max()}: location of first maximum
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Other Functions}
+
+<<>>=
+(values <- -3:3)
+
+# logical comparison
+values > 0
+
+# positions (i.e. indices) of positive values
+which(values > 0)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{which()}}
+
+<<>>=
+# indices of various comparisons
+which(values > 0)
+which(values < 0)
+which(values == 0)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{which()}}
+
+<<size='scriptsize'>>=
+# logical comparison
+values > 0
+
+# logical subsetting
+values[values > 0]
+
+# positions of positive values
+which(values > 0)
+
+# numeric subsetting
+values[which(values > 0)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{which.max()} and \code{which.min()}}
+
+<<>>=
+which.max(values)
+which(values == max(values))
+
+which.min(values)
+which(values == min(values))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Set Operations}
+
+Functions to perform set union, intersection, (asymmetric!) difference, equality and membership on two vectors
+\bi
+  \item \code{union(x, y)}
+  \item \code{intersect(x, y)}
+  \item \code{setdiff(x, y)}
+  \item \code{setequal(x, y)}
+  \item \code{is.element(el, set)}
+  \item \code{\%in\%} operator
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Set Operations}
+
+<<eval=FALSE>>=
+x <- c(1, 2, 3, 4, 5)
+y <- c(2, 4, 6)
+
+union(x, y)
+intersect(x, y)
+setdiff(x, y)
+setequal(x, y)
+setequal(c(4, 6, 2), y)
+is.element(1, x)
+is.element(6, x)
+3 %in% x
+3 %in% y
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{General Functions}
+
+Functions for inspecting a vector
+\bi
+  \item \code{class(x)}
+  \item \code{length(x)}
+  \item \code{head(x)}
+  \item \code{tail(x)}
+  \item \code{summary(x)}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{General Functions}
+
+<<eval=FALSE>>=
+ages <- c(21, 28, 23, 25, 24, 26, 27, 21)
+
+class(ages)
+length(ages)
+head(ages)
+tail(ages)
+summary(ages)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Find out what the following expressions return:
+<<eval = FALSE>>=
+1:1
+
+seq(0, 1, length.out = 10)
+
+rep(c(1, 2, 3), times = c(1, 2, 3))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Write three different ways in which the vector \code{1, 2, 3, 4, 5} can be created:
+\pause
+<<eval=FALSE>>=
+c(1, 2, 3, 4, 5)
+seq(from = 1, to = 5)
+1:5
+
+# another option
+0:4 + 1
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Generate a random vector of \code{n=100} elements:
+<<>>=
+set.seed(1)
+a <- rnorm(100)
+@
+
+Find the following:
+\bi
+  \item what's the vector class
+  \item what's the mean and standard deviation
+  \item what's the sum of all elements in absolute value
+  \item how many elements are positive ($\geq$ 0)
+  \item how many elements are negative ($<$ 0)
+  \item the three smallest and largest numbers
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+<<>>=
+# class
+class(a)
+# mean value
+mean(a)
+# std dev
+sd(a)
+@
+\end{column}
+
+\begin{column}{0.45\textwidth}
+<<>>=
+# sum of elems in abs-value
+sum(abs(a))
+# how many positive
+sum(a >= 0)
+# how many negative
+sum(a < 0)
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+<<>>=
+# 3 smallest numbers
+sort(a)[1:3]
+# 3 largest numbers
+sort(a, decreasing = TRUE)[1:3]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

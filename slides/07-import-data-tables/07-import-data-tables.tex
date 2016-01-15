@@ -1,0 +1,1909 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Reading Data Tables}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{So far ...}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{So far}
+
+\bi
+  \item Data Structures in R
+  \bi
+    \item Vectors and Factors
+    \item Matrices and Arrays
+    \item Data Frames and Lists
+  \ei
+  \item Emphasis on \textbf{vectors}
+  \item Atomic -vs- Non-atomic objects
+  \item Vectorization
+  \item Recycling
+  \item Bracket Notation
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Datasets}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Datasets}
+
+\bb{You'll have some sort of (raw) data to work with}
+\eb
+\begin{center}
+\ig[width=10cm]{images/tabular_nontabular.pdf}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Some Data}
+\begin{center}
+\ig[width=10cm]{images/leia_luke_han.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Toy Data (tabular layout)}
+
+\begin{center}
+ \begin{tabular}{| l | l | l |}
+  \hline
+name & gender & height \\
+  \hline
+Leia Skywalker & female & 1.50 \\
+  \hline
+Luke Skywalker & male & 1.72 \\
+  \hline
+Han Solo & male & 1.80 \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Table (conceptually)}
+
+\bbi
+  \item Conceptually (and visually), tabular data consists of a rectangular array of cells
+  \item Tables have rows and columns
+  \item Intersection of row and column gives a cell
+  \item A data value lies in each table cell
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Large{\mdlit{Data can also be \\ in non-tabular format}}
+
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Toy Data (XML format)}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+<subject>
+  <name>Leia Skywalker</name>
+  <gender>female</gender>
+  <height>1.50</height>
+</subject>
+<subject>
+  <name>Luke Skywalker</name>
+  <gender>male</gender>
+  <height>1.72</height>
+</subject>
+<subject>
+  <name>Han Solo</name>
+  <gender>male</gender>
+  <height>1.80</height>
+</subject>
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Toy Data (JSON format)}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\{
+  \hlstr{"subject"} : \{
+    \hlstr{"name"} : \hlstr{"Leia Skywalker"},
+    \hlstr{"gender"} : \hlstr{"female"},
+    \hlstr{"height"} : 1.50
+  \},
+  \hlstr{"subject"} : \{
+    \hlstr{"name"} : \hlstr{"Luke Skywalker"},
+    \hlstr{"gender"} : \hlstr{"male"},
+    \hlstr{"height"} : 1.72
+  \},
+  \hlstr{"subject"} : \{
+    \hlstr{"name"} : \hlstr{"Han Solo"},
+    \hlstr{"gender"} : \hlstr{"male"},
+    \hlstr{"height"} : 1.80
+  \}
+\}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Toy Data (other format)}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstr{"Leia Skywalker"}
+\hlstd{gender}\hlopt{:} \hlstd{female}
+\hlstd{height}\hlopt{:} \hlnum{1.50}
+
+\hlstr{"Luke Skywalker"}
+\hlstd{gender}\hlopt{:} \hlstd{male}
+\hlstd{height}\hlopt{:} \hlnum{1.72}
+
+\hlstr{"Han Solo"}
+\hlstd{gender}\hlopt{:} \hlstd{male}
+\hlstd{height}\hlopt{:} \hlnum{1.80}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Toy Data (other format)}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+Leia Skywalker
+F 1.50
+***
+Luke Skywalker
+M 1.72
+***
+Han Solo
+M 1.80
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Tables}
+
+Many datasets come in tabular form: rectangular array of rows and columns (e.g. spreadsheet)
+
+\begin{center}
+\ig[height=3cm]{images/tablegrid.pdf}
+\end{center}
+
+{\small
+In this lecture we'll focus on how to read this type of data in R (we'll talk about how to read other types of datasets in a different lecture)
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Data Tables}
+
+\begin{center}
+{\Large How to store tables in a file?}
+
+\bigskip
+
+ \begin{tabular}{| l | l | l |}
+  \hline
+name & gender & height \\
+  \hline
+Leia Skywalker & female & 1.50 \\
+  \hline
+Luke Skywalker & male & 1.72 \\
+  \hline
+Han Solo & male & 1.80 \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Files and Memory}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=10cm]{images/tabular_nontabular_files.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Files and Formats}
+
+\bbi
+  \item We store Data Sets in files
+  \item A \textbf{file} is simply a block of computer memory
+  \item A file can be as small as just a few bytes or it can be several gigabytes in size (thousands of millions of bytes)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{BIT}
+
+\bbi
+  \item The most fundamental unit of computer memory is the \textbf{bit}
+  \bi
+    \item can be a tiny magnetic region on a hard disk
+    \item can be a tiny transistor on a memory disk
+    \item can be a tiny dent in the reflective material on a CD or DVD
+  \ei
+  \item A bit is like a {\hilit switch}, it can only take two values: 
+  \bi
+    \item \textbf{on} (1)
+    \item \textbf{off} (0)
+  \ei
+  \item A bit is a single \textbf{binary digit} (0 or 1)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Binary Digit}
+
+\bbi
+  \item All computers are binary (0, 1)
+  \item Binary code is used to store everything
+  \bi
+    \item numbers: 0, 1, -30, 3.1416, ...
+    \item characters: a, \$, ), ...
+    \item instructions: \code{sum}, \code{sqrt}, ...
+    \item colors: \textit{red, green, blue}, ...
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Representing Numbers}
+
+Recall that when we write a 3-digit number, e.g. \\
+\begin{center}
+{\large \textbf{105}}
+\end{center}
+
+\pause
+we are using the decimal system:
+\bi
+  \item \textbf{1} hundreds
+  \item \textbf{0} tens
+  \item \textbf{5} ones
+\ei
+
+that is: $(1 \times 10^2) + (0 \times 10^1) + (5 \times 10^0)$ \\
+{\footnotesize where the digits range 0, 1, 2, ..., 9}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Representing Numbers in Binary}
+
+The binary number \\
+\begin{center}
+{\large \textbf{1101001}}
+\end{center}
+
+\pause
+now we have powers of 2 and digits 0 and 1 \\
+
+\bigskip
+
+$(1 \times 2^6) + (1 \times 2^5) + (0 \times 2^4) + 
+(1 \times 2^3) + (0 \times 2^2) + (0 \times 2^1) + (1 \times 2^0)$
+
+\pause
+\bigskip
+In decimal digits this is: 64 + 32 + 8 + 1 = 105
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Representing Numbers in Binary}
+
+{\hilit \textbf{Clicker:}} What is the decimal value of the following 4-digit binary number \\
+\begin{center}
+{\large \textbf{1110}}
+\end{center}
+
+\bi
+  \item A: 5
+  \item B: 8
+  \item C: 14
+  \item D: 12
+\ei
+
+\pause
+\bigskip
+
+$(1 \times 2^3) + (1 \times 2^2) + (1 \times 2^1) + (0 \times 2^0)$
+
+\pause
+\bigskip
+8 + 4 + 2 + 0 = \textbf{14}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{BITS}
+\begin{center}
+\ig[width=9cm]{images/bits.pdf}
+\bigskip
+
+{\tiny Each additional bit doubles the number of possible permutations. $N$ bits represent values 0 to $2^{N-1}$}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Bits and Bytes}
+
+\bbi
+  \item A collection of 8 bits is a \textbf{byte}
+  \item Each byte can store:
+  \bi
+    \item numbers: 00000000 (0), to 11111111 (255)
+    \item has a memory address: 0, 1, 2, ...
+  \ei
+  \item To store bigger numbers, we use several bytes
+  \bi
+    \item 2 bytes: 0 to 65,535
+    \item 4 bytes: 0 to 4,294,967,295
+    \item 4 bytes (1 byte for $\pm$): $\pm$ 2,147,483,648
+  \ei
+  \item Every memory device has a storage capacity indicating the number of bytes it can hold
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Files and Formats}
+
+\begin{center}
+\ig[width=5cm]{images/binary_file_icon.jpg}
+\end{center}
+Every file is binary in the sense that it consists of 0s and 1s
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Files and Formats}
+
+\bb{A file format:}
+\bbi
+  \item is a way of interpreting the bytes in a file
+  \item specifies how bits are used to encode information in a digital storage medium
+  \item For example, in the simplest case, a \textbf{plain text} format means that each byte is used to represent a single character
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some Confusing Terms}
+
+\bbi
+  \item Text files
+  \item Plain text files
+  \item Formatted text files
+  \item Enriched text files
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some Confusing Terms}
+
+Let's take the term \textbf{text files} to mean a file that consists mainly of ASCII characters ... and that uses newline characters to give humans the perception of lines
+
+\bigskip
+{\footnotesize
+Norman Matloff (2011) \\
+{\mdlit The Art of R Programming}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Plain Text Files}
+
+\bi
+  \item By text files we mean plain text files
+  \item Plain text as an umbrella term for any file that is in a human-readable form (\code{.txt, .csv, .xml, .html})
+  \item Text files stored as a sequence of characters
+  \item Each character stored as a single byte of data
+  \item Data is arranged in rows, with several values stored on each row
+  \item Text files that can be read and manipulated with a text editor
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Mandatory Reading}
+
+{\large \textbf{Introduction to Data Technologies (ItDT)} \\
+by Paul Murrell
+
+\bigskip
+{\mdlit 
+\bi
+  \item Preface
+  \item Chap 1: Introduction
+  \item Chap 5: Data Storage
+\ei}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Tabular Datasets}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Data Tables}
+
+\begin{center}
+{\Large How to store tables in a file?}
+
+\bigskip
+
+ \begin{tabular}{| l | l | l |}
+  \hline
+name & gender & height \\
+  \hline
+Leia Skywalker & female & 1.50 \\
+  \hline
+Luke Skywalker & male & 1.72 \\
+  \hline
+Han Solo & male & 1.80 \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Storing a Data Table}
+\begin{center}
+\ig[width=10cm]{images/spreadsheet.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{How NOT to store a Data Table}
+\begin{center}
+\ig[width=10cm]{images/avoid_excel}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=9cm]{images/kitten.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dataset ``starwarstoy''}
+
+{\scriptsize
+\begin{center}
+ \begin{tabular}{| l | l | l | l | l | l | l |}
+  \hline
+name & gender & height & weight & jedi & species & weapon \\
+  \hline
+Luke Skywalker & male & 1.72 & 77 & jedi & human & lightsaber \\
+  \hline
+Leia Skywalker & female & 1.50 & 49 & no\_jedi & human & blaster \\
+  \hline
+Obi-Wan Kenobi & male & 1.82 & 77 & jedi & human & lightsaber \\
+  \hline
+Han Solo & male & 1.80 & 80 & no\_jedi & human & blaster \\
+  \hline
+R2-D2 & male & 0.96 & 32 & no\_jedi & droid & unarmed \\
+  \hline
+C-3PO & male & 1.67 & 75 & no\_jedi & droid & unarmed \\
+  \hline
+Yoda & male & 0.66 & 17 & jedi & yoda & lightsaber \\
+  \hline
+Chewbacca & male & 2.28 & 112 & no\_jedi & wookiee & bowcaster \\
+  \hline
+ \end{tabular}
+\end{center}
+}
+
+\tiny Source: Wookiepedia \url{http://starwars.wikia.com/wiki}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Table (computationally)}
+
+\begin{center}
+{\Large How to store data cells?}
+
+\bigskip
+{\Large What type of format?}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Character Delimited Text}
+
+\bi
+  \item A common way to store data in tabular form is via text files 
+  \item To store the data we need a way to separate data values
+  \item Each line represents a ``row''
+  \item The idea of ``columns'' is conveyed with delimiters 
+  \item In summary, fields within each line are separated by the \textbf{delimiter}
+  \item Quotation marks are used when the delimiter character occurs within one of the fields
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Plain Text Formats}
+
+\bbi
+  \item There are two main subtypes of plain text format, depending on how the separated values are identified in a row
+  \item Delimited formats
+  \item Fixed-width formats
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Delimited Formats}
+
+In a delimited format, values within a row are separated by a special character, or \textbf{delimiter}
+
+\bigskip
+
+{\large
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+  Delimiter & Description \\
+  \hline
+  \code{" "} & white space \\
+  \code{","} & comma \\
+  \code{"\textbackslash t"} & tab \\
+  \code{";"} & semicolon \\
+  \hline
+ \end{tabular}
+\end{center}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Space Delimited (\code{txt})}
+
+{\small
+\begin{verbatim}
+name gender height weight jedi species weapon
+"Luke Skywalker" male 1.72 77 jedi human lightsaber
+"Leia Skywalker" female 1.50 49 no_jedi human blaster
+"Obi-Wan Kenobi" male 1.82 77 jedi human lightsaber
+"Han Solo" male 1.80 80 no_jedi human blaster
+"R2-D2" male 0.96 32 no_jedi droid unarmed
+"C-3PO" male 1.67 75 no_jedi droid unarmed
+"Yoda" male 0.66 17 jedi yoda lightsaber
+"Chewbacca" male 2.28 112 no_jedi wookiee bowcaster
+\end{verbatim}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comma Delimited (\code{csv})}
+
+{\small
+\begin{verbatim}
+name,gender,height,weight,jedi,species,weapon
+Luke Skywalker,male,1.72,77,jedi,human,lightsaber
+Leia Skywalker,female,1.50,49,no_jedi,human,blaster
+Obi-Wan Kenobi,male,1.82,77,jedi,human,lightsaber
+Han Solo,male,1.80,80,no_jedi,human,blaster
+R2-D2,male,0.96,32,no_jedi,droid,unarmed
+C-3PO,male,1.67,75,no_jedi,droid,unarmed
+Yoda,male,0.66,17,jedi,yoda,lightsaber
+Chewbacca,male,2.28,112,no_jedi,wookiee,bowcaster
+\end{verbatim}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Tab Delimited (\code{txt, tsv})}
+
+{\small
+\begin{verbatim}
+name  gender  height  weight  jedi  species weapon
+"Luke Skywalker"  male  1.72  77  jedi  human lightsaber
+"Leia Skywalker"  female  1.50  49  no_jedi human blaster
+"Obi-Wan Kenobi"  male  1.82  77  jedi  human lightsaber
+"Han Solo"  male  1.80  80  no_jedi human blaster
+"R2-D2" male  0.96  32  no_jedi droid unarmed
+"C-3PO" male  1.67  75  no_jedi droid unarmed
+"Yoda"  male  0.66  17  jedi  yoda  lightsaber
+"Chewbacca" male  2.28  112 no_jedi wookiee bowcaster
+\end{verbatim}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Fixed-width Formats}
+
+\bbi
+  \item In a fixed-width format, each value is allocated a \textbf{fixed number of characters} within every row
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Fixed-Width (\code{txt})}
+
+{\small
+\begin{verbatim}
+name              gender  height weight jedi  
+"Luke Skywalker"  male    1.72   77     jedi   
+"Leia Skywalker"  female  1.50   49     no_jedi
+"Obi-Wan Kenobi"  male    1.82   77     jedi  
+"Han Solo"        male    1.80   80     no_jedi
+"R2-D2"           male    0.96   32     no_jedi
+"C-3PO"           male    1.67   75     no_jedi
+"Yoda"            male    0.66   17     jedi
+"Chewbacca"       male    2.28   112    no_jedi
+\end{verbatim}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{In Summary}
+
+\bb{Plain Text Formats}
+\bbi
+  \item The simplest way to store information in computer memory is a file with a \textbf{plain text format}
+  \item The basic conceptual structure of a plain text format is that the \textbf{data are arranged in rows}, with several values stored on each row
+  \item The main characteristic of a plain text format is that all of the information in a file, even numeric information, is stored as text
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Importing Data Tables in R}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{R Data Import Manual}
+
+There's a wide range of ways and options to import data tables in R.
+
+\bigskip
+The authoritative document to know almost all about importing (and exporting) data is the manual \textbf{R Data Import/Export} \\
+{\footnotesize \url{http://cran.r-project.org/doc/manuals/r-release/R-data.html}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Importing Data Tables}
+
+The most common way to read and import tables in R is by using {\hilit \code{read.table()}} and friends
+
+\bigskip
+The read data output is always a \textbf{data.frame}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{read.table()}}
+
+{\footnotesize
+\begin{verbatim}
+read.table(file, header = FALSE, sep = "", quote = "\"'",
+           dec = ".", row.names, col.names,
+           as.is = !stringsAsFactors,
+           na.strings = "NA", colClasses = NA, nrows = -1,
+           skip = 0, check.names = TRUE, 
+           fill = !blank.lines.skip,
+           strip.white = FALSE, blank.lines.skip = TRUE,
+           comment.char = "#",
+           allowEscapes = FALSE, flush = FALSE,
+           stringsAsFactors = default.stringsAsFactors(),
+           fileEncoding = "", encoding = "unknown", text, 
+           skipNul = FALSE)
+\end{verbatim}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some \code{read.table() arguments}}
+{\small
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   Argument & Description \\
+  \hline
+  \code{file} & name of file \\  
+  \code{header} & whether column names are in 1st line \\
+  \code{sep} & field separator \\  
+  \code{quote} & quoting characters \\
+  \code{dec} & character for decimal point \\
+  \code{row.names} & optional vector of row names \\
+  \code{col.names} & optional vector of column names \\
+  \code{na.strings} & character treated as missing values \\
+  \code{colClasses} & optional vector of classes for columns \\
+  \code{nrows} & maximum number of rows to read in \\
+  \code{skip} & number of lines to skip before reading data \\
+  \code{check.names} & check valid column names \\
+  \code{stringsAsFactors} & should characters be converted to factors \\
+  \hline
+ \end{tabular}
+\end{center}
+}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Consider some dataset}
+\begin{center}
+\ig[width=11cm]{images/read_df1.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Arguments for \code{read.table()}}
+\begin{center}
+\ig[width=11cm]{images/read_df2.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Assumption}
+
+For simplicity's sake, we'll assume that all data files are located in your working directory:
+
+\bigskip
+e.g. \code{"/Users/Gaston/Documents"}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{starwarstoy.txt}}
+
+{\small
+\begin{verbatim}
+name gender height weight jedi species weapon
+"Luke Skywalker" male 1.72 77 jedi human lightsaber
+"Leia Skywalker" female 1.5 49 no_jedi human blaster
+"Obi-Wan Kenobi" male 1.82 77 jedi human lightsaber
+"Han Solo" male 1.8 80 no_jedi human blaster
+"R2-D2" male 0.96 32 no_jedi droid unarmed
+"C-3PO" male 1.67 75 no_jedi droid unarmed
+"Yoda" male 0.66 17 jedi yoda lightsaber
+"Chewbacca" male 2.28 112 no_jedi wookiee bowcaster
+\end{verbatim}
+}
+
+{\scriptsize Lecture data files at: \\
+\url{https://github.com/gastonstat/stat133/tree/master/datasets}}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading \code{starwarstoy.txt}}
+
+Blank space delimiter \code{" "}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# using read.table()}
+\hlstd{sw_txt} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}
+  \hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.txt"}\hlstd{,}
+  \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Note: by default \code{read.table()} (and friends) convert character strings into factors
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading \code{starwarstoy.txt}}
+
+Compare to this other option:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# first column as row names}
+\hlstd{sw_txt1} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}
+  \hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.txt"}\hlstd{,}
+  \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+  \hlkwc{row.names} \hlstd{=} \hlnum{1}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading \code{starwarstoy.txt}}
+
+Limit the number of rows to read in (first 4 individuals):
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# first column as row names}
+\hlstd{sw_txt2} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}
+  \hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.txt"}\hlstd{,}
+  \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+  \hlkwc{row.names} \hlstd{=} \hlnum{1}\hlstd{,}
+  \hlkwc{nrows} \hlstd{=} \hlnum{4}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading \code{starwarstoy.txt}}
+
+Let's skip the first row (no header):
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# first column as row names}
+\hlstd{sw_txt3} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}
+  \hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.txt"}\hlstd{,}
+  \hlkwc{header} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+  \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{,}
+  \hlkwc{row.names} \hlstd{=} \hlnum{1}\hlstd{,}
+  \hlkwc{nrows} \hlstd{=} \hlnum{4}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{starwarstoy.csv}}
+
+{\small
+\begin{verbatim}
+name,gender,height,weight,jedi,species,weapon
+Luke Skywalker,male,1.72,77,jedi,human,lightsaber
+Leia Skywalker,female,1.5,49,no_jedi,human,blaster
+Obi-Wan Kenobi,male,1.82,77,jedi,human,lightsaber
+Han Solo,male,1.8,80,no_jedi,human,blaster
+R2-D2,male,0.96,32,no_jedi,droid,unarmed
+C-3PO,male,1.67,75,no_jedi,droid,unarmed
+Yoda,male,0.66,17,jedi,yoda,lightsaber
+Chewbacca,male,2.28,112,no_jedi,wookiee,bowcaster
+\end{verbatim}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading \code{starwarstoy.csv}}
+
+Comma delimiter \code{","}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# using read.table()}
+\hlstd{sw_csv} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}\hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.csv"}\hlstd{,}
+                     \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                     \hlkwc{sep} \hlstd{=} \hlstr{","}\hlstd{)}
+
+\hlcom{# using read.csv()}
+\hlstd{sw_csv} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.csv"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{starwarstoy.csv2}}
+
+{\small
+\begin{verbatim}
+name;gender;height;weight;jedi;species;weapon
+Luke Skywalker;male;1,72;77;jedi;human;lightsaber
+Leia Skywalker;female;1,5;49;no_jedi;human;blaster
+Obi-Wan Kenobi;male;1,82;77;jedi;human;lightsaber
+Han Solo;male;1,8;80;no_jedi;human;blaster
+R2-D2;male;0,96;32;no_jedi;droid;unarmed
+C-3PO;male;1,67;75;no_jedi;droid;unarmed
+Yoda;male;0,66;17;jedi;yoda;lightsaber
+Chewbacca;male;2,28;112;no_jedi;wookiee;bowcaster
+\end{verbatim}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading \code{starwarstoy.csv2}}
+
+Semicolon delimiter \code{","} and decimal symbol \code{","}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# using read.table()}
+\hlstd{sw_csv2} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}\hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.csv"}\hlstd{,}
+                      \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                      \hlkwc{sep} \hlstd{=} \hlstr{";"}\hlstd{,} \hlkwc{dec} \hlstd{=} \hlstr{","}\hlstd{)}
+
+\hlcom{# using read.csv2()}
+\hlstd{sw_csv2} \hlkwb{<-} \hlkwd{read.csv2}\hlstd{(}\hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.csv2"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{starwarstoy.tsv}}
+
+{\small
+\begin{verbatim}
+name  gender	height	weight	jedi	species	weapon
+Luke Skywalker	male	1.72	77	jedi	human	lightsaber
+Leia Skywalker	female	1.5	49	no_jedi	human	blaster
+Obi-Wan Kenobi	male	1.82	77	jedi	human	lightsaber
+Han Solo	male	1.8	80	no_jedi	human	blaster
+R2-D2	male	0.96	32	no_jedi	droid	unarmed
+C-3PO	male	1.67	75	no_jedi	droid	unarmed
+Yoda	male	0.66	17	jedi	yoda	lightsaber
+Chewbacca	male	2.28	112	no_jedi	wookiee	bowcaster
+\end{verbatim}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading \code{starwarstoy.tsv}}
+
+Tab delimiter \code{"\textbackslash t"}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# using read.table()}
+\hlstd{sw_tsv} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}\hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.tsv"}\hlstd{,}
+                     \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                     \hlkwc{sep} \hlstd{=} \hlstr{"\textbackslash{}t"}\hlstd{)}
+
+\hlcom{# using read.delim()}
+\hlstd{sw_tsv} \hlkwb{<-} \hlkwd{read.delim}\hlstd{(}\hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.tsv"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{starwarstoy.dat}}
+
+{\small
+\begin{verbatim}
+name%gender%height%weight%jedi%species%weapon
+Luke Skywalker%male%1.72%77%jedi%human%lightsaber
+Leia Skywalker%female%1.5%49%no_jedi%human%blaster
+Obi-Wan Kenobi%male%1.82%77%jedi%human%lightsaber
+Han Solo%male%1.8%80%no_jedi%human%blaster
+R2-D2%male%0.96%32%no_jedi%droid%unarmed
+C-3PO%male%1.67%75%no_jedi%droid%unarmed
+Yoda%male%0.66%17%jedi%yoda%lightsaber
+Chewbacca%male%2.28%112%no_jedi%wookiee%bowcaster
+\end{verbatim}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading \code{starwarstoy.dat}}
+
+Note that this file has \code{"\%"} as delimiter
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# using read.table()}
+\hlstd{sw_dat} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}\hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.dat"}\hlstd{,}
+                     \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                     \hlkwc{sep} \hlstd{=} \hlstr{"%"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{\code{read.table()} and friends}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   Function & Description \\
+  \hline
+  \code{read.csv()} & comma separated values \\  
+  \code{read.csv2()} & semicolon separated values (Europe) \\
+  \code{read.delim()} & tab separated values \\  
+  \code{read.delim2()} & tab separated values (Europe) \\
+   \hline
+ \end{tabular}
+\end{center}
+
+There is also the \code{read.fwf()} function for reading a table of \textbf{fixed width format}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Considerations}
+
+\bb{What is the field separator?}
+\bi
+  \item space \code{" "}
+  \item tab \code{"\textbackslash t"}
+  \item comman \code{","}
+  \item semicolon \code{";"}
+  \item other?
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Considerations}
+
+\bb{Does the data file contains:}
+\bi
+  \item row names?
+  \item column names?
+  \item missing values?
+  \item special characters?
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Summary}
+
+\bb{So far ...}
+\bi
+  \item There are multiple ways to import data tables
+  \item The workhorse function is \code{read.table()}
+  \item But you can use the other wrappers, e.g. \code{read.csv()}
+  \item The output is a \code{"data.frame"} object
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Location of data file}
+
+Sometimes the issue is not the type of file but its location
+\bbi
+  \item zip file
+  \item url (\code{http} standard)
+  \item url (\code{https} HTTP secure)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reading compressed files}
+
+R provides various \code{connections} functions for opening and reading compressed files:
+\bi
+  \item \code{unz()} reads only a single zip file
+  \item \code{gzfile()} for gzip, bzip2, xz, lzma
+  \item \code{bzfile()} for bzip2
+  \item \code{xzfile()} for xz
+\ei
+
+You pass a connection to the argument \code{file} in any of the reading files functions.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reading zip files}
+
+\code{unz(description, filename)}
+
+\bi
+  \item \code{description} is the full path to the zip file
+  with \code{.zip} extension if required
+  \item \code{filename} is the name of the file
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading a single zip file}
+
+\code{starwarstoy.zip} contains a copy of the file \code{starwarstoy.txt}; to import it in R type:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{sw_zip} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}
+  \hlkwc{file} \hlstd{=} \hlkwd{unz}\hlstd{(}\hlkwc{description} \hlstd{=} \hlstr{"starwarstoy.zip"}\hlstd{,}
+             \hlstr{"starwarstoy.txt"}\hlstd{)}
+\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Connection for the web}
+
+\bb{Using \code{url()}}
+ \begin{verbatim}
+url(description, open = "", blocking = TRUE,
+    encoding = getOption("encoding"))
+ \end{verbatim}
+\eb
+
+The main input for \code{url()} is the \code{description} which has to be a complete URL, including scheme such as \code{http://}, \code{ftp://}, or \code{file://}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example of \code{url} connection}
+
+For instance, let's create an url connection to 
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# creating a url connection to some file}
+\hlstd{edu} \hlkwb{<-} \hlkwd{url}\hlstd{(}\hlstr{"http://gastonsanchez.com/education.csv"}\hlstd{)}
+
+\hlcom{# what's in 'edu'}
+\hlstd{edu}
+\end{alltt}
+\begin{verbatim}
+##                              description 
+## "http://gastonsanchez.com/education.csv" 
+##                                    class 
+##                                    "url" 
+##                                     mode 
+##                                      "r" 
+##                                     text 
+##                                   "text" 
+##                                   opened 
+##                                 "closed" 
+##                                 can read 
+##                                    "yes" 
+##                                can write 
+##                                     "no"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# is open?}
+\hlkwd{isOpen}\hlstd{(edu)}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About Connections}
+
+\bb{Should we care?}
+\bi
+  \item Most of the times we don't need to explicitly use \code{url()}. 
+  \item Connections can be used anywhere a file name could be passed to functions like \code{read.table()} 
+  \item Usually, the reading functions ---eg \code{read.table()}, \code{read.csv()}--- will take care of the URL connection for us.
+  \item However, there may be occassions in which we will need to specify a \code{url()} connection.
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Good to Know}
+
+\bb{Terms of Service}
+Some times, reading data directly from a website may be against the \hilit{terms of use} of the site.
+\eb
+
+\bb{Web Politeness}
+When you're reading (and ``playing'' with) content from a web page, make a local copy as a courtesy to the owner of the web site so you don't overload their server by constantly rereading the page. To make a copy from inside of R, look at the \code{download.file()} function. 
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Downloading Files}
+
+\bb{Downloading files from the web}
+It is good advice to download a copy of the file to your computer, and then play with it. 
+
+\bigskip
+
+Let's use \code{download.file()} to save a copy in our working directory. In this case we create the file \code{education.csv}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# download a copy in your working directory}
+\hlkwd{download.file}\hlstd{(}\hlstr{"http://gastonsanchez.com/education.csv"}\hlstd{,}
+              \hlstr{"education.csv"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading files via \code{https}}
+
+To read data tables via \code{https} (to connect via a secured HTTP) we need to use the R package \code{"RCurl"}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# load package RCurl}
+\hlkwd{library}\hlstd{(RCurl)}
+
+\hlcom{# URL of data file}
+\hlstd{url} \hlkwb{<-} \hlkwd{getURL}\hlstd{(}\hlstr{"https://???"}\hlstd{)}
+
+\hlcom{# import data in R (through a text connection)}
+\hlstd{df} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwd{textConnection}\hlstd{(url),}
+               \hlkwc{row.names} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Clicker poll}
+
+Which of the following sentences is TRUE \\
+\bi
+  \item[A)] spreadsheet formats have no limits on the numbers of columns and rows
+  \item[B)] spreadsheet format is always better than a plain text or binary data format
+  \item[C)] a lot of unnecessary additional information is stored in a spreadsheet file
+  \item[D)] All of the above
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{R package \code{"readr"}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Package \code{"readr"}}
+
+The package \code{"readr"} (by Wickham \textit{et al}) is a new package that makes it easy to read many types of tabular data
+
+\bigskip
+
+{\scriptsize
+\url{http://blog.rstudio.org/2015/04/09/readr-0-1-0/}
+
+\url{http://cran.r-project.org/web/packages/readr/vignettes/design.html}
+}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Package \code{"readr"}}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# remember to install 'readr'}
+\hlkwd{install.packages}\hlstd{(}\hlstr{"readr"}\hlstd{)}
+
+\hlcom{# load it}
+\hlkwd{library}\hlstd{(readr)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{\code{"readr"} Functions}
+
+\bi
+  \item Fixed width files with \code{read\_table()} and \code{read\_fwf()}
+  \item Delimited files with \code{read\_delim()}, \code{read\_csv()}, \code{read\_tsv()}, and \code{read\_csv2()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About \code{"readr"}}
+
+\bb{\code{"readr"} functions ...}
+\bbi
+  \item are around 10x faster than base functions
+  \item are more consistent (better designed)
+  \item produce data frames that are easier to use
+  \item they have more flexible column specification
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Input Arguments}
+
+\bbi
+  \item \code{file}
+  \item \code{col\_names}
+  \item \code{col\_types}
+  \item \code{progress}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Input Arguments}
+
+{\hilit \code{file}} gives the file to read; a url or local path. A local path can point to a a zipped, bzipped, xzipped, or gzipped file – it'll be automatically uncompressed in memory before reading. 
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Input Arguments}
+
+{\hilit \code{col\_names}}: describes the column names (equivalent to \code{header} in base R). It has three possible values:
+
+\bi
+  \item \code{TRUE} will use the the first row of data as column names.
+  \item \code{FALSE} will number the columns sequentially.
+  \item A character vector to use as column names.
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Input Arguments}
+
+{\hilit \code{col\_types}} (equivalent to \code{colClasses} automatically detects column types:
+
+\bi
+  \item \code{col\_logical()} contains only logical values
+  \item \code{col\_integer()} integers
+  \item \code{col\_double())} doubles (reals)
+  \item \code{col\_euro\_double()} ``Euro'' doubles that use commas \code{","} as decimal separator
+  \item \code{col\_date()} Y-m-d dates
+  \item \code{col\_datetime()}: ISO8601 date times
+  \item \code{col\_character()}: everything else
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Column Types Correspondence}
+
+\begin{center}
+ \begin{tabular}{l c}
+  \hline
+   Type & Abbreviation \\
+  \hline
+  \code{col\_logical()} & \code{l} \\  
+  \code{col\_integer()} & \code{i} \\
+  \code{col\_numeric()} & \code{n} \\  
+  \code{col\_double()} & \code{d} \\  
+  \code{col\_euro\_double()} & \code{e} \\
+  \code{col\_date()} & \code{D}  \\
+  \code{col\_datetime()} & \code{T} \\
+  \code{col\_character()} & \code{c} \\
+  \code{col\_skip()} & \code{\_} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Column Types}
+
+\bb{Overriding default choice of \code{col\_types}}
+Use a compact string: {\hilit \code{"dc\_\_d"}}. Each letter corresponds to a column so this specification means: read first column as double, second as character, skip the next two and read the last column as a double. (There's no way to use this form with column types that need parameters.)
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Column Types}
+
+\bb{Overriding default choice of \code{col\_types}}
+Another way to override the default choices of column types is by passing a list of \code{col\_...} objects:
+\eb
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{read_csv}\hlstd{(}\hlstr{"iris.csv"}\hlstd{,} \hlkwc{col_types} \hlstd{=} \hlkwd{list}\hlstd{(}
+  \hlkwc{Sepal.Length} \hlstd{=} \hlkwd{col_double}\hlstd{(),}
+  \hlkwc{Sepal.Width} \hlstd{=} \hlkwd{col_double}\hlstd{(),}
+  \hlkwc{Petal.Length} \hlstd{=} \hlkwd{col_double}\hlstd{(),}
+  \hlkwc{Petal.Width} \hlstd{=} \hlkwd{col_double}\hlstd{(),}
+  \hlkwc{Species} \hlstd{=} \hlkwd{col_factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"setosa"}\hlstd{,} \hlstr{"versicolor"}\hlstd{,} \hlstr{"virginica"}\hlstd{))}
+\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Output}
+
+\bi
+  \item Characters are never automatically converted to factors
+  \item Column names are left as is \\
+  (i.e. there is no \code{check.names = TRUE})
+  \item Use backticks to refer to variables with unusual names:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df}\hlopt{$}\hlstd{`Income ($000)`}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  \item Row names are never set
+  \item The output has class \\ 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlstr{"tbl_df"}\hlstd{,} \hlstr{"tbl"}\hlstd{,} \hlstr{"data.frame"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\ei
+
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{"starwarstoy.csv"}}
+
+{\small
+\begin{verbatim}
+name,gender,height,weight,jedi,species,weapon
+Luke Skywalker,male,1.72,77,jedi,human,lightsaber
+Leia Skywalker,female,1.50,49,no_jedi,human,blaster
+Obi-Wan Kenobi,male,1.82,77,jedi,human,lightsaber
+Han Solo,male,1.80,80,no_jedi,human,blaster
+R2-D2,male,0.96,32,no_jedi,droid,unarmed
+C-3PO,male,1.67,75,no_jedi,droid,unarmed
+Yoda,male,0.66,17,jedi,yoda,lightsaber
+Chewbacca,male,2.28,112,no_jedi,wookiee,bowcaster
+\end{verbatim}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{String Columns as factors}
+
+By default, functions in \code{"readr"} do not convert character strings into factors. But you can specify what columns to be imported as factors (you must specify the levels):
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{sw1} \hlkwb{<-} \hlkwd{read_csv}\hlstd{(}
+  \hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.csv"}\hlstd{,}
+  \hlkwc{col_types} \hlstd{=} \hlkwd{list}\hlstd{(}
+    \hlkwc{gender} \hlstd{=} \hlkwd{col_factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"male"}\hlstd{,} \hlstr{"female"}\hlstd{)))}
+\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Importing selected columns}
+
+\code{"readr"} allows you to import specific columns of a dataset
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# importing just first 4 columns}
+\hlstd{sw4} \hlkwb{<-} \hlkwd{read_csv}\hlstd{(}
+  \hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.csv"}\hlstd{,}
+  \hlkwc{col_types} \hlstd{=} \hlstr{"ccnn___"}
+\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Main functions in \code{"readr"}}
+
+\bi
+  \item \code{read\_table()}
+  \item \code{read\_delim()}
+  \item \code{read\_csv()}
+  \item \code{read\_csv2()}
+  \item \code{read\_tsv()}
+  \item \code{read\_fwf()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Foreign Files}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Table (foreign files)}
+
+\begin{center}
+{\Large It is not uncommon to have tabular datasets in foreign files (e.g. from other programs)}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Files from other programs}
+
+\begin{center}
+ \begin{tabular}{l l l}
+  \hline
+   Type & Package & Function \\
+  \hline
+  Excel & \code{"gdata"} & \code{read.xls()} \\  
+  Excel & \code{"xlsx"} & \code{read.xlsx()} \\
+  Excel & \code{"readxl"} & \code{read\_excel()} \\  
+  SPSS & \code{"foreign"} & \code{read.spss()} \\
+  SAS & \code{"foreign"} & \code{read.ssd()} \\
+  SAS & \code{"foreign"} & \code{read.xport()} \\
+  Matlab & \code{"R.matlab"} & \code{readMat()} \\
+  Stata & \code{"foreign"} & \code{read.dta()} \\
+  Octave & \code{"foreign"} & \code{read.octave()} \\
+  Minitab & \code{"foreign"} & \code{read.mtp()} \\
+  Systat & \code{"foreign"} & \code{read.systat()} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+
+\end{document}

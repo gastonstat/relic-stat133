@@ -1,0 +1,789 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{String Basics with \code{"stringr"}}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Package \code{"stringr"}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About \code{"stringr"}}
+
+\bb{About \code{"stringr"}}
+\bi
+  \item functions are more consistent, simpler and easier to use 
+  \item \code{"stringr"} ensures that function and argument names (and positions) are consistent
+  \item all functions deal with \code{NA}'s and zero length character appropriately
+  \item the output data structures from each function matches the input data structures of other functions
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About \code{"stringr"}}
+
+\code{"stringr"} provides functions for both:
+\bi
+  \item basic manipulations and,
+  \item for regular expression operations. 
+\ei
+
+In this set of slides we cover those functions that have to do with basic manipulations.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About \code{"stringr"}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# installing 'stringr'}
+\hlkwd{install.packages}\hlstd{(}\hlstr{"stringr"}\hlstd{)}
+
+\hlcom{# load 'stringr'}
+\hlkwd{library}\hlstd{(stringr)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Basic \code{"stringr"} functions}
+
+{\small 
+\begin{center}
+  \begin{tabular}{l l l}
+  \hline
+    Function & Description & Similar to \\
+    \hline
+    \code{str\_c()} & string concatenation & \code{paste()} \\
+    \code{str\_length()} & number of characters & \code{nchar()} \\
+    \code{str\_sub()} & extracts substrings & \code{substring()} \\
+    \code{str\_dup()} & duplicates characters & \textit{none} \\
+    \code{str\_trim()} & removes leading and & \textit{none} \\
+      & trailing whitespace & \\
+    \code{str\_pad()} & pads a string & \textit{none} \\
+    \code{str\_wrap()} & wraps a string paragraph & \code{strwrap()} \\
+    \code{str\_trim()} & trims a string & \textit{none} \\
+    \hline
+ \end{tabular}
+\end{center}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About \code{"stringr"}}
+
+\code{stringr} provides functions for both:
+\bi
+  \item all functions in \code{"stringr"} start with {\hilit \code{str\_}}
+  \item some functions are designed to provide a better alternative to already existing functions
+  \item Other functions don't have a corresponding alternative
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_c()}}
+
+\code{str\_c()} is equivalent to \code{paste()} but instead of using the white space as the default separator, \code{str\_c()} uses the empty string \code{""}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# default usage}
+\hlkwd{str_c}\hlstd{(}\hlstr{"May"}\hlstd{,} \hlstr{"The"}\hlstd{,} \hlstr{"Force"}\hlstd{,} \hlstr{"Be"}\hlstd{,} \hlstr{"With"}\hlstd{,} \hlstr{"You"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "MayTheForceBeWithYou"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_c()}}
+
+Another major difference between \code{str\_c()} and \code{paste()}: zero length arguments like \code{NULL} and \code{character(0)} are silently removed by \code{str\_c()}.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# removing zero length objects}
+\hlkwd{str_c}\hlstd{(}\hlstr{"May"}\hlstd{,} \hlstr{"The"}\hlstd{,} \hlstr{"Force"}\hlstd{,} \hlkwa{NULL}\hlstd{,} \hlstr{"Be"}\hlstd{,} \hlstr{"With"}\hlstd{,} \hlstr{"You"}\hlstd{,}
+      \hlkwd{character}\hlstd{(}\hlnum{0}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] "MayTheForceBeWithYou"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_c()}}
+
+\code{str\_c()} is equivalent to \code{paste()} but instead of using the white space as the default separator, \code{str\_c()} uses the empty string \code{""}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# changing separator}
+\hlkwd{str_c}\hlstd{(}\hlstr{"May"}\hlstd{,} \hlstr{"The"}\hlstd{,} \hlstr{"Force"}\hlstd{,} \hlstr{"Be"}\hlstd{,} \hlstr{"With"}\hlstd{,} \hlstr{"You"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"_"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "May_The_Force_Be_With_You"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# synonym function 'str_join'}
+\hlkwd{str_join}\hlstd{(}\hlstr{"May"}\hlstd{,} \hlstr{"The"}\hlstd{,} \hlstr{"Force"}\hlstd{,} \hlstr{"Be"}\hlstd{,} \hlstr{"With"}\hlstd{,} \hlstr{"You"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"-"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: 'str\_join' is deprecated.\\\#\# Use 'str\_c' instead.\\\#\# See help("{}Deprecated"{})}}\begin{verbatim}
+## [1] "May-The-Force-Be-With-You"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_length()}}
+
+\code{str\_length()} is equivalent to \code{nchar()}, returning the number of characters in a string
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some text (NA included)}
+\hlstd{some_text} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"one"}\hlstd{,} \hlstr{"two"}\hlstd{,} \hlstr{"three"}\hlstd{,} \hlnum{NA}\hlstd{,} \hlstr{"five"}\hlstd{)}
+
+\hlcom{# compare 'str_length' with 'nchar'}
+\hlkwd{nchar}\hlstd{(some_text)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3 3 5 2 4
+\end{verbatim}
+\begin{alltt}
+\hlkwd{str_length}\hlstd{(some_text)}
+\end{alltt}
+\begin{verbatim}
+## [1]  3  3  5 NA  4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_length()}}
+
+\code{str\_length()} has the nice feature that it converts factors to characters, something that \code{nchar()} is not able to handle:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some factor}
+\hlstd{some_factor} \hlkwb{=} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{),}
+                     \hlkwc{labels} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"good"}\hlstd{,} \hlstr{"bad"}\hlstd{))}
+\hlstd{some_factor}
+\end{alltt}
+\begin{verbatim}
+## [1] good good good bad  bad  bad 
+## Levels: good bad
+\end{verbatim}
+\begin{alltt}
+\hlcom{# 'str_length' on a factor:}
+\hlkwd{str_length}\hlstd{(some_factor)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4 4 4 3 3 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_length()}}
+
+Compare \code{str\_length()} against \code{nchar()}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some factor}
+\hlstd{some_factor} \hlkwb{=} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{),}
+                     \hlkwc{labels} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"good"}\hlstd{,} \hlstr{"bad"}\hlstd{))}
+
+\hlcom{# now try 'nchar' on a factor}
+\hlkwd{nchar}\hlstd{(some_factor)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nchar(some\_factor): 'nchar()' requires a character vector}}\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_substr()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some text}
+\hlstd{lorem} \hlkwb{=} \hlstr{"Lorem Ipsum"}
+
+\hlcom{# apply 'str_sub'}
+\hlkwd{str_sub}\hlstd{(lorem,} \hlkwc{start}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{end}\hlstd{=}\hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "Lorem"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# equivalent to 'substring'}
+\hlkwd{substring}\hlstd{(lorem,} \hlkwc{first}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{last}\hlstd{=}\hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "Lorem"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_substr()}}
+
+\code{str\_sub()} allows you to work with negative indices in the \code{start} and \code{end} positions:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some strings}
+\hlstd{resto} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"brasserie"}\hlstd{,} \hlstr{"bistrot"}\hlstd{,} \hlstr{"creperie"}\hlstd{,} \hlstr{"bouchon"}\hlstd{)}
+
+\hlcom{# 'str_sub' with negative positions}
+\hlkwd{str_sub}\hlstd{(resto,} \hlkwc{start}\hlstd{=}\hlopt{-}\hlnum{4}\hlstd{,} \hlkwc{end}\hlstd{=}\hlopt{-}\hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "erie" "trot" "erie" "chon"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+When we use a negative position, \code{str\_sub()} counts backwards from last character.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_sub()}}
+
+A related function is \code{str\_sub()}; when given a set of positions they will be recycled over the string
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# extracting sequentially}
+\hlkwd{str_sub}\hlstd{(lorem,} \hlkwd{seq_len}\hlstd{(}\hlkwd{nchar}\hlstd{(lorem)))}
+\end{alltt}
+\begin{verbatim}
+##  [1] "Lorem Ipsum" "orem Ipsum"  "rem Ipsum"   "em Ipsum"    "m Ipsum"    
+##  [6] " Ipsum"      "Ipsum"       "psum"        "sum"         "um"         
+## [11] "m"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_sub()}}
+
+We can also give \code{str\_sub()} a negative sequence, something that \code{substring()} ignores:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# reverse substrings with negative positions}
+\hlkwd{str_sub}\hlstd{(lorem,} \hlopt{-}\hlkwd{seq_len}\hlstd{(}\hlkwd{nchar}\hlstd{(lorem)))}
+\end{alltt}
+\begin{verbatim}
+##  [1] "m"           "um"          "sum"         "psum"        "Ipsum"      
+##  [6] " Ipsum"      "m Ipsum"     "em Ipsum"    "rem Ipsum"   "orem Ipsum" 
+## [11] "Lorem Ipsum"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_sub()}}
+
+We can use \code{str\_sub()} not only for extracting subtrings but also for replacing substrings:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# replacing 'Lorem' with 'Nullam'}
+\hlstd{lorem} \hlkwb{<-} \hlstr{"Lorem Ipsum"}
+\hlkwd{str_sub}\hlstd{(lorem,} \hlnum{1}\hlstd{,} \hlnum{5}\hlstd{)} \hlkwb{<-} \hlstr{"Nullam"}
+\hlstd{lorem}
+\end{alltt}
+\begin{verbatim}
+## [1] "Nullam Ipsum"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_sub()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# replacing with negative positions}
+\hlstd{lorem} \hlkwb{=} \hlstr{"Lorem Ipsum"}
+\hlkwd{str_sub}\hlstd{(lorem,} \hlopt{-}\hlnum{1}\hlstd{)} \hlkwb{<-} \hlstr{"Nullam"}
+\hlstd{lorem}
+\end{alltt}
+\begin{verbatim}
+## [1] "Lorem IpsuNullam"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# multiple replacements }
+\hlstd{lorem} \hlkwb{=} \hlstr{"Lorem Ipsum"}
+\hlkwd{str_sub}\hlstd{(lorem,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{7}\hlstd{),} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,}\hlnum{8}\hlstd{))} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Nullam"}\hlstd{,} \hlstr{"Enim"}\hlstd{)}
+\hlstd{lorem}
+\end{alltt}
+\begin{verbatim}
+## [1] "Nullam Ipsum"  "Lorem Enimsum"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Duplication with \code{str\_dup()}}
+
+\code{str\_dup()} duplicates and concatenates strings within a character vector:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# default usage}
+\hlkwd{str_dup}\hlstd{(}\hlstr{"hola"}\hlstd{,} \hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "holaholahola"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# use with differetn 'times'}
+\hlkwd{str_dup}\hlstd{(}\hlstr{"adios"}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "adios"           "adiosadios"      "adiosadiosadios"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Duplication with \code{str\_dup()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# use with a string vector}
+\hlstd{words} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"lorem"}\hlstd{,} \hlstr{"ipsum"}\hlstd{,} \hlstr{"dolor"}\hlstd{)}
+\hlkwd{str_dup}\hlstd{(words,} \hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "loremlorem" "ipsumipsum" "dolordolor"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{str_dup}\hlstd{(words,} \hlnum{1}\hlopt{:}\hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "lorem"           "ipsumipsum"      "dolordolordolor"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_pad()}}
+
+Another handy function that we can find in \code{stringr} is \code{str\_pad()}  for \textit{padding} a string. Its default usage has the following form:
+\begin{verbatim}
+ str_pad(string, width, side = "left", pad = " ")
+\end{verbatim}
+The idea of \code{str\_pad()} is to take a string and pad it with leading or trailing characters to a specified total \code{width}.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_pad()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# default usage}
+\hlkwd{str_pad}\hlstd{(}\hlstr{"hola"}\hlstd{,} \hlkwc{width}\hlstd{=}\hlnum{7}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "   hola"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# pad both sides}
+\hlkwd{str_pad}\hlstd{(}\hlstr{"adios"}\hlstd{,} \hlkwc{width}\hlstd{=}\hlnum{7}\hlstd{,} \hlkwc{side}\hlstd{=}\hlstr{"both"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] " adios "
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_pad()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# left padding with '#'}
+\hlkwd{str_pad}\hlstd{(}\hlstr{"hashtag"}\hlstd{,} \hlkwc{width}\hlstd{=}\hlnum{8}\hlstd{,} \hlkwc{pad}\hlstd{=}\hlstr{"#"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "#hashtag"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# pad both sides with '-'}
+\hlkwd{str_pad}\hlstd{(}\hlstr{"hashtag"}\hlstd{,} \hlkwc{width}\hlstd{=}\hlnum{9}\hlstd{,} \hlkwc{side}\hlstd{=}\hlstr{"both"}\hlstd{,} \hlkwc{pad}\hlstd{=}\hlstr{"-"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "-hashtag-"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Wrapping with \code{str\_wrap()}}
+
+The function \code{str\_wrap()} is equivalent to \code{strwrap()} which can be used to \textit{wrap} a string to format paragraphs.
+Its default usage has the following form:
+\begin{verbatim}
+ str_wrap(string, width = 80, indent = 0, exdent = 0)
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_wrap()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# quote (by Douglas Adams)}
+\hlstd{some_quote} \hlkwb{<-} \hlkwd{c}\hlstd{(}
+  \hlstr{"I may not have gone"}\hlstd{,}
+  \hlstr{"where I intended to go,"}\hlstd{,}
+  \hlstr{"but I think I have ended up"}\hlstd{,}
+  \hlstr{"where I needed to be"}\hlstd{)}
+
+\hlcom{# some_quote in a single paragraph}
+\hlstd{some_quote} \hlkwb{<-} \hlkwd{paste}\hlstd{(some_quote,} \hlkwc{collapse} \hlstd{=} \hlstr{" "}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_wrap()}}
+
+Say we want to display the text of \code{some\_quote} within some pre-specified column width (e.g. width of 30):
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# display paragraph with width=30}
+\hlkwd{cat}\hlstd{(}\hlkwd{str_wrap}\hlstd{(some_quote,} \hlkwc{width} \hlstd{=} \hlnum{30}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## I may not have gone where I
+## intended to go, but I think I
+## have ended up where I needed
+## to be
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Trimming with \code{str\_trim()}}
+
+One of the typical tasks of string processing is that of parsing a text into individual words.
+
+Usually, we end up with words that have blank spaces, called \textit{whitespaces}, on either end of the word. In this situation, we can use the \code{str\_trim()} function to remove any number of whitespaces at the ends of a string. Its usage requires only two arguments:
+\begin{verbatim}
+ str_trim(string, side = "both")
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_trim()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# text with whitespaces}
+\hlstd{bad_text} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{" several   "}\hlstd{,} \hlstr{"   whitespaces "}\hlstd{)}
+
+\hlcom{# remove whitespaces on the left side}
+\hlkwd{str_trim}\hlstd{(bad_text,} \hlkwc{side} \hlstd{=} \hlstr{"left"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "several   "   "whitespaces "
+\end{verbatim}
+\begin{alltt}
+\hlcom{# remove whitespaces on the right side}
+\hlkwd{str_trim}\hlstd{(bad_text,} \hlkwc{side} \hlstd{=} \hlstr{"right"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] " several"       "   whitespaces"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# remove whitespaces on both sides}
+\hlkwd{str_trim}\hlstd{(bad_text,} \hlkwc{side} \hlstd{=} \hlstr{"both"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "several"     "whitespaces"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Word extraction with \code{word()}}
+
+\code{word()} function that is designed to extract words from a sentence:
+\begin{verbatim}
+ word(string, start = 1L, end = start, sep = fixed(" "))
+\end{verbatim}
+
+The way in which we use \code{word()} is by passing it a \code{string}, together with a \code{start} position of the first word to extract, and an \code{end} position of the last word to extract. By default, the separator \code{sep} used between words is a single space.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Word extraction with \code{word()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some sentence}
+\hlstd{change} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Be the change"}\hlstd{,} \hlstr{"you want to be"}\hlstd{)}
+
+\hlcom{# extract first word}
+\hlkwd{word}\hlstd{(change,} \hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "Be"  "you"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# extract second word}
+\hlkwd{word}\hlstd{(change,} \hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "the"  "want"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Word extraction with \code{word()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some sentence}
+\hlstd{change} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Be the change"}\hlstd{,} \hlstr{"you want to be"}\hlstd{)}
+
+\hlcom{# extract last word}
+\hlkwd{word}\hlstd{(change,} \hlopt{-}\hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "change" "be"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# extract all but the first words}
+\hlkwd{word}\hlstd{(change,} \hlnum{2}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "the change" "want to be"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

@@ -1,0 +1,590 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Introduction to Data Visualization}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Graphics}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Visualization}
+
+Using only numerical reduction methods in data analyses is far too limiting
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+Consider some data (four pairs of variables)
+<<echo = FALSE>>=
+print(anscombe[ , c(1,5,2,6,3,7,4,8)], print.gap = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\large{\mdlit{What things would you like \\ to calculate for each variable?}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+<<echo = FALSE, size='scriptsize'>>=
+summary(anscombe[ , 1:4])
+@
+
+<<echo = FALSE, size='scriptsize'>>=
+summary(anscombe[ , 5:8])
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\large{\mdlit{What things would you like to calculate \\ for each pair of variables (e.g. \code{x1, y1})?}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+<<>>=
+cor(anscombe$x1, anscombe$y1)
+cor(anscombe$x2, anscombe$y2)
+cor(anscombe$x3, anscombe$y3)
+cor(anscombe$x4, anscombe$y4)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+\bi
+  \item Mean of \code{x} values = 9.0
+  \item Mean of \code{y} values = 7.5
+  \item least squares equation: $y = 3 + 0.5x$
+  \item Sum of squared errors: 110
+  \item Correlation coefficient: 0.816
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Why Graphics?}
+
+Are you able to see any patterns, associations, relations?
+<<echo = FALSE, size='scriptsize'>>=
+print(anscombe[ , c(1,5,2,6,3,7,4,8)], print.gap = 2)
+@
+
+{\small Famous dataset \code{"anscombe"} (four data sets)}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Why Graphics?}
+
+How are these two variables associated?
+
+\bigskip
+What does these data values look like?
+<<echo = FALSE, size='scriptsize'>>=
+print(anscombe[ , c(1,5)], print.gap = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\large{
+\mdlit{Our eyes are not very good at making sense when looking at (many) numbers}
+\pause
+
+\bigskip
+\hilit{But they are great for looking at shapes and detecting patterns}
+}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Why Graphics}
+
+<<fig.width=6, fig.height=4, out.width='.9\\linewidth', out.height='.7\\linewidth', fig.align='center', echo=FALSE>>=
+ops <- par(mfrow = c(2, 2))
+# plot factor
+for (j in 1:4) {
+  op <- par(mar = c(4, 4, 1, 1))
+  plot(anscombe[, j], anscombe[, j+4], pch = 19, cex = 1.1,
+       col = '#6666ff', xlab = sprintf("x%s", j), 
+       ylab = sprintf("y%s", j), )
+  par(op)
+}
+par(ops)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Visualization}
+
+Using only numerical reduction methods in data analyses is far too limiting.
+
+\bigskip
+Visualization provides insight that cannot be appreciated by any other approach to learning from data. (W. S. Cleveland)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Visualization}
+
+A key component of computing with data consists of \textbf{Data Visualization}
+
+\bigskip
+Google \code{"data visualization"}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Visualization}
+\begin{center}
+\ig[width=8cm]{images/vis_areas.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Visualization}
+
+Data Visualization
+\bi
+  \item Statistical Graphics?
+  \item Computer Graphics?
+  \item Computer Vision?
+  \item Infographics?
+  \item Data Art?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Infographic}
+\begin{center}
+\ig[width=9cm]{images/infographic.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Scientific Imaging}
+\begin{center}
+\ig[width=7cm]{images/imaging.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Art}
+\begin{center}
+\ig[width=11cm]{images/windmap.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Visualization Continuum}
+\begin{center}
+\ig[width=10cm]{images/vis_continuum.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Art?}
+
+{\large There's value in entertaining, putting a smile on someone's face, and making people feel something, as much as there is in optimized presentation.}
+
+\bigskip
+{\footnotesize Nathan Yau, 2013\\
+(Data Points, p 69)
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Art?}
+
+{\large \textbf{Data Art}: visualizations that strive to entertain or to create aesthetic experiences with little concern for informing.}
+
+\bigskip
+{\footnotesize Stephen Few, 2012}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Visualization}
+\begin{center}
+\ig[width=8cm]{images/vis_areas.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Stats Graphics}
+\begin{center}
+\ig[width=8cm]{images/Rgraphics.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Stats Graphics}
+
+\bb{Things commonly said about statistical graphics}
+\bi
+  \item The data should stand out
+  \item Story telling
+  \item Big Picture
+  \item ``The purpose of visualization is insight, not pictures'' (Ben Shneiderman)
+\ei
+\eb
+
+{\footnotesize We'll focus on statistical graphics and other visual displays of data in science and technology}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Stats Graphics}
+
+\centerline{\mdlit \Large Graphics for}
+
+\bigskip
+\centerline{\Large Exploration \quad \& \quad Communication}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics for Exploration}
+
+\bbi
+  \item graphics for understanding data
+  \item the analyst is the main (and usually only) consumer
+  \item typically quick \& dirty (not much care about visual appearance and design principles)
+  \item lifespan of a few seconds
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics for Exploration}
+
+<<fig.width=4, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op <- par(mar = c(2, 2, 2, 2))
+# plot factor
+set.seed(4)
+abc <- factor(sample(c('A', 'B', 'C'), 20, replace = TRUE))
+plot(abc)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics for Communication}
+
+\bi
+  \item graphics for presenting data
+  \item to be consumed by others
+  \item must care about visual appearance and design
+  \item require a lot of iterations in order to get the final version
+  \item what's the message? 
+  \item who's the audience?
+  \item on what type of media / format?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics for Communication}
+
+<<fig.width=4, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op <- par(mar = c(2, 2, 2, 2))
+# plot factor
+set.seed(4)
+abc <- factor(sample(c('A', 'B', 'C'), 20, replace = TRUE))
+cols <- c("#84b1df", "#8584df", "#84dfdf")
+barplot(table(abc), border = NA, ylim = c(0, 10), 
+        axes = FALSE, col = cols)
+axis(side = 2, las = 2, at = seq(0, 10, 2), col = "gray40",
+     col.axis = "gray40")
+title("Average Score", cex.main = 0.9)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics for Communication}
+
+Use visualization to communicate ideas, influence, explain persuade
+
+\bigskip
+Visuals can serve as evidence or support
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Visualization}
+
+\bbi
+  \item Visuals can frequently take the place of many words, tables, and numbers
+  \item Visuals can summarize, aggregate, unite, explain
+  \item Sometimes words are needed, however
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics (Part I)}
+
+In this first part of the course we'll focus on:
+\bi
+  \item graphics for exploration
+  \item types of statistical graphics
+  \item understanding graphics system in R
+  \item traditional R graphics and graphics with \code{"ggplot2"}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics (Part II)}
+
+Later in the course we'll talk about:
+\bi
+  \item graphics for communication
+  \item design principles
+  \item color theory and use of color
+  \item guidelines and good practices
+  \item \code{"shiny"} and interactive graphics (time permitting)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Considerations}
+
+\centerline{\mdlit \large Number of Variables}
+
+\bigskip
+\centerline{\Large \large Type of Variables}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{How many variables?}
+
+Variables in datasets:
+\bi
+  \item 1 - univariate data
+  \item 2 - bivariate data
+  \item 3 - trivariate data
+  \item multivariate data
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{What type of variables?}
+
+\bbi
+  \item Quantitative -vs- Qualitative
+  \item Continuous -vs- Discrete
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Univariate}
+
+Quantitative variable:
+\bi
+  \item How values are distributed
+  \item max, min, ranges
+  \item measures of center
+  \item measures of spread
+  \item areas of concentration
+  \item outliers
+  \item interesting patterns
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Univariate}
+
+Qualitative variable:
+\bi
+  \item Counts and proportions (i.e. frequencies)
+  \item Common values
+  \item Most typical value
+  \item Distribution of frequencies
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Bivariate}
+
+\bbi
+  \item Quantitative-Quantitative
+  \item Qualitative-Quantitative
+  \item Qualitative-Qualitative
+\ei
+In general we care about association (correlation, relationships)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Multivariate}
+
+\bbi
+  \item Quantitative
+  \item Qualitative
+  \item Mixed
+\ei
+In general we care about association (correlation, relationships)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{What about individuals?}
+
+\bbi
+  \item Resemblance
+  \item Similarities and disimilarities
+  \item Typologies
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

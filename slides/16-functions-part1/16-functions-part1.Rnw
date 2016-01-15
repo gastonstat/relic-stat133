@@ -1,0 +1,909 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Functions - part 1}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Functions}
+
+R comes with many functions and packages that let us perform a wide variety of tasks. Sometimes, however, there's no function to do what we want to achieve. In these cases we need to create our own functions.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Anatomy of a Function}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Anatomy of a function}
+
+{\hilit \code{function()}} allows us to create a function. It has the following structure:
+
+<<eval = FALSE>>=
+function_name <- function(arg1, arg2, etc)
+{
+  expression_1
+  expression_2
+  ...
+  expression_n
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Anatomy of a function}
+
+\bi
+  \item Generally we will give a name to a function
+  \item A function takes one or more inputs (or none), known as as \textit{arguments}
+  \item The expressions forming the operations comprise the body of the function
+  \item Simple expression doesn't require braces
+  \item Compound expressions are surround by braces
+  \item Functions return a single \textit{value}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function example}
+
+A function that squares its argument:
+<<>>=
+square <- function(x) {
+  x^2
+}
+@
+
+\pause
+\bi
+  \item the function's name is {\hilit \code{"square"}}
+  \item it has one argument {\hilit \code{x}}
+  \item the function's body consists of one simple expression
+  \item it returns the value {\hilit \code{x * x}}  
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function example}
+
+It works like any other function in R:
+<<>>=
+square(10)
+@
+
+In this case, \code{square()} is also vectorized
+<<>>=
+square(1:5)
+@
+Why is \code{square()} vectorized?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function example}
+
+Functions with a body consisting of a simple expression can be written with no braces (in one single line!):
+<<>>=
+square <- function(x) x * x
+
+square(10)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+
+If the body of a function is a compund expression we use braces:
+<<>>=
+sum_sqr <- function(x, y) {
+  xy_sum <- x + y
+  xy_ssqr <- (xy_sum)^2
+  list(sum = xy_sum, 
+       sumsqr = xy_ssqr)
+}
+
+sum_sqr(3, 5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function example}
+
+Once defined, functions can be used in other function definitions:
+<<>>=
+sum_of_squares <- function(x) sum(square(x))
+
+sum_of_squares(1:5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Area of a Rectangle}
+
+A function which, given the values $l$ (length) and $w$ (width) computes the value $l \times w$
+<<>>=
+area_rect <- function(l, w) l * w
+@
+\bi
+  \item The formal arguments of the function are \code{l} and \code{w}
+  \item The body of the function consists of the simple expression \code{l * w}
+  \item The function has been assigned the name \code{"area\_rect"}
+\ei
+<<>>=
+area_rect(5, 3)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Evaluation of Functions}
+
+\bb{Function evaluation involves:}
+\bi
+  \item A set of variables associated to the arguments is temporarily created
+  \item The variable definitions are used to evaluate the body function
+  \item Temporary variables are removed at the end
+  \item The computed values are returned
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Evaluation Example}
+
+Evaluating the function call {\hilit \code{area\_rect(5, 3)}} takes place as follows:
+\bi
+  \item Temporarily create a variable {\hilit \code{l}} with value \code{5}, and {\hilit \code{w}} with value \code{3}
+  \item Use those values to compute {\hilit \code{l * w}}
+  \item Remove the temporary variable definition
+  \item Return the value {\hilit \code{15}}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Test yourself}
+
+<<size = 'normalsize'>>=
+ft2 <- function(from, to) from:to^2
+@
+
+What does {\hilit \code{ft2(1, 3)}} return?
+
+\bi
+  \item[A)] \code{1 2 3 4 5 6 7 8 9}
+  \item[B)] \code{1 4 9}
+  \item[C)] \code{1  4  9 16 25 36 49 64 81}
+  \item[D)] \code{1 2 3}
+  \item[E)] \code{1 2 3 1 2 3}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nested Functions}
+
+We can also define a function inside another function:
+<<>>=
+getmax <- function(a) {
+  maxpos <- function(u) which.max(u)
+  list(position = maxpos(a),
+       value = max(a))
+}
+
+getmax(c(2, -4, 6, 10, pi))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function names}
+
+\bb{Different ways to name functions}
+\bi
+  \item \code{squareroot()}
+  \item \code{SquareRoot()}
+  \item \code{squareRoot()}
+  \item \code{square.root()}
+  \item \code{square\_root()}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function names}
+
+\bb{Invalid names}
+\bi
+  \item \code{5quareroot()}: cannot begin with a number
+  \item \code{\_sqrt()}: cannot begin with an underscore
+  \item \code{square-root()}: cannot use hyphenated names
+\ei
+\eb
+
+\bigskip
+In addition, avoid using an already existing name, e.g. \code{sqrt()}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Function Output}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Function output}
+
+\bbi
+  \item The body of a function is an expression
+  \item Remember that every expression has a value
+  \item Hence every function has a value
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Function output}
+
+The value of a function can be established in two ways:
+\bi
+  \item As the last evaluated simple expression (in the body)
+  \item An explicitly \textbf{returned} value via {\hilit \code{return()}}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The \code{return()} command}
+
+Sometimes the \code{return()} command is included to explicitly indicate the output of a function:
+
+<<>>=
+add <- function(x, y) {
+  z <- x + y
+  return(z)
+}
+
+add(2, 3)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The \code{return()} command}
+
+If no \code{return()} is present, then R returns the last evaluated expression:
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+
+<<>>=
+# output with return()
+add <- function(x, y) {
+  z <- x + y
+  return(z)
+}
+
+add(2, 3)
+@
+\end{column}
+
+\begin{column}{0.45\textwidth}
+<<>>=
+# output without return()
+add <- function(x, y) {
+  x + y
+}
+
+add(2, 3)
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The \code{return()} command}
+
+Depending on what's returned or what's the last evaluated expression, just calling a function might not print anything:
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+<<>>=
+# nothing is printed
+add <- function(x, y) {
+  z <- x + y
+}
+
+add(2, 3)
+@
+\end{column}
+
+\begin{column}{0.45\textwidth}
+<<>>=
+# output printed
+add <- function(x, y) {
+  z <- x + y
+  return(z)
+}
+
+add(2, 3)
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The \code{return()} command}
+
+Here we call the function and assign it to an object. The last evaluated expression has the same value in both cases:
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+<<>>=
+# nothing is printed
+add <- function(x, y) {
+  z <- x + y
+}
+
+a1 <- add(2, 3)
+a1
+@
+\end{column}
+
+\begin{column}{0.45\textwidth}
+<<>>=
+# output printed
+add <- function(x, y) {
+  z <- x + y
+  return(z)
+}
+
+a2 <- add(2, 3)
+a2
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The \code{return()} command}
+
+If no \code{return()} is present, then R returns the last evaluated expression:
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+<<eval = FALSE>>=
+add1 <- function(x, y) {
+  x + y
+}
+
+add2 <- function(x, y) {
+  z <- x + y
+  z
+}
+@
+\end{column}
+
+\begin{column}{0.45\textwidth}
+<<eval=FALSE>>=
+add3 <- function(x, y) {
+  z <- x + y
+}
+
+add4 <- function(x, y) {
+  z <- x + y
+  return(z)
+}
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The \code{return()} command}
+
+\code{return()} can be useful when the output may be obtained in the middle of the function's body
+
+\begin{columns}[t]
+\begin{column}{0.55\textwidth}
+<<>>=
+f <- function(x, y, add = TRUE) {
+  if (add) {
+    return(x + y)
+  } else {
+    return(x - y)
+  }
+}
+@
+\end{column}
+
+\begin{column}{0.35\textwidth}
+<<>>=
+f(2, 3, add = TRUE)
+f(2, 3, add = FALSE)
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Function Arguments}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function arguments}
+
+Functions can have any number of arguments (even zero arguments)
+<<>>=
+# function with 2 arguments
+add <- function(x, y) x + y
+
+# function with no arguments
+hi <- function() print("Hi there!")
+
+hi()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Arguments}
+
+Arguments can have default values
+<<>>=
+hey <- function(x = "") {
+  cat("Hey", x, "\nHow is it going?")
+}
+
+hey()
+hey("Gaston")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Arguments with no default values}
+
+If you specify an argument with no default value, you must give it a value everytime you call the function, otherwise you'll get an error:
+<<>>=
+sqr <- function(x) {
+  x^2
+}
+
+sqr()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Arguments with no default values}
+
+Sometimes we don't want to give default values, but we also don't want to cause an error. We can use {\hilit \code{missing()}} to see if an argument is missing:
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+<<>>=
+abc <- function(a, b, c = 3) {
+  if (missing(b)) {
+    result <- a * 2 + c
+  } else {
+    result <- a * b + c
+  }
+  result
+}
+@
+\end{column}
+
+\begin{column}{0.4\textwidth}
+<<>>=
+abc(1)
+
+abc(1, 4)
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Arguments with no default values}
+
+You can also set an argument value to \code{NULL} if you don't want to specify a default value:
+<<eval=FALSE>>=
+abcd <- function(a, b = 2, c = 3, d = NULL) {
+  if (is.null(d)) {
+    result <- a * b + c
+  } else {
+    result <- a * b + c * d
+  }
+  result
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More arguments}
+
+<<fig.width=3, fig.height=3, out.width='.4\\linewidth', out.height='.4\\linewidth', fig.align='center'>>=
+# arguments with and without default values
+myplot <- function(x, y, col = "#3488ff", pch = 19) {
+  plot(x, y, col = col, pch = pch)
+}
+
+myplot(1:5, 1:5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More arguments}
+
+<<eval = FALSE>>=
+# arguments with and without default values
+myplot <- function(x, y, col = "#3488ff", pch = 19) {
+  plot(x, y, col = col, pch = pch)
+}
+@
+
+\bi
+  \item \code{x} and \code{y} have no default values
+  \item \code{col} and \code{pch} have default values (but they can be changed)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More arguments}
+
+<<fig.width=3, fig.height=3, out.width='.5\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+# changing default arguments
+myplot(1:10, 10:1, col = "#994352", pch = 18)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Positional and Named Arguments}
+
+<<eval = FALSE>>=
+output <- some_function(pos1, pos2, name1 = 1, name2 = "yes", name3 = NULL)
+@
+
+\bi
+  \item {\hilit \code{pos1}} positional argument
+  \item {\hilit \code{pos2}} positional argument
+  \item {\hilit \code{name1}} named argument
+  \item {\hilit \code{name2}} named argument
+  \item {\hilit \code{name3}} named argument
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Argument Matching}
+
+\bi
+  \item Arguments with default values are known as \textbf{named} arguments
+  \item Arguments with no default values are referred to as \textbf{positional} arguments
+  \item Arguments can be matched positionally or by name
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Argument Matching}
+
+<<eval = FALSE>>=
+values <- seq(-2, 1, length.out = 20)
+
+# equivalent calls
+mean(values)
+mean(x = values)
+mean(x = values, na.rm = FALSE)
+mean(na.rm = FALSE, x = values)
+mean(na.rm = FALSE, values)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Partial Matching}
+
+Named arguments can also be partially matched:
+<<eval=FALSE>>=
+# equivalent calls
+seq(from = 1, to = 2, length.out = 5)
+seq(from = 1, to = 2, length = 5)
+seq(from = 1, to = 2, len = 5)
+@
+
+\code{length.out} is partially matched with \code{length} and \code{len}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Matching Order}
+
+Order of argument matching operations:
+\bbi
+  \item Check for exact match for a named argument
+  \item Check for a partial match
+  \item Check for a positional match
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example}
+
+Write a function that checks if a number is positive (output \code{TRUE}) or negative (output \code{FALSE})
+\pause
+<<>>=
+is_positive <- function(x) {
+  if (x > 0) TRUE else FALSE
+}
+
+is_positive(2)
+is_positive(-1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example}
+
+Write a function that checks if a number is positive (output \code{TRUE}) or negative (output \code{FALSE})
+
+<<>>=
+# a simpler way
+is_positive <- function(x) {
+  x > 0
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example}
+
+Write a function that checks if a number is positive (output \code{TRUE}) or negative (output \code{FALSE})
+
+<<>>=
+# no need to do this
+is_positive <- function(x) {
+  if (x > 0) print('TRUE') else print('FALSE')
+}
+@
+
+{\lolit Remember that every function has a value: the last statement that is evaluated (or an output from \code{return()})}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example}
+
+What happens in these cases?
+<<eval=FALSE>>=
+is_positive(0)
+
+is_positive(NA)
+
+is_positive(TRUE)
+
+is_positive("positive")
+
+is_positive(1:5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using arguments for other functions}
+
+Theere are various functions that include the argument {\hilit \code{na.rm}} to indicate if missing values should be removed. One of them is \code{mean()}:
+<<>>=
+# deafult na.rm = FALSE
+mean(c(1, 2, 3, NA, 5))
+
+# deafult na.rm = TRUE
+mean(c(1, 2, 3, NA, 5), na.rm = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using arguments for other functions}
+
+If we create a function that uses other functions containing \code{na.rm}, it is wise to include that argument:
+<<>>=
+meansd <- function(x, na.rm = FALSE) {
+  c(mean = mean(x, na.rm = na.rm), 
+    sd = sd(x, na.rm = na.rm))
+}
+
+meansd(c(1, 2, 3, NA, 5), na.rm = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dots argument}
+
+If you check functions like \code{c()}, \code{paste()}, \code{plot()}, you'll notice the use of a special argument: {\hilit \code{\dots}}
+
+\bi
+  \item it matches zero, one or more actual arguments
+  \item it allows us to pass arguments to other functions inside the function
+  \item \code{\dots} allows us to ``cascade'' arguments to other functions without inluding them in the definition
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dots argument}
+
+Using \code{\dots}
+<<eval=FALSE>>=
+fplot <- function(y, ...) {
+  x <- 1:length(y)
+  plot(x, y, type = 'n', ylim = c(0, 1), ...)
+  points(x, y, col = "#93a8f2", pch = 19)
+  lines(x, y, col = "#dd93f2", lwd = 3)
+}
+
+fplot(runif(10), bty = 'n')
+fplot(runif(10), bty = 'n', main = "some title")
+fplot(runif(10), bty = 'n', xlab = '')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

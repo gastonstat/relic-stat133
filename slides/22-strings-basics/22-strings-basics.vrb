@@ -1,0 +1,24 @@
+\frametitle{Sorting}
+
+\code{sort()} arranges elements in alphabetical order
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{set11} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"random"}\hlstd{,} \hlstr{"words"}\hlstd{,} \hlstr{"multiple"}\hlstd{)}
+
+\hlcom{# sort (decreasingly)}
+\hlkwd{sort}\hlstd{(set11)}
+\end{alltt}
+\begin{verbatim}
+## [1] "multiple" "random"   "words"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# sort (increasingly)}
+\hlkwd{sort}\hlstd{(set11,} \hlkwc{decreasing} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "words"    "random"   "multiple"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

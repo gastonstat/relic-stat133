@@ -1,0 +1,721 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{R package ggplot2}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{ggplot2}}
+\end{center}
+\end{frame}
+
+<<load_ggplot2, echo=FALSE, message=FALSE>>=
+library(ggplot2)
+@
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scatterplot with \code{"ggplot2"}}
+
+Terminology
+\bi
+  \item aesthetic mappings
+  \item geometric objects
+  \item statistical transformations
+  \item scales
+  \item non-data elements (themes \& elements)
+  \item facets
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Considerations}
+
+Specifying graphical elements from 3 sources:
+\bbi
+  \item The data values (represented by the geometric objects)
+  \item The scales and coordinate system (axes, legends)
+  \item Plot annotations (background, title, grid lines)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scatterplot with \code{geom\_point}}
+<<size='scriptsize', fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point()
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Another \code{geom}}
+<<size='scriptsize', fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_line()
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{{\hilit Mapping Attributes \\ 
+-vs- \\
+Setting Attributes}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Increase size of points}
+<<xyplot_mtcars2, size='scriptsize', fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(size = 3)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{How does it work?}
+To increase the size of points, we \textbf{set} the aesthetic \code{size} to a constant value of 3 (inside the \textit{geoms} function):
+<<eval=FALSE>>=
++ geom_point(size = 3)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding color}
+<<xyplot_mtcars3, size='scriptsize', fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(size = 3, color = "tomato")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding color}
+<<size='scriptsize', fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(size = 3, color = "#259ff8")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Test your knowledge}
+
+\bb{Identify the valid hex-color}
+\bbi
+  \item[A)] \code{"345677"}
+  \item[B)] \code{"\#1234567"}
+  \item[C)] \code{"\#AAAAAA"}
+  \item[D)] \code{"\#GG0033"}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Changing points shape}
+<<xyplot_mtcars4, size='scriptsize', fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# 'shape' accepts 'pch' values
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(size = 3, color = "tomato", shape = 15)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Setting and Mapping}
+
+Aesthetic attributes can be either \textbf{mapped} ---via \code{aes()}--- or \textbf{set}
+
+<<eval = FALSE>>=
+# mapping aesthetic color
+ggplot(mtcars, aes(x = mpg, y = hp)) + 
+  geom_point(aes(color = cyl))
+
+# setting aesthetic color
+ggplot(mtcars, aes(x = mpg, y = hp)) + 
+  geom_point(color = "blue")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Geom text, and mapping labels}
+<<xyplot_mtcars9, size='scriptsize', fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_text(aes(label = gear))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Changing axis labels and title}
+<<xyplot_mtcars5, size='scriptsize', fig.width=5, fig.height=4, out.width='.6\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(size = 3, color = "tomato") +
+  xlab("miles per gallon") +
+  ylab("horse power") +
+  ggtitle("Scatter plot with ggplot2")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Changing background theme}
+<<xyplot_mtcars6, size='scriptsize', fig.width=5, fig.height=4, out.width='.6\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(size = 3, color = "tomato") +
+  xlab("miles per gallon") +
+  ylab("horse power") +
+  ggtitle("Scatter plot with ggplot2") + 
+  theme_bw()
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn: Replicate this figure}
+<<your_xyplot1, size='scriptsize', fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo = FALSE>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(aes(size = disp), 
+             color = "#ff6666", shape = 17) +
+  xlab("miles per gallon") +
+  ylab("horse power")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn: Replicate this figure}
+\bi
+  \item Specify a color in hex notation
+  \item Change the shape of the point symbol
+  \item Map \code{disp} to attribute size of points
+  \item Add axis labels
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn}
+<<your_xyplot1, eval=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More geoms}
+<<xyplot_mtcars10, size='scriptsize', fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point() + 
+  geom_smooth(method = "lm")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More geoms}
+We can map variable to a color aesthetic. Here we map \code{color} to \code{cyl} (cylinders)
+<<xyplot_mtcars11, size='scriptsize', fig.width=5, fig.height=4, out.width='.6\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(aes(color = cyl))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More geoms}
+If the variable that maps to color is a factor, then the color scale will change
+<<xyplot_mtcars12, size='scriptsize', fig.width=6.5, fig.height=4, out.width='.75\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(aes(color = as.factor(cyl)))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn: Replicate this figure}
+<<your_xyplot2, size='scriptsize', fig.width=6, fig.height=4, out.width='.85\\linewidth', out.height='.6\\linewidth', fig.align='center', echo = FALSE>>=
+ggplot(data = mtcars, aes(x = mpg, y = disp)) +
+  geom_point(aes(size = hp, color = factor(am)),
+             alpha = 0.7) +
+  xlab("miles per gallon") +
+  ylab("displacement") +
+  ggtitle("Scatter plot with ggplot2") 
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn: example 2}
+\bi
+  \item Map \code{hp} to attribute size of points
+  \item Map \code{am} (as factor) to attribute color points
+  \item Add an alpha transparency of 0.7
+  \item Change the shape of the point symbol
+  \item Add axis labels
+  \item Add a title
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn: example 2}
+<<your_xyplot2, eval= FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Histogram}
+
+<<size='scriptsize', fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg)) +
+  geom_histogram(binwidth = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Boxplots}
+
+<<size='scriptsize', fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = factor(cyl), y = mpg)) +
+  geom_boxplot()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Density Curves}
+
+<<size='scriptsize', fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg)) +
+  geom_density()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Density Curves}
+
+<<size='scriptsize', fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg)) +
+  geom_density(fill = "#c6b7f5")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Density Curves}
+
+<<size='scriptsize', fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg)) +
+  geom_density(fill = "#c6b7f5", alpha = 0.4)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Density Curves}
+
+<<size='scriptsize', fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg)) +
+  geom_line(stat = 'density', col = "#a868c0", size = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Density Curves}
+
+<<size='scriptsize', fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg)) +
+  geom_density(fill = '#a868c0') + 
+  geom_line(stat = 'density', col = "#a868c0", size = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{ggplot} objects}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plot objects}
+You can assign a plot to a new object (this won't plot anything):
+<<xyplot_mtcars7>>=
+mpg_hp <- ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(size = 3, color = "tomato") 
+@
+
+To show the actual plot associated to the object \code{mpg\_hp} use the function \code{print()}
+<<eval = FALSE>>=
+print(mpg_hp)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{"ggplot2"} objects}
+
+\bb{working with ggplot objects, we can ...}
+\bi
+  \item define a basic plot, to which we can add or change layers without typing everything again
+  \item render it on screen with \code{print()}
+  \item describe its structure with \code{summary()}
+  \item render it to disk with \code{ggsave()}
+  \item save a cached copy to disk with \code{save()}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+Adding a title and axis labels to a ggplot2 object:
+<<xyplot_mtcars8, size='scriptsize', fig.width=5, fig.height=4, out.width='.6\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+mpg_hp + ggtitle("Scatter plot with ggplot2") +
+  xlab("miles per gallon") + ylab("horse power") 
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn: example 3}
+Create the following ggplot object:
+<<>>=
+# ggplot object
+obj <- ggplot(data = mtcars, 
+         aes(x = mpg, y = hp, label = rownames(mtcars)))
+@
+
+Add more layers to the object \code"{"obj"} in order to replicate the figure in the following slide:
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn: example 3}
+<<your_xyplot3, size='scriptsize', fig.width=8, fig.height=6, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo = FALSE>>=
+obj + 
+  geom_text(aes(color = factor(am))) + 
+  ggtitle("Scatter plot") +
+  xlab("miles per gallon") + 
+  ylab("horse power") 
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn: example 3}
+<<your_xyplot3, eval = FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Scales}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Scales}
+
+\bi
+  \item The \textbf{scales} component encompases the ideas of both axes and legends on plots, e.g.:
+  \item Axes can be continuous or discrete
+  \item Legends involve colors, symbol shapes, size, etc
+  \bi
+    \item \code{scale\_x\_continuous}
+    \item \code{scale\_y\_continuous}
+    \item \code{scale\_color\_manual}
+  \ei
+  \item \textbf{scales} will often automatically generate appropriate scales for plots
+  \item Explicitly adding a scale component overrides the default scale
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Continuous axis scales}
+Use \code{scale\_x\_continuous()} to modify the default values in the $x$ axis
+<<scale_x, eval=FALSE>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(aes(color = factor(am))) +
+  scale_x_continuous(name = "miles per gallon",
+                     limits = c(10, 40),
+                     breaks = c(10, 20, 30, 40))
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Continuous axis scales}
+<<scale_x, fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Continuous axis scales}
+Use \code{scale\_y\_continuous()} to modify the default values in the $y$ axis
+<<scale_y, eval=FALSE>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(aes(color = factor(am))) +
+  scale_x_continuous(name = "miles per gallon",
+                     limits = c(10, 40),
+                     breaks = c(10, 20, 30, 40)) +
+  scale_y_continuous(name = "horsepower",
+                     limits = c(50, 350),
+                     breaks = seq(50, 350, by = 50))
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Continuous axis scales}
+<<scale_y, fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example: color scale}
+
+Use \code{scale\_color\_manual()} to modify the colors associated to a factor
+<<color_manual, eval = FALSE>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(aes(color = factor(am))) +
+  scale_color_manual(values = c("orange", "purple"))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example: color scale}
+
+<<color_manual, fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=FALSE>>=
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example: modifying legend}
+
+Modifying legends depends on the type of scales (e.g. color, shapes, size, etc)
+<<legend_guide, eval = FALSE>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(aes(color = factor(am))) +
+  scale_color_manual(values = c("orange", "purple"),
+                     name = "transmission",
+                     labels = c('no', 'yes'))
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example: modifying legend}
+
+<<legend_guide, fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Faceting}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Faceting with \code{facet\_wrap()}}
+
+<<size='scriptsize', fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(color = "#3088f0") +
+  facet_wrap(~ cyl)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Faceting with \code{facet\_grid()}}
+
+<<size='scriptsize', fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(color = "#3088f0") +
+  facet_grid(cyl ~ .)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Faceting with \code{facet\_grid()}}
+
+<<size='scriptsize', fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point(color = "#3088f0") +
+  facet_grid(. ~ cyl)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Layered Grammar}
+
+About \code{"ggplot2"}
+\bi
+  \item Key concept: \textbf{layer} (layered grammar of graphics)
+  \item Designed to work in a layered fashion
+  \item Starting with a layer showing the data
+  \item Then adding layers of annotations and statistical transformations
+  \item Core idea: independents components combined togehter
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some Concepts}
+
+\bi
+  \item the \textbf{data} to be visualized
+  \item a set of \textbf{aesthetic mappings} describing how varibales are mapped to aesthetic attributes
+  \item geometric objects, \textbf{geoms}, representing what you  see on the plot (points, lines, etc)
+  \item statistical transformations, \textbf{stats}, summarizing data in various ways
+  \item \textbf{scales} that map values in the data space to values in an aesthetic space
+  \item a coordinate system, \textbf{coord}, describing how data coordinates are mapped to the plane of the graphic
+  \item a \textbf{faceting} specification describing how to break up the data into subsets and to displays those subsets
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

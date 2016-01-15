@@ -1,0 +1,1044 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Handling Missing Values}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Missing Values}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Introduction}
+
+\bb{Missing Values are very common}
+\bbi
+  \item ``no answer'' in a questionnaire / survey
+  \item data that are lost or destroyed
+  \item machines that fail
+  \item experiments/samples that are lost
+  \item things not working
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Introduction}
+
+{\Large The best thing to do about missing values is not to have any}
+
+\bigskip
+Gertrude Cox
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Missing Values}
+
+\bb{Missing Values in R}
+\bbi
+  \item Missing values in R are denoted with {\hilit \code{NA}}
+  \item \code{NA} stands for \textbf{Not Available}
+  \item \code{NA} is actually a \textbf{logical} value
+  \item Do not confuse \code{NA} with \code{"NA"} (character)
+  \item Do not confuse \code{NA} with \code{NaN} (not a number)
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Missing Values Functions in R}
+
+<<>>=
+# NA is a logical value
+is.logical(NA)
+
+# NA is not the same as NaN
+identical(NA, NaN)
+
+# NA is not the same as "NA"
+identical(NA, "NA")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{is.na()}}
+
+\bi
+  \item {\hilit \code{is.na()}} indicates which elements are missing
+  \item \code{is.na()} is a generic function (i.e. can be used for vectors, factors, matrices, etc)
+\ei
+
+<<>>=
+x <- c(1, 2, 3, NA, 5)
+x
+
+is.na(x)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{is.na()}}
+
+\code{is.na()} on a factor
+<<>>=
+g <- factor(c(letters[rep(1:3, 2)], NA))
+g
+
+is.na(g)
+@
+
+{\footnotesize Notice how missing values are denoted in factors}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{is.na()}}
+
+\code{is.na()} on a matrix
+<<>>=
+m <- matrix(c(1:4, NA, 6:9, NA), 2)
+m
+
+is.na(m)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{is.na()}}
+
+\code{is.na()} on a data.frame
+<<>>=
+d <- data.frame(m)
+d
+
+is.na(d)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{is.na()}}
+
+If you're reading a data table with missing values codified differently from \code{NA}, you can specify the parameter {\hilit \code{na.strings}}
+
+<<eval = FALSE, size='scriptsize'>>=
+url <- "http://www.esapubs.org/archive/ecol/E084/094/MOMv3.3.txt"
+
+df <- read.table(file = url, header = FALSE, 
+                 sep = "\t", na.strings = -999)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Computing with \code{NA}s}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Computing with \code{NA}'s}
+
+Numerical computations using \code{NA} will normally result in \code{NA}
+<<>>=
+2 + NA
+
+x <- c(1, 2, 3, NA, 5)
+x + 1
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Computing with \code{NA}'s}
+
+<<>>=
+sqrt(x)
+
+mean(x)
+
+max(x)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Argument \code{na.rm}}
+
+Most arithmetic/trigonometric/summarizing functions provide the argument {\hilit \code{na.rm = TRUE}} that removes missing values before performing the computation:
+\bi
+  \item \code{mean(x, na.rm = TRUE)}
+  \item \code{sd(x, na.rm = TRUE)}
+  \item \code{var(x, na.rm = TRUE)}
+  \item \code{min(x, na.rm = TRUE)}
+  \item \code{max(x, na.rm = TRUE)}
+  \item \code{sum(x, na.rm = TRUE)}
+  \item \textit{etc}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Argument \code{na.rm}}
+
+<<>>=
+x <- c(1, 2, 3, NA, 5)
+
+mean(x, na.rm = TRUE)
+sd(x, na.rm = TRUE)
+median(x, na.rm = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Argument \code{na.rm}}
+
+<<>>=
+x <- c(1, 2, 3, NA, 5)
+
+y <- c(2, 4, 7, 9, 11)
+
+var(x, y, na.rm = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Correlations with \code{NA}}
+
+<<>>=
+# default correlation
+cor(x, y)
+
+# argument 'use'
+cor(x, y, use = 'complete.obs')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{NA} Actions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Argument \code{na.rm}}
+
+Additional functions for handling missing values:
+\bi
+  \item \code{anyNA()}
+  \item \code{na.omit()}
+  \item \code{complete.cases()}
+  \item \code{na.fail()}
+  \item \code{na.exclude()}
+  \item \code{na.pass()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Checking for missing values}
+
+A common operation is to check for the presence of missing values in a given object:
+<<>>=
+x <- c(1, 2, 3, NA, 5)
+
+any(is.na(x))
+
+# alternatively
+anyNA(x)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Checking for missing values}
+
+Another common operation is to calculate the number of missing values:
+<<>>=
+y <- c(1, 2, 3, NA, 5, NA)
+
+# how many NA's
+sum(is.na(y))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Excluding missing values}
+
+Sometimes we want to ``remove'' missing values from a vector or factor:
+<<>>=
+x <- c(1, 2, 3, NA, 5, NA)
+
+# excluding NA's
+x[!is.na(x)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Excluding missing values}
+
+Another way to ``remove'' missing values from a vector or factor is with {\hilit \code{na.omit()}}
+<<>>=
+x <- c(1, 2, 3, NA, 5, NA)
+
+# removing NA's
+na.omit(x)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Excluding missing values}
+
+There's also the {\hilit \code{na.exclude()}} function that we can use to ``remove'' missing values
+<<>>=
+x <- c(1, 2, 3, NA, 5, NA)
+
+# removing NA's
+na.exclude(x)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Excluding rows with missing values}
+
+Applying {\hilit \code{na.omit()}} on matrices or data frames will exclude the rows containing any missing value
+<<>>=
+DF <- data.frame(x = c(1, 2, 3), y = c(0, 10, NA))
+DF
+
+# how many NA's
+na.omit(DF)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{complete.cases()}}
+
+Likewise, we can use {\hilit \code{complete.cases()}} to get a logical vector with the position of those rows having complete data:
+<<>>=
+DF <- data.frame(x = c(1, 2, 3), y = c(0, 10, NA))
+
+# how many NA's
+complete.cases(DF)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{na.fail()}}
+
+{\hilit \code{na.fail()}} returns the object if it does not contain any missing values, and signals an error otherwise
+<<>>=
+x <- c(1, 2, 3, NA, 5)
+na.fail(x)  # fails
+
+y <- c(1, 2, 3, 4, 5)
+na.fail(y)  # doesn't fail
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Handling Missing Values}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Dealing with missing values}
+
+\bb{What to do with missing values?}
+\bbi
+  \item Correct them (if possible)
+  \item Deletion
+  \item Imputation
+  \item Leave them as is
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Correcting}
+
+\bb{Correcting NAs}
+\bbi
+  \item Perhaps there is more data now
+  \item Go back to the original source
+  \item Look for additional information
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Deletion}
+
+\bb{Deleting NAs}
+\bbi
+  \item How many NA's (counts, percents)?
+  \item Can you get rid of them?
+  \item What type of consequences?
+  \item How bad is it to delete NA's?
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Deletion}
+
+\bb{Deleting NAs}
+\bbi
+  \item \code{x[!is.na(x)]}
+  \item \code{na.omit(DF)}
+  \item \code{na.exclude(DF)}
+  \item Some functions-methods in R delete NA's by default; e.g. \code{lm()}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Imputation}
+
+\bb{Imputing NAs}
+\bbi
+  \item Try to fill in values
+  \item Several strategies to fill in values
+  \item No magic wand technique
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Imputation}
+
+\bb{Imputing with measure of centrality}
+One option is to filling values with some measure of centrality
+\bbi
+  \item mean value (quantitative variables)
+  \item median value (quantitative variables)
+  \item most common value (qualitative variables)
+\ei
+
+\bigskip
+These options require to inspect each variable individually
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Imputation}
+
+If a variable has a \textbf{symmetric} distribution, we can use the mean value
+<<eval=FALSE>>=
+# mean value
+mean_x <- mean(x, na.rm = TRUE)
+
+# imputation
+x[is.na(x)] <- mean_x
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Imputation}
+
+If a variable has a \textbf{skewed} distribution, we can use the median value
+<<eval=FALSE>>=
+# median value
+median_x <- median(x, na.rm = TRUE)
+
+# imputation
+x[is.na(x)] <- median_x
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Imputation}
+
+For a qualitative variable we can use the mode value---i.e. most common category---(if there is one)
+<<eval=FALSE>>=
+# mode
+g <- factor(c('a', 'a', 'b', 'c', NA, 'a'))
+mode_g <- g[which.max(table(g))]
+  
+# imputation
+g[is.na(g)] <- mode_g
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Imputation}
+
+\bb{Imputing with correlations}
+Explore correlations between variables and look for ``high'' correlations
+\eb
+<<eval = FALSE>>=
+cor(x, y, use = "complete.obs")
+@
+
+{\footnotesize What is a ``high'' correlation?}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{High correlated variables}
+
+<<>>=
+# subset of 'mtcars'
+df <- mtcars[ ,c('mpg', 'disp', 'hp', 'wt')]
+head(df)
+@
+
+<<>>=
+# missing values in 'mpg'
+df$mpg[c(5,20)] <- NA
+mpg <- df$mpg
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{High correlated variables}
+
+<<fig.width=6, fig.height=5, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# scatterplot matrix
+pairs(df)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{High correlated variables}
+
+<<>>=
+# matrix of correlations
+cor(df, use = 'complete.obs')
+@
+
+\code{mpg} is most correlated with \code{wt}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Regression analysis with \code{lm()}}
+
+<<size='scriptsize'>>=
+# matrix of correlations
+regression <- lm(mpg ~ wt, data = df)
+
+summary(regression)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Regression analysis with \code{lm()}}
+
+<<>>=
+# prediction
+predict(regression, newdata = df[c(5,20),-1])
+
+# compare with true values
+mtcars$mpg[c(5,20)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Nearest Neighbors}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Imputation}
+
+\bb{Imputing with similarities}
+We can calculate distances or similarities between two or more observations
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Nearest Neighbors Idea}
+\begin{center}
+\ig[width=8cm]{images/knn1.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Nearest Neighbors Idea}
+\begin{center}
+\ig[width=8cm]{images/knn2.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Nearest Neighbors Idea}
+\begin{center}
+\ig[width=8cm]{images/knn3.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nearest Neighbor Imputation}
+
+\bbi
+  \item observations near each other in $(u, v)$ space will have similar values (circles, crosses)
+  \item find the $k=3$ nearest points in $(u, v)$ to the missing value
+  \item let the circles and crosses vote
+  \item if the neighbors have 2/3 circles or all circles, then assign circle, (cross otherwise)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Nearest Neighbors Idea}
+\begin{center}
+\ig[width=8cm]{images/knn4.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Nearest Neighbors Idea}
+\begin{center}
+\ig[width=8cm]{images/knn5.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nearest Neighbor Imputation}
+
+\bb{Questions}
+\bbi
+  \item How to choose $k$?
+  \item How to choose $u, v, ...$? (predicting variables)
+  \item What type of distance/similarity measure?
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nearest Neighbor Imputation}
+
+Function {\hilit \code{knn()}} from package \code{"class"}
+<<eval=FALSE>>=
+knn(train, test, cl, k = 1, l = 0, use.all = TRUE)
+@
+
+\bi
+  \item \code{train} matrix or data frame of training set cases
+  \item \code{test} matrix or data frame of test set cases
+  \item \code{cl} factor of true classifications of training set
+  \item \code{k} number of neighbors
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{knn()}}
+
+<<>>=
+# subset of 'mtcars'
+df <- mtcars[ ,c('mpg', 'disp', 'hp', 'wt')]
+head(df)
+@
+
+<<>>=
+# missing values in 'mpg'
+df$mpg[c(5,20)] <- NA
+mpg <- df$mpg
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{knn()}}
+
+<<>>=
+library(class)
+
+df_aux <- df[ ,-1]               # data without mpg
+df_ok <- df_aux[!is.na(mpg), ]   # train set
+df_na <- df_aux[is.na(mpg), ]    # test set
+
+# 1 nearest neighbor
+nn1 <- knn(
+  train = df_ok, 
+  test = df_na, 
+  cl = mpg[!is.na(mpg)],
+  k = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{knn()}}
+
+<<>>=
+# imputed values
+nn1
+
+# compared to real values
+mtcars$mpg[c(5,20)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{knn()}}
+
+<<>>=
+# 3 nearest neighbor
+nn3 <- knn(
+  train = df_ok, 
+  test = df_na, 
+  cl = mpg[!is.na(mpg)],
+  k = 3)
+
+# imputed values
+nn3
+
+# real values
+mtcars$mpg[c(5,20)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{R Packages \\ VIM and missMDA}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vim and missMDA}
+
+\bi
+  \item package \code{"VIM"} by Templ et al
+  \item package \code{"missMDA"} by Francois Husson and Julie Josse
+\ei
+<<eval = FALSE>>=
+install.packacges(c("VIM", "missMDA"))
+@
+
+<<message=FALSE>>=
+library(VIM)
+library(missMDA)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Data \code{ozone}}
+
+Data \code{ozone} (in \code{"missMDA"}): daily measurements of meteorological variables and ozone concentration:
+<<size='tiny'>>=
+data(ozone)
+
+head(ozone, n = 5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Data \code{ozone}}
+
+Number of missing values in each variable:
+<<>>=
+num_na <- sapply(ozone, function(x) sum(is.na(x)))
+num_na[1:7]; num_na[8:13]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looking at missing values}
+
+<<>>=
+# aggregation for missing values
+oz_aggr <- aggr(ozone, prop = TRUE, 
+       combined = TRUE, plot = FALSE)
+
+# summary
+res <- summary(oz_aggr)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looking at missing values}
+
+<<>>=
+# variables sorted by number of missings
+res$missings[order(res$missings[,2]), ]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looking at missing values}
+
+<<>>=
+# combinations
+head(res$combinations, n = 10)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looking at missing values}
+
+<<>>=
+# combinations
+tail(res$combinations, n = 10)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looking at missing values}
+
+<<fig.width=8, fig.height=5>>=
+# visualizations
+plot(oz_aggr)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looking at missing values}
+
+<<fig.width=8, fig.height=5, warning=FALSE>>=
+# visualizations
+matrixplot(ozone, sortby = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looking at missing values}
+
+<<fig.width=8, fig.height=5>>=
+# visualizations
+marginplot(ozone[ ,c('T9', 'maxO3')])
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{More info ...}
+
+\bi
+  \item Is there a pattern of missing values?
+  \item Is there a mechanism leading to missing values?
+  \bi
+    \item purely random?
+    \item probability model for missing values?
+  \ei
+  \item There are more sophisticated options: \\
+  ``Missing Data: Our View of the State of the Art'' (Schafer \& Graham, 2000)
+  \item Bayesian imputation
+  \item Multiple imputation
+  \item \textit{etc}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

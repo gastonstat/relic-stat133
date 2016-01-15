@@ -1,0 +1,1357 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Functions - part 2}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Functions}
+
+R comes with many functions and packages that let us perform a wide variety of tasks. Sometimes, however, there's no function to do what we want to achieve. In these cases we need to create our own functions.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Writing Functions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Writing Functions}
+
+Writing Functions
+\bi
+  \item Choose meaningful names of functions
+  \item Preferably a verb
+  \item Choose meaningful names of arguments
+  \item Think about the users (who will use the function)
+  \item Think about extreme cases
+  \item If a function is too long, maybe you need to split it
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Names of functions}
+
+Avoid this:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{f} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{y}\hlstd{) \{}
+  \hlstd{x} \hlopt{+} \hlstd{y}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+This is better
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{add} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{y}\hlstd{) \{}
+  \hlstd{x} \hlopt{+} \hlstd{y}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Names of arguments}
+
+Give meaningful names to arguments:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Avoid this}
+\hlstd{area_rect} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{y}\hlstd{) \{}
+  \hlstd{x} \hlopt{*} \hlstd{y}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+This is better
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{area_rect} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{length}\hlstd{,} \hlkwc{width}\hlstd{) \{}
+  \hlstd{length} \hlopt{*} \hlstd{width}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Meaningful Names to Arguments}
+
+Avoid this:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# what does this function do?}
+\hlstd{ci} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{p}\hlstd{,} \hlkwc{r}\hlstd{,} \hlkwc{n}\hlstd{,} \hlkwc{ti}\hlstd{) \{}
+  \hlstd{p} \hlopt{*} \hlstd{(}\hlnum{1} \hlopt{+} \hlstd{r}\hlopt{/}\hlstd{p)}\hlopt{^}\hlstd{(ti} \hlopt{*} \hlstd{p)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\pause
+This is better:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# OK}
+\hlstd{compound_interest} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{principal}\hlstd{,} \hlkwc{rate}\hlstd{,} \hlkwc{periods}\hlstd{,} \hlkwc{time}\hlstd{) \{}
+  \hlstd{principal} \hlopt{*} \hlstd{(}\hlnum{1} \hlopt{+} \hlstd{rate}\hlopt{/}\hlstd{periods)}\hlopt{^}\hlstd{(time} \hlopt{*} \hlstd{periods)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Meaningful Names to Arguments}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# names of arguments}
+\hlstd{compound_interest} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{principal} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{rate} \hlstd{=} \hlnum{0.01}\hlstd{,}
+                              \hlkwc{periods} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{time} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlstd{\{}
+  \hlstd{principal} \hlopt{*} \hlstd{(}\hlnum{1} \hlopt{+} \hlstd{rate}\hlopt{/}\hlstd{periods)}\hlopt{^}\hlstd{(time} \hlopt{*} \hlstd{periods)}
+\hlstd{\}}
+
+\hlkwd{compound_interest}\hlstd{(}\hlkwc{principal} \hlstd{=} \hlnum{100}\hlstd{,} \hlkwc{rate} \hlstd{=} \hlnum{0.05}\hlstd{,}
+                  \hlkwc{periods} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{time} \hlstd{=} \hlnum{1}\hlstd{)}
+
+\hlkwd{compound_interest}\hlstd{(}\hlkwc{rate} \hlstd{=} \hlnum{0.05}\hlstd{,} \hlkwc{periods} \hlstd{=} \hlnum{5}\hlstd{,}
+                  \hlkwc{time} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{principal} \hlstd{=} \hlnum{100}\hlstd{)}
+
+\hlkwd{compound_interest}\hlstd{(}\hlkwc{rate} \hlstd{=} \hlnum{0.05}\hlstd{,} \hlkwc{time} \hlstd{=} \hlnum{1}\hlstd{,}
+                  \hlkwc{periods} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{principal} \hlstd{=} \hlnum{100}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Describing functions}
+
+Also add a short description of what the arguments should be like. In this case, the description is outside the function
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# function for adding two numbers}
+\hlcom{# x: number}
+\hlcom{# y: number}
+\hlstd{add} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{y}\hlstd{) \{}
+  \hlstd{x} \hlopt{+} \hlstd{y}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Describing functions}
+
+In this case, the description is inside the function
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{add} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{y}\hlstd{) \{}
+  \hlcom{# function for adding two numbers}
+  \hlcom{# x: number}
+  \hlcom{# y: number}
+  \hlstd{x} \hlopt{+} \hlstd{y}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Describing functions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# description of arguments}
+\hlstd{compound_interest} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{principal} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{rate} \hlstd{=} \hlnum{0.01}\hlstd{,}
+                              \hlkwc{periods} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{time} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlstd{\{}
+  \hlcom{# principal = Principal Amount}
+  \hlcom{# rate = Annual Nominal Interest Rate as a decimal}
+  \hlcom{# time = Time Involved in years}
+  \hlcom{# periods = number of compounding periods per unit time}
+  \hlstd{principal} \hlopt{*} \hlstd{(}\hlnum{1} \hlopt{+} \hlstd{rate}\hlopt{/}\hlstd{periods)}\hlopt{^}\hlstd{(time} \hlopt{*} \hlstd{periods)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Binary Operators}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Binary Operators}
+
+\bi
+  \item One type of functions very common in R are \textbf{binary operators}, eg:
+  \bi
+    \item \code{2 + 5} (sum)
+    \item \code{3 / 2} (division)
+    \item \code{a \%in\% b} (value matching)
+    \item \code{X \%*\% Y} (matrix multiplication)
+  \ei
+  \item Binary operators are actually functions
+  \item These functions take two inputs---hence the term \textit{binary}
+  \item It is possible to define your own binary operators
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binary Operators}
+
+Example:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# addition operator}
+\hlnum{2} \hlopt{+} \hlnum{3}
+
+\hlcom{# equivalent to}
+\hlstr{'+'}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{3}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binary Operators}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# binary operator}
+\hlstr{"%p%"} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{y}\hlstd{) \{}
+  \hlkwd{paste}\hlstd{(x, y,} \hlkwc{sep} \hlstd{=} \hlstr{" "}\hlstd{)}
+\hlstd{\}}
+
+\hlstr{'good'} \hlopt{%p%} \hlstr{'morning'}
+\end{alltt}
+\begin{verbatim}
+## [1] "good morning"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{How to create a binary operator?}
+
+
+\bbi
+  \item A binary operator is defined as one or more characters surrounded by percent symbols {\hilit \code{\%}}
+  \item When defining the function, the entire name must be quoted
+  \item Include two arguments
+  \item As usual, avoid using names of existing operators:
+  \bi
+    \item \code{"\%\%"}, \code{\%*\%}, \code{\%/\%}, \code{\%o\%}, \code{\%in\%}
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Another example}
+
+Here's another example:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# binary operator}
+\hlstr{"%u%"} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{y}\hlstd{) \{}
+  \hlkwd{union}\hlstd{(x, y)}
+\hlstd{\}}
+
+\hlnum{1}\hlopt{:}\hlnum{5} \hlopt{%u%} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{7}\hlstd{,} \hlnum{9}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3 4 5 7 9
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Lazy Evaluation}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Lazy Evaluation}
+
+Arguments to functions are evaluated lazily, that is, they are evaluated only as needed:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{g} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{a}\hlstd{,} \hlkwc{b}\hlstd{) \{}
+  \hlstd{a} \hlopt{*} \hlstd{a} \hlopt{*} \hlstd{a}
+\hlstd{\}}
+
+\hlkwd{g}\hlstd{(}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\code{g()} never uses the argument \code{b}, so calling \code{g(2)} does not produce an error
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Lazy Evaluation}
+
+Another example
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{g} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{a}\hlstd{,} \hlkwc{b}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(a)}
+  \hlkwd{print}\hlstd{(b)}
+\hlstd{\}}
+
+\hlkwd{g}\hlstd{(}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in print(b): argument "{}b"{} is missing, with no default}}\end{kframe}
+\end{knitrout}
+
+Notice that \code{2} got printed before the error was triggered. This is because \code{b} did not have to be evaluated until after \code{print(a)}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Messages}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+
+There are two main functions for generating warnings and errors:
+\bbi
+  \item {\hilit \code{stop()}}
+  \item {\hilit \code{warning()}}
+\ei
+
+\bigskip
+{\footnotesize There's also the {\hilit \code{stopifnot()}} function}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Stop Execution}
+
+Use {\hilit \code{stop()}} to stop the execution of a function (this will raise an error)
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{meansd} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{na.rm} \hlstd{=} \hlnum{FALSE}\hlstd{) \{}
+  \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.numeric}\hlstd{(x)) \{}
+    \hlkwd{stop}\hlstd{(}\hlstr{"x is not numeric"}\hlstd{)}
+  \hlstd{\}}
+  \hlcom{# output}
+  \hlkwd{c}\hlstd{(}\hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(x,} \hlkwc{na.rm} \hlstd{= na.rm),}
+    \hlkwc{sd} \hlstd{=} \hlkwd{sd}\hlstd{(x,} \hlkwc{na.rm} \hlstd{= na.rm))}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Stop Execution}
+
+Use {\hilit \code{stop()}} to stop the execution of a function (this will raise an error)
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# ok}
+\hlkwd{meansd}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{2}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##     mean       sd 
+## 3.000000 1.581139
+\end{verbatim}
+\begin{alltt}
+\hlcom{# this causes an error}
+\hlkwd{meansd}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{'a'}\hlstd{,} \hlstr{'b'}\hlstd{,} \hlstr{'c'}\hlstd{))}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in meansd(c("{}a"{}, "{}b"{}, "{}c"{})): x is not numeric}}\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Warning Messages}
+
+Use {\hilit \code{warning()}} to show a warning message
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{meansd} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{na.rm} \hlstd{=} \hlnum{FALSE}\hlstd{) \{}
+  \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.numeric}\hlstd{(x)) \{}
+    \hlkwd{warning}\hlstd{(}\hlstr{"non-numeric input coerced to numeric"}\hlstd{)}
+    \hlstd{x} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(x)}
+  \hlstd{\}}
+  \hlcom{# output}
+  \hlkwd{c}\hlstd{(}\hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(x,} \hlkwc{na.rm} \hlstd{= na.rm),}
+    \hlkwc{sd} \hlstd{=} \hlkwd{sd}\hlstd{(x,} \hlkwc{na.rm} \hlstd{= na.rm))}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+A warning is useful when we don't want to stop the execution, but we still want to show potential problems
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Warning Messages}
+
+Use {\hilit \code{warning()}} to show a warning message
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# ok}
+\hlkwd{meansd}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{2}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##     mean       sd 
+## 3.000000 1.581139
+\end{verbatim}
+\begin{alltt}
+\hlcom{# this causes a warning}
+\hlkwd{meansd}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{))}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in meansd(c(TRUE, FALSE, TRUE, FALSE)): non-numeric input coerced to numeric}}\begin{verbatim}
+##      mean        sd 
+## 0.5000000 0.5773503
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Stop Execution}
+
+{\hilit \code{stopifnot()}} ensures the truth of expressions:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{meansd} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{na.rm} \hlstd{=} \hlnum{FALSE}\hlstd{) \{}
+  \hlkwd{stopifnot}\hlstd{(}\hlkwd{is.numeric}\hlstd{(x))}
+  \hlcom{# output}
+  \hlkwd{c}\hlstd{(}\hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(x,} \hlkwc{na.rm} \hlstd{= na.rm),}
+    \hlkwc{sd} \hlstd{=} \hlkwd{sd}\hlstd{(x,} \hlkwc{na.rm} \hlstd{= na.rm))}
+\hlstd{\}}
+
+\hlkwd{meansd}\hlstd{(}\hlstr{'hello'}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: is.numeric(x) is not TRUE}}\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Environments and Functions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Consider this example}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{w} \hlkwb{<-} \hlnum{10}
+
+\hlstd{f} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{y}\hlstd{) \{}
+  \hlstd{d} \hlkwb{<-} \hlnum{5}
+  \hlstd{h} \hlkwb{<-} \hlkwa{function}\hlstd{() \{}
+    \hlstd{d} \hlopt{*} \hlstd{(w} \hlopt{+} \hlstd{y)}
+  \hlstd{\}}
+  \hlkwd{return}\hlstd{(}\hlkwd{h}\hlstd{())}
+\hlstd{\}}
+
+\hlkwd{f}\hlstd{(}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 60
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+How / Why does \code{f()} work?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Consider this other example}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{w} \hlkwb{<-} \hlnum{10}
+
+\hlstd{f} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{y}\hlstd{) \{}
+  \hlstd{d} \hlkwb{<-} \hlnum{5}
+  \hlkwd{return}\hlstd{(}\hlkwd{h}\hlstd{())}
+\hlstd{\}}
+
+\hlkwd{f}\hlstd{(}\hlnum{2}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in f(2): could not find function "{}h"{}}}\end{kframe}
+\end{knitrout}
+
+Why \code{f()} does not work?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Environments}
+
+\bbi
+  \item All the variables that we create need to be stored somewhere
+  \item The place where they are stored is called an \textbf{environment}
+  \item R works with enviroments, all of which are in (virtual) memory
+  \item Usually, we don't need to explicitly deal with environments
+  \item Environments are nested
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Global Environment}
+
+\bi
+  \item The user workspace is the \textbf{global environment}
+  \item The global environment is the \textbf{top level} environment
+  \item It is formally referred to as \code{R\_GlobalEnv}
+  \item Variables defined in the global environment can be seen from anywhere
+  \item The contents of the global environment are listed with \code{ls()}
+\ei
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# top level environment}
+\hlkwd{environment}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## <environment: 0x10ef36b50>
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Searching objects}
+
+\bi
+  \item When R tries to bind a value to a symbol, it searches through a series of environments to find the appropriate value
+  \item To retrieve the value of an object the order is:
+  \item Search the current environment
+  \item Search the global environment for a symbol name matching the one requested
+  \item Search the namespaces of each of the packages on the search list: {\hilit \code{search()}}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Environments and Functions}
+
+\bbi
+  \item A function consists not only of its arguments and body but also of its \textit{environment}
+  \item An environment is made up of the collection of objects present at the time the function comes into existence
+  \item When a function is created by evaluating the corresponding expression, the current environment is recorded as a property of the function
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Let's go back to our first example}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{w} \hlkwb{<-} \hlnum{10}
+
+\hlstd{f} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{y}\hlstd{) \{}
+  \hlstd{d} \hlkwb{<-} \hlnum{5}
+  \hlstd{h} \hlkwb{<-} \hlkwa{function}\hlstd{() \{}
+    \hlstd{d} \hlopt{*} \hlstd{(w} \hlopt{+} \hlstd{y)}
+  \hlstd{\}}
+  \hlkwd{return}\hlstd{(}\hlkwd{h}\hlstd{())}
+\hlstd{\}}
+
+\hlkwd{f}\hlstd{(}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 60
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+How does \code{f()} work?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Let's see the environments}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{w} \hlkwb{<-} \hlnum{10}   \hlcom{# variable (in global environment)}
+
+\hlcom{# a function (in global environment)}
+\hlstd{f} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{y}\hlstd{) \{}
+  \hlstd{d} \hlkwb{<-} \hlnum{5}     \hlcom{# local variable}
+  \hlstd{h} \hlkwb{<-} \hlkwa{function}\hlstd{() \{}    \hlcom{# subfunction}
+    \hlstd{d} \hlopt{*} \hlstd{(w} \hlopt{+} \hlstd{y)}     \hlcom{# w is a free variable}
+  \hlstd{\}}
+  \hlkwd{return}\hlstd{(}\hlkwd{h}\hlstd{())}
+\hlstd{\}}
+
+\hlkwd{environment}\hlstd{(f)}
+\end{alltt}
+\begin{verbatim}
+## <environment: 0x10ef36b50>
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function Environment}
+
+\bi
+  \item \code{w} is a global variable (in global environment)
+  \item \code{f()} is a function in the global environment
+  \item \code{d} is a local variable---local to \code{f()}
+  \item \code{h()} is a subfunction---local to \code{f()}
+  \item \code{w} is not an argument but a free variable
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Let's see the environments}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{f} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{y}\hlstd{) \{}
+  \hlstd{d} \hlkwb{<-} \hlnum{5}
+  \hlstd{h} \hlkwb{<-} \hlkwa{function}\hlstd{() \{}
+    \hlstd{d} \hlopt{*} \hlstd{(w} \hlopt{+} \hlstd{y)}
+  \hlstd{\}}
+  \hlkwd{print}\hlstd{(}\hlkwd{environment}\hlstd{(h))}   \hlcom{# h()'s environment}
+  \hlkwd{return}\hlstd{(}\hlkwd{h}\hlstd{())}
+\hlstd{\}}
+
+\hlkwd{environment}\hlstd{(f)}
+\end{alltt}
+\begin{verbatim}
+## <environment: 0x10ef36b50>
+\end{verbatim}
+\begin{alltt}
+\hlkwd{f}\hlstd{(}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## <environment: 0x1122cbca0>
+## [1] 60
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# When executed, what does g() return?}
+\hlstd{x} \hlkwb{<-} \hlnum{5}
+
+\hlstd{g} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x} \hlstd{=} \hlnum{FALSE}\hlstd{) \{}
+    \hlstd{y} \hlkwb{<-} \hlnum{10}
+    \hlkwd{list}\hlstd{(}\hlkwc{x} \hlstd{= x,} \hlkwc{y} \hlstd{= y)}
+\hlstd{\}}
+\hlkwd{g}\hlstd{()}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\bi
+  \item[A)] \code{x = 5, y = 10}
+  \item[B)] \code{x = 0, y = 10}
+  \item[C)] \code{x = FALSE, y = 10}
+  \item[D)] \code{x = FALSE, y = 5}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Variable's Scope}
+
+\bi
+  \item A variable's \textbf{scope} is the set of places from which you can see the variable
+  \item R will try to find a variable in the current environment
+  \item If it doesn't find them it will look in the parent environment
+  \item And then that environment's parent
+  \item And so on until it reaches the global environment
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Variable's Scope}
+
+\bi
+  \item A variable's \textbf{scope} is the set of places from which you can see the variable
+  \item R will try to find a variable in the current environment
+  \item If it doesn't find them it will look in the parent environment
+  \item And then that environment's parent
+  \item And so on until it reaches the global environment
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Variable Scope}
+
+\bbi
+  \item When we define a variable inside a function, the rest of the statements in that function will have access to that variable
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Variable Scope}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{f} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlstd{y} \hlkwb{<-} \hlnum{1}
+  \hlstd{g} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+    \hlstd{(x} \hlopt{+} \hlstd{y)} \hlopt{/} \hlnum{2}
+  \hlstd{\}}
+  \hlkwd{g}\hlstd{(x)}
+\hlstd{\}}
+
+\hlkwd{f}\hlstd{(}\hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\code{g()} is a subfunction that have access to \code{y} in \code{f}'s environment.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Variable Scope}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{f} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlstd{y} \hlkwb{<-} \hlnum{1}
+  \hlkwd{g}\hlstd{(x)}
+\hlstd{\}}
+
+\hlstd{g} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlstd{(x} \hlopt{+} \hlstd{y)} \hlopt{/} \hlnum{2}
+\hlstd{\}}
+
+\hlkwd{f}\hlstd{(}\hlnum{5}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in g(x): object 'y' not found}}\end{kframe}
+\end{knitrout}
+
+\code{g()} is a function that doesn't have access to \code{y}; \code{g()} can only see things in the global environment
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{One more thing ...}
+
+Let's look at another exmaple
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{mean}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\begin{alltt}
+\hlstd{mean}
+\end{alltt}
+\begin{verbatim}
+## function (x, ...) 
+## UseMethod("mean")
+## <bytecode: 0x103b51ed0>
+## <environment: namespace:base>
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{One more thing ...}
+
+You can do things like this
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# confusing but it works}
+\hlstd{mean} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{5}
+\hlkwd{mean}\hlstd{(mean)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Some issues}
+
+You can also do things like this
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# not a good idea but you can do it}
+\hlstd{mean} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlnum{2}\hlopt{*}\hlstd{x} \hlopt{+} \hlnum{5}
+
+\hlkwd{mean}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1]  7  9 11 13 15
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+It seems we've lost the original \code{mean()} function
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The \code{::} Operator}
+
+\code{::} operator to the rescue
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# my mean}
+\hlkwd{mean}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1]  7  9 11 13 15
+\end{verbatim}
+\begin{alltt}
+\hlcom{# base mean}
+\hlstd{base}\hlopt{::}\hlkwd{mean}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Here we use the name espace \code{base} of the R package \code{"base"} to access the original \code{mean()}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Recovering original \code{mean()}}
+
+To recover the original \code{mean()} you have to remove the artificial \code{mean}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# remove my mean}
+\hlkwd{rm}\hlstd{(mean)}
+
+\hlcom{# now try it again}
+\hlkwd{mean}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Your Turn}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+R has a function \code{summary()} that when applied on a numeric vector provides something like this:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    1.00    3.25    5.50    5.50    7.75   10.00
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Create a \code{describe()} function that takes a numeric vector and returns: minimum, maximum, mean, and standard deviation
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+First attempt
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{describe} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlstd{x_min} \hlkwb{<-} \hlkwd{min}\hlstd{(x)}
+  \hlstd{x_max} \hlkwb{<-} \hlkwd{max}\hlstd{(x)}
+  \hlstd{x_mean} \hlkwb{<-} \hlkwd{mean}\hlstd{(x)}
+  \hlstd{x_sd} \hlkwb{<-} \hlkwd{sd}\hlstd{(x)}
+  \hlkwd{return}\hlstd{(}\hlkwd{c}\hlstd{(x_min, x_max, x_mean, x_sd))}
+\hlstd{\}}
+
+\hlkwd{describe}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1]  1.00000 10.00000  5.50000  3.02765
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Second attempt (adding names)
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{describe} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlstd{x_min} \hlkwb{<-} \hlkwd{min}\hlstd{(x)}
+  \hlstd{x_max} \hlkwb{<-} \hlkwd{max}\hlstd{(x)}
+  \hlstd{x_mean} \hlkwb{<-} \hlkwd{mean}\hlstd{(x)}
+  \hlstd{x_sd} \hlkwb{<-} \hlkwd{sd}\hlstd{(x)}
+  \hlstd{values} \hlkwb{<-} \hlkwd{c}\hlstd{(x_min, x_max, x_mean, x_sd)}
+  \hlkwd{names}\hlstd{(values)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"min"}\hlstd{,} \hlstr{"max"}\hlstd{,} \hlstr{"mean"}\hlstd{,} \hlstr{"sd"}\hlstd{)}
+  \hlkwd{return}\hlstd{(values)}
+\hlstd{\}}
+
+\hlkwd{describe}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##      min      max     mean       sd 
+##  1.00000 10.00000  5.50000  3.02765
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Third attempt (using a list as output)
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{describe} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlkwd{list}\hlstd{(}
+    \hlkwc{min} \hlstd{=} \hlkwd{min}\hlstd{(x),}
+    \hlkwc{max} \hlstd{=} \hlkwd{max}\hlstd{(x),}
+    \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(x),}
+    \hlkwc{sd} \hlstd{=} \hlkwd{sd}\hlstd{(x)}
+  \hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.4\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{describe}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## $min
+## [1] 1
+## 
+## $max
+## [1] 10
+## 
+## $mean
+## [1] 5.5
+## 
+## $sd
+## [1] 3.02765
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Probability Density of the Normal Distribution:
+$$
+f(x | \mu, \sigma) = \frac{1}{\sigma \sqrt{2 \pi}} e^{- \frac{(x - \mu)^2}{2 \sigma^2}}
+$$
+
+Write a function that takes a value $x$ (with parameters $\mu$ and $\sigma$) which computes the probability density distribution of the normal distribution
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Normal Distribution:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{normal_dist} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{mu} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{sigma} \hlstd{=} \hlnum{1}\hlstd{) \{}
+  \hlstd{constant} \hlkwb{<-} \hlnum{1} \hlopt{/} \hlstd{(sigma} \hlopt{*} \hlkwd{sqrt}\hlstd{(}\hlnum{2}\hlopt{*}\hlstd{pi))}
+  \hlstd{constant} \hlopt{*} \hlkwd{exp}\hlstd{(}\hlopt{-}\hlstd{((x} \hlopt{-} \hlstd{mu)}\hlopt{^}\hlnum{2}\hlstd{)} \hlopt{/} \hlstd{(}\hlnum{2} \hlopt{*} \hlstd{sigma}\hlopt{^}\hlnum{2}\hlstd{))}
+\hlstd{\}}
+
+\hlkwd{normal_dist}\hlstd{(}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.05399097
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Argument Matching}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{normal_dist} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{mu} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{sigma} \hlstd{=} \hlnum{1}\hlstd{) \{}
+  \hlstd{constant} \hlkwb{<-} \hlnum{1} \hlopt{/} \hlstd{(sigma} \hlopt{*} \hlkwd{sqrt}\hlstd{(}\hlnum{2}\hlopt{*}\hlstd{pi))}
+  \hlstd{constant} \hlopt{*} \hlkwd{exp}\hlstd{(}\hlopt{-}\hlstd{((x} \hlopt{-} \hlstd{mu)}\hlopt{^}\hlnum{2}\hlstd{)} \hlopt{/} \hlstd{(}\hlnum{2} \hlopt{*} \hlstd{sigma}\hlopt{^}\hlnum{2}\hlstd{))}
+\hlstd{\}}
+
+\hlkwd{normal_dist}\hlstd{(}\hlnum{2}\hlstd{)}
+\hlkwd{normal_dist}\hlstd{(}\hlnum{2}\hlstd{,} \hlkwc{sigma} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{mu} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlkwd{normal_dist}\hlstd{(}\hlkwc{mu} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{sigma} \hlstd{=} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{)}
+\hlkwd{normal_dist}\hlstd{(}\hlkwc{mu} \hlstd{=} \hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlkwc{sigma} \hlstd{=} \hlnum{3}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Argument Matching}
+
+R is ``smart'' enough in doing pattern matching with arguments' names (not recommended though)
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{normal_dist}\hlstd{(}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.05399097
+\end{verbatim}
+\begin{alltt}
+\hlkwd{normal_dist}\hlstd{(}\hlnum{2}\hlstd{,} \hlkwc{m} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{s} \hlstd{=} \hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.05399097
+\end{verbatim}
+\begin{alltt}
+\hlkwd{normal_dist}\hlstd{(}\hlnum{2}\hlstd{,} \hlkwc{sig} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{m} \hlstd{=} \hlnum{0}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.05399097
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

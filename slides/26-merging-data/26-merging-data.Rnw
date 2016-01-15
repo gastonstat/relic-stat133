@@ -1,0 +1,731 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Merging Data Tables}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Merging Data Tables}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging}
+
+{\Large 
+ Merging two or more tables is another frequent type of data manipulation
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+<<>>=
+A <- data.frame(
+  v1 = seq(2, 10, 2),
+  v2 = 16:20)
+
+A
+@
+\end{column}
+
+\begin{column}{0.5\textwidth}
+<<>>=
+B <- data.frame(
+  v1 = seq(0.1, 0.5, 0.1),
+  v2 = seq(0.6, 1, 0.1))
+
+B
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Super basic merging}
+
+\bi
+  \item R provides the functions {\hilit \code{cbind()}} and {\hilit \code{rbind()}}
+  \item Column binding requires same number of rows
+  \item It works on matrices and data frames
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binding columns with \code{cbind()}}
+
+<<>>=
+# column binding
+AB <- cbind(A, B)
+AB
+@
+
+Can you see any potential problems in this case?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binding columns with \code{cbind()}}
+
+Notice that columns have repeated names:
+<<>>=
+AB
+@
+
+What happens if we do this:
+<<eval = FALSE>>=
+AB$v1
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your Turn}
+
+What do you get in this case?
+<<eval = FALSE>>=
+AB$v1
+@
+
+\bi
+  \item[A)] Error
+  \item[B)] Warning
+  \item[C)] Both columns \code{v1}
+  \item[D)] First column \code{v1}
+  \item[E)] Second column \code{v1}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binding columns with \code{cbind()}}
+
+<<>>=
+# column 'v1'
+AB$v1
+
+# columns 'v1'
+AB[ ,c('v1', 'v1')]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binding various objects with \code{cbind()}}
+
+<<>>=
+# more cbind
+cbind(A, B, A)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Super basic merging}
+
+\bi
+  \item Row binding requires same number of columns
+  \item It works on matrices and data frames
+  \item \code{rbind()} on data frames
+  \bi
+    \item require columns having same names
+    \item require column factors having same levels
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binding rows with \code{rbind()}}
+
+<<>>=
+# row binding
+rbind(A, B)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging}
+
+\bbi
+  \item Row and column binding provide a very basic type of ``merging''
+  \item For more advanced merging operations, we usually require tables to have an \textbf{id} column
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+<<>>=
+X <- data.frame(
+  id = letters[1:5],
+  x1 = 5:1,
+  x2 = 10:6)
+
+X
+@
+\end{column}
+
+\begin{column}{0.5\textwidth}
+<<>>=
+Y <- data.frame(
+  id = letters[1:5],
+  y1 = seq(0.1, 0.5, 0.1),
+  y2 = seq(0.6, 1, 0.1))
+
+Y
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging with \code{merge()}}
+
+\bbi
+  \item The behavior of \code{merge()} depends on a combination of several arguments
+  \item Let's see some of the frequent scenarios
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic \code{merge()}}
+
+<<>>=
+# default merge
+merge(X, Y)
+@
+
+\code{merge()} will search a common column in both data frames (i.e. column with same name)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic \code{merge()}}
+
+We can explicitly define the name of the column used for merging:
+<<>>=
+merge(X, Y, by = 'id')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Let's make it more interesting}
+
+<<>>=
+# shuffling rows in data frame Y
+Y <- Y[c(3, 2, 5, 4, 1), ]
+Y
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic \code{merge()}}
+
+<<>>=
+merge(X, Y, by = 'id')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{No common column names}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+<<>>=
+X <- data.frame(
+  x1 = c(10, 20),
+  x2 = c(30, 40))
+
+X
+@
+\end{column}
+
+\begin{column}{0.5\textwidth}
+<<>>=
+Y <- data.frame(
+  y1 = c(0.1, 0.2, 0.3),
+  y2 = c(0.4, 0.5, 0.6))
+
+Y
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Recycled \code{merge()}}
+
+If there are no common column names, then recycling is applied:
+<<>>=
+merge(X, Y)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging with uncommon names}
+\begin{center}
+\ig[width=10cm]{images/merge_uncommon_names.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Advanced Mergings}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Different number of rows}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+<<>>=
+X <- data.frame(
+  id = letters[1:4],
+  x1 = 4:1,
+  x2 = 10:7)
+
+X
+@
+\end{column}
+
+\begin{column}{0.5\textwidth}
+<<>>=
+Y <- data.frame(
+  id = c('b', 'd'),
+  y1 = c(0.1, 0.2),
+  y2 = c(0.6, 0.7))
+
+Y
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Default \code{merge()}}
+
+Merging rows that share \code{id}
+<<>>=
+merge(X, Y, by = 'id')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Different number of rows}
+
+Values of rows not matching the \code{id} are filled with \code{NA}'s
+<<>>=
+merge(X, Y, by = 'id', all = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Advanced \code{merge()}}
+
+We can specify which data frame columns to include:
+<<>>=
+merge(X, Y, by = 'id', all.x = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Advanced \code{merge()}}
+
+We can specify which data frame columns to include:
+<<>>=
+merge(X, Y, by = 'id', all.y = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging Types}
+\begin{center}
+\ig[width=10cm]{images/merge_id1.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging Types (cont'd)}
+\begin{center}
+\ig[width=10cm]{images/merge_id2.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging Types}
+\begin{center}
+\ig[width=8cm]{images/merges.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{More Mergings}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Different id columns}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+<<>>=
+X <- data.frame(
+  idx = letters[1:4],
+  x1 = 4:1,
+  x2 = 10:7)
+
+X
+@
+\end{column}
+
+\begin{column}{0.5\textwidth}
+<<>>=
+Y <- data.frame(
+  idy = c('b', 'd'),
+  y1 = c(0.1, 0.2),
+  y2 = c(0.6, 0.7))
+
+Y
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More \code{merge()} options}
+
+Sometimes the id columns have different names:
+<<>>=
+merge(X, Y, by.x = 'idx', by.y = 'idy')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More \code{merge()} options}
+
+<<>>=
+merge(X, Y, by.x = 'idx', by.y = 'idy', all = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More \code{merge()} options}
+
+<<>>=
+merge(X, Y, by.x = 'idx', by.y = 'idy', all.x = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic \code{merge()}}
+
+<<>>=
+merge(X, Y, by.x = 'idx', by.y = 'idy', all.y = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Package \code{"dplyr"}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Package \code{"dplyr"}}
+
+<<eval=FALSE>>=
+# install "dplyr"
+install.packages("dplyr")
+
+# load "dplyr"
+library(dplyr)
+@
+
+<<echo=FALSE, message=FALSE>>=
+library(dplyr)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Join Functions}
+
+\bi
+  \item \code{inner\_join()}
+  \item \code{left\_join()}
+  \item \code{right\_join()}
+  \item \code{full\_join()}
+  \item \code{semi\_join()}
+  \item \code{anti\_join()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Different number of rows}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+<<>>=
+X <- data.frame(
+  id = letters[1:4],
+  x1 = 4:1,
+  x2 = 10:7,
+  stringsAsFactors = FALSE)
+
+X
+@
+\end{column}
+
+\begin{column}{0.5\textwidth}
+<<>>=
+Y <- data.frame(
+  id = c('b', 'd'),
+  y1 = c(0.1, 0.2),
+  y2 = c(0.6, 0.7),
+  stringsAsFactors = FALSE)
+
+Y
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{inner\_join()}}
+
+\code{inner\_join()} returns all rows from \code{X} where there are matching valuesin \code{Y}, and all columns from \code{X} and \code{Y}.
+<<>>=
+inner_join(X, Y, by = 'id')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{left\_join()}}
+
+\code{left\_join()} returns all rows from \code{X}, and all columns from \code{X} and \code{Y}.
+<<>>=
+left_join(X, Y, by = 'id')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{right\_join()}}
+
+\code{right\_join()} returns all rows from \code{Y}, and all columns from \code{X} and \code{Y}.
+<<>>=
+right_join(X, Y, by = 'id')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{full\_join()}}
+
+<<>>=
+full_join(X, Y, by = 'id')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=8cm]{images/joins.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{semi\_join()}}
+
+\code{semi\_join()} returns all rows from \code{X} where there are matching values in \code{Y}, keeping just columns from \code{X}.
+<<>>=
+semi_join(X, Y, by = 'id')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{anti\_join()}}
+
+\code{anti\_join()} returns all rows from \code{X} where there are not matching values in \code{Y}, keeping just columns from \code{X}.
+<<>>=
+anti_join(X, Y, by = 'id')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Semi and Anti joins}
+\begin{center}
+\ig[width=10cm]{images/semi-anti-joins.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

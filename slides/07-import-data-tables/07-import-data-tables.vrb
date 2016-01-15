@@ -1,0 +1,15 @@
+\frametitle{Importing selected columns}
+
+\code{"readr"} allows you to import specific columns of a dataset
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# importing just first 4 columns}
+\hlstd{sw4} \hlkwb{<-} \hlkwd{read_csv}\hlstd{(}
+  \hlkwc{file} \hlstd{=} \hlstr{"starwarstoy.csv"}\hlstd{,}
+  \hlkwc{col_types} \hlstd{=} \hlstr{"ccnn___"}
+\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+

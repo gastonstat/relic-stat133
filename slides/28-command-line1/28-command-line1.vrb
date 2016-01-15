@@ -1,0 +1,18 @@
+\frametitle{Test Yourself}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  AGing.txt Going.nxt ing.ext
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+What command produces the output above:
+\bi
+  \item[A)] \code{ls *ing.*xt}
+  \item[B)] \code{ls ?ing.*xt}
+  \item[C)] \code{ls ?ing.?xt}
+  \item[D)] \code{ls ?ing.xt}
+  \item[E)] \code{ls *ing.?xt}
+\ei
+

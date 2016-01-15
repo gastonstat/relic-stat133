@@ -1,0 +1,2029 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Control Flow Structures}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Expressions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Expressions}
+
+\bb{R code is composed of a series of \textbf{expressions}}
+\bbi
+  \item assignment statements
+  \item arithmetic expressions
+  \item function calls
+  \item conditional statements
+  \item etc
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simple Expressions}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# assignment statement}
+\hlstd{a} \hlkwb{<-} \hlnum{12345}
+
+\hlcom{# arithmetic expression}
+\hlnum{525} \hlopt{+} \hlnum{34} \hlopt{-} \hlnum{280}
+
+\hlcom{# function call}
+\hlkwd{median}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Expressions}
+
+One way to separate expressions is with new lines:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{a} \hlkwb{<-} \hlnum{12345}
+\hlnum{525} \hlopt{+} \hlnum{34} \hlopt{-} \hlnum{280}
+\hlkwd{median}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Grouping Expressions}
+
+\bb{Constructs for grouping together expressions}
+\bbi
+  \item semicolons
+  \item curly braces
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Separating Expressions}
+
+Simple expressions separated with new lines:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{a} \hlkwb{<-} \hlnum{10}
+\hlstd{b} \hlkwb{<-} \hlnum{20}
+\hlstd{d} \hlkwb{<-} \hlnum{30}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Grouping Expressions}
+
+Grouping expressions with semicolons:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{a} \hlkwb{<-} \hlnum{10}\hlstd{; b} \hlkwb{<-} \hlnum{20}\hlstd{; d} \hlkwb{<-} \hlnum{30}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Grouping Expressions}
+
+Grouping expressions with braces:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{\{}
+  \hlstd{a} \hlkwb{<-} \hlnum{10}
+  \hlstd{b} \hlkwb{<-} \hlnum{20}
+  \hlstd{d} \hlkwb{<-} \hlnum{30}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Grouping Expressions}
+
+Multiple expressions in one line within braces:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{\{a} \hlkwb{<-} \hlnum{10}\hlstd{; b} \hlkwb{<-} \hlnum{20}\hlstd{; d} \hlkwb{<-} \hlnum{30}\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Brackets and Braces in R}
+\begin{center}
+\ig[width=9cm]{images/braces.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Brackets and Braces}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# brackets for objects}
+\hlstd{dataset[}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\pause
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# parentheses for functions}
+\hlkwd{some_function}\hlstd{(dataset)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\pause
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# brackets for expressions}
+\hlstd{\{}
+  \hlnum{1} \hlopt{+} \hlnum{1}
+  \hlkwd{mean}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)}
+  \hlstd{tbl} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{'datafile.csv'}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Test yourself}
+
+Which is NOT a valid option for indexing data.frames
+\bbi
+  \item[A)] Numeric vectors
+  \item[B)] Logical vectors
+  \item[C)] Missing values
+  \item[D)] Empty indices
+  \item[E)] Blank spaces
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Expressions}
+
+\bbi
+  \item A program is a set of instructions
+  \item Programs are made up of expressions
+  \item R expressions can be simple or compound
+  \item Every expression in R has a value
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Expressions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Expressions can be simple statements:}
+\hlnum{5} \hlopt{+} \hlnum{3}
+\end{alltt}
+\begin{verbatim}
+## [1] 8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Expressions can also be compound:}
+\hlstd{\{}\hlnum{5} \hlopt{+} \hlnum{3}\hlstd{;} \hlnum{4} \hlopt{*} \hlnum{2}\hlstd{;} \hlnum{1} \hlopt{+} \hlnum{1}\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Expressions}
+
+The value of an expression is the last evaluated statement:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# value of an expression}
+\hlstd{\{}\hlnum{5} \hlopt{+} \hlnum{3}\hlstd{;} \hlnum{4} \hlopt{*} \hlnum{2}\hlstd{;} \hlnum{1} \hlopt{+} \hlnum{1}\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+The result has the visibility of the last evaluation
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simple Expressions}
+
+We use braces \{ \} to group the statements of an expression:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# simple expression}
+\hlstd{\{}\hlnum{5} \hlopt{+} \hlnum{3}\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] 8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+For simple expressions there is really no need to use braces
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+\bbi
+  \item Compound expressions consist of multiple simple expressions
+  \item Compound expressions require braces
+  \item Simple expressions in a compound expression can be separated by semicolons or newlines
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+Simple expressions in a compound expression separated by semicolons:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# compound expression}
+\hlstd{\{}\hlkwd{mean}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{);} \hlstr{'3'}\hlstd{;} \hlkwd{print}\hlstd{(}\hlstr{"hello"}\hlstd{);} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{)\}}
+\end{alltt}
+\begin{verbatim}
+## [1] "hello"
+## [1] 1 3 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+Simple expressions in a compound expression separated by newlines:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# compound expression}
+\hlstd{\{}
+  \hlkwd{mean}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{)}
+  \hlstr{'3'}
+  \hlkwd{print}\hlstd{(}\hlstr{"hello"}\hlstd{)}
+  \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] "hello"
+## [1] 1 3 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+It is possible to have assignments within compound expressions:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{\{}
+  \hlstd{x} \hlkwb{<-} \hlnum{4}
+  \hlstd{y} \hlkwb{<-} \hlstd{x}\hlopt{^}\hlnum{2}
+  \hlstd{x} \hlopt{+} \hlstd{y}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] 20
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+The variables inside the braces can be used in later expressions
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{z} \hlkwb{<-} \hlstd{\{x} \hlkwb{<-} \hlnum{4}\hlstd{; y} \hlkwb{<-} \hlstd{x}\hlopt{^}\hlnum{2}\hlstd{; x} \hlopt{+} \hlstd{y\}}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\begin{alltt}
+\hlstd{y}
+\end{alltt}
+\begin{verbatim}
+## [1] 16
+\end{verbatim}
+\begin{alltt}
+\hlstd{z}
+\end{alltt}
+\begin{verbatim}
+## [1] 20
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# simple expressions in newlines}
+\hlstd{z} \hlkwb{<-} \hlstd{\{}
+  \hlstd{x} \hlkwb{<-} \hlnum{4}
+  \hlstd{y} \hlkwb{<-} \hlstd{x}\hlopt{^}\hlnum{2}
+  \hlstd{x} \hlopt{+} \hlstd{y\}}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\begin{alltt}
+\hlstd{y}
+\end{alltt}
+\begin{verbatim}
+## [1] 16
+\end{verbatim}
+\begin{alltt}
+\hlstd{z}
+\end{alltt}
+\begin{verbatim}
+## [1] 20
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using Expressions}
+
+\bb{Expressions are typically used in}
+\bbi
+  \item Flow control structures (e.g. \code{for} loop)
+  \item Functions
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+Do not confuse a function call (having arguments in multiple lines) with a compound expression
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# this is NOT a compound expression}
+\hlkwd{plot}\hlstd{(}\hlkwc{x} \hlstd{=} \hlkwd{runif}\hlstd{(}\hlnum{10}\hlstd{),} \hlkwc{y} \hlstd{=} \hlkwd{rnorm}\hlstd{(}\hlnum{10}\hlstd{),}
+     \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{,} \hlkwc{col} \hlstd{=} \hlstr{"#89F39A"}\hlstd{,} \hlkwc{cex} \hlstd{=} \hlnum{2}\hlstd{,}
+     \hlkwc{main} \hlstd{=} \hlstr{"some plot"}\hlstd{,}
+     \hlkwc{xlab} \hlstd{=} \hlstr{'x'}\hlstd{,} \hlkwc{ylab} \hlstd{=} \hlstr{'y'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Control Flow Structures}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Control Flow}
+
+There are many times where you don't just want to execute one statement after another: you need to control the flow of execution.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Main Idea}
+
+\begin{center}
+{\mdlit \Large Execute some code when \\ a condition is fulfilled}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Control Flow Structures}
+
+\bi
+  \item if-then-else
+  \item switch cases
+  \item repeat loop
+  \item while loop
+  \item for loop
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{If-Then-Else}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If-Then-Else}
+
+\textbf{If-then-else} statements make it possible to choose between two (possibly compound) expressions depending on the value of a (logical) condition.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# if-then-else}
+\hlkwa{if} \hlstd{(condition) expression1} \hlkwa{else} \hlstd{expression2}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+If \code{condition} is true then \code{expression1} is evaluated otherwise \code{expression2} is executed.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If-Then-Else}
+
+If-then-else with \textbf{simple} expressions (equivalent forms):
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# no braces}
+\hlkwa{if} \hlstd{(condition) expression1} \hlkwa{else} \hlstd{expression2}
+
+
+\hlcom{# with braces}
+\hlkwa{if} \hlstd{(condition) \{}
+  \hlstd{expression1}
+\hlstd{\}} \hlkwa{else} \hlstd{\{}
+  \hlstd{expression2}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If-Then-Else}
+
+If-then-else with \textbf{compound} expressions:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# compound expressions require braces}
+\hlkwa{if} \hlstd{(condition) \{}
+  \hlstd{expression1}
+  \hlstd{expression2}
+  \hlstd{...}
+\hlstd{\}} \hlkwa{else} \hlstd{\{}
+  \hlstd{expression3}
+  \hlstd{expression4}
+  \hlstd{...}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example: If-Then-Else}
+
+Equivalent forms:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# simple if-then-else}
+\hlkwa{if} \hlstd{(}\hlnum{5} \hlopt{>} \hlnum{2}\hlstd{)} \hlnum{5} \hlopt{*} \hlnum{2} \hlkwa{else} \hlnum{5} \hlopt{/} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1] 10
+\end{verbatim}
+\begin{alltt}
+\hlcom{# simple if-then-else}
+\hlkwa{if} \hlstd{(}\hlnum{5} \hlopt{>} \hlnum{2}\hlstd{) \{}
+  \hlnum{5} \hlopt{*} \hlnum{2}
+\hlstd{\}} \hlkwa{else} \hlstd{\{}
+  \hlnum{5} \hlopt{/} \hlnum{2}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] 10
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example: If-Then-Else}
+
+Equivalent forms:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# simple if-then-else}
+\hlkwa{if} \hlstd{(x} \hlopt{>} \hlnum{0}\hlstd{) y} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(x)} \hlkwa{else} \hlstd{y} \hlkwb{<-} \hlkwd{abs}\hlstd{(x)}
+
+\hlcom{# simple if-then-else}
+\hlkwa{if} \hlstd{(x} \hlopt{>} \hlnum{0}\hlstd{) \{}
+  \hlstd{y} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(x)}
+\hlstd{\}} \hlkwa{else} \hlstd{\{}
+  \hlstd{y} \hlkwb{<-} \hlkwd{abs}\hlstd{(x)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{If-Then-Else}
+
+\bi
+  \item {\hilit \code{if()}} takes a \textbf{logical} condition
+  \item the condition must be a logical value \textbf{of length one}
+  \item it executes the next statement if the condition is true
+  \item if the condition is false, then it executes the false expression
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{2 types of If conditions}
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+\textbf{if-then-else}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# if and else}
+\hlkwa{if} \hlstd{(condition) \{}
+  \hlstd{expression_true}
+\hlstd{\}} \hlkwa{else} \hlstd{\{}
+  \hlstd{expression_false}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.45\textwidth}
+\textbf{Just if}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# simple if}
+\hlkwa{if} \hlstd{(condition) \{}
+  \hlstd{expression_true}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\bigskip
+It is also possible to just have the if clause (without \code{else})
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Just If}
+
+Just \code{if}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# just if}
+\hlkwa{if} \hlstd{(condition) \{}
+  \hlstd{expression1}
+  \hlstd{...}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Equivalent to:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# just if (else NULL)}
+\hlkwa{if} \hlstd{(condition) \{}
+  \hlstd{expression1}
+  \hlstd{...}
+\hlstd{\}} \hlkwa{else NULL}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{If and Else}
+
+\bi
+  \item \code{if()} takes a \textbf{logical} condition
+  \item the condition must be a logical value of length one
+  \item it executes the next statement if the condition is true
+  \item if the condition is false, and there is no \code{else}, then it stops
+  \item if the condition is false, and there is an \code{else}, then it executes the false expression
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reminder of Comparison Operators}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   operation & usage \\
+  \hline
+  less than & \code{x < x} \\
+  greater than & \code{x > y} \\
+  less than or equal & \code{x <= y} \\  
+  greater than or equal  & \code{x >= y} \\
+  equality & \code{x == y} \\
+  different & \code{x != y} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+Comparison operators produce logical values
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reminder of Logical Operators}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   operation & usage \\
+  \hline
+  NOT & \code{!x} \\
+  AND (elementwise) & \code{x \& y} \\
+  AND (1st element) & \code{x \&\& y} \\  
+  OR (elementwise)  & \code{x | y} \\
+  OR (1st element) & \code{x || y} \\
+  exclusive OR & \code{xor(x, y)} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+Logical operators produce logical values
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Just \code{if}'s behavior}
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# this prints}
+\hlkwa{if} \hlstd{(}\hlnum{TRUE}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"It is true"}\hlstd{)}
+\hlstd{\}}
+
+
+\hlcom{# this does not print}
+\hlkwa{if} \hlstd{(}\hlnum{FALSE}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"It is false"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.45\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# this does not print}
+\hlkwa{if} \hlstd{(}\hlopt{!}\hlnum{TRUE}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"It is not true"}\hlstd{)}
+\hlstd{\}}
+
+
+\hlcom{# this prints}
+\hlkwa{if} \hlstd{(}\hlopt{!}\hlnum{FALSE}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"It is not false"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Just \code{if}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlnum{7}
+
+\hlkwa{if} \hlstd{(x} \hlopt{>=} \hlnum{0}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"it is positive"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] "it is positive"
+\end{verbatim}
+\begin{alltt}
+\hlkwa{if} \hlstd{(}\hlkwd{is.numeric}\hlstd{(x)) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"it is numeric"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] "it is numeric"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If and Else}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{y} \hlkwb{<-} \hlopt{-}\hlnum{5}
+
+\hlkwa{if} \hlstd{(y} \hlopt{>=} \hlnum{0}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"it is positive"}\hlstd{)}
+\hlstd{\}} \hlkwa{else} \hlstd{\{}
+  \hlkwd{print}\hlstd{(}\hlstr{"it is negative"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] "it is negative"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+The \code{else} statement must occur on the same line as the closing brace from the \code{if} clause!
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If and Else}
+
+The logical condition must be of length one!
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{if} \hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{TRUE}\hlstd{)) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"it is positive"}\hlstd{)}
+\hlstd{\}} \hlkwa{else} \hlstd{\{}
+  \hlkwd{print}\hlstd{(}\hlstr{"it is negative"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in if (c(TRUE, TRUE)) \{: the condition has length > 1 and only the first element will be used}}\begin{verbatim}
+## [1] "it is positive"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If and Else}
+
+What's the length of the logical condition?
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlnum{3}
+\hlstd{y} \hlkwb{<-} \hlnum{4}
+
+\hlkwa{if} \hlstd{(x} \hlopt{>} \hlnum{0} \hlopt{&} \hlstd{y} \hlopt{>} \hlnum{0}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"they are not negative"}\hlstd{)}
+\hlstd{\}} \hlkwa{else} \hlstd{\{}
+  \hlkwd{print}\hlstd{(}\hlstr{"they may be negative"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] "they are not negative"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If and Else}
+
+If there's is a single statement, you can omit the braces:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{if} \hlstd{(}\hlnum{TRUE}\hlstd{) \{} \hlkwd{print}\hlstd{(}\hlstr{"It is true"}\hlstd{) \}}
+
+\hlkwa{if} \hlstd{(}\hlnum{TRUE}\hlstd{)} \hlkwd{print}\hlstd{(}\hlstr{"It is true"}\hlstd{)}
+
+\hlcom{# valid but not recommended}
+\hlkwa{if} \hlstd{(}\hlnum{TRUE}\hlstd{)}
+  \hlkwd{print}\hlstd{(}\hlstr{"It is true"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Equivalent ways}
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+No braces:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# ok}
+\hlkwa{if} \hlstd{(}\hlnum{TRUE}\hlstd{)} \hlkwd{print}\hlstd{(}\hlstr{"It's true"}\hlstd{)}
+
+
+\hlcom{# valid but not recommended}
+\hlkwa{if} \hlstd{(}\hlnum{TRUE}\hlstd{)}
+  \hlkwd{print}\hlstd{(}\hlstr{"It's true"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.45\textwidth}
+With braces:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# ok}
+\hlkwa{if} \hlstd{(}\hlnum{TRUE}\hlstd{) \{}\hlkwd{print}\hlstd{(}\hlstr{"It's true"}\hlstd{)\}}
+
+
+\hlcom{# recommended}
+\hlkwa{if} \hlstd{(}\hlnum{TRUE}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"It's true"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If and Else}
+
+If there are multiple statements, you must use braces:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{if} \hlstd{(x} \hlopt{>} \hlnum{0}\hlstd{) \{}
+  \hlstd{a} \hlkwb{<-} \hlstd{x}\hlopt{^}\hlstd{(}\hlnum{2}\hlstd{)}
+  \hlstd{b} \hlkwb{<-} \hlnum{3} \hlopt{*} \hlstd{a} \hlopt{+} \hlnum{34.8} \hlopt{-} \hlkwd{exp}\hlstd{(}\hlnum{2}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple If's}
+
+Multiple conditions can be defined by combining \code{if} and \code{else} repeatedly:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{9}\hlstd{)}
+\hlstd{x} \hlkwb{<-} \hlkwd{round}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1}\hlstd{),} \hlnum{1}\hlstd{)}
+
+\hlkwa{if} \hlstd{(x} \hlopt{>} \hlnum{0}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"x is positive"}\hlstd{)}
+\hlstd{\}} \hlkwa{else if} \hlstd{(x} \hlopt{<} \hlnum{0}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"x is negative"}\hlstd{)}
+\hlstd{\}} \hlkwa{else if} \hlstd{(x} \hlopt{==} \hlnum{0}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{"x is zero"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] "x is negative"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectorized \code{ifelse()}}
+
+\code{if()} takes a single logical value. If you want to pass a logical vector of conditions, you can use {\hilit \code{ifelse()}}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{true_false} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{)}
+
+\hlkwd{ifelse}\hlstd{(true_false,} \hlstr{"true"}\hlstd{,} \hlstr{"false"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "true"  "false"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectorized If}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some numbers}
+\hlstd{numbers} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlopt{-}\hlnum{4}\hlstd{,} \hlnum{9}\hlstd{,} \hlopt{-}\hlnum{0.9}\hlstd{)}
+
+\hlcom{# are they non-negative or negative?}
+\hlkwd{ifelse}\hlstd{(numbers} \hlopt{>=} \hlnum{0}\hlstd{,} \hlstr{"non-neg"}\hlstd{,} \hlstr{"neg"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "non-neg" "non-neg" "neg"     "non-neg" "neg"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Test yourself}
+
+Which option will cause an error:
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# A}
+\hlkwa{if} \hlstd{(}\hlkwd{is.numeric}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{'ok'}\hlstd{)}
+\hlstd{\}}
+
+
+\hlcom{# B}
+\hlkwa{if} \hlstd{(}\hlstr{"TRUE"}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{'ok'}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.45\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# C}
+\hlkwa{if} \hlstd{(}\hlnum{0}\hlstd{)} \hlkwd{print}\hlstd{(}\hlstr{'ok'}\hlstd{)}
+
+
+\hlcom{# D}
+\hlkwa{if} \hlstd{(}\hlnum{NA}\hlstd{)} \hlkwd{print}\hlstd{(}\hlstr{'ok'}\hlstd{)}
+
+
+\hlcom{# E}
+\hlkwa{if} \hlstd{(}\hlstr{'yes'}\hlstd{) \{}
+  \hlkwd{print}\hlstd{(}\hlstr{'ok'}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Switch}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+{\large When a condition has multiple options, combining several \code{if} and \code{else} can become cumbersome}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{first_name} \hlkwb{<-} \hlstr{"harry"}
+
+\hlkwa{if} \hlstd{(first_name} \hlopt{==} \hlstr{"harry"}\hlstd{) \{}
+  \hlstd{last_name} \hlkwb{<-} \hlstr{"potter"}
+\hlstd{\}} \hlkwa{else} \hlstd{\{}
+  \hlkwa{if} \hlstd{(first_name} \hlopt{==} \hlstr{"ron"}\hlstd{) \{}
+    \hlstd{last_name} \hlkwb{<-} \hlstr{"weasley"}
+  \hlstd{\}} \hlkwa{else} \hlstd{\{}
+    \hlkwa{if} \hlstd{(first_name} \hlopt{==} \hlstr{"hermione"}\hlstd{) \{}
+      \hlstd{last_name} \hlkwb{<-} \hlstr{"granger"}
+    \hlstd{\}} \hlkwa{else} \hlstd{\{}
+      \hlstd{last_name} \hlkwb{<-} \hlstr{"not available"}
+    \hlstd{\}}
+  \hlstd{\}}
+\hlstd{\}}
+
+\hlstd{last_name}
+\end{alltt}
+\begin{verbatim}
+## [1] "potter"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{first_name} \hlkwb{<-} \hlstr{"ron"}
+
+\hlstd{last_name} \hlkwb{<-} \hlkwd{switch}\hlstd{(}
+  \hlstd{first_name,}
+  \hlkwc{harry} \hlstd{=} \hlstr{"potter"}\hlstd{,}
+  \hlkwc{ron} \hlstd{=} \hlstr{"weasley"}\hlstd{,}
+  \hlkwc{hermione} \hlstd{=} \hlstr{"granger"}\hlstd{,}
+  \hlstr{"not available"}\hlstd{)}
+
+\hlstd{last_name}
+\end{alltt}
+\begin{verbatim}
+## [1] "weasley"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+\bi
+  \item the \code{switch()} function makes it possible to choose between various alternatives
+  \item \code{switch()} takes a character string
+  \item followed by several named arguments
+  \item \code{switch()} will match the input string with the provided arguments
+  \item a default value can be given when there's no match
+  \item multiple expression can be enclosed by braces
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{switch}\hlstd{(expr,}
+       \hlkwc{tag1} \hlstd{= rcode_block1,}
+       \hlkwc{tag2} \hlstd{= rcode_block2,}
+       \hlstd{...}
+       \hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\code{switch()} selects one of the code blocks, depending on the value of \code{expr}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{operation} \hlkwb{<-} \hlstr{"add"}
+
+\hlstd{result} \hlkwb{<-} \hlkwd{switch}\hlstd{(}
+  \hlstd{operation,}
+  \hlkwc{add} \hlstd{=} \hlnum{2} \hlopt{+} \hlnum{3}\hlstd{,}
+  \hlkwc{product} \hlstd{=} \hlnum{2} \hlopt{*} \hlnum{3}\hlstd{,}
+  \hlkwc{division} \hlstd{=} \hlnum{2} \hlopt{/} \hlnum{3}\hlstd{,}
+  \hlkwc{other} \hlstd{= \{}
+    \hlstd{a} \hlkwb{<-} \hlnum{2} \hlopt{+} \hlnum{3}
+    \hlkwd{exp}\hlstd{(}\hlnum{1} \hlopt{/} \hlkwd{sqrt}\hlstd{(a))}
+  \hlstd{\}}
+\hlstd{)}
+
+\hlstd{result}
+\end{alltt}
+\begin{verbatim}
+## [1] 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+\bi
+  \item \code{switch()} can also take an integer as first argument
+  \item in this case the remaining arguments do not need names
+  \item instead, the they will have associated integers
+\ei
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{switch}\hlstd{(}
+  \hlnum{4}\hlstd{,}
+  \hlstr{"one"}\hlstd{,}
+  \hlstr{"two"}\hlstd{,}
+  \hlstr{"three"}\hlstd{,}
+  \hlstr{"four"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "four"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty code blocks in \code{switch()}}
+
+Empty code blocks can be used to make several tags match the same code block:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{student} \hlkwb{<-} \hlstr{"ron"}
+
+\hlstd{house} \hlkwb{<-} \hlkwd{switch}\hlstd{(}
+  \hlstd{student,}
+  \hlkwc{harry} \hlstd{= ,}
+  \hlkwc{ron} \hlstd{= ,}
+  \hlkwc{hermione} \hlstd{=} \hlstr{"gryffindor"}\hlstd{,}
+  \hlkwc{draco} \hlstd{=} \hlstr{"slytherin"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+In this case a value of \code{"harry"}, \code{"ron"} or \code{"hermione"} will cause \code{"gryffindor"}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Loops}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About Loops}
+
+\bbi
+  \item Many times we need to perform a procedure several times
+  \item The main idea is that of \textbf{iteration}
+  \item For this purpose we use loops
+  \item We perform operations as long as some condition is fulfilled
+  \item R provides three basic paradigms:
+  \bi
+    \item \code{for}, \code{repeat}, \code{while}
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Repeat Loops}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Repeat Loops}
+
+\code{repeat} executes the same code over and over until a stop condition is met.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{repeat} \hlstd{\{}
+  \hlstd{keep_doing_something}
+  \hlkwa{if} \hlstd{(stop_condition)} \hlkwa{break}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The \code{break} statement stops the loops
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Repeat Loops}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{value} \hlkwb{<-} \hlnum{2}
+
+\hlkwa{repeat} \hlstd{\{}
+  \hlstd{value} \hlkwb{<-} \hlstd{value} \hlopt{*} \hlnum{2}
+  \hlkwd{print}\hlstd{(value)}
+  \hlkwa{if} \hlstd{(value} \hlopt{>=} \hlnum{40}\hlstd{)} \hlkwa{break}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+## [1] 8
+## [1] 16
+## [1] 32
+## [1] 64
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+If you enter an infinite loop, break it by pressing \code{ESC} key
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Repeat Loops}
+
+To skip a current iteration, use \code{next}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{value} \hlkwb{<-} \hlnum{2}
+
+\hlkwa{repeat} \hlstd{\{}
+  \hlstd{value} \hlkwb{<-} \hlstd{value} \hlopt{*} \hlnum{2}
+  \hlkwd{print}\hlstd{(value)}
+  \hlkwa{if} \hlstd{(value} \hlopt{==} \hlnum{16}\hlstd{) \{}
+    \hlstd{value} \hlkwb{<-} \hlstd{value} \hlopt{*} \hlnum{2}
+    \hlkwa{next}
+  \hlstd{\}}
+  \hlkwa{if} \hlstd{(value} \hlopt{>} \hlnum{80}\hlstd{)} \hlkwa{break}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+## [1] 8
+## [1] 16
+## [1] 64
+## [1] 128
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{While Loops}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{While Loops}
+
+It can also be useful to repeat a computation until a condition is false. A \code{while} loop provides this form of control flow
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{while} \hlstd{(condition) \{}
+  \hlstd{keep_doing_something}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{While Loops}
+
+\bi
+  \item \code{while} loops are like backward \code{repeat} loops; 
+  \item \code{while} checks first and then attempts to execute
+  \item computations are carried out for as long as the condition is true
+  \item the loop stops when the condition is false
+  \item If you enter an infinite loop, break it by pressing \code{ESC} key
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{While Loops}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{value} \hlkwb{<-} \hlnum{2}
+
+\hlkwa{while} \hlstd{(value} \hlopt{<} \hlnum{40}\hlstd{) \{}
+  \hlstd{value} \hlkwb{<-} \hlstd{value} \hlopt{*} \hlnum{2}
+  \hlkwd{print}\hlstd{(value)}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+## [1] 8
+## [1] 16
+## [1] 32
+## [1] 64
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+If you enter an infinite loop, break it by pressing \code{ESC} key
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{For Loops}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{For Loops}
+
+Often we want to repeatedly carry out some computation a fixed number of times. For instance, repeat an operation for each element of a vector. In R this is done with a {\hilit \code{for}} loop 
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops}
+
+\code{for} loops are used when we know exactly how many times we want the code to repeat
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{for} \hlstd{(iterator} \hlkwa{in} \hlstd{times) \{}
+  \hlstd{do_something}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\code{for} takes an \textit{iterator} variable and a vector of \textit{times} to iterate through
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{value} \hlkwb{<-} \hlnum{2}
+
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{) \{}
+  \hlstd{value} \hlkwb{<-} \hlstd{value} \hlopt{*} \hlnum{2}
+  \hlkwd{print}\hlstd{(value)}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+## [1] 8
+## [1] 16
+## [1] 32
+## [1] 64
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops}
+
+The vector of \textit{times} does not have to be a numeric vector; it can be any vector
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{value} \hlkwb{<-} \hlnum{2}
+\hlstd{times} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{'1'}\hlstd{,} \hlstr{'2'}\hlstd{,} \hlstr{'3'}\hlstd{,} \hlstr{'4'}\hlstd{,} \hlstr{'5'}\hlstd{)}
+
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlstd{times) \{}
+  \hlstd{value} \hlkwb{<-} \hlstd{value} \hlopt{*} \hlnum{2}
+  \hlkwd{print}\hlstd{(value)}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+## [1] 8
+## [1] 16
+## [1] 32
+## [1] 64
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops and Next statement}
+
+Sometimes we need to skip a loop iteration if a given condition is met, this can be done with a \code{next} statement
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{for} \hlstd{(iterator} \hlkwa{in} \hlstd{times) \{}
+  \hlstd{expr1}
+  \hlstd{expr2}
+  \hlkwa{if} \hlstd{(condition) \{}
+    \hlkwa{next}
+  \hlstd{\}}
+  \hlstd{expr3}
+  \hlstd{expr4}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops and Next statement}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlnum{2}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{) \{}
+  \hlstd{y} \hlkwb{<-} \hlstd{x} \hlopt{*} \hlstd{i}
+  \hlkwa{if} \hlstd{(y} \hlopt{==} \hlnum{8}\hlstd{) \{}
+    \hlkwa{next}
+  \hlstd{\}}
+  \hlkwd{print}\hlstd{(y)}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+## [1] 4
+## [1] 6
+## [1] 10
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops}
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+For loop
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# squaring values}
+\hlstd{x} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{5}
+\hlstd{y} \hlkwb{<-} \hlstd{x}
+
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{) \{}
+  \hlstd{y[i]} \hlkwb{<-} \hlstd{x[i]}\hlopt{^}\hlnum{2}
+\hlstd{\}}
+
+\hlstd{y}
+\end{alltt}
+\begin{verbatim}
+## [1]  1  4  9 16 25
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.45\textwidth}
+Vectorized computation
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# squaring values}
+\hlstd{x} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{5}
+\hlstd{y} \hlkwb{<-} \hlstd{x}\hlopt{^}\hlnum{2}
+\hlstd{y}
+\end{alltt}
+\begin{verbatim}
+## [1]  1  4  9 16 25
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nested Loops}
+
+It is common to have nested loops
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{for} \hlstd{(iterator1} \hlkwa{in} \hlstd{times1) \{}
+  \hlkwa{for} \hlstd{(iterator2} \hlkwa{in} \hlstd{times2) \{}
+    \hlstd{expr1}
+    \hlstd{expr2}
+    \hlstd{...}
+  \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nested Loops}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some matrix }
+\hlstd{A} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{12}\hlstd{,} \hlkwc{nrow} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{ncol} \hlstd{=} \hlnum{4}\hlstd{)}
+
+\hlstd{A}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    4    7   10
+## [2,]    2    5    8   11
+## [3,]    3    6    9   12
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nested Loops}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# nested loops}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{nrow}\hlstd{(A)) \{}
+  \hlkwa{for} \hlstd{(j} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{ncol}\hlstd{(A)) \{}
+    \hlkwa{if} \hlstd{(A[i,j]} \hlopt{<} \hlnum{6}\hlstd{) A[i,j]} \hlkwb{<-} \hlnum{1} \hlopt{/} \hlstd{A[i,j]}
+  \hlstd{\}}
+\hlstd{\}}
+
+\hlstd{A}
+\end{alltt}
+\begin{verbatim}
+##           [,1] [,2] [,3] [,4]
+## [1,] 1.0000000 0.25    7   10
+## [2,] 0.5000000 0.20    8   11
+## [3,] 0.3333333 6.00    9   12
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{For Loops and Vectorized Computations}
+
+\bi
+  \item R \code{for} loops have a bad reputation for being slow
+  \item Experienced users will tell you to avoid for loops in R (me included)
+  \item R provides a family of functions that tend to be more efficient than loops (i.e. \code{apply()} functions)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{For Loops and Vectorized Computations}
+
+\bi
+  \item For purposes of learning programming (and flow control structures in R), I won't demonize R loops
+  \item You can start solving a problem using a for loop
+  \item Once you solved it, try to see if you can find a vectorized alternative
+  \item It takes practice and experience to find alternative solutions to for loops
+  \item There are cases when using \code{for} loops is inevitable
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Repeat, While, For}
+
+\bi
+  \item If you don't know the number of times something will be done you can use either \code{repeat} or \code{while}
+  \item \code{while} evaluates the condition at the beginning
+  \item \code{repeat} executes operations until a stop condition is met
+  \item If you know the number of times that something will be done, use \code{for}
+  \item \code{for} needs an \textit{iterator} and a vector of \textit{times}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loop}
+
+This example is just for demo purposes (not recommended in R)
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# empty numeric vector}
+\hlstd{x} \hlkwb{<-} \hlkwd{numeric}\hlstd{(}\hlnum{0}\hlstd{)}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## numeric(0)
+\end{verbatim}
+\begin{alltt}
+\hlcom{# for loop to fill x}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{) \{}
+  \hlstd{x[i]} \hlkwb{<-} \hlstd{i}
+\hlstd{\}}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3 4 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loop}
+
+If you know the number of times
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# empty numeric vector}
+\hlstd{x} \hlkwb{<-} \hlkwd{numeric}\hlstd{(}\hlnum{5}\hlstd{)}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## [1] 0 0 0 0 0
+\end{verbatim}
+\begin{alltt}
+\hlcom{# for loop to fill x}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{) \{}
+  \hlstd{x[i]} \hlkwb{<-} \hlstd{i}
+\hlstd{\}}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3 4 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Quiz}
+
+\bbi
+  \item What happens if you pass \code{NA} as a condition to \code{if()}?
+  \item What happens if you pass \code{NA} as a condition to \code{ifelse()}?
+  \item What types of values can be passed as the first argument to the \code{switch()} function?
+  \item How do you stop a \code{repeat} loop executing?
+  \item How do you jump to the next iteration of a loop?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

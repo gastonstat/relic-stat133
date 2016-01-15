@@ -1,0 +1,16 @@
+\frametitle{\code{"googleVis"}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{M} \hlkwb{<-} \hlkwd{gvisMotionChart}\hlstd{(Fruits,} \hlkwc{idvar}\hlstd{=}\hlstr{"Fruit"}\hlstd{,} \hlkwc{timevar}\hlstd{=}\hlstr{"Year"}\hlstd{)}
+
+\hlkwd{str}\hlstd{(M)}
+
+\hlkwd{print}\hlstd{(M)}
+
+\hlkwd{plot}\hlstd{(M)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+

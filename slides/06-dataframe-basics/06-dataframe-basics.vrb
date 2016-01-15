@@ -1,0 +1,20 @@
+\frametitle{Sorting rows}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# sorting subjects by height in decreasing order}
+\hlstd{ht_sort} \hlkwb{<-} \hlkwd{order}\hlstd{(df}\hlopt{$}\hlstd{height,} \hlkwc{decreasing} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{df[ht_sort,} \hlkwd{c}\hlstd{(}\hlstr{'name'}\hlstd{,} \hlstr{'height'}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##     name height
+## 1 Anakin   1.88
+## 5    Han   1.80
+## 3   Luke   1.72
+## 2  Padme   1.65
+## 4   Leia   1.50
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

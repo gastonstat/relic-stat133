@@ -1,0 +1,1570 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Character Vectors and Factors}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Character Vectors}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We express character strings using single or double quotes:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# string with single quotes}
+\hlstr{'a character string using single quotes'}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# string with double quotes}
+\hlstr{"a character string using double quotes"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We can insert single quotes in a string with double quotes, and vice versa:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# single quotes within double quotes}
+\hlstr{"The 'R' project for statistical computing"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# double quotes within single quotes}
+\hlstr{'The "R" project for statistical computing'}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We cannot insert single quotes in a string with single quotes, neither we can insert double quotes in a string with double quotes (Don't do this!):
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# don't do this!}
+\hlstr{"This "}is\hlstr{" totally unacceptable"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+                                                            
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# don't do this!}
+\hlstr{'This '}is\hlstr{' absolutely wrong'}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{character()}}
+
+Besides the single quotes or double quotes, R provides the function \code{character()} to create vectors of type character. 
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# character vector of 5 elements}
+\hlstd{a} \hlkwb{<-} \hlkwd{character}\hlstd{(}\hlnum{5}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty string}
+
+The most basic string is the \textbf{empty string} produced by consecutive quotation marks: \code{""}. 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# empty string}
+\hlstd{empty_str} \hlkwb{<-} \hlstr{""}
+
+\hlstd{empty_str}
+\end{alltt}
+\begin{verbatim}
+## [1] ""
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Technically, \code{""} is a string with no characters in it, hence the name \textit{empty string}.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty character vector}
+
+Another basic string structure is the \textbf{empty character vector} produced by \code{character(0)}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# empty character vector}
+\hlstd{empty_chr} \hlkwb{<-} \hlkwd{character}\hlstd{(}\hlnum{0}\hlstd{)}
+
+\hlstd{empty_chr}
+\end{alltt}
+\begin{verbatim}
+## character(0)
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty character vector}
+
+Do not to confuse the empty character vector \code{character(0)} with the empty string \code{""}; they have different lengths:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# length of empty string}
+\hlkwd{length}\hlstd{(empty_str)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+\begin{alltt}
+\hlcom{# length of empty character vector}
+\hlkwd{length}\hlstd{(empty_chr)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More on \code{character()}}
+
+Once an empty character object has been created, new components may be added to it simply by giving it an index value outside its previous range:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# another example}
+\hlstd{example} \hlkwb{<-} \hlkwd{character}\hlstd{(}\hlnum{0}\hlstd{)}
+\hlstd{example}
+\end{alltt}
+\begin{verbatim}
+## character(0)
+\end{verbatim}
+\begin{alltt}
+\hlcom{# add first element}
+\hlstd{example[}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlstr{"first"}
+\hlstd{example}
+\end{alltt}
+\begin{verbatim}
+## [1] "first"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty character vector}
+
+We can add more elements without the need to follow a consecutive index range:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{example[}\hlnum{4}\hlstd{]} \hlkwb{<-} \hlstr{"fourth"}
+\hlstd{example}
+\end{alltt}
+\begin{verbatim}
+## [1] "first"  NA       NA       "fourth"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{length}\hlstd{(example)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+R fills the missing indices with missing values \code{NA}.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{is.character()}}
+
+To test if an object is of type \code{"character"} you use the function \code{is.character()}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# define two objects 'a' and 'b'}
+\hlstd{a} \hlkwb{<-} \hlstr{"test me"}
+\hlstd{b} \hlkwb{<-} \hlnum{8} \hlopt{+} \hlnum{9}
+
+\hlcom{# are 'a' and 'b' characters?}
+\hlkwd{is.character}\hlstd{(a)}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlkwd{is.character}\hlstd{(b)}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{as.character()}}
+
+R allows you to convert non-character objects into character strings with the function \code{as.character()}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{b}
+\end{alltt}
+\begin{verbatim}
+## [1] 17
+\end{verbatim}
+\begin{alltt}
+\hlcom{# converting 'b' into character}
+\hlkwd{as.character}\hlstd{(b)}
+\end{alltt}
+\begin{verbatim}
+## [1] "17"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replicate elements}
+
+You can use the function {\hilit \code{rep()}} to create character vectors of replicated elements:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{rep}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlkwc{times} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"b"}\hlstd{,} \hlstr{"c"}\hlstd{),} \hlkwc{times} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"b"}\hlstd{,} \hlstr{"c"}\hlstd{),} \hlkwc{times} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{1}\hlstd{))}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"b"}\hlstd{,} \hlstr{"c"}\hlstd{),} \hlkwc{each} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"b"}\hlstd{,} \hlstr{"c"}\hlstd{),} \hlkwc{length.out} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"b"}\hlstd{,} \hlstr{"c"}\hlstd{),} \hlkwc{each} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{times} \hlstd{=} \hlnum{2}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Function \code{paste()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+The function \code{paste()} is perhaps one of the most important functions that we can use to create and build strings. 
+
+\begin{verbatim}
+ paste(..., sep = " ", collapse = NULL)
+\end{verbatim}
+
+\code{paste()} takes one or more R objects, converts them to \code{"character"}, and then it concatenates (pastes) them to form one or several character strings.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+Simple example using \code{paste()}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# paste}
+\hlstd{PI} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"The life of"}\hlstd{, pi)}
+
+\hlstd{PI}
+\end{alltt}
+\begin{verbatim}
+## [1] "The life of 3.14159265358979"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+The default separator is a blank space (\code{sep = " "}). But you can select another character, for example \code{sep = "-"}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# paste}
+\hlstd{tobe} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"to"}\hlstd{,} \hlstr{"be"}\hlstd{,} \hlstr{"or"}\hlstd{,} \hlstr{"not"}\hlstd{,} \hlstr{"to"}\hlstd{,} \hlstr{"be"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"-"}\hlstd{)}
+
+\hlstd{tobe}
+\end{alltt}
+\begin{verbatim}
+## [1] "to-be-or-not-to-be"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+If we give \code{paste()} objects of different length, then the recycling rule is applied:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# paste with objects of different lengths}
+\hlkwd{paste}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"."}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "X.1" "X.2" "X.3" "X.4" "X.5"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+To see the effect of the \code{collapse} argument, let's compare the difference with collapsing and without it:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# paste with collapsing}
+\hlkwd{paste}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"!"}\hlstd{,} \hlstr{"?"}\hlstd{,} \hlstr{"+"}\hlstd{),} \hlkwc{sep} \hlstd{=} \hlstr{''}\hlstd{,} \hlkwc{collapse} \hlstd{=} \hlstr{""}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "1!2?3+"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# paste without collapsing}
+\hlkwd{paste}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"!"}\hlstd{,} \hlstr{"?"}\hlstd{,} \hlstr{"+"}\hlstd{),} \hlkwc{sep} \hlstd{=} \hlstr{''}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "1!" "2?" "3+"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste0()}}
+
+There's also the function \code{paste0()} which is the equivalent of
+\begin{verbatim}
+ paste(..., sep = "", collapse)
+\end{verbatim}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# collapsing with paste0}
+\hlkwd{paste0}\hlstd{(}\hlstr{"let's"}\hlstd{,} \hlstr{"collapse"}\hlstd{,} \hlstr{"all"}\hlstd{,} \hlstr{"these"}\hlstd{,} \hlstr{"words"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "let'scollapseallthesewords"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{More coming soon}
+
+{\large We'll talk more about handling character strings in a couple of weeks}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Factors}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Factors}
+
+\bi 
+  \item A similar structure to vectors are \textbf{factors}
+  \item factors are used for handling categorial (i.e. qualitative) variables
+  \item they are represented as objects of class \code{"factor"}
+  \item internally, factors are stored as integers
+  \item factors behave much like vectors (but they are not vectors)
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Categorical Variables and Factors}
+
+\bb{Types of Categorical (qualitative) variables}
+\pause
+\bbi 
+  \item Binary (2 categories)
+  \item Nominal (there's no order of categories)
+  \item Ordinal (categories have an order)
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Factors}
+
+To create a factor we use the function {\hilit \code{factor()}}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# }
+\hlstd{cols} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,} \hlstr{"red"}\hlstd{,} \hlstr{"blue"}\hlstd{,} \hlstr{"gray"}\hlstd{,} \hlstr{"red"}\hlstd{)}
+\hlstd{cols} \hlkwb{<-} \hlkwd{factor}\hlstd{(cols)}
+\hlstd{cols}
+\end{alltt}
+\begin{verbatim}
+## [1] blue red  blue gray red 
+## Levels: blue gray red
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+The different values in a factor are called \textbf{levels}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binary Factors}
+
+Since factors represent categorical variables, we can have binary, nominal and ordinal factors
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# binary factors have two levels}
+\hlstd{yes_no} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"yes"}\hlstd{,} \hlstr{"yes"}\hlstd{,} \hlstr{"no"}\hlstd{,} \hlstr{"yes"}\hlstd{,} \hlstr{"no"}\hlstd{))}
+\hlstd{yes_no}
+\end{alltt}
+\begin{verbatim}
+## [1] yes yes no  yes no 
+## Levels: no yes
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nominal Factors}
+
+Nominal factors have unordered categories
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# nominal factor}
+\hlstd{food} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"burger"}\hlstd{,} \hlstr{"pizza"}\hlstd{,} \hlstr{"burrito"}\hlstd{,}
+                 \hlstr{"pizza"}\hlstd{,} \hlstr{"burrito"}\hlstd{,} \hlstr{"pizza"}\hlstd{))}
+\hlstd{food}
+\end{alltt}
+\begin{verbatim}
+## [1] burger  pizza   burrito pizza   burrito pizza  
+## Levels: burger burrito pizza
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Ordinal Factors}
+
+Ordinal factors have ordered categories or levels; to create an ordered factor we need to specify the levels in the desired order
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# ordinal factor}
+\hlstd{sizes} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"md"}\hlstd{,} \hlstr{"sm"}\hlstd{,} \hlstr{"md"}\hlstd{,} \hlstr{"lg"}\hlstd{,} \hlstr{"sm"}\hlstd{,} \hlstr{"lg"}\hlstd{),}
+                \hlkwc{levels} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"sm"}\hlstd{,} \hlstr{"md"}\hlstd{,} \hlstr{"lg"}\hlstd{),}
+                \hlkwc{ordered} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{sizes}
+\end{alltt}
+\begin{verbatim}
+## [1] md sm md lg sm lg
+## Levels: sm < md < lg
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Note that the levels are ordered
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Ordinal Factors}
+
+When creating ordinal factors, always specify the desired order of the \code{levels}, otherwise R will arrange them in alphanumeric order
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# ordinal factor}
+\hlstd{bad_sizes} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"md"}\hlstd{,} \hlstr{"sm"}\hlstd{,} \hlstr{"md"}\hlstd{,} \hlstr{"lg"}\hlstd{,} \hlstr{"sm"}\hlstd{,} \hlstr{"lg"}\hlstd{),}
+                \hlkwc{ordered} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+
+\hlstd{bad_sizes}
+\end{alltt}
+\begin{verbatim}
+## [1] md sm md lg sm lg
+## Levels: lg < md < sm
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Note that the levels are arranged in alphanumeric order (not really what we want)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About Factors}
+
+We can use various functions to get information about a factor:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{length}\hlstd{(sizes)}
+\end{alltt}
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+\begin{alltt}
+\hlkwd{nlevels}\hlstd{(sizes)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\begin{alltt}
+\hlkwd{levels}\hlstd{(sizes)}
+\end{alltt}
+\begin{verbatim}
+## [1] "sm" "md" "lg"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{is.ordered}\hlstd{(sizes)}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Function \code{levels()}}
+
+\bi
+  \item besides the argument \code{levels} of \code{factor()}, there is also the function \code{levels()}
+  \item \code{levels()} lets you have access to the categories
+  \item you can use \code{levels()} to \textbf{get} the categories
+  \item you can use \code{levels()} to \textbf{set} the categorie\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{levels()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# size levels}
+\hlkwd{levels}\hlstd{(sizes)}
+\end{alltt}
+\begin{verbatim}
+## [1] "sm" "md" "lg"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# setting new levels}
+\hlkwd{levels}\hlstd{(sizes)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Small"}\hlstd{,} \hlstr{"Medium"}\hlstd{,} \hlstr{"Large"}\hlstd{)}
+\hlstd{sizes}
+\end{alltt}
+\begin{verbatim}
+## [1] Medium Small  Medium Large  Small  Large 
+## Levels: Small < Medium < Large
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{nlevels()}}
+
+\code{nlevels()} returns the number of levels of a factor. In other words, \code{nlevels()} returns the length of the attribute \code{levels}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# nlevels()}
+\hlkwd{nlevels}\hlstd{(food)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\begin{alltt}
+\hlcom{# equivalent to}
+\hlkwd{length}\hlstd{(}\hlkwd{levels}\hlstd{(food))}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Merging levels}
+
+\bi
+  \item Sometimes we may need to ``merge'' or collapse two or more different levels into one single level
+  \item We can achieve this by using the function \code{levels()}
+  \item Assign a new vector of levels containing repeated values for those categories that we wish to merge
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging levels}
+
+Combine categories \code{Small} and \code{Medium} into a new level \code{Sm-Md}. Here's how to do it:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# merging some levels}
+\hlkwd{levels}\hlstd{(sizes)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Sm-Md"}\hlstd{,} \hlstr{"Sm-Md"}\hlstd{,} \hlstr{"Large"}\hlstd{)}
+
+\hlstd{sizes}
+\end{alltt}
+\begin{verbatim}
+## [1] Sm-Md Sm-Md Sm-Md Large Sm-Md Large
+## Levels: Sm-Md < Large
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging levels}
+
+Here's another example using a list:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{222}\hlstd{)}
+\hlstd{y} \hlkwb{<-} \hlkwd{sample}\hlstd{(letters[}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{],} \hlnum{15}\hlstd{,} \hlkwc{rep} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{v} \hlkwb{<-} \hlkwd{as.factor}\hlstd{(y)}
+
+\hlstd{new_levels} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwc{I} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"e"}\hlstd{),} \hlkwc{II} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"b"}\hlstd{,} \hlstr{"c"}\hlstd{,} \hlstr{"d"}\hlstd{))}
+\hlkwd{levels}\hlstd{(v)} \hlkwb{<-} \hlstd{new_levels}
+
+\hlstd{v}
+\end{alltt}
+\begin{verbatim}
+##  [1] I  I  II I  I  I  II II II I  II I  I  II I 
+## Levels: I II
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Unclassing factors}
+
+\bi
+  \item Factors are stored as vectors of integers (for efficiency reasons)
+  \item Even though a factor may be displayed with string labels, the way it is stored internally is as integers
+  \item Sometimes you'll nee to know what numbers are associated to each level values
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Unclassing factors}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some factor}
+\hlstd{xfactor} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{22}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{44}\hlstd{,} \hlnum{33}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{22}\hlstd{,} \hlnum{44}\hlstd{))}
+\hlstd{xfactor}
+\end{alltt}
+\begin{verbatim}
+## [1] 22 11 44 33 11 22 44
+## Levels: 11 22 33 44
+\end{verbatim}
+\begin{alltt}
+\hlcom{# unclassing a factor}
+\hlkwd{unclass}\hlstd{(xfactor)}
+\end{alltt}
+\begin{verbatim}
+## [1] 2 1 4 3 1 2 4
+## attr(,"levels")
+## [1] "11" "22" "33" "44"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Note that the \code{levels} \code{("11" "22" "33" "44")} were mapped to the vector of integers \code{(1 2 3 4)}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Unclassing factors}
+
+Although rarely used, there can be some cases in which what you need to do is revert the integer values in order to get the original factor levels. This is only possible when the levels of the factor are themselves numeric. To accomplish this use the following command:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# recovering numeric levels}
+\hlkwd{as.numeric}\hlstd{(}\hlkwd{levels}\hlstd{(xfactor))[xfactor]}
+\end{alltt}
+\begin{verbatim}
+## [1] 22 11 44 33 11 22 44
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dropping Levels}
+
+\bi
+  \item It is common to get a sample or subset of a factor
+  \item The obtained factor may have less levels that the original factor
+  \item When this happens, we may want to drop unused levels
+  \item This can be achieved with the function \code{droplevels()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dropping Levels with \code{droplevels()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# original factor}
+\hlstd{vowels} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{'a'}\hlstd{,} \hlstr{'a'}\hlstd{,} \hlstr{'e'}\hlstd{,} \hlstr{'i'}\hlstd{,} \hlstr{'o'}\hlstd{,} \hlstr{'u'}\hlstd{,} \hlstr{'i'}\hlstd{))}
+
+\hlcom{# subset}
+\hlstd{subvowels} \hlkwb{<-} \hlstd{vowels[}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{]}
+\hlstd{subvowels}
+\end{alltt}
+\begin{verbatim}
+## [1] a a e i
+## Levels: a e i o u
+\end{verbatim}
+\begin{alltt}
+\hlcom{# drop unused levels}
+\hlkwd{droplevels}\hlstd{(subvowels)}
+\end{alltt}
+\begin{verbatim}
+## [1] a a e i
+## Levels: a e i
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Categorizing Quantitative Variables}
+
+\bi
+  \item A common task is getting a categorical variable from a quantitative variable
+  \item In other words, discretize or categorize a quantitative variable
+  \item For this task R provides the function \code{cut()}
+  \item The idea is to \textit{cut} values into intervals
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cut()}}
+
+Continuous values are converted into intervals, which in turn will be the levels of the generated factor
+
+\begin{verbatim}
+  cut(x, breaks, labels = NULL, include.lowest = FALSE,
+      right = TRUE, dig.lab = 3, ordered_result = FALSE, ...)
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Function \code{cut()}}
+
+Arguments of \code{cut()}
+\bi
+ \item \code{x} a numeric vector which is to be converted to a factor by cutting.
+ \item \code{breaks} numeric vector giving the number of intervals into which \code{x} is to be cut.
+ \item \code{labels} labels for the levels of the resulting category.
+ \item \code{include.lowest} logical indicating if values equal to the lowest 'breaks' point should be included.
+ \item \code{right} logical, indicating if the intervals should be closed on the right.
+ \item \code{dig.lab} integer which is used when labels are not given.
+ \item \code{ordered\_result} logical: should the result be an ordered factor?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cut()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# cutting a quantitative variable}
+\hlkwd{set.seed}\hlstd{(}\hlnum{321}\hlstd{)}
+\hlstd{income} \hlkwb{<-} \hlkwd{round}\hlstd{(}\hlkwd{runif}\hlstd{(}\hlkwc{n} \hlstd{=} \hlnum{1000}\hlstd{,} \hlkwc{min} \hlstd{=} \hlnum{100}\hlstd{,} \hlkwc{max} \hlstd{=} \hlnum{500}\hlstd{),} \hlnum{2}\hlstd{)}
+
+\hlcom{# cut income in 5 classes}
+\hlstd{income_level} \hlkwb{<-} \hlkwd{cut}\hlstd{(}\hlkwc{x} \hlstd{= income,} \hlkwc{breaks} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlkwd{table}\hlstd{(income_level)}
+\end{alltt}
+\begin{verbatim}
+## income_level
+## (99.7,180]  (180,260]  (260,340]  (340,420]  (420,500] 
+##        191        197        184        218        210
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cut()}}
+
+By default, \code{cut()} has its argument \code{right} set to \code{TRUE}. This means that the intervals are open on the left (and closed on the right):
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# using other cutting break points}
+\hlstd{income_breaks} \hlkwb{<-} \hlkwd{seq}\hlstd{(}\hlkwc{from} \hlstd{=} \hlnum{100}\hlstd{,} \hlkwc{to} \hlstd{=} \hlnum{500}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{100}\hlstd{)}
+\hlstd{income_a} \hlkwb{<-} \hlkwd{cut}\hlstd{(}\hlkwc{x} \hlstd{= income,} \hlkwc{breaks} \hlstd{= income_breaks)}
+
+\hlkwd{table}\hlstd{(income_a)}
+\end{alltt}
+\begin{verbatim}
+## income_a
+## (100,200] (200,300] (300,400] (400,500] 
+##       250       225       259       266
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sum}\hlstd{(}\hlkwd{table}\hlstd{(income_a))}
+\end{alltt}
+\begin{verbatim}
+## [1] 1000
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cut()}}
+
+To change the default way in which intervals are open and closed you can set \code{right = FALSE}. This option produces intervals closed on the left and open on the right:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# using other cutting break points}
+\hlstd{income_b} \hlkwb{<-} \hlkwd{cut}\hlstd{(}\hlkwc{x} \hlstd{= income,} \hlkwc{breaks} \hlstd{= income_breaks,}
+                \hlkwc{right} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+\hlkwd{table}\hlstd{(income_b)}
+\end{alltt}
+\begin{verbatim}
+## income_b
+## [100,200) [200,300) [300,400) [400,500) 
+##       250       225       259       266
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sum}\hlstd{(}\hlkwd{table}\hlstd{(income_b))}
+\end{alltt}
+\begin{verbatim}
+## [1] 1000
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{gl()}}
+
+In addition to the function \code{factor()}, there's \code{gl()}. This function generates factors by specifying a pattern of levels:
+
+\begin{verbatim}
+gl(n, k, length = n*k, labels = seq_len(x), 
+   ordered = FALSE)
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{gl()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# factor with gl()}
+\hlstd{num_levs} \hlkwb{<-} \hlnum{4}
+\hlstd{num_reps} \hlkwb{<-} \hlnum{3}
+
+\hlstd{simple_factor} \hlkwb{<-} \hlkwd{gl}\hlstd{(num_levs, num_reps)}
+\hlstd{simple_factor}
+\end{alltt}
+\begin{verbatim}
+##  [1] 1 1 1 2 2 2 3 3 3 4 4 4
+## Levels: 1 2 3 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+The main inputs of \code{gl()} are \code{n} and \code{k}, that is, the number of levels and the number of replications of each level.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{gl()}}
+
+Here's another example setting the arguments \code{labels} and \code{length}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# another factor with gl()}
+\hlstd{girl_boy} \hlkwb{<-} \hlkwd{gl}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlkwc{labels} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"girl"}\hlstd{,} \hlstr{"boy"}\hlstd{),} \hlkwc{length} \hlstd{=} \hlnum{7}\hlstd{)}
+\hlstd{girl_boy}
+\end{alltt}
+\begin{verbatim}
+## [1] girl girl girl girl boy  boy  boy 
+## Levels: girl boy
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+By default, the total number of elements is 8 (\code{n=2} $\times$ \code{k=4}). Four \code{girl}'s and four \code{boy}'s. But since we set the argument \code{length = 7}, we only got three \code{boy}'s.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{gl()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# frequencies (counts)}
+\hlkwd{table}\hlstd{(girl_boy)}
+\end{alltt}
+\begin{verbatim}
+## girl_boy
+## girl  boy 
+##    4    3
+\end{verbatim}
+\begin{alltt}
+\hlcom{# frequencies (percents)}
+\hlkwd{prop.table}\hlstd{(}\hlkwd{table}\hlstd{(girl_boy))}
+\end{alltt}
+\begin{verbatim}
+## girl_boy
+##      girl       boy 
+## 0.5714286 0.4285714
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Dates}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Dates}
+
+\bi
+  \item Dates and times are very common in data analysis
+  \item We can distinguish between dates, and date-times
+  \item Dates consist of year, month and day: \code{2015-06-11}
+  \item Date-times consist of both a date and a specific time: \code{2015-06-11 09:35:24}
+  \item R provides various options and packages for dealing with date and time data
+  \item There are 3 date and times classes that come with R: \code{POSIXct}, \code{POSIXlt}, \code{Date}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{POSIX Dates}
+
+\bi
+  \item POSIX stands for \textbf{Portable Operating System Interface}
+  \item POSIX is a family of standards for the design of operating systems
+  \item It is especially used for operating systems that are compatible with Unix
+  \item There is a POSIX format for date-times
+  \item POSIX date-times allow modification of time zones
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{POSIX Dates}
+
+\bi
+  \item There are two POSIX classes to store date-times: \code{POSIXct} (calendar time) and \code{POSIXlt} (list)
+  \item \code{POSIXct} date-times values are given as number of seconds since January 1, 1970, in the Coordinated Universal Time (UTC) zone
+  \item \code{POSIXlt} date-times values are stored as a list with elements for second, minute, hour, day, month, and year
+  \item the \code{POSIXct} is the usual choice for storing date-times in R
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{POSIX Dates}
+
+The function \code{Sys.time()} gives the current date and time in \code{POSIXct} format
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# current date and time}
+\hlkwd{Sys.time}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## [1] "2016-01-14 15:55:24 CST"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{POSIXct} Dates}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# current date and time}
+\hlstd{now_ct} \hlkwb{<-} \hlkwd{Sys.time}\hlstd{()}
+
+\hlstd{now_ct}
+\end{alltt}
+\begin{verbatim}
+## [1] "2016-01-14 15:55:24 CST"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{class}\hlstd{(now_ct)}
+\end{alltt}
+\begin{verbatim}
+## [1] "POSIXct" "POSIXt"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Even  though the date is displayed like a \code{character}, the class \code{POSIXct} is not stored as characters.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{POSIXct} Dates}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# unclass 'now_ct'}
+\hlkwd{unclass}\hlstd{(now_ct)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1452808524
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Unclassing a \code{POSIXct} date-time gives you the number of seconds from January 1, 1970
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{POSIXct} Dates}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# from POSIXct to POSIXlt}
+\hlstd{now_lt} \hlkwb{<-} \hlkwd{as.POSIXlt}\hlstd{(now_ct)}
+
+\hlstd{now_lt}
+\end{alltt}
+\begin{verbatim}
+## [1] "2016-01-14 15:55:24 CST"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+The print display of a \code{POSIXlt} date-time is similar to \code{POSIXct}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{POSIXlt} Dates}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# POSIXlt}
+\hlstd{nlt} \hlkwb{<-} \hlkwd{unclass}\hlstd{(now_lt)}
+\hlkwd{class}\hlstd{(nlt)}
+\end{alltt}
+\begin{verbatim}
+## [1] "list"
+\end{verbatim}
+\begin{alltt}
+\hlstd{nlt[}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## $sec
+## [1] 24.43972
+## 
+## $min
+## [1] 55
+## 
+## $hour
+## [1] 15
+## 
+## $mday
+## [1] 14
+## 
+## $mon
+## [1] 0
+\end{verbatim}
+\begin{alltt}
+\hlkwd{names}\hlstd{(nlt)}
+\end{alltt}
+\begin{verbatim}
+##  [1] "sec"    "min"    "hour"   "mday"   "mon"    "year"   "wday"   "yday"  
+##  [9] "isdst"  "zone"   "gmtoff"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{POSIXlt} Dates}
+
+You can access indivual components of a \code{POSIXlt} object using list indexing:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# POSIXlt}
+\hlstd{now_lt}\hlopt{$}\hlstd{sec}
+\end{alltt}
+\begin{verbatim}
+## [1] 24.43972
+\end{verbatim}
+\begin{alltt}
+\hlstd{now_lt}\hlopt{$}\hlstd{min}
+\end{alltt}
+\begin{verbatim}
+## [1] 55
+\end{verbatim}
+\begin{alltt}
+\hlstd{now_lt}\hlopt{$}\hlstd{year}
+\end{alltt}
+\begin{verbatim}
+## [1] 116
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{\code{Date} class}
+
+\bi
+  \item Besides \code{POSIXct} and \code{POSIXlt}, there is a third class called \code{Date}
+  \item \code{Date} stored dates as the number of days since January 1, 1970
+  \item \code{Date} class only contains date (no times)
+  \item If you don't care about times, then \code{Date} is a good option to use
+  \item See the documentation in \code{help(Date)} 
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{Date} class}
+
+The function \code{as.Date()} allows a variety of input formats. For instance, we can convert a \code{POSIXct} date-time into a \code{Date}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# from POSIXlt to Date}
+\hlstd{now_date} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(now_ct)}
+
+\hlstd{now_date}
+\end{alltt}
+\begin{verbatim}
+## [1] "2016-01-14"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{class}\hlstd{(now_date)}
+\end{alltt}
+\begin{verbatim}
+## [1] "Date"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{as.Date()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{as.Date}\hlstd{(}\hlstr{"2015-6-8"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2015-06-08"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{as.Date}\hlstd{(}\hlstr{"2015-06-8"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2015-06-08"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{as.Date}\hlstd{(}\hlstr{"2015/6/8"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2015-06-08"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{as.Date()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{as.Date}\hlstd{(}\hlstr{"6/8/2015"}\hlstd{,} \hlkwc{format} \hlstd{=} \hlstr{"%m/%d/%Y"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2015-06-08"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{as.Date}\hlstd{(}\hlstr{"6/8/2015"}\hlstd{,} \hlkwc{format} \hlstd{=} \hlstr{"%m/%d/%Y"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2015-06-08"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{as.Date}\hlstd{(}\hlstr{"June 8, 2015"}\hlstd{,} \hlkwc{format} \hlstd{=} \hlstr{"%B %d, %Y"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2015-06-08"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{as.Date}\hlstd{(}\hlstr{"8JUNE15"}\hlstd{,} \hlkwc{format} \hlstd{=} \hlstr{"%d%b%y"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2015-06-08"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Format codes for dates}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   code & value \\
+  \hline
+  \code{\%d} & day of the month (decimal number) \\  
+  \code{\%m} & month (decimal number) \\
+  \code{\%b} & month (abbrevaited) \\
+  \code{\%B} & month (full name) \\
+  \code{\%y} & year (2 digit) \\
+  \code{\%Y} & year (4 digit) \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Useful Packages}
+
+\bi
+  \item There are many other date and time classes provided in various R packages
+  \item Two common packages for working with dates are \code{"chron"} and \code{"lubridate"}
+  \item {\tiny \url{http://cran.r-project.org/web/packages/lubridate/vignettes/lubridate.html}}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

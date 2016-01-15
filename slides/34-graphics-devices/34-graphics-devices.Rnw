@@ -1,0 +1,1084 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Graphics Devices}
+\subtitle{Stat 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat}{\tt \scriptsize \color{foreground} github.com/gastonstat}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/teaching/stat133}{\tt gastonsanchez.com/teaching/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics Formats}
+
+{\Large How to produce graphical output in different formats}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Plotting options}
+
+\centerline{\Large \mdlit When creating a plot in R ...}
+
+\vspace{18pt}
+
+\centerline{\Large Screen display \quad OR \quad Save in File}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plotting options}
+
+<<echo = FALSE, fig.width=5, fig.height=5, out.width='.8\\linewidth', out.height='.8\\linewidth', fig.align='center'>>=
+pie(rep(1, 10), col = rainbow(10))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plotting options}
+
+<<eval = FALSE>>=
+# displaying on screen
+pie(rep(1, 10), col = rainbow(10))
+
+
+# saving to a file
+pdf("dummy_plot.pdf")
+pie(rep(1, 10), col = rainbow(10))
+dev.off()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Plots with R}
+
+\bb{What happens whe you make a plot in R?}
+\bbi
+  \item Graphical output is directed to a \textbf{graphics device}
+  \item A graphics device must be opened
+  \item Subsequent calls to graphics functions directed to a device
+  \item Finally, the graphics device is closed
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics Devices}
+
+\bb{2 types of graphics devices}
+\bbi
+  \item \textbf{Screen} devices
+  \item \textbf{File} devices
+  \item For more info see \code{?Devices}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics Devices}
+
+\bb{Default plotting}
+\bi
+  \item The default plotting is made via a screen device
+  \item e.g. when you call \code{plot()}, \code{pie()}, or \code{barplot()}
+  \item The plot appears on a given screen device
+  \item If you use RStudio, the plot appears of the RStudio graphics device
+  \item You can specify a particular screen device
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Screen Devices}
+
+\begin{center}
+  \begin{tabular}{l l}
+  \multicolumn{2}{c}{\textbf{Screen Devices functions}} \\
+  \hline
+  Function & Graphical Format \\
+    \hline
+    \code{x11()} & \textit{X Window} window (Cairo graphics) \\
+     & \\
+    \code{windows()} & \textit{Microsoft Windows} window \\
+     & \\
+    \code{quartz()} & \textit{MacOS X Quartz} window \\
+    \hline
+ \end{tabular}
+\end{center}
+
+When displaying on screen, we usually don't have to worry about graphics devices
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Quick examples}
+
+If you have a mac try this:
+<<eval = FALSE>>=
+quartz()   # open screen device
+plot(1:10, 1:10, pch = 19)  # plot something
+@
+
+\bigskip
+After inspecting the plot ...
+<<eval = FALSE>>=
+# close device
+dev.off()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Quick examples}
+
+If you have a PC try this:
+<<eval = FALSE>>=
+windows()  # open screen device
+plot(1:10, 1:10, pch = 19)  # plot something
+@
+
+\bigskip
+After inspecting the plot ...
+<<eval = FALSE>>=
+# close device
+dev.off()  
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Screen Devices in R}
+
+\bbi
+  \item {\hilit \code{dev.new()}} opens the default device (not in RStudio)
+  \item your default device can be found with \code{options("device")}
+  \item If you use RStudio to plot on screen, the device is \code{"RStudioGD"}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{File Devices}
+
+\bb{File Devices}
+\bbi
+  \item Instead of displaying a plot on screen, we can save it to a file
+  \item when saving a plot to a file you must use a \textbf{file} device
+  \item each file device has its own name
+  \item some devices are platform dependent
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{File Devices}
+
+\begin{center}
+  \begin{tabular}{l l}
+  \multicolumn{2}{c}{\textbf{File Devices functions}} \\
+  \hline
+  Function & Graphical Format \\
+    \hline
+    \code{postscript()} & Adobe PostScript file \\
+    \code{pdf()} & Portable Document Format \\
+    \code{svg()} & SVG file (Linux and MacOS X only) \\
+    \code{win.metafile()} & Windows Metafile (Windows only) \\
+    \code{png()} & PNG file \\
+    \code{jpeg()} & JPEG file \\
+    \code{bmp()} & BMP file \\
+    \code{tiff()} & TIFF file \\
+    \code{pictex()} & LaTeX PicTEX file \\
+    \code{xfig()} & xfig FIG file \\
+    \code{bitmap()} & Multiple formats via Ghostscript \\
+    \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{File Acronyms}
+
+\begin{center}
+  \begin{tabular}{l l}
+  \multicolumn{2}{c}{\textbf{File Acronyms}} \\
+  \hline
+  Acronym & Description \\
+    \hline
+    PDF & Portable Document Format \\
+    SVG & Scalable Vector Graphics \\
+    PNG & Portable Network Graphics \\
+    JPEG & Joint Photographic Experts Group \\
+    BMP & Bitmap \\
+    TIFF & Tagged Image File Format \\
+    \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Output Formats}
+
+\centerline{\Large \mdlit Graphics devices from the output format}
+
+\bigskip
+
+\centerline{\Large Vector \quad -vs- \quad Raster}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Output Formats}
+
+\bb{Vector Formats}
+An image is described by a set of mathematical shapes (e.g. PDF, PostScript, SVG)
+\eb
+
+\bb{Raster Formats}
+An image consists of an array of pixels, with information such as color recorded for each pixel (e.g. PNG, JPEG, TIFF, all screen devices)
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Quick examples}
+
+Vector format:
+<<eval = FALSE>>=
+pdf("dummy_plot.pdf")  # open device
+pie(rep(1, 10), col = rainbow(10))  # plot something
+dev.off()  # close device
+@
+
+\bigskip
+
+Raster format:
+<<eval = FALSE>>=
+png("dummy_plot.png")  # open device
+pie(rep(1, 10), col = rainbow(10))  # plot something
+dev.off()  # close device
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Vector or Raster?}
+
+\bb{Vector Formats}
+Vector formats are superior for images that need to be viewed at a variety of scales (i.e. zoom in and out).
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Example: vector image (pdf)}
+\begin{center}
+\ig[width=7cm]{images/dummy_plot.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Vector or Raster?}
+
+\bb{Raster Formats}
+Raster formats tend to be preferred when a plot is visually complex (e.g. many data points), and it will produce smaller files if the image is very complex.
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Example: raster image (png)}
+\begin{center}
+\ig[width=7cm]{images/dummy_plot.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Vector or Raster?}
+
+If further modifications to an R plot will be made using third-party software:
+\bi
+  \item removing a particular form are only possibe with vector format
+  \item modifying pixels of a particular color are only possible with raster formats
+\ei
+
+{\lit Keep in mind: It is easy to convert a vector format to a raster format, while the reverse is almost impossible}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Vector Formats}
+
+\bb{PDF}
+\bi
+  \item Good choice of static format
+  \item Resizes well, usually portable
+  \item Less efficient if a plot has many objects/points
+  \item \code{pdf()} uses default sans-serif font (Helvetica)
+  \item Other standard fonts are supported
+  \item For more exotic fonts you should call \code{embedFonts()}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Vector Formats}
+
+\bb{SVG}
+\bi
+  \item XML-based format
+  \item Good choice for web pages
+  \item \code{svg()} available in Linux and Mac
+  \item SVG output in Windows requires package \code{"Cairo"}
+  \item Some advanced SVG features are limitted in R
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Vector Formats}
+
+\bb{Windows Metafile}
+\bi
+  \item Vector format for Windows
+  \item Plots compatible with Microsoft products (e.g. Word, Excel, PowerPoint)
+  \item Can only be produced on Windows systems
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Raster (Bitmap) Formats}
+
+\bb{PNG}
+\bi
+  \item Desirable format for simple images (most statistical graphics)
+  \item Good for line drawings or images with solid colors
+  \item Good for many, many objects, points=
+  \item PNG uses \textbf{lossless} compression: compresses the image without losing information
+  \item PNG does not resize well
+  \item Consequently, PNG files can be edited without reducing quality
+  \item Most web browsers can read this format natively
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Raster Formats}
+
+\bb{JPEG}
+\bi
+  \item Good for photographs or natural scenes
+  \item JPEG uses \textbf{lossy} compression: compresses the image with some information loss
+  \item Consequently, repeatedly editing a JPEG filewill result in quality reduction
+  \item JPEG does not resize well
+  \item Better suited for complex images with lots of different regions (like photographs)
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Raster Formats}
+
+\bb{TIFF}
+\bi
+  \item Sophisticated format that allows multiple pages of raster output within a single file
+  \item Supports lossless compression
+  \item Less supported by web browsers
+  \item Preferred format for publishers of books or journal articles
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Raster Formats}
+
+\bb{Image Size}
+\bi
+  \item Size of Raster images is specified in number of pixels (rahter than physical size in inches)
+  \item The physical size of a raster image is determined by the \textbf{resolution} at which it is viewed
+  \item e.g. PNG image 72 pixels wide will be 1 inch wide when viewed on a screen with a resolution of 72 dpi (dots per inch)
+  \item e.g. PNG image 72 pixels wide will be 0.75 inches wide on a screen with a resolution of 96 dpi
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Extension Packages}
+
+\begin{center}
+  \begin{tabular}{l l l}
+  \multicolumn{3}{c}{\textbf{Extension functions and packages}} \\
+  \hline
+  Function & Format & Package \\
+    \hline
+    \code{Cairo()} & Multiple formats & \code{"Cairo"} \\
+    \code{tikz()} & LaTeX PGF, TikZ file & \code{"tikzDevice"} \\
+    \code{devSVGTips()} & SVG file & \code{"RSVGTipsDevice"} \\
+    \code{JavaGD} & Java Swing window & \code{"JavaGD"} \\
+    \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Data \code{mtcars}}
+
+<<size='tiny'>>=
+head(mtcars, n = 10)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Different sizes - same resolution}
+
+<<eval=FALSE>>=
+# 600px - 500px
+png(file = "cars-600-500.png", width = 600, height = 500)
+plot(mtcars[ ,c('hp', 'mpg')], type = "n", 
+     main = "Horsepower and Miles-per-gallon")
+text(mtcars[ ,c('hp', 'mpg')], lab = rownames(mtcars))
+dev.off()
+
+
+# 400px - 350px
+png(file = "cars-400-350.png", width = 400, height = 350)
+plot(mtcars[ ,c('hp', 'mpg')], type = "n", 
+     main = "Horsepower and Miles-per-gallon")
+text(mtcars[ ,c('hp', 'mpg')], lab = rownames(mtcars))
+dev.off()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{cars-600-500.png -vs- cars-400-350.png}
+\begin{center}
+\ig[width=11cm]{images/cars_large_small.png}
+
+Same \code{units = "px"}, \code{pointsize = 12}, \code{res = NA}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Same sizes - different resolution}
+
+<<eval=FALSE>>=
+# resolution 72 PPI (pixels-per-inch)
+png(file = "cars72.png", width = 600, height = 500, res = 72)
+plot(mtcars[ ,c('hp', 'mpg')], type = "n", 
+     main = "Horsepower and Miles-per-gallon")
+text(mtcars[ ,c('hp', 'mpg')], lab = rownames(mtcars))
+dev.off()
+
+
+# resolution 96 PPI (pixels-per-inch)
+png(file = "cars96.png", width = 600, height = 500, res = 96)
+plot(mtcars[ ,c('hp', 'mpg')], type = "n", 
+     main = "Horsepower and Miles-per-gallon")
+text(mtcars[ ,c('hp', 'mpg')], lab = rownames(mtcars))
+dev.off()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Same sizes, different resolutions}
+\begin{center}
+\ig[width=10cm]{images/cars-2resolutions.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[c]
+\frametitle{Considerations}
+
+\centering
+{\Large \mdlit Plots on Screen}
+
+\vspace{18pt}
+
+-vs-
+
+\vspace{18pt}
+
+{\Large \mdlit Plots on Print}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{David Smith's Recommendations}
+
+\bi
+  \item Use pdf for printing
+  \item Use png for web displays
+  \item For documents or for detail, go hi-resolution
+  \item Choose your dimensions carefully
+  \item Think about aspect ratio
+  \item Vector formats are good for line drawings and plots with solid colors
+  \item Remove the outer margins, if you're not using them
+  \item Make sure anti-aliasing is enabled
+  \item Avoid using JPEG
+  \item Be creative
+\ei
+
+{\scriptsize \url{http://blog.revolutionanalytics.com/2009/01/10-tips-for-making-your-r-graphics-look-their-best.html}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{PDF}
+
+\bb{Use pdf for printing}
+\bi
+  \item Use pdf if you plan to print your graphic
+  \item The graphic is scale-independent
+  \item PDF viewers are ubiquitous these days
+  \item Easy to create a high-quality printout of a PDF file on almost any printer
+  \item Best choice whenever you want to send the graph as a file via email, and the recipient needs the best quality possible
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{PNG}
+
+\bb{For Web display, use PNG}
+\bi
+  \item These days, the best choice is the PNG format
+  \item Most browsers can display PNG graphics without trouble
+  \item The main choice you need to make when using \code{png()} is the dimensions of the graphic in pixels
+  \item Slides 4x3 png plots: \code{width=1024} and \code{height=768} pixels
+  \item Slides 16x9 png plots: \code{width=1920} and \code{height=1080} pixels
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{PNG}
+
+\bb{Choosing dimensions}
+\bi
+  \item For PDF graphs this is easiest to deal with, where you specify width and height in inches anyway
+  \item For raster images is a bit trickier:
+  \item R assumes 72 pixels to the inch
+  \item When you increase the pixel dimensions you're also increasing the implicit size of the graph area
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Summary}
+
+\bi
+  \item Plots are created on a graphics device
+  \item There are screen devices and file devices
+  \item Default graphics on screen are good for exploratory analysis
+  \item File devices are useful for presentation-consumption of graphics
+  \item File devices are divided in \textit{Vector} and \textit{Raster} formats
+  \item Vector formats are good for line drawings and plots with solid colors
+  \item Bitmap formats are good for plots with a large number of points
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{More About Graphics}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Data \code{starwarstoy.csv}}
+
+<<eval=FALSE>>=
+library(readr)
+git <- 'https://raw.githubusercontent.com/gastonstat/stat133'
+df <- read_csv(paste0(git, '/master/datasets/starwars.csv'))
+sw <- na.omit(df[ ,c('name', 'height', 'weight')])
+@
+
+<<echo=FALSE>>=
+df <- read.csv('~/Documents/course_stat133/stat133/datasets/starwarstoy.csv', stringsAsFactors = FALSE)
+sw <- df[ ,c('name', 'height', 'weight')]
+@
+
+<<>>=
+head(sw, n = 5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Labeling Points with}
+
+\bi
+  \item \code{text()} allows us to add text to a plot
+  \item we can use \code{text()} to label points
+\ei
+
+\bigskip
+For instance:
+<<sw_plot1, eval=FALSE>>=
+with(sw, plot(height, weight))
+with(sw, text(height, weight, labels = name))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Labeling Points with}
+
+<<sw_plot1, echo=FALSE, fig.width=6, fig.height=5, out.width='.8\\linewidth', out.height='.7\\linewidth', fig.align='center'>>=
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Labeling Points with}
+
+Use {\hilit \code{xpd = TRUE}} to expand the text outside the plotting region:
+<<sw_plot2, eval=FALSE>>=
+with(sw, plot(height, weight))
+with(sw, text(height, weight, labels = name, xpd = TRUE))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Labeling Points with}
+
+<<sw_plot2, echo=FALSE, fig.width=6, fig.height=5, out.width='.8\\linewidth', out.height='.7\\linewidth', fig.align='center'>>=
+@
+
+{\footnotesize Some labels are not clearly displayed}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Labeling Points}
+
+\begin{center}
+  \begin{tabular}{l l}
+  \hline
+  Acronym & Description \\
+    \hline
+    \code{text()} & Base R \\
+    \code{spread.labels()} & \code{"plotrix"} \\
+    \code{thigmophobe.labels()} & \code{"plotrix"} \\
+    \code{pointLabel()} & \code{"maptools"} \\
+\hline
+ \end{tabular}
+\end{center}
+
+<<echo=FALSE, message=FALSE>>=
+library(plotrix)
+library(maptools)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Labeling with \code{spread.labels()}}
+
+Instead of \code{text()} we can use {\hilit \code{spread.labels()}}:
+<<sw_plot3, eval=FALSE>>=
+with(sw, plot(height, weight))
+with(sw, spread.labels(height, weight, labels = name))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Labeling with \code{spread.labels()}}
+
+<<sw_plot3, echo=FALSE, fig.width=6, fig.height=5, out.width='.8\\linewidth', out.height='.7\\linewidth', fig.align='center'>>=
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Labeling with \code{thigmophobe.labels()}}
+
+We can also use {\hilit \code{thigmophobe.labels()}}:
+<<sw_plot4, eval=FALSE>>=
+with(sw, plot(height, weight))
+with(sw, thigmophobe.labels(height, weight, labels = name))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Labeling with \code{spread.labels()}}
+
+<<sw_plot4, echo=FALSE, fig.width=6, fig.height=5, out.width='.8\\linewidth', out.height='.7\\linewidth', fig.align='center'>>=
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Labeling with \code{pointLabel()}}
+
+We can also use {\hilit \code{pointLabel()}}:
+<<sw_plot5, eval=FALSE>>=
+with(sw, plot(height, weight))
+with(sw, pointLabel(height, weight, labels = name))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Labeling with \code{pointLabel()}}
+
+<<sw_plot5, echo=FALSE, fig.width=6, fig.height=5, out.width='.8\\linewidth', out.height='.7\\linewidth', fig.align='center'>>=
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Fonts \& Formulae}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Text and expressions}
+
+\bi
+  \item We can draw text with \code{text()}
+  \item \code{text()} accepts character strings
+  \item But it also accepts R expressions resulting from a call to {\hilit \code{expression()}}
+  \item An expression is interpreted as a mathematical formula
+  \item See \code{?plotmath} for more info
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Text and expressions}
+
+<<formula, eval=FALSE>>=
+op <- par(mar = c(4, 4, 1, 1))
+plot.new()
+plot.window(xlim = c(0, 1), ylim = c(0, 1))
+axis(side = 1)
+axis(side = 2)
+text(0.5, 0.8, 
+     expression(paste("Temperature (", degree, "C) in 2015")))
+text(0.5, 0.6, 
+     expression(bar(x) == sum(frac(x[i], n), i==1, n)))
+text(0.5, 0.4, 
+     expression(hat(beta) == (X^t * X)^(-1) * X^t * y))
+text(0.5, 0.2, 
+     expression(z[i] == sqrt(x[i]^2 + y[i]^2)))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Text and expressions}
+
+<<formula, echo=FALSE, fig.width=4, fig.height=4, out.width='.8\\linewidth', out.height='.8\\linewidth', fig.align='center'>>=
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Text and expressions}
+
+\bi
+  \item We can draw text with \code{text()}
+  \item \code{text()} accepts character strings
+  \item But it also accepts R expressions resulting from a call to {\hilit \code{expression()}}
+  \item An expressio nis interpreted as a mathematical formula
+  \item See \code{?plotmath} for more info
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Text and expressions}
+
+How to pass a variable to an expression?
+<<formula2, eval=FALSE>>=
+year <- 2015
+
+op <- par(mar = c(4, 4, 1, 1))
+plot.new()
+plot.window(xlim = c(0, 1), ylim = c(0.4, 0.6))
+axis(side = 1)
+axis(side = 2)
+text(0.5, 0.5, 
+     expression(paste("Temperature (", degree, "C) in ", year)))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Text and expressions}
+
+<<formula2, echo=FALSE, fig.width=4, fig.height=3.5, out.width='.8\\linewidth', out.height='.7\\linewidth', fig.align='center'>>=
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Text and expressions}
+
+Passing a variable with {\hilit \code{substitute()}}
+<<formula3, eval=FALSE>>=
+year <- 2015
+
+op <- par(mar = c(4, 4, 1, 1))
+plot.new()
+plot.window(xlim = c(0, 1), ylim = c(0.4, 0.6))
+axis(side = 1)
+axis(side = 2)
+text(0.5, 0.5, 
+     substitute(
+       paste("Temperature (", degree, "C) in ", year),
+       list(year = year))
+     )
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Text and expressions}
+
+<<formula3, echo=FALSE, fig.width=4, fig.height=3.5, out.width='.8\\linewidth', out.height='.7\\linewidth', fig.align='center'>>=
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{R package \code{"googleVis"}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some packages}
+
+\bi
+  \item \code{"googleVis"}
+  \item \code{"rCharts"}
+  \item \code{"rMaps"}
+  \item \code{"rgl"}  
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{"googleVis"}}
+
+<<eval = FALSE>>=
+install.packages("googleVis")
+
+library(googleVis)
+
+data(Fruits)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{"googleVis"}}
+
+<<eval = FALSE>>=
+M <- gvisMotionChart(Fruits, idvar="Fruit", timevar="Year")
+
+str(M)
+
+print(M)
+
+plot(M)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

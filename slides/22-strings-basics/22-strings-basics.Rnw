@@ -1,0 +1,1219 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Strings Basics}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Character Vectors Reminder}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We express character strings using single or double quotes:
+<<eval = FALSE>>=
+# string with single quotes
+'a character string using single quotes'
+@
+
+<<eval = FALSE>>=
+# string with double quotes
+"a character string using double quotes"
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We can insert single quotes in a string with double quotes, and vice versa:
+<<eval = FALSE>>=
+# single quotes within double quotes
+"The 'R' project for statistical computing"
+@
+
+<<eval = FALSE>>=
+# double quotes within single quotes
+'The "R" project for statistical computing'
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We cannot insert single quotes in a string with single quotes, neither we can insert double quotes in a string with double quotes (Don't do this!):
+<<eval = FALSE>>=
+# don't do this!
+"This "is" totally unacceptable"
+@
+                                                            
+<<eval = FALSE>>=
+# don't do this!
+'This 'is' absolutely wrong'
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{character()}}
+
+Besides the single quotes or double quotes, R provides the function \code{character()} to create vectors of type character. 
+
+<<>>=
+# character vector of 5 elements
+a <- character(5)
+
+a
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty string}
+
+The most basic string is the \textbf{empty string} produced by consecutive quotation marks: \code{""}. 
+<<empty_string>>=
+# empty string
+empty_str <- ""
+
+empty_str
+@
+Technically, \code{""} is a string with no characters in it, hence the name \textit{empty string}.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty character vector}
+
+Another basic string structure is the \textbf{empty character vector} produced by \code{character(0)}:
+<<empty_char_vector>>=
+# empty character vector
+empty_chr <- character(0)
+
+empty_chr
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty character vector}
+
+Do not to confuse the empty character vector \code{character(0)} with the empty string \code{""}; they have different lengths:
+<<empty_str_char_lengths>>=
+# length of empty string
+length(empty_str)
+
+# length of empty character vector
+length(empty_chr)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Vectors}
+
+You can use the concatenate function {\hilit \code{c()}} to create character vectors:
+<<>>=
+strings <- c('one', '2', 'III', 'four')
+strings
+
+example <- c('mon', 'tues', 'wed', 'thu', 'fri')
+example
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replicate elements}
+
+You can also use the function {\hilit \code{rep()}} to create character vectors of replicated elements:
+<<eval = FALSE>>=
+rep("a", times = 5)
+rep(c("a", "b", "c"), times = 2)
+rep(c("a", "b", "c"), times = c(3, 2, 1))
+rep(c("a", "b", "c"), each = 2)
+rep(c("a", "b", "c"), length.out = 5)
+rep(c("a", "b", "c"), each = 2, times = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+The function {\hilit \code{paste()}} is perhaps one of the most important functions that we can use to create and build strings. 
+
+<<eval=FALSE>>=
+paste(..., sep = " ", collapse = NULL)
+@
+
+\code{paste()} takes one or more R objects, converts them to \code{"character"}, and then it concatenates (pastes) them to form one or several character strings.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+Simple example using \code{paste()}:
+<<paste_string_ex1>>=
+# paste
+PI <- paste("The life of", pi)
+
+PI
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+The default separator is a blank space (\code{sep = " "}). But you can select another character, for example \code{sep = "-"}:
+<<paste_string_ex2>>=
+# paste
+tobe <- paste("to", "be", "or", "not", "to", "be", sep = "-")
+
+tobe
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+If we give \code{paste()} objects of different length, then the recycling rule is applied:
+<<paste_string_ex3>>=
+# paste with objects of different lengths
+paste("X", 1:5, sep = ".")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+To see the effect of the \code{collapse} argument, let's compare the difference with collapsing and without it:
+<<paste_string_ex4>>=
+# paste with collapsing
+paste(1:3, c("!", "?", "+"), sep = '', collapse = "")
+# paste without collapsing
+paste(1:3, c("!", "?", "+"), sep = '')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Printing Strings}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Printing Methods}
+Functions for printing strings can be very useful when creating our own functions. They help us have more control on the way the output gets printed either on screen or in a file.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example \code{str()}}
+
+Many functions print output to the console. Some examples are  {\hilit \code{summary()}} and {\hilit \code{str()}}:
+<<str_example, size = 'scriptsize'>>=
+# str
+str(mtcars, vec.len = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Printing Characters}
+
+R provides a series of functions for printing strings.
+
+\begin{center}
+  \begin{tabular}{l l}
+  \multicolumn{2}{c}{\textbf{Printing functions}} \\
+  \hline
+  Function & Description \\
+    \hline
+    \code{print()} & generic printing \\
+    \code{noquote()} & print with no quotes \\
+    \code{cat()} & concatenation \\
+    \code{format()} & special formats \\
+    \code{toString()} & convert to string \\
+    \code{sprintf()} & C-style printing \\
+    \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Method \code{print()}}
+
+The \textit{workhorse} printing function in R is {\hilit \code{print()}}, which prints its argument on the console:
+<<print_string>>=
+# text string
+my_string <- "programming with data is fun"
+
+# print string
+print(my_string)
+@
+To be more precise, \code{print()} is a generic function, which means that you should use this function when creating printing methods for programmed classes.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Method \code{print()}}
+
+If we want to print character strings with no quotes 
+we can set the argument \code{quote = FALSE} 
+<<print_noquote>>=
+# print without quotes
+print(my_string, quote = FALSE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{noquote()}}
+
+An alternative option for achieving a similar output is by using \code{noquote()}
+<<noquote>>=
+# print without quotes
+noquote(my_string)
+
+# similar to:
+print(my_string, quote = FALSE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cat()}}
+
+Another very useful function is {\hilit \code{cat()}} which allows us to concatenate objects and print them either on screen or to a file. Its usage has the following structure:
+\begin{verbatim}
+cat(..., file = "", sep = " ", fill = FALSE, 
+    labels = NULL, append = FALSE)
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cat()}}
+
+If we use \code{cat()} with only one single string, you get a similar (although not identical) result as \code{noquote()}:
+<<cat_ex1>>=
+# simply print with 'cat()'
+cat(my_string)
+@
+
+\code{cat()} prints its arguments without quotes. In essence, \code{cat()} simply displays its content (on screen or in a file).
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cat()}}
+
+When we pass vectors to \code{cat()}, each of the elements are treated as though they were separate arguments:
+<<cat_ex4>>=
+# first four months
+cat(month.name[1:4], sep = " ")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cat()}}
+
+The argument \code{fill} allows us to break long strings; this is achieved when we specify the string width with an integer number:
+<<cat_ex5>>=
+# fill = 30
+cat("Loooooooooong strings", "can be displayed", 
+    "in a nice format", 
+    "by using the 'fill' argument", fill = 30)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cat()}}
+
+Last but not least, we can specify a file output in \code{cat()}. For instance, to save the output in the file \code{output.txt} located in your working directory:
+<<cat_ex6, eval=FALSE>>=
+# cat with output in a given file
+cat(my_string, "with R", file = "output.txt")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{format()}}
+
+The function \code{format()} allows us to format an R object for pretty printing. This is especially useful when printing numbers and quantities under different formats.
+<<format_string_default>>=
+# default usage
+format(13.7)
+# another example
+format(13.12345678)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{format()}}
+
+Some useful arguments of \code{format()}:
+\bi
+ \item \code{width} the (minimum) width of strings produced
+ \item \code{trim} if set to \code{TRUE} there is no padding with spaces
+ \item \code{justify} controls how padding takes place for strings. Takes the values \code{"left", "right", "centred", "none"}
+\ei
+
+For controling the printing of numbers, use these arguments:
+\bi
+ \item \code{digits} The number of digits to the right of the decimal place.
+ \item \code{scientific} use \code{TRUE} for scientific notation, \code{FALSE} for standard notation
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{format()}}
+
+<<>>=
+# justify options
+format(c("A", "BB", "CCC"), width = 5, justify = "centre")
+format(c("A", "BB", "CCC"), width = 5, justify = "left")
+format(c("A", "BB", "CCC"), width = 5, justify = "right")
+format(c("A", "BB", "CCC"), width = 5, justify = "none")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{format()}}
+
+<<>>=
+# digits
+format(1/1:5, digits = 2)
+
+# use of 'digits', widths and justify
+format(format(1/1:5, digits = 2), width = 6, justify = "c")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{string formatting with \code{sprintf()}}
+
+The function {\hilit \code{sprintf()}} is a wrapper for the \texttt{C} function \code{sprintf()} that returns a formatted string combining text and variable values. Its usage has the following form:
+\begin{verbatim}
+sprintf(fmt, ...)
+\end{verbatim}
+
+The nice feature about \code{sprintf()} is that it provides us a very flexible way of formatting vector elements as character strings. 
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{sprintf()}}
+
+Several ways in which the number \code{pi} can be formatted:
+<<>>=
+# "%f" indicates 'fixed point' decimal notation
+sprintf("%f", pi)
+# decimal notation with 3 decimal digits
+sprintf("%.3f", pi)
+# 1 integer and 0 decimal digits
+sprintf("%1.0f", pi)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{sprintf()}}
+
+Several ways in which the number \code{pi} can be formatted:
+<<>>=
+# more options
+sprintf("%5.1f", pi)
+sprintf("%05.1f", pi)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{sprintf()}}
+
+<<>>=
+# print with sign (positive)
+sprintf("%+f", pi)
+# prefix a space
+sprintf("% f", pi)
+# left adjustment
+sprintf("%-10f", pi) # left justified
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{sprintf()}}
+
+<<>>=
+# exponential decimal notation "e"
+sprintf("%e", pi)
+# exponential decimal notation "E"
+sprintf("%E", pi)
+# number of significant digits (6 by default)
+sprintf("%g", pi)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{sprintf()}}
+
+<<sprintf3>>=
+# more sprintf examples
+sprintf("Harry's age is %s", 12)
+
+sprintf("five is %s, six is %s", 5, 6)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparing printing methods}
+
+<<print_comparison, eval=FALSE>>=
+# printing method 
+print(1:5)
+# convert to character
+as.character(1:5)
+# concatenation
+cat(1:5, sep="-")
+# default pasting
+paste(1:5)
+# paste with collapsing
+paste(1:5, collapse = "")
+# convert to a single string
+toString(1:5)
+# unquoted output
+noquote(as.character(1:5))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{ggplot2 \code{summary()}}
+
+{\scriptsize \url{https://github.com/hadley/ggplot2/blob/master/R/summary.r}}
+<<size = 'tiny', eval = FALSE>>=
+summary.ggplot <- function(object, ...) {
+  wrap <- function(x) paste(
+    paste(strwrap(x, exdent = 2), collapse = "\n"), "\n", sep = "")
+
+  if (!is.null(object$data)) {
+    output <- paste(
+      "data:     ", paste(names(object$data), collapse = ", "),
+      " [", nrow(object$data), "x", ncol(object$data), "] ",
+      "\n", sep = "")
+    cat(wrap(output))
+  }
+  if (length(object$mapping) > 0) {
+    cat("mapping:  ", clist(object$mapping), "\n", sep = "")
+  }
+  if (object$scales$n() > 0) {
+    cat("scales:  ", paste(object$scales$input(), collapse = ", "), "\n")
+  }
+  cat("faceting: ")
+  print(object$facet)
+  if (length(object$layers) > 0)
+    cat("-----------------------------------\n")
+  invisible(lapply(object$layers, function(x) {
+    print(x)
+    cat("\n")
+  }))
+
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{ggplot2 object}
+
+<<size = 'scriptsize'>>=
+library(ggplot2)
+
+gg <- ggplot(data = mtcars, aes(x = mpg, y = hp)) +
+  geom_point()
+
+summary(gg)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Reading Raw Text}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reading Text with \code{readlines()}}
+
+\bi
+  \item {\hilit \code{readLines()}} allows us to import text \textit{as is} (i.e. we want to read raw text)
+  \item Use \code{readLines()} if you don't want R to assume that the data is any particular form
+  \item \code{readLines()} takes the name of a file or the name of a URL that we want to read
+  \item The output is a character vector with one element for each line of the file or url
+\ei
+  
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading Text with \code{readlines()}}
+
+For instance, here's how to read the file located at: \\
+\url{http://www.textfiles.com/music/ktop100.txt}
+
+<<read_top105, echo=FALSE>>=
+# read 'ktop100.txt' file
+top105 <- readLines("~/Dropbox/Handling_Strings_in_R/top100.txt")
+@
+
+<<eval=FALSE>>=
+# read 'ktop100.txt' file
+ktop <- "http://www.textfiles.com/music/ktop100.txt"
+
+top105 <- readLines(ktop)
+@
+  
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading Text with \code{readlines()}}
+
+<<size>>=
+head(top105, n = 5)
+@
+  
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Basic String Manipulation}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{String Manipulation}
+
+There are a number of very handy functions in R for doing some basic manipulation of strings:
+
+\begin{center}
+  \begin{tabular}{l l}
+  \multicolumn{2}{c}{\textbf{Manipulation of strings}} \\
+  \hline
+  Function & Description \\
+    \hline
+    \code{nchar()} & number of characters \\
+    \code{tolower()} & convert to lower case \\
+    \code{toupper()} & convert to upper case \\
+    \code{casefold()} & case folding \\
+    \code{chartr()} & character translation \\
+    \code{abbreviate()} & abbreviation \\
+    \code{substring()} & substrings of a character vector \\
+    \code{substr()} & substrings of a character vector \\
+    \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Counting number of characters}
+
+\code{nchar()} counts the number of characters in a string, that is, the ``length'' of a string:
+<<nchar_ex1>>=
+# how many characters?
+nchar(c("How", "many", "characters?"))
+
+# how many characters?
+nchar("How many characters?")
+@
+Notice that the white spaces between words in the second example are also counted as characters. 
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Counting number of characters}
+
+Do not confuse \code{nchar()} with \code{length()}. The former gives us the \textbf{number of characters}, the later only gives the \textbf{number of elements} in a vector:
+<<length_ex1>>=
+# how many elements?
+length(c("How", "many", "characters?"))
+
+# how many elements?
+length("How many characters?")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Convert to lower case with \code{tolower()}}
+
+R comes with three functions for text casefolding. The first function we'll discuss is \code{tolower()} which converts any upper case characters into lower case:
+<<tolower_ex>>=
+# to lower case
+tolower(c("aLL ChaRacterS in LoweR caSe", "ABCDE"))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Convert to upper case with \code{toupper()}}
+
+The opposite function of \code{tolower()} is \code{toupper}. As you may guess, this function converts any lower case characters into upper case:
+<<toupper_ex>>=
+# to upper case
+toupper(c("All ChaRacterS in Upper Case", "abcde"))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Case conversion with \code{casefold()}}
+
+\code{casefold()} converts all characters to lower case, but we can use the argument \code{upper = TRUE} to indicate the opposite (characters in upper case):
+<<casefold_ex>>=
+# lower case folding
+casefold("aLL ChaRacterS in LoweR caSe")
+
+# upper case folding
+casefold("All ChaRacterS in Upper Case", upper = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character translation with \code{chartr()}}
+
+There's also the function \code{chartr()} which stands for \textit{character translation}. 
+<<eval = FALSE>>=
+# character translation
+chartr(old, new, x)
+@
+
+\code{chartr()} takes three arguments: an \code{old} string, a \code{new} string, and a character vector \code{x}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character translation with \code{chartr()}}
+
+The way \code{chartr()} works is by replacing the characters in \code{old} that appear in \code{x} by those indicated in \code{new}. For example, suppose we want to translate the letter \code{"a"} (lower case) with \code{"A"} (upper case) in the sentence \code{x}:
+<<chartr_ex1>>=
+# replace 'a' by 'A'
+chartr("a", "A", "This is a boring string")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character translation with \code{chartr()}}
+
+<<chartr_ex3>>=
+# multiple replacements
+crazy <- c("Here's to the crazy ones", 
+           "The misfits", 
+           "The rebels")
+
+chartr("aei", "#!?", crazy)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Abbreviate strings with \code{abbreviate()}}
+
+Another useful function for basic manipulation of character strings is \code{abbreviate()}. Its usage has the following structure:
+
+\begin{verbatim}
+abbreviate(names.org, minlength = 4, dot = FALSE, 
+           strict =FALSE,
+           method = c("left.keep", "both.sides"))
+\end{verbatim}
+
+Although there are several arguments, the main parameter is the character vector (\code{names.org}) which will contain the names that we want to abbreviate
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Abbreviate strings with \code{abbreviate()}}
+
+<<abbreviate_ex>>=
+# some color names
+some_colors <- colors()[1:4]
+
+# abbreviate (default usage)
+colors1 <- abbreviate(some_colors)
+colors1
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Abbreviate strings with \code{abbreviate()}}
+
+<<abbreviate_ex2>>=
+# abbreviate with 'minlength'
+colors2 <- abbreviate(some_colors, minlength = 5)
+colors2
+
+# abbreviate
+colors3 <- abbreviate(some_colors, minlength = 3, 
+                      method = "both.sides")
+colors3
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substr()}}
+
+The function \code{substr()} extracts or replaces substrings in a character vector. Its usage has the following form:
+<<eval = FALSE>>=
+# replace
+substr(x, start, stop)
+@
+
+\code{x} is a character vector, \code{start} indicates the first element to be extracted (or replaced), and \code{stop} indicates the last element to be extracted (or replaced)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting substrings with \code{substr()}}
+
+<<substr_ex1>>=
+# extract characters in positions 1, 2, 3
+substr("abcdef", 1, 3)
+
+# extract 'area code' 
+substr("(510) 987 6543", 2, 4)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substr()}}
+
+<<substr_ex2>>=
+# replace 2nd letter with hash symbol
+x <- c("may", "the", "force", "be", "with", "you")
+
+substr(x, 2, 2) <- "#"
+
+x
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substr()}}
+
+<<substr_ex3>>=
+# replace 2nd and 3rd letters with ":)"
+y <- c("may", "the", "force", "be", "with", "you")
+
+substr(y, 2, 3) <- ":)"
+
+y
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substr()}}
+
+<<substr_ex4>>=
+# replacement with recycling
+z <- c("may", "the", "force", "be", "with", "you")
+
+substr(z, 2, 3) <- c("#", "@")
+
+z
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substring()}}
+
+Closely related to \code{substr()}, the function {\hilit \code{substring()}} extracts or replaces substrings in a character vector. Its usage has the following form:
+<<eval=FALSE>>=
+substring(text, first, last = 1000000L)
+@
+
+\code{text} is a character vector, \code{first} indicates the first element to be replaced, and \code{last} indicates the last element to be replaced
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substring()}}
+
+<<substring_ex1>>=
+# same as 'substr'
+substring("ABCDEF", 2, 4)
+
+substr("ABCDEF", 2, 4)
+
+# extract each letter
+substring("ABCDEF", 1:6, 1:6)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substring()}}
+
+<<substring_ex2, tidy=TRUE>>=
+# multiple replacement with recycling
+txt <- c("another", "dummy", "example")
+
+substring(txt, 1:3) <- c(" ", "zzz")
+
+txt
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Set Operations}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+
+We can apply functions such as set union, intersection, difference, equality and membership, on \code{"character"} vectors.
+
+\begin{center}
+  \begin{tabular}{l l}
+  \hline
+  Function & Description \\
+    \hline
+    \code{union()} & set union \\
+    \code{intersect()} & intersection \\
+    \code{setdiff()} & set difference \\
+    \code{setequal()} & equal sets \\
+    \code{identical()} & exact equality \\
+    \code{is.element()} & is element \\
+    \code{\%in\%()} & contains \\
+    \code{sort()} & sorting \\
+    \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Union}
+
+<<union_ex>>=
+# two character vectors
+set1 <- c("some", "random", "words", "some")
+
+set2 <- c("some", "many", "none", "few")
+
+# union of set1 and set2
+union(set1, set2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Intersection}
+
+<<intersect_ex>>=
+# two character vectors
+set3 <- c("some", "random", "few", "words")
+
+set4 <- c("some", "many", "none", "few")
+
+# intersect of set3 and set4
+intersect(set3, set4)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Set Difference}
+
+<<setdiff_ex>>=
+# two character vectors
+set5 <- c("some", "random", "few", "words")
+
+set6 <- c("some", "many", "none", "few")
+
+# difference between set5 and set6
+setdiff(set5, set6)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Set Equality}
+
+<<setequal_ex>>=
+# three character vectors
+set7 <- c("some", "random", "strings")
+set8 <- c("some", "many", "none", "few")
+set9 <- c("strings", "random", "some")
+
+# set7 == set8?
+setequal(set7, set8)
+
+# set7 == set9?
+setequal(set7, set9)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Element Membership}
+
+<<iselement_ex>>=
+# three vectors
+set10 <- c("some", "stuff", "to", "play", "with")
+elem1 <- "play"
+elem2 <- "many"
+
+# elem1 in set10?
+is.element(elem1, set10)
+
+# elem2 in set10?
+is.element(elem2, set10)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Element Membership}
+
+<<in_ex>>=
+# elem1 in set10?
+elem1 %in% set10
+
+# elem2 in set10?
+elem2 %in% set10
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sorting}
+
+\code{sort()} arranges elements in alphabetical order
+<<sort_ex1>>=
+set11 <- c("random", "words", "multiple")
+
+# sort (decreasingly)
+sort(set11)
+
+# sort (increasingly)
+sort(set11, decreasing = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

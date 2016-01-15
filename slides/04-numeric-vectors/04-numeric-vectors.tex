@@ -1,0 +1,1499 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Numeric Vectors}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Types and Structures}
+
+To make the best of the R language, you'll need a strong understanding of the basic \textbf{data types} and \textbf{data structures} and how to operate on them.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Vectors}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Vectors Reminder}
+
+\bi
+  \item A vector is the most basic data structure in R
+  \item Vectors are contiguous cells containing data
+  \item Can be of any length (including zero)
+  \item R has five basic type of vectors: \\
+  integer, double, complex, logical, character
+  \item vectors are \textbf{atomic} structures
+  \item the values in a vector must be ALL of the same type 
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectors}
+
+The most simple type of vectors are scalars or single values:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# integer}
+\hlstd{x} \hlkwb{<-} \hlnum{1L}
+\hlcom{# double (real)}
+\hlstd{y} \hlkwb{<-} \hlnum{5}
+\hlcom{# complex}
+\hlstd{z} \hlkwb{<-} \hlnum{3} \hlopt{+} \hlnum{5i}
+\hlcom{# logical}
+\hlstd{a} \hlkwb{<-} \hlnum{TRUE}
+\hlcom{# character}
+\hlstd{b} \hlkwb{<-} \hlstr{"yosemite"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectors}
+
+The function to create a vector from individual values is {\hilit \code{c()}}, short for \textbf{concatenate}:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some vectors}
+\hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)}
+
+\hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"one"}\hlstd{,} \hlstr{"two"}\hlstd{,} \hlstr{"three"}\hlstd{)}
+
+\hlstd{z} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Atomic Vectors}
+
+If you mix different data values, R will coerce them so they are all of the same type
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mixing numbers and characters}
+\hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlstr{"four"}\hlstd{,} \hlstr{"five"}\hlstd{)}
+
+\hlcom{# mixing numbers and logical values}
+\hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{)}
+
+\hlcom{# mixing numbers and logical values}
+\hlstd{z} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlstr{"TRUE"}\hlstd{,} \hlstr{"FALSE"}\hlstd{)}
+
+\hlcom{# mixing integer, real, and complex numbers}
+\hlstd{w} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1L}\hlstd{,} \hlopt{-}\hlnum{0.5}\hlstd{,} \hlnum{3} \hlopt{+} \hlnum{5i}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectors of a given class}
+
+Sometimes is useful to initialize vectors of a particular class by simply specifying the number of elements:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# five element vectors }
+\hlstd{int} \hlkwb{<-} \hlkwd{integer}\hlstd{(}\hlnum{5}\hlstd{)}
+\hlstd{num} \hlkwb{<-} \hlkwd{numeric}\hlstd{(}\hlnum{5}\hlstd{)}
+\hlstd{comp} \hlkwb{<-} \hlkwd{complex}\hlstd{(}\hlnum{5}\hlstd{)}
+\hlstd{logi} \hlkwb{<-} \hlkwd{logical}\hlstd{(}\hlnum{5}\hlstd{)}
+\hlstd{char} \hlkwb{<-} \hlkwd{character}\hlstd{(}\hlnum{5}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vector class functions}
+
+\bi
+  \item \code{integer()}, \code{is.integer()}, \code{as.integer()}
+  \item \code{numeric()}, \code{is.numeric()}, \code{as.numeric()}
+  \item \code{complex()}, \code{is.complex()}, \code{as.complex()}
+  \item \code{logical()}, \code{is.logical()}, \code{as.logical()}
+  \item \code{character()}, \code{is.character()}, \code{as.character()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Numeric Vectors}
+
+Vectors of sequence of \textbf{integers} can be created with the colon operator {\hilit \code{":"}}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# positive: from 1 to 5}
+\hlnum{1}\hlopt{:}\hlnum{5}
+
+\hlcom{# negative: from -7 to -2}
+\hlopt{-}\hlnum{7}\hlopt{:-}\hlnum{2}
+
+\hlcom{# decreasing: from 3 to -3}
+\hlnum{3}\hlopt{:-}\hlnum{3}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Numeric Vectors}
+
+More vectors of numeric sequences (not only integers) can be created with the function {\hilit \code{seq()}}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# sequences}
+\hlkwd{seq}\hlstd{(}\hlnum{1}\hlstd{)}
+\hlkwd{seq}\hlstd{(}\hlkwc{from} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{to} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlkwd{seq}\hlstd{(}\hlkwc{from} \hlstd{=} \hlopt{-}\hlnum{3}\hlstd{,} \hlkwc{to} \hlstd{=} \hlnum{9}\hlstd{)}
+\hlkwd{seq}\hlstd{(}\hlkwc{from} \hlstd{=} \hlopt{-}\hlnum{3}\hlstd{,} \hlkwc{to} \hlstd{=} \hlnum{9}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlkwd{seq}\hlstd{(}\hlkwc{from} \hlstd{=} \hlopt{-}\hlnum{3}\hlstd{,} \hlkwc{to} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{0.5}\hlstd{)}
+\hlkwd{seq}\hlstd{(}\hlkwc{from} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{to} \hlstd{=} \hlnum{20}\hlstd{,} \hlkwc{length.out} \hlstd{=} \hlnum{5}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sequence generation}
+
+Two sequencing variants of \code{seq()} are \code{seq\_along()} and \code{seq\_len()}
+\bi
+  \item \code{seq\_along()} returns a sequence of integers of the same length as its argument
+  \item \code{seq\_len()} generates a sequence from 1 to the value provided
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sequence generation}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some flavors}
+\hlstd{flavors} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"chocolate"}\hlstd{,} \hlstr{"vanilla"}\hlstd{,} \hlstr{"lemon"}\hlstd{)}
+
+\hlcom{# sequence of integers from flavors}
+\hlkwd{seq_along}\hlstd{(flavors)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3
+\end{verbatim}
+\begin{alltt}
+\hlcom{# sequence from 1 to 5}
+\hlkwd{seq_len}\hlstd{(}\hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3 4 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replicate elements}
+
+Another way to create vectors is with the replicating function {\hilit \code{rep()}}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{rep}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwc{times} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{6}\hlstd{),} \hlkwc{times} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlkwc{times} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{1}\hlstd{))}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{6}\hlstd{),} \hlkwc{each} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{6}\hlstd{),} \hlkwc{length.out} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{6}\hlstd{),} \hlkwc{each} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{times} \hlstd{=} \hlnum{2}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Random Vectors}
+
+R provides a series of random number generation functions that can also be used to create numeric vectors
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   generator & distribution \\
+  \hline
+  \code{runif()} & uniform \\
+  \code{rnorm()} & normal \\
+  \code{rbinom()} & binomial \\  
+  \code{rbeta()} & beta \\
+  \code{rgamma()} & gamma \\
+  \code{rgeom()} & geometric \\
+  \hline
+ \end{tabular}
+\end{center}
+
+Check \code{help(?Distributions)} to see the list of all the available distributions
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Random Vectors}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{runif}\hlstd{(}\hlkwc{n} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{min} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{max} \hlstd{=} \hlnum{1}\hlstd{)}
+
+\hlkwd{rnorm}\hlstd{(}\hlkwc{n} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{mean} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{sd} \hlstd{=} \hlnum{1}\hlstd{)}
+
+\hlkwd{rbinom}\hlstd{(}\hlkwc{n} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{prob} \hlstd{=} \hlnum{0.5}\hlstd{)}
+
+\hlkwd{rbeta}\hlstd{(}\hlkwc{n} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{shape1} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{shape2} \hlstd{=} \hlnum{0.5}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sampled Vectors}
+
+There's also the function \code{sample()} that generates random samples (with and without replacement)
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# shuffle}
+\hlkwd{sample}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{10}\hlstd{)}
+
+\hlcom{# sample with replacement}
+\hlstd{values} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{6}\hlstd{,} \hlnum{7}\hlstd{,} \hlnum{9}\hlstd{)}
+\hlkwd{sample}\hlstd{(values,} \hlkwc{size} \hlstd{=} \hlnum{20}\hlstd{,} \hlkwc{replace} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Vector Functions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Vector Functions}
+
+\bi
+  \item \code{length()}
+  \item \code{sort()}
+  \item \code{rev()}
+  \item \code{order()}
+  \item \code{unique()}
+  \item \code{duplicated()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Vector Functions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# numeric vector}
+\hlstd{num} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{9}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{7}\hlstd{)}
+
+\hlcom{# how many elements?}
+\hlkwd{length}\hlstd{(num)}
+\end{alltt}
+\begin{verbatim}
+## [1] 8
+\end{verbatim}
+\begin{alltt}
+\hlcom{# sorting elements}
+\hlkwd{sort}\hlstd{(num)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 1 4 4 4 5 7 9
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sort}\hlstd{(num,} \hlkwc{decreasing} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 9 7 5 4 4 4 1 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Vector Functions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# reversed elements}
+\hlkwd{rev}\hlstd{(num)}
+\end{alltt}
+\begin{verbatim}
+## [1] 7 4 1 4 1 5 4 9
+\end{verbatim}
+\begin{alltt}
+\hlcom{# position of sorted elements}
+\hlkwd{order}\hlstd{(num)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4 6 2 5 7 3 8 1
+\end{verbatim}
+\begin{alltt}
+\hlkwd{order}\hlstd{(num,} \hlkwc{decreasing} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 8 3 2 5 7 4 6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Vector Functions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# unique elements}
+\hlkwd{unique}\hlstd{(num)}
+\end{alltt}
+\begin{verbatim}
+## [1] 9 4 5 1 7
+\end{verbatim}
+\begin{alltt}
+\hlcom{# duplicated elements}
+\hlkwd{duplicated}\hlstd{(num)}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{num[}\hlkwd{duplicated}\hlstd{(num)]}
+\end{alltt}
+\begin{verbatim}
+## [1] 4 1 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Math Operations}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Arithmetic Operators}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   operation & usage \\
+  \hline
+  unary + & \code{+ x} \\
+  unary - & \code{- x} \\
+  sum & \code{x + y} \\  
+  subtraction & \code{x - y} \\
+  multiplication & \code{x * y} \\
+  division & \code{x / y} \\
+  power & \code{x \^{} y} \\
+  modul0 (remainder) & \code{x \%\% y} \\
+  integer division & \code{x \%/\% y} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Arithmetic Operators}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlopt{+}\hlnum{2}
+\hlopt{-}\hlnum{2}
+\hlnum{2} \hlopt{+} \hlnum{3}
+\hlnum{2} \hlopt{-} \hlnum{3}
+\hlnum{2} \hlopt{*} \hlnum{3}
+\hlnum{2} \hlopt{/} \hlnum{3}
+\hlnum{2} \hlopt{^} \hlnum{3}
+\hlnum{2} \hlopt{%%} \hlnum{3}
+\hlnum{2} \hlopt{%/%} \hlnum{3}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Math Functions}
+
+\bi
+  \item \code{abs(), sign(), sqrt()}
+  \item \code{ceiling(), floor(), trunc(), round(), signif()}
+  \item \code{cummax(), cummin(), cumprod(), cumsum()}
+  \item \code{log(), log10(), log2(), log1p()}
+  \item \code{sin(), cos(), tan()}
+  \item \code{acos(), acosh(), asin(), asinh(), atan(), atanh()}
+  \item \code{exp(), expm1()}
+  \item \code{gamma(), lgamma(), digamma(), trigamma()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Math Functions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{abs}\hlstd{(}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{0.5}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{0.5}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.0 0.5 3.0 0.5
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sign}\hlstd{(}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{0.5}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{0.5}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] -1 -1  1  1
+\end{verbatim}
+\begin{alltt}
+\hlkwd{round}\hlstd{(}\hlnum{3.14159}\hlstd{,} \hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3.1
+\end{verbatim}
+\begin{alltt}
+\hlkwd{log10}\hlstd{(}\hlnum{10}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Vectorization}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectorized Operations}
+
+A vectorized computation is any computation that when applied to a vector operates on all of its elements
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{)} \hlopt{+} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4 4 4
+\end{verbatim}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{)} \hlopt{*} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3 4 3
+\end{verbatim}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{)} \hlopt{^} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 4 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectorization}
+
+All arithmetic, trigonometric, math and other vector functions are vectorized:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{log}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.0000000 0.6931472 1.0986123
+\end{verbatim}
+\begin{alltt}
+\hlkwd{cos}\hlstd{(}\hlkwd{seq}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{3}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1]  0.5403023 -0.4161468 -0.9899925
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sqrt}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.000000 1.414214 1.732051
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Recycling}
+
+When vectorized computations are applied, some problems may occur when dealing with two vectors of different length
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{1}\hlstd{)} \hlopt{+} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in c(2, 1) + c(1, 2, 3): longer object length is not a multiple of shorter object length}}\begin{verbatim}
+## [1] 3 3 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Recycling Rule}
+
+The recycling rule states that the shorter vector is replicated enough times so that the result has the length of the longer vector
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{)} \hlopt{+} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3 3 5 5
+\end{verbatim}
+\begin{alltt}
+\hlnum{1}\hlopt{:}\hlnum{10} \hlopt{*} \hlnum{1}\hlopt{:}\hlnum{5}
+\end{alltt}
+\begin{verbatim}
+##  [1]  1  4  9 16 25  6 14 24 36 50
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Recycling Rule}
+
+The Recycling Rule can be very useful, like when operating between a vector and a ``scalar"
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{6}\hlstd{,} \hlnum{8}\hlstd{)}
+\hlstd{x} \hlopt{+} \hlnum{3}  \hlcom{# add 3 to all elements in x}
+\end{alltt}
+\begin{verbatim}
+## [1]  5  7  9 11
+\end{verbatim}
+\begin{alltt}
+\hlstd{x} \hlopt{/} \hlnum{3}  \hlcom{# divide all elemnts by 3}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.6666667 1.3333333 2.0000000 2.6666667
+\end{verbatim}
+\begin{alltt}
+\hlstd{x} \hlopt{^} \hlnum{3}  \hlcom{# all elements to the power of 3}
+\end{alltt}
+\begin{verbatim}
+## [1]   8  64 216 512
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Comparison Operators}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   operation & usage \\
+  \hline
+  less than & \code{x < x} \\
+  greater than & \code{x > y} \\
+  less than or equal & \code{x <= y} \\  
+  greater than or equal  & \code{x >= y} \\
+  equality & \code{x == y} \\
+  different & \code{x != y} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+Comparison operators produce logical values
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison Operators}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlnum{5} \hlopt{>} \hlnum{1}
+\hlnum{5} \hlopt{<} \hlnum{7}
+\hlnum{5} \hlopt{>} \hlnum{10}
+\hlnum{5} \hlopt{>=} \hlnum{5}
+\hlnum{5} \hlopt{<=} \hlnum{5}
+\hlnum{5} \hlopt{==} \hlnum{5}
+\hlnum{5} \hlopt{!=} \hlnum{3}
+\hlnum{5} \hlopt{!=} \hlnum{5}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.4\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlnum{TRUE} \hlopt{>} \hlnum{FALSE}
+\hlnum{TRUE} \hlopt{<} \hlnum{FALSE}
+\hlnum{TRUE} \hlopt{==} \hlnum{TRUE}
+\hlnum{TRUE} \hlopt{!=} \hlnum{FALSE}
+\hlnum{TRUE} \hlopt{!=} \hlnum{TRUE}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison Operators}
+
+Comparison Operators are also vectorized 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{values} \hlkwb{<-} \hlopt{-}\hlnum{3}\hlopt{:}\hlnum{3}
+
+\hlstd{values} \hlopt{>} \hlnum{0}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{values} \hlopt{<} \hlnum{0}
+\end{alltt}
+\begin{verbatim}
+## [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{values} \hlopt{==} \hlnum{0}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison operators and recycling rule}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)} \hlopt{>} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE FALSE  TRUE  TRUE  TRUE
+\end{verbatim}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)} \hlopt{>=} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE  TRUE  TRUE  TRUE  TRUE
+\end{verbatim}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)} \hlopt{<} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1]  TRUE FALSE FALSE FALSE FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison operators and recycling rule}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)} \hlopt{<=} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1]  TRUE  TRUE FALSE FALSE FALSE
+\end{verbatim}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)} \hlopt{==} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE  TRUE FALSE FALSE FALSE
+\end{verbatim}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)} \hlopt{!=} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1]  TRUE FALSE  TRUE  TRUE  TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison operators}
+
+When comparing vectors of different types, one is coerced to the type of the other, the (decreasing) order of precedence being character, complex, numeric, integer, logical
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstr{'5'} \hlopt{==} \hlnum{5}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlnum{5L} \hlopt{==} \hlnum{5}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlnum{5} \hlopt{+} \hlnum{0i} \hlopt{==} \hlnum{5}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparison Operators}
+
+In addition to comparison operators, we have the functions \code{all()} and \code{any()}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{all}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)} \hlopt{>} \hlnum{0}\hlstd{)}
+
+\hlkwd{all}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)} \hlopt{>} \hlnum{1}\hlstd{)}
+
+\hlkwd{any}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)} \hlopt{<} \hlnum{0}\hlstd{)}
+
+\hlkwd{any}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)} \hlopt{>} \hlnum{4}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Summary Functions}
+
+\bi
+  \item \code{max()} maximum
+  \item \code{min()} minimum
+  \item \code{range()} range
+  \item \code{mean()} mean
+  \item \code{var()} variance
+  \item \code{sd()} standard deviation
+  \item \code{prod()} product of all elements
+  \item \code{sum()} sum of all elements
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Summary Functions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{7}
+\hlkwd{max}\hlstd{(x)}
+\hlkwd{min}\hlstd{(x)}
+\hlkwd{range}\hlstd{(x)}
+\hlkwd{mean}\hlstd{(x)}
+\hlkwd{var}\hlstd{(x)}
+\hlkwd{sd}\hlstd{(x)}
+\hlkwd{prod}\hlstd{(x)}
+\hlkwd{sum}\hlstd{(x)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Logical Operators}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   operation & usage \\
+  \hline
+  NOT & \code{!x} \\
+  AND (elementwise) & \code{x \& y} \\
+  AND (1st element) & \code{x \&\& y} \\  
+  OR (elementwise)  & \code{x | y} \\
+  OR (1st element) & \code{x || y} \\
+  exclusive OR & \code{xor(x, y)} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+Logical operators act on logical and number-like vectors
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Logical Operators}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlopt{!}\hlnum{TRUE}
+\hlopt{!}\hlnum{FALSE}
+\hlnum{TRUE} \hlopt{&} \hlnum{TRUE}
+\hlnum{TRUE} \hlopt{&} \hlnum{FALSE}
+\hlnum{FALSE} \hlopt{&} \hlnum{FALSE}
+\hlnum{TRUE} \hlopt{|} \hlnum{TRUE}
+\hlnum{TRUE} \hlopt{|} \hlnum{FALSE}
+\hlnum{FALSE} \hlopt{|} \hlnum{FALSE}
+\hlkwd{xor}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{)}
+\hlkwd{xor}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{TRUE}\hlstd{)}
+\hlkwd{xor}\hlstd{(}\hlnum{FALSE}\hlstd{,} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Logical and Comparison Operators}
+
+Many operations involve using logical and comparison operators:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlnum{5}
+
+\hlstd{(x} \hlopt{>} \hlnum{0}\hlstd{)} \hlopt{&} \hlstd{(x} \hlopt{<} \hlnum{10}\hlstd{)}
+\hlstd{(x} \hlopt{>} \hlnum{0}\hlstd{)} \hlopt{|} \hlstd{(x} \hlopt{<} \hlnum{10}\hlstd{)}
+\hlstd{(}\hlopt{-}\hlnum{2} \hlopt{*} \hlstd{x} \hlopt{>} \hlnum{0}\hlstd{)} \hlopt{&} \hlstd{(x}\hlopt{/}\hlnum{2} \hlopt{<} \hlnum{10}\hlstd{)}
+\hlstd{(}\hlopt{-}\hlnum{2} \hlopt{*} \hlstd{x} \hlopt{>} \hlnum{0}\hlstd{)} \hlopt{|} \hlstd{(x}\hlopt{/}\hlnum{2} \hlopt{<} \hlnum{10}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{which()} functions}
+
+\bi
+  \item \code{which()}: which indices are \code{TRUE}
+  \item \code{which.min()}: location of first minimum
+  \item \code{which.max()}: location of first maximum
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Other Functions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(values} \hlkwb{<-} \hlopt{-}\hlnum{3}\hlopt{:}\hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] -3 -2 -1  0  1  2  3
+\end{verbatim}
+\begin{alltt}
+\hlcom{# logical comparison}
+\hlstd{values} \hlopt{>} \hlnum{0}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
+\end{verbatim}
+\begin{alltt}
+\hlcom{# positions (i.e. indices) of positive values}
+\hlkwd{which}\hlstd{(values} \hlopt{>} \hlnum{0}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 5 6 7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{which()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# indices of various comparisons}
+\hlkwd{which}\hlstd{(values} \hlopt{>} \hlnum{0}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 5 6 7
+\end{verbatim}
+\begin{alltt}
+\hlkwd{which}\hlstd{(values} \hlopt{<} \hlnum{0}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3
+\end{verbatim}
+\begin{alltt}
+\hlkwd{which}\hlstd{(values} \hlopt{==} \hlnum{0}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{which()}}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# logical comparison}
+\hlstd{values} \hlopt{>} \hlnum{0}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
+\end{verbatim}
+\begin{alltt}
+\hlcom{# logical subsetting}
+\hlstd{values[values} \hlopt{>} \hlnum{0}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3
+\end{verbatim}
+\begin{alltt}
+\hlcom{# positions of positive values}
+\hlkwd{which}\hlstd{(values} \hlopt{>} \hlnum{0}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 5 6 7
+\end{verbatim}
+\begin{alltt}
+\hlcom{# numeric subsetting}
+\hlstd{values[}\hlkwd{which}\hlstd{(values} \hlopt{>} \hlnum{0}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{which.max()} and \code{which.min()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{which.max}\hlstd{(values)}
+\end{alltt}
+\begin{verbatim}
+## [1] 7
+\end{verbatim}
+\begin{alltt}
+\hlkwd{which}\hlstd{(values} \hlopt{==} \hlkwd{max}\hlstd{(values))}
+\end{alltt}
+\begin{verbatim}
+## [1] 7
+\end{verbatim}
+\begin{alltt}
+\hlkwd{which.min}\hlstd{(values)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+\begin{alltt}
+\hlkwd{which}\hlstd{(values} \hlopt{==} \hlkwd{min}\hlstd{(values))}
+\end{alltt}
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Set Operations}
+
+Functions to perform set union, intersection, (asymmetric!) difference, equality and membership on two vectors
+\bi
+  \item \code{union(x, y)}
+  \item \code{intersect(x, y)}
+  \item \code{setdiff(x, y)}
+  \item \code{setequal(x, y)}
+  \item \code{is.element(el, set)}
+  \item \code{\%in\%} operator
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Set Operations}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)}
+\hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{6}\hlstd{)}
+
+\hlkwd{union}\hlstd{(x, y)}
+\hlkwd{intersect}\hlstd{(x, y)}
+\hlkwd{setdiff}\hlstd{(x, y)}
+\hlkwd{setequal}\hlstd{(x, y)}
+\hlkwd{setequal}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{6}\hlstd{,} \hlnum{2}\hlstd{), y)}
+\hlkwd{is.element}\hlstd{(}\hlnum{1}\hlstd{, x)}
+\hlkwd{is.element}\hlstd{(}\hlnum{6}\hlstd{, x)}
+\hlnum{3} \hlopt{%in%} \hlstd{x}
+\hlnum{3} \hlopt{%in%} \hlstd{y}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{General Functions}
+
+Functions for inspecting a vector
+\bi
+  \item \code{class(x)}
+  \item \code{length(x)}
+  \item \code{head(x)}
+  \item \code{tail(x)}
+  \item \code{summary(x)}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{General Functions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ages} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{21}\hlstd{,} \hlnum{28}\hlstd{,} \hlnum{23}\hlstd{,} \hlnum{25}\hlstd{,} \hlnum{24}\hlstd{,} \hlnum{26}\hlstd{,} \hlnum{27}\hlstd{,} \hlnum{21}\hlstd{)}
+
+\hlkwd{class}\hlstd{(ages)}
+\hlkwd{length}\hlstd{(ages)}
+\hlkwd{head}\hlstd{(ages)}
+\hlkwd{tail}\hlstd{(ages)}
+\hlkwd{summary}\hlstd{(ages)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Find out what the following expressions return:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlnum{1}\hlopt{:}\hlnum{1}
+
+\hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlkwc{length.out} \hlstd{=} \hlnum{10}\hlstd{)}
+
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{),} \hlkwc{times} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Write three different ways in which the vector \code{1, 2, 3, 4, 5} can be created:
+\pause
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)}
+\hlkwd{seq}\hlstd{(}\hlkwc{from} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{to} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlnum{1}\hlopt{:}\hlnum{5}
+
+\hlcom{# another option}
+\hlnum{0}\hlopt{:}\hlnum{4} \hlopt{+} \hlnum{1}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Generate a random vector of \code{n=100} elements:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{1}\hlstd{)}
+\hlstd{a} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlnum{100}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Find the following:
+\bi
+  \item what's the vector class
+  \item what's the mean and standard deviation
+  \item what's the sum of all elements in absolute value
+  \item how many elements are positive ($\geq$ 0)
+  \item how many elements are negative ($<$ 0)
+  \item the three smallest and largest numbers
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# class}
+\hlkwd{class}\hlstd{(a)}
+\end{alltt}
+\begin{verbatim}
+## [1] "numeric"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# mean value}
+\hlkwd{mean}\hlstd{(a)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.1088874
+\end{verbatim}
+\begin{alltt}
+\hlcom{# std dev}
+\hlkwd{sd}\hlstd{(a)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.8981994
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.45\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# sum of elems in abs-value}
+\hlkwd{sum}\hlstd{(}\hlkwd{abs}\hlstd{(a))}
+\end{alltt}
+\begin{verbatim}
+## [1] 71.67207
+\end{verbatim}
+\begin{alltt}
+\hlcom{# how many positive}
+\hlkwd{sum}\hlstd{(a} \hlopt{>=} \hlnum{0}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 54
+\end{verbatim}
+\begin{alltt}
+\hlcom{# how many negative}
+\hlkwd{sum}\hlstd{(a} \hlopt{<} \hlnum{0}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 46
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# 3 smallest numbers}
+\hlkwd{sort}\hlstd{(a)[}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] -2.214700 -1.989352 -1.804959
+\end{verbatim}
+\begin{alltt}
+\hlcom{# 3 largest numbers}
+\hlkwd{sort}\hlstd{(a,} \hlkwc{decreasing} \hlstd{=} \hlnum{TRUE}\hlstd{)[}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 2.401618 2.172612 1.980400
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

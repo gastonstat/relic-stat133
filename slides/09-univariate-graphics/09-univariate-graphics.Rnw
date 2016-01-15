@@ -1,0 +1,1230 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Univariate Graphics}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Looking at one single variable}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Univariate Statistical Graphics}
+\begin{center}
+\large{Getting started with graphics for exploration requires underdstanding charts and plots for single variables}
+\pause
+
+\bigskip
+\large{Many multivariate graphics are extensions or combinations of univariate charts}
+
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Univariate graphics by type of variable}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+Qualitative Variable
+\bi
+  \item Bar chart
+  \item Dot chart
+  \item Pie chart
+  \item Pareto chart
+\ei
+\end{column}
+
+\begin{column}{0.5\textwidth}
+Quantitative Variable
+\bi
+  \item All of qualitative
+  \item Histogram
+  \item Density curve
+  \item Boxplot
+  \item Ogive
+\ei
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Bar Charts}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{From Frequency Tables ...}
+
+{\large
+\begin{center}
+ \begin{tabular}{c c c}
+  \hline
+  Category & Absolute & Relative \\
+   & Frequency & Frequency \\
+  \hline
+  $C_1$ & $f_1$ & $f_1 / n$ \\
+  $C_2$ & $f_2$ & $f_2 / n$ \\
+  $C_3$ & $f_3$ & $f_3 / n$ \\
+  $\dots$ & $\dots$ & $\dots$ \\
+  $C_k$ & $f_k$ & $f_k / n$ \\
+  \hline
+  $total$ & $n$ & $1$ \\
+ \end{tabular}
+\end{center}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{to Bar-charts}
+
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op <- par(mar = c(4, 4, 2, 2))
+# plot factor
+set.seed(5)
+abc <- factor(sample(c('A', 'B', 'C', 'D', 'E'), 30, 
+                     replace = TRUE))
+freq <- table(abc)
+bp <- barplot(freq, axes=FALSE, ylim = c(0,10), border = NA,
+              names.arg = paste("C", 1:5, sep = ''))
+axis(side = 2, at = seq(0, 10, 2), labels = rep("", 6))
+mtext(text = "frequency", side = 2, at = 5, line = 2)
+text(bp, freq + 0.4, labels = paste("f", 1:5, sep = ''))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Bar-charts}
+
+\bb{Elements of vertical bar-charts}
+\bi
+  \item categories on horizontal axis
+  \item frequencies on vertical axis
+  \item length of bar equal to frequency
+\ei
+\eb
+
+(Note that you can also make a horizontal bar-chart, in which case the axes play inverse roles)
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Bar-chart: predominant color in flags}
+\begin{center}
+\ig[width=9cm]{images/flags.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Predominant Color in Flags}
+
+<<echo=FALSE>>=
+flag_file <- "/Users/Gaston/Documents/stat133/stat133/datasets/flags.csv"
+
+flags <- read.csv(flag_file)
+# hues (main color)
+hues <- table(flags$mainhue)
+nf = nrow(flags)
+@
+
+<<echo = FALSE>>=
+print(data.frame(
+  color = names(hues), 
+  count = as.numeric(hues),
+  percent = round(100 * as.numeric(hues) / nf, 2)),
+  print.gap = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bar-chart example}
+
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op <- par(mar = c(3, 3, 1, 0))
+x <- barplot(hues, border = NA, axes=FALSE, ylim = c(0,75))
+axis(side=2, at=seq(0,75,10), las=2)
+text(x, y=as.vector(hues) + 2, labels=hues)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bar-chart: predominant color in flags}
+
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op = par(mar = c(3,3.5,1,0))
+x <- barplot(hues/nf, border = NA, axes=FALSE, 
+             ylim = c(0,0.4))
+axis(side=2, at=seq(0,0.4,0.1), las=2,
+     labels = paste(seq(0,40,10), "%", sep=''))
+text(x, y=as.vector(hues/nf) + 0.01, 
+     labels = paste(100*round(hues/nf,3), "%", sep=""))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bar-chart: predominant color in flags}
+
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op = par(mar = c(3,3,1,0))
+x <- barplot(sort(hues), border = NA, axes=FALSE, 
+             ylim = c(0,75))
+axis(side=2, at=seq(0,75,10), las=2)
+text(x, y=as.vector(hues)[order(hues)] + 3, labels=sort(hues))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bar-chart: predominant color in flags}
+
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op = par(mar = c(3,3,1,0))
+x <- barplot(sort(hues, decreasing = TRUE), border = NA, 
+             axes=FALSE, ylim = c(0,75))
+axis(side=2, at=seq(0,75,10), las=2)
+text(x, y=as.vector(hues)[order(hues, decreasing=TRUE)] + 3,
+     labels=sort(hues, decreasing = TRUE))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bar-chart: predominant color in flags}
+
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op = par(mar = c(3,4,0,1))
+x <- barplot(sort(hues, decreasing=TRUE), axes=FALSE,
+        horiz = TRUE, las = 2, border = NA, xlim = c(0,75))
+axis(side=1, at=seq(0,75,10))
+text(x=as.vector(hues)[order(hues, decreasing=TRUE)] + 2,
+     y = x,
+     labels=sort(hues, decreasing=TRUE))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Dot charts}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Dot charts}
+\bbi
+  \item Dot-charts are very similar to bar charts.
+  \item Instead of using bars, dot-charts display frequencies with dots.
+  \item They are simpler and cleaner than bar charts
+  \item They are also less used than bar charts
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dot-chart: predominant color in flags}
+
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op = par(mar = c(3, 3, 1, 0.5))
+plot(as.vector(hues), 1:length(hues), pch = 19, cex=1,
+     col = "gray70", axes = FALSE,
+     xlab = "", ylab="", xlim=c(0,80))
+mtext(names(hues), side=2, at=1:length(hues), 
+      las = 2, line = 0)
+axis(side=1, at=seq(0,80,10), line=0.5)
+segments(rep(0,8), 1:8, rep(80, 8), 1:8,
+         lty=2, col="grey")
+points(as.vector(hues), 1:length(hues), pch = 19, 
+       cex=2, col = "gray70")
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Ranked Dot-charts}
+
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op = par(mar = c(3, 3, 1, 0.5))
+plot(sort(as.vector(hues)), 1:length(hues), pch = 19, cex=1,
+     col = "gray70", axes = FALSE,
+     xlab = "", ylab="", xlim=c(0,80))
+mtext(names(hues)[order(as.vector(hues))], side=2, at=1:length(hues), 
+      las = 2, line = 0)
+axis(side=1, at=seq(0,80,10), line=0.5)
+segments(rep(0,8), 1:8, rep(80, 8), 1:8,
+         lty=2, col="grey")
+points(sort(as.vector(hues)), 1:length(hues), pch = 19, 
+       cex=2, col = "gray70")
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Ranked dot-chart patterns}
+\begin{center}
+\ig[width=9cm]{images/dotchart-patterns1.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Ranked dot-chart patterns}
+\begin{center}
+\ig[width=9cm]{images/dotchart-patterns2.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Pareto charts}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bar-chart with Pareto Line}
+
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+# relative frequencies of hues (main color)
+relhues = round(100 * hues / nrow(flags), 2)
+cumhues = cumsum(as.vector(relhues)[order(relhues, decreasing=TRUE)])
+
+op = par(mar = c(3,3.5,1,0))
+x <- barplot(sort(relhues, decreasing=TRUE), border = NA, 
+             axes=FALSE, ylim=c(0,102))
+axis(side=2, at=seq(0,100,10), las=2, cex.axis=0.8,
+     labels=paste(seq(0,100,10), "%", sep=''))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bar-chart with Pareto Line}
+
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+# relative frequencies of hues (main color)
+op = par(mar = c(3,3.5,1,0))
+x <- barplot(sort(relhues, decreasing=TRUE), border = NA, 
+             axes=FALSE, ylim=c(0,102))
+axis(side=2, at=seq(0,100,10), las=2, cex.axis=0.8,
+     labels=paste(seq(0,100,10), "%", sep=''))
+points(x, y=cumhues, pch = 19, col = "gray50")
+text(x, y=cumhues, labels=paste(cumhues, "%", sep=''), 
+     pos = 1, col = "gray30", cex = 0.8)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bar-chart with Pareto Line}
+
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+# relative frequencies of hues (main color)
+op = par(mar = c(3,3.5,1,0))
+x <- barplot(sort(relhues, decreasing=TRUE), border = NA, 
+             axes=FALSE, ylim=c(0,102))
+axis(side=2, at=seq(0,100,10), las=2, cex.axis=0.8,
+     labels=paste(seq(0,100,10), "%", sep=''))
+lines(x, y=cumhues, col = rgb(255/255,99/255,71/255,0.8), lwd = 7)
+points(x, y=cumhues, pch = 19, col = "gray50")
+text(x, y=cumhues, labels=paste(cumhues, "%", sep=''), 
+     pos = 1, col = "gray30", cex = 0.8)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Pareto charts}
+\bbi
+  \item Pareto charts contains both bars and a line graph
+  \item Individual values are representing in descending order
+  \item Cumulative frequencies are represented by the line
+  \item The left vertical axis is the frequency of occurrence
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Pie charts}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Pie Chart}
+
+<<fig.width=4, fig.height=4, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op = par(mar = c(1, 1, 1, 1))
+pie(hues, col = names(hues))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Donut Chart}
+
+<<fig.width=4, fig.height=4, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+op = par(mar = c(1, 1, 1, 1))
+pie(hues, col = names(hues))
+#symbols(0, 0, circles = 1, bg = 'white', add = TRUE)
+points(0, 0, cex = 17, pch = 19, col = 'white')
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Pie charts disadvantages}
+\bbi
+  \item Pie charts force us to compare either 2-D areas formed by each slice or the angles formed
+  \item Visual perception handles neitheir of these comparisons easily or accurately
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Univariate Quantitative Charts}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{NFL Ticket prices (2013)}
+<<echo = FALSE>>=
+tick_file <- "/Users/Gaston/Documents/stat133/stat133/datasets/tickets.csv"
+ticks <- read.csv(tick_file, row.names = 1)
+print(cbind(ticks[1:16, ], ticks[17:32, ]), print.gap = 2)
+tickets <- ticks$tickets
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Bar charts for quantitative variables}
+\bbi
+  \item We can use bar charts with quantitative variables
+  \item In this case we need to first categorize the variable, and then get a frequency table
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Frequency Table of Ticket Prices}
+
+{\large
+\begin{center}
+ \begin{tabular}{c c c}
+  \hline
+  Category & Absolute & Relative \\
+  Name & Frequency & Frequency \\
+  \hline
+  Below \$70 & 10 & 0.3125 \\
+  \$70 - \$99.99 & 16 & 0.5000 \\
+  \$100 or above & 6 & 0.1875 \\
+  \hline
+  Total & 32 & 1.00 \\
+ \end{tabular}
+\end{center}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{NFL Ticket prices (2013)}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+# bar chart of categorized ticket prices
+a = c(10, 16, 6)
+labs = c("below $70", "$70 - $99.99", "$100 or above")
+
+op = par(mar = c(2.5, 4, 2, 1))
+barplot(a, names.arg=labs, axes = FALSE, border = NA)
+axis(side = 2, at = seq(0,16,2), las = 2)
+mtext(text="absolute frequency", side=2, line = 2.5)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Histograms}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Histograms}
+Histograms provide a way of viewing the general distribution of values in a quantitative variable
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{NFL Ticket prices (2013)}
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+# bar chart of categorized ticket prices
+op = par(mar = c(4, 4, 2, 1))
+hist(tickets, breaks=seq(50,120,10), col="gray70",
+     xlab = "", ylab="", axes = FALSE,
+     main = "")
+axis(side=1, at=seq(50,120,10))
+mtext("price", side=1, line=2.5)
+axis(side=2, at=seq(0,8,2), las = 2)
+mtext("frequency", side=2, line=2, cex = 0.9)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Building a Histogram}
+
+\begin{enumerate}
+  \item \textbf{Partition of values}: The range of the data values is partitioned into a number of non-overlapping ``cells'' or bins.
+  \item \textbf{Counting frequencies}: The number of data values falling into each cell is counted (either absolute or relative freqs)
+  \item \textbf{Drawing Bars}: The observations falling into a cell are represented as a ``bar'' drawn over the cell
+\end{enumerate}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About Histograms}
+
+\bi
+  \item The bins represent ranges of values
+  \item The bins (intervals) must be adjacent, and usually of equal size
+  \item The bars are adjacent (not discontinuous)
+  \item The areas of the bars are meaningful
+  \item Height of bars equal to the frequency
+  \item Width equal to the bin size
+  \item The area of a bar gives the proportion of data values which fall in the bin
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Histogram with 4 bins}
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+# bar chart of categorized ticket prices
+op = par(mar = c(4.5, 4, 2, 1))
+hist(tickets, breaks=c(54,70,86,102,118), col="gray70",
+     xlab = "price", axes = FALSE,
+     main = "Histogram of price tickets")
+axis(side=1, at=seq(54,124,8))
+axis(side=2, at=seq(0,12,2), las = 2)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Histograms with different bins}
+<<fig.width=8, fig.height=6, out.width='.9\\linewidth', out.height='.7\\linewidth', fig.align='center', echo=FALSE>>=
+# bar chart of categorized ticket prices
+ops = par(mfrow = c(2,2))
+
+# Histogram 4 bins
+op = par(mar = c(4.5, 4, 2, 2))
+hist(tickets, breaks=c(50,70,90,110,130), col="gray70",
+     xlab = "", ylab="", axes = FALSE,
+     main = "Histogram of price tickets (4 bins)")
+axis(side=1, at=seq(50,130,10))
+mtext("price", side=1, line=2.5)
+axis(side=2, at=seq(0,14,2), las = 2)
+mtext("frequency", side=2, line=2, cex = 0.9)
+par(op)
+
+# Histogram 5 bins
+op = par(mar = c(4.5, 5, 2, 1))
+hist(tickets, breaks=c(40,60,80,100,120,140), col="gray70",
+     xlab = "", ylab="", axes = FALSE,
+     main = "Histogram of price tickets (5 bins)")
+axis(side=1, at=seq(40,140,20))
+mtext("price", side=1, line=2.5)
+axis(side=2, at=seq(0,14,2), las = 2)
+mtext("frequency", side=2, line=2, cex = 0.9)
+par(op)
+
+# Histogram 6 bins
+op = par(mar = c(4.5, 4, 2, 2))
+hist(tickets, breaks=seq(50,130,by=12), col="gray70",
+     xlab = "", ylab="", axes = FALSE,
+     main = "Histogram of price tickets (6 bins)")
+axis(side=1, at=seq(50,130,by=12), cex=0.8)
+mtext("price", side=1, line=2.5)
+axis(side=2, at=seq(0,14,2), las = 2)
+mtext("frequency", side=2, line=2, cex = 0.9)
+par(op)
+
+# Histogram 7 bins
+op = par(mar = c(4.5, 5, 2, 1))
+hist(tickets, breaks=seq(50,120,10), col="gray70",
+     xlab = "", ylab="", axes = FALSE,
+     main = "Histogram of price tickets (7 bins)")
+axis(side=1, at=seq(50,120,10))
+mtext("price", side=1, line=2.5)
+axis(side=2, at=seq(0,14,2), las = 2)
+mtext("frequency", side=2, line=2, cex = 0.9)
+par(op)
+
+par(ops)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Avoid too few and too many bins}
+<<fig.width=8, fig.height=6, out.width='.9\\linewidth', out.height='.7\\linewidth', fig.align='center', echo=FALSE>>=
+# two histograms in one window
+ops = par(mfrow = c(2,1))
+
+# Histogram 3 bins
+op = par(mar = c(4.5, 4, 2, 1))
+hist(tickets, breaks=c(50,80,110,140), col="gray70",
+     xlab = "", ylab="", axes = FALSE,
+     main = "Histogram of price tickets (3 bins)")
+axis(side=1, at=c(50,80,110,140))
+mtext("price", side=1, line=2.5)
+axis(side=2, at=seq(0,16,2), las = 2)
+mtext("frequency", side=2, line=2, cex = 0.9)
+par(op)
+
+# Histogram 10 bins
+op = par(mar = c(4.5, 4, 2, 1))
+hist(tickets, breaks=seq(50,120,5), col="gray70",
+     xlab = "", ylab="", axes = FALSE,
+     main = "Histogram of price tickets (14 bins)")
+axis(side=1, at=seq(50,120,5))
+mtext("price", side=1, line=2.5)
+axis(side=2, at=seq(0,6,1), las = 2)
+mtext("frequency", side=2, line=2, cex = 0.9)
+par(op)
+
+par(ops)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About Histograms}
+
+\bi
+  \item The shape of a histogram depends on the chosen bins
+  \item This suggests that there is a fundamental instability at the heart of its construction
+  \item The bars are adjacent (not discontinuous)
+  \item The areas of the bars are meaningful
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Histogram patterns}
+\begin{center}
+\ig[width=9cm]{images/histogram-skew.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Histogram patterns}
+\begin{center}
+\ig[width=9cm]{images/histogram-profiles1.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Histogram patterns}
+\begin{center}
+\ig[width=9cm]{images/histogram-profiles2.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Histogram patterns}
+\begin{center}
+\ig[width=9cm]{images/histogram-shapes.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Box plots}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Building a Histogram}
+
+\begin{enumerate}
+  \item \textbf{Box-and-whisker plots}, most commonly known as ``box plots''
+  \item created by John Tukey
+  \item simple and effective way to display the distribution of values
+  \item relies on the so-called \textbf{5-summary indicators}
+\end{enumerate}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Box plots based on 5-number summary}
+
+\bb{5 summary indicators}
+\pause
+\begin{enumerate}
+  \item minimum
+  \item 25th percentile (1st quartile)
+  \item 50th percentile (2nd quartile, or median)
+  \item 75th percentile (3rd quartile)
+  \item maximum
+\end{enumerate}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Box plot basics}
+\begin{center}
+\ig[height=6cm]{images/boxplot1.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Box plot basics}
+\begin{center}
+\ig[height=6cm]{images/boxplot2.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{NFL Ticket Prices}
+<<fig.width=8, fig.height=6, out.width='.9\\linewidth', out.height='.7\\linewidth', fig.align='center', echo=FALSE>>=
+# NFL ticket prices
+op = par(mar = c(8,2,4,2))
+boxplot(tickets, horizontal=TRUE, axes = FALSE,
+        border = "white")
+axis(side=1, at=seq(50,120,5), line = -1, col.axis = "gray35")
+mtext("price", side=1, line=2.5)
+#axis(side=2, at=c(0, 0.5, 1, 1.5))
+points(tickets, rep(1, length(tickets)), pch = 19,
+       col = hsv(0.6, 1, 1, 0.6), cex = 2)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{5 number summary}
+<<fig.width=8, fig.height=6, out.width='.9\\linewidth', out.height='.7\\linewidth', fig.align='center', echo=FALSE>>=
+# NFL ticket prices
+op = par(mar = c(8,2,4,2))
+boxplot(tickets, horizontal=TRUE, axes = FALSE,
+        border = "white")
+axis(side=1, at=seq(50,120,5), line = -1, col.axis = "gray35")
+mtext("price", side=1, line=2.5)
+#axis(side=2, at=c(0, 0.5, 1, 1.5))
+points(tickets, rep(1, length(tickets)), pch = 19,
+       col = hsv(0.6, 1, 1, 0.6), cex = 2)
+points(as.vector(summary(tickets))[-4], rep(1, 5), 
+       pch = "|", col = "tomato", cex = 3)
+text(as.vector(summary(tickets))[-4], rep(1.2, 5), 
+     labels = c("min", "Q1", "median", "Q3", "max"),
+     col = "tomato", cex = 1)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Box plot}
+<<fig.width=8, fig.height=6, out.width='.9\\linewidth', out.height='.7\\linewidth', fig.align='center', echo=FALSE>>=
+# NFL ticket prices
+op = par(mar = c(8,2,4,2))
+boxplot(tickets, horizontal=TRUE, axes = FALSE)
+axis(side=1, at=seq(50,120,5), line = -1, col.axis = "gray35")
+mtext("price", side=1, line=2.5)
+#axis(side=2, at=c(0, 0.5, 1, 1.5))
+points(tickets, rep(1, length(tickets)), pch = 19,
+       col = hsv(0.6, 1, 1, 0.6), cex = 2)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Box plot}
+<<fig.width=8, fig.height=6, out.width='.9\\linewidth', out.height='.7\\linewidth', fig.align='center', echo=FALSE>>=
+# NFL ticket prices
+op = par(mar = c(8,2,4,2))
+boxplot(tickets, horizontal=TRUE, axes = FALSE, range = 0)
+axis(side=1, at=seq(50,120,5), line = -1, col.axis = "gray35")
+mtext("price", side=1, line=2.5)
+#axis(side=2, at=c(0, 0.5, 1, 1.5))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Box plot and outliers}
+
+\bb{The 1.5 x IQR rule for outliers}
+Call an observation a suspected outlier if it falls more than {\hilit 1.5 x IQR} above the third quartile or below the first quartile
+\eb
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Modified Box plot}
+\begin{center}
+\ig[width=9cm]{images/boxplot-modified.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Density Curves}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Density Curve}
+<<fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+# density
+dens <- density(tickets)
+col1 = hsv(h = 0.65, s = 0.6, v = 0.8, alpha = 0.5)
+
+op <- par(mar = c(4.5, 4, 2, 1))
+# call new plot
+plot.new()
+# plot window
+plot.window(xlim = c(35, 145), ylim = c(0, 0.025))
+# add axes
+axis(side = 1, pos = 0, at = seq(30, 140, by = 10),
+     col = "gray20", lwd.ticks = 0.25, cex.axis = 1, 
+     col.axis = "gray20", lwd = 1.5)
+axis(side = 2, pos = 35, at = seq(0, 0.030, by = 0.005), 
+     col = "gray20", las = 2, lwd.ticks = 0.5, cex.axis = 1,
+     col.axis = "gray20", lwd = 1.5)
+mtext(text = "price", side = 1, line = 2)
+mtext(text = "density", side = 2, line = 3)
+# density 1
+polygon(dens$x, dens$y, col = col1, border = col1)
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Density Curve}
+
+\bb{A Density Curve}
+\bi
+  \item Describes the distribution of values by a smooth curve
+  \item Is always on or above the horizontal axis
+  \item Has area equal to 1 underneath it
+  \item Is an idealized distribution
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Density Curve}
+
+\bb{About Density Curve}
+\bi
+  \item The \textbf{mode} is the peak point of the curve (could be more than one or none)
+  \item The \textbf{median} is the equal-areas point
+  \item The \textbf{mean} is the balance point
+  \item The median and the mean are always equal on a symmetric density curve
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Ogives}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Ogives}
+
+\bb{About Ogives}
+\bbi
+  \item Ogives help us examine the cumulative distribution of values in a quantitative variable
+  \item An ogive tells us how many data are less than the indicated value on the horizontal axis
+  \item An ogive shows how slowly or rapidly the data values accumulate over the range of the data
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Frequency Table NFL Price Tickets}
+
+\begin{center}
+ \begin{tabular}{c c c c c}
+  \hline
+  Bin & Interval & Mid-point & Frequency & Cum Freq \\
+  \hline
+  1 & [50-60) & 55 & 2 & 2 \\
+  2 & [60-70) & 65 & 8 & 10 \\
+  3 & [70-80) & 75 & 6 & 16 \\
+  4 & [80-90) & 85 & 8 & 24 \\
+  5 & [90-100) & 95 & 2 & 26 \\
+  6 & [100-110) & 105 & 2 & 28 \\
+  7 & [110-120) & 115 & 4 & 32 \\
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Ogive}
+<<fig.width=6, fig.height=4.5, out.width='.9\\linewidth', out.height='.65\\linewidth', fig.align='center', echo=FALSE>>=
+# NFL ticket prices
+x = hist(tickets, plot = FALSE)
+
+# frequencies
+abs_freq = x$counts
+rel_freq = round(100 * abs_freq / length(tickets), 2)
+cum_absfreq = cumsum(abs_freq)
+cum_relfreq = cumsum(rel_freq)
+
+# Ogive with absolute frequencies
+op = par(mar = c(4, 3, 1.5, 1))
+plot(x$breaks, y=c(0,cum_absfreq[-8]), axes = FALSE, main = "", 
+     xlab = "", ylab="", xlim = c(48,120), ylim = c(0,34))
+axis(side=1, at=seq(50,120,10), line=-0.7)
+mtext("price", side=1, line=2)
+axis(side=2, at=seq(0,32,2), las = 2, line = -1,
+     cex.axis = 0.9)
+mtext("cumulative frequency", side=2, line=1.5, cex = 0.9)
+lines(x$breaks, y=c(0,cum_absfreq[-8]), lwd = 4,
+      col = rgb(255/255,99/255,71/255,0.8))
+points(x$breaks, y=c(0,cum_absfreq[-8]), 
+       pch=19, col="gray40", cex=1)
+text(x$breaks, y=c(0,cum_absfreq[-8]), pos=3, cex=0.9,
+     labels = c(0, cum_absfreq))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Ogives}
+
+\bb{Building an Ogive}
+\bbi
+  \item Make a frequency table showing bin intervals and cumulative frequencies.
+  \item An ogive begins on the horizontal axis at the lower boundary of the first bin.
+  \item For each bin, make a dot over the upper interval limit at the height of the cumulative frequency.
+  \item Connect the dots with line segments.
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Distributions and Ogives}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Three histograms}
+<<fig.width=6, fig.height=3.5, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=FALSE>>=
+set.seed(567)
+
+b1 <- round(100 * rbeta(200, 3, 3), 2)
+b2 <- round(100 * rbeta(200, 5, 1), 2)
+b3 <- round(100 * rbeta(200, 1, 3), 2)
+
+a <- table(b1)
+
+op = par(mfrow = c(1,3), mar = c(3,4,3,1))
+hb1 = hist(b1, col = "gray90", border = "gray50",
+           xlab = "", main = "Histogram 1")
+hb2 = hist(b2, col = "gray90", border = "gray50",
+           xlab = "", main = "Histogram 2")
+hb3 = hist(b3, col = "gray90", border = "gray50",
+           xlab = "", main = "Histogram 3")
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Symmetric Distribution}
+<<echo = FALSE>>=
+# frequencies
+afreq1 = hb1$counts
+rfreq1 = round(100 * afreq1 / 200, 2)
+cum_rfreq1 = cumsum(rfreq1)
+
+afreq2 = hb2$counts
+rfreq2 = round(100 * afreq2 / 200, 2)
+cum_rfreq2 = cumsum(rfreq2)
+
+afreq3 = hb3$counts
+rfreq3 = round(100 * afreq3 / 200, 2)
+cum_rfreq3 = cumsum(rfreq3)
+@
+
+<<fig.width=6, fig.height=3.5, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=FALSE>>=
+op = par(mfrow = c(1, 2), mar = c(3, 3, 2, 1.5))
+hb1 = hist(b1, col = "gray90", border = "gray50",
+           xlab = "", main = "Histogram 1")
+plot(hb1$breaks, y=c(0,cum_rfreq1), axes = FALSE, 
+     xlab = "", ylab="", ylim = c(0,108), main = "Ogive 1")
+axis(side=1, at=hb1$breaks, line=-0.2)
+axis(side=2, at=seq(0,100,20), las = 2, line = -0.5,
+     labels = paste(seq(0,100,20), "%", sep=""), cex.axis = 0.9)
+lines(hb1$breaks, y=c(0,cum_rfreq1[-length(hb1$breaks)]), 
+      lwd = 4, col = "gray70")
+points(hb1$breaks, y=c(0,cum_rfreq1[-length(hb1$breaks)]), 
+       pch=19, col="gray30", cex=0.8)
+text(hb1$breaks, y=c(0,cum_rfreq1[-length(hb1$breaks)]), 
+     pos=3, cex=0.8,
+     labels = paste(c(0, cum_rfreq1), "%", sep=""))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Skewed to the left Distribution}
+
+<<fig.width=6, fig.height=3.5, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=FALSE>>=
+op = par(mfrow = c(1, 2), mar = c(3, 3, 2, 1.5))
+hb2 = hist(b2, col = "gray90", border = "gray50",
+           xlab = "", main = "Histogram 2")
+plot(hb2$breaks, y=c(0,cum_rfreq2), axes = FALSE, 
+     xlab = "", ylab="", ylim = c(0,108), main = "Ogive 2")
+axis(side=1, at=hb2$breaks, line=-0.2)
+axis(side=2, at=seq(0,100,20), las = 2, line = -0.5,
+     labels = paste(seq(0,100,20), "%", sep=""), cex.axis = 0.9)
+lines(hb2$breaks, y=c(0,cum_rfreq2[-length(hb2$breaks)]), 
+      lwd = 4, col = "gray70")
+points(hb2$breaks, y=c(0,cum_rfreq2[-length(hb2$breaks)]), 
+       pch=19, col="gray30", cex=0.8)
+text(hb2$breaks, y=c(0,cum_rfreq2[-length(hb2$breaks)]), 
+     pos=3, cex=0.8,
+     labels = paste(c(0, cum_rfreq2), "%", sep=""))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Skewed to the right Distribution}
+
+<<fig.width=6, fig.height=3.5, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=FALSE>>=
+op = par(mfrow = c(1, 2), mar = c(3, 3, 2, 1.5))
+hb3 = hist(b3, col = "gray90", border = "gray50",
+           xlab = "", main = "Histogram 3")
+plot(hb3$breaks, y=c(0,cum_rfreq3), axes = FALSE, 
+     xlab = "", ylab="", ylim = c(0,108), main = "Ogive 3")
+axis(side=1, at=hb3$breaks, line=-0.2)
+axis(side=2, at=seq(0,100,20), las = 2, line = -0.5,
+     labels = paste(seq(0,100,20), "%", sep=""), cex.axis = 0.9)
+lines(hb3$breaks, y=c(0,cum_rfreq3[-length(hb3$breaks)]), 
+      lwd = 4, col = "gray70")
+points(hb3$breaks, y=c(0,cum_rfreq3[-length(hb3$breaks)]), 
+       pch=19, col="gray30", cex=0.8)
+text(hb3$breaks, y=c(0,cum_rfreq3[-length(hb3$breaks)]), 
+     pos=3, cex=0.8,
+     labels = paste(c(0, cum_rfreq3), "%", sep=""))
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

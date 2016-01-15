@@ -1,0 +1,19 @@
+\frametitle{Faceting with \code{facet\_grid()}}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= mtcars,} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= mpg,} \hlkwc{y} \hlstd{= hp))} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{(}\hlkwc{color} \hlstd{=} \hlstr{"#3088f0"}\hlstd{)} \hlopt{+}
+  \hlkwd{facet_grid}\hlstd{(.} \hlopt{~} \hlstd{cyl)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=.9\linewidth,height=.5\linewidth]{figure/unnamed-chunk-17-1}
+
+}
+
+
+
+\end{knitrout}
+

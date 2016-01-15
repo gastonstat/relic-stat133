@@ -1,0 +1,406 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Project Organization}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat}{\tt \scriptsize \color{foreground} github.com/gastonstat}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Introduction}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Things around a Research Project}
+
+\bb{Typically ...}
+\bi
+  \item There is some interesting problem/phenomenon
+  \item Giving raise to some research questions
+  \item Data from experiments, surveys, observations, processes, etc
+  \item Data cleaning, transformation, processing
+  \item Exploratory Analysis (summaries, tables, plots)
+  \item Study associations, relationships
+  \item Perhaps some data modeling
+  \item Reporting: white papers, slides, articles, etc
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Organizing a Project}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Anatomy of a Project (basic)}
+\begin{center}
+\ig[width=8cm]{images/project_anatomy1.pdf}
+
+Every project has its own directory
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Anatomy of a Project}
+
+\bb{Project Subdirectories}
+\bi
+  \item \code{README} file: description of the project
+  \item \textbf{code}: functions and scripts
+  \item \textbf{data}: where the data files will live
+  \item \textbf{images} (or figures): images, plots, figures
+  \item \textbf{report}: final report, slides
+  \item \textbf{resources}: articles, references, inspiring things
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Anatomy of a Project (more options)}
+\begin{center}
+\ig[width=8cm]{images/project_anatomy2.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Anatomy of a Project}
+
+\bb{Project Subdirectories}
+\bi
+  \item \code{README} file: description of the project
+  \item \textbf{code}: functions and scripts
+  \item \textbf{rawdata}: only raw data files
+  \item \textbf{data}: clean data for analysis
+  \item \textbf{images} (or figures): images, plots, figures
+  \item \textbf{report}: final report, slides
+  \item \textbf{resources}: articles, references, inspiring things
+  \item \code{license} file: maybe you need a license
+  \item \code{other} file: other required file?
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Anatomy of a Project}
+
+\bb{\code{code} directory}
+All your scripts, functions, programs go here
+\eb
+
+\bb{\code{rawdata} directory}
+To store original data files. {\hilit DON'T touch this!}
+\eb
+
+\bb{\code{data} directory}
+To store cleaned and processed data files. \\
+{\lit (these are the ones you use for your analysis, plots, etc)}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Anatomy of a Project}
+
+\bb{\code{images} directory}
+To store all your plots, charts, graphics, illustrations, etc \\
+{\lit (ideally produced from your code)}
+\eb
+
+\bb{\code{resources} directory}
+References, papers, docs, supporting material, etc \\
+{\lit (things that have helped with your project)}
+\eb
+
+\bb{\code{report} directory}
+Your final report: exec summary, document, slides, poster, etc
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Anatomy of a Project}
+
+\bb{\code{README} file}
+File describing what your project is about, and other important details (how are the files organized, authors, contact, etc)---It's an \textit{About} file.
+\eb
+
+\bb{\code{License} file}
+Perhaps your project needs a license \\
+e.g. \url{http://creativecommons.org/}
+\eb
+
+\bb{\code{other} file / \code{extra} directory}
+For things that don't fit in any of the previous files/directories
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Project Organization}
+
+\bb{Considerations}
+\bi
+  \item Get use to organize your projects
+  \item You can develop your own system:
+  \bi
+    \item naming style, file-dirs structure
+  \ei
+  \item Back your projects up 
+  \bi
+    \item e.g. Dropbox, github, cloud storage
+  \ei
+  \item Check how other people organize their projects
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Sharing your Projects}
+
+\bb{Consider sharing your projects}
+\bi
+  \item Dare to share!
+  \item Writing Code (scripts, functions, etc) implies a lot of work
+  \item Most of the time this work never sees the ``screen light''
+  \item In many cases is like writing papers
+  \item Opportunity to give something back (you've benefitted from others' code)
+  \item Free peer review
+  \item Not as bad as it may seem/sound
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{RStudio Projects}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{RStudio Project}
+
+\bi
+  \item You can use RStudio to organize a project
+  \item RStudio allows you to create \textit{Projects}
+  \item Can be version-controlled
+  \item Facilitates working with relative paths
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{RStudio Project}
+\begin{center}
+\ig[width=6cm]{images/rstudio_newproject.png}
+\end{center}
+
+Start a \textbf{New Project}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{RStudio Project}
+\begin{center}
+\ig[width=8cm]{images/rstudio_newemptyproj.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{RStudio Project}
+\begin{center}
+\ig[width=8cm]{images/rstudio_newdirproject.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{RStudio Project}
+\begin{center}
+\ig[width=8cm]{images/rstudio_subdir.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{RStudio Project}
+\begin{center}
+\ig[width=8cm]{images/rstudio_projectscreen.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{RStudio Project}
+\begin{center}
+\ig[width=8cm]{images/rstudio_Rproj.png}
+\end{center}
+
+RStudio associates an \code{.Rproj} file to your Project
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{RStudio Project}
+\begin{center}
+\ig[width=5cm]{images/rstudio_closeproj.png}
+\end{center}
+
+To close the Project go to the File menu bar and click \code{Close Project}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{RStudio Projects}
+
+Create an RStudio Project (you can use files of HW5)
+\bi
+  \item Add a subdirectory for the raw data
+  \item Add a directory with the clean data sets
+  \item Add an R script
+  \item Add an Rmd file 
+  \item Knit the document (either as HTML or pdf)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Shell for Windows}
+
+For those of you using Windows, you'll need to install either:
+\bi
+  \item \textbf{Git Bash} \\
+  \url{https://msysgit.github.io/}
+  \item \textbf{PowerShell} (part of the Windows Management Framework 4.0) \\
+{\scriptsize \url{https://www.microsoft.com/en-us/download/details.aspx?id=40855}}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

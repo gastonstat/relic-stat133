@@ -1,0 +1,15 @@
+\frametitle{Function in what package?}
+
+To find which package a function belongs, we use the command {\hilit \code{find()}}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{find}\hlstd{(}\hlstr{"t.test"}\hlstd{)}
+
+\hlkwd{find}\hlstd{(}\hlstr{"mean"}\hlstd{)}
+
+\hlkwd{find}\hlstd{(}\hlstr{"boxplot"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+

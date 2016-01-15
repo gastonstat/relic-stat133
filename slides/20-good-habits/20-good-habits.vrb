@@ -1,0 +1,24 @@
+\frametitle{Test Yourself}
+
+What's wrong with this function?
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{freq_table} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlstd{table} \hlkwb{<-} \hlkwd{table}\hlstd{(x)}
+  \hlstr{'category'} \hlkwb{<-} \hlkwd{levels}\hlstd{(x)}
+  \hlstr{'count'} \hlkwb{<-} \hlkwd{print}\hlstd{(table)}
+  \hlstr{'prop'} \hlkwb{<-} \hlstd{table}\hlopt{/}\hlkwd{length}\hlstd{(x)}
+  \hlstr{'cumcount'} \hlkwb{<-} \hlkwd{print}\hlstd{(table)}
+  \hlstr{'cumprop'} \hlkwb{<-} \hlstd{table}\hlopt{/}\hlkwd{length}\hlstd{(x)}
+  \hlkwa{if}\hlstd{(}\hlkwd{is.factor}\hlstd{(x)) \{}
+    \hlkwd{return}\hlstd{(}\hlkwd{data.frame}\hlstd{(}\hlkwc{rownames}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{'category'}\hlstd{,} \hlstr{'count'}\hlstd{,}\hlstr{'prop'}\hlstd{,}
+                                 \hlstr{'cumcount'}\hlstd{,}\hlstr{'cumprop'}\hlstd{)))}
+  \hlstd{\}} \hlkwa{else} \hlstd{\{}
+    \hlkwd{stop}\hlstd{(}\hlstr{'Not a factor'}\hlstd{)}
+  \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+

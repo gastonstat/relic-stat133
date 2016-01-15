@@ -1,0 +1,17 @@
+\frametitle{Ramp Palettes}
+
+\bb{\code{colorRampPalette()}}
+\code{colorRampPalette()} produces a function that generates \code{n} colors
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{orange_blue} \hlkwb{<-} \hlkwd{colorRampPalette}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"orange"}\hlstd{,} \hlstr{"blue"}\hlstd{))}
+\hlkwd{orange_blue}\hlstd{(}\hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "#FFA500" "#BF7B3F" "#7F527F" "#3F29BF" "#0000FF"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\eb
+

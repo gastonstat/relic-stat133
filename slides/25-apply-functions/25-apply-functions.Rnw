@@ -1,0 +1,890 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Advanced Loops}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Advanced Looping}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Outline}
+
+\bbi
+  \item Vectorizing a function
+  \item Loops over elements of data structures
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+<<>>=
+# fahrenheit to celsius
+to_celsius <- function(x) {
+  (x - 32) * (5/9)
+}
+@
+
+The function \code{to\_celsius()} happens to be a vectorized function:
+<<>>=
+to_celsius(c(32, 40, 50, 60, 70))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+\bi
+  \item In general, R functions defined on scalar values are expected to be vectorized
+  \item You should have noticed that many functions in R are vectorized
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+What happens in this situation?
+<<eval = FALSE>>=
+# trying to_celsius() on a list
+to_celsius(list(32, 40, 50, 60, 70))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+<<>>=
+# trying to_celsius() on a list
+to_celsius(list(32, 40, 50, 60, 70))
+@
+
+\code{to\_celsius()} does not work with a list
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+One solution is to use a {\hilit \code{for}} loop:
+<<>>=
+temps_farhenheit <- list(32, 40, 50, 60, 70)
+
+temps_celsius <- numeric(5)
+for (i in 1:5) {
+  temps_celsius[i] <- to_celsius(temps_farhenheit[[i]])
+}
+
+temps_celsius
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectorizing Functions - Vectors}
+
+\bbi
+  \item R provides a set of functions to ``vectorize'' functions over the elements of data structures:
+  \bi
+    \item \code{lapply()}, \code{sapply()}, \code{apply()}, etc
+  \ei
+  \item These functions allow us to avoid writing loops
+  \item These are functions that have grown organically
+  \item They have common names but unfortunately not all of them use the same arguments naming conventions
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{lapply()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Loops over vectors or lists}
+
+\bi
+  \item The simplest apply function is {\hilit \code{lapply()}}
+  \item \code{lapply()} stands for \textbf{list apply}
+  \item It takes a list or vector and a function as inputs
+  \item It applies the function to each element of the list
+  \item The output is another list
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+<<>>=
+players <- list(
+  warriors = c('kurry', 'iguodala', 'thompson', 'green'),
+  cavaliers = c('james', 'shumpert', 'thompson'),
+  rockets = c('harden', 'howard')
+)
+  
+lapply(players, length)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+<<>>=
+# convert to upper case
+lapply(players, toupper)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+You can pass arguments to the applied functions
+<<>>=
+# collapsing with paste()
+lapply(players, paste, collapse = '-')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+You can pass your own functions
+<<>>=
+num_chars <- function(x) {
+  nchar(x)
+}
+
+lapply(players, num_chars)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{Anonymous functions}}
+
+You can define a function with no name (i.e. anonymous function):
+<<>>=
+# anonymous function
+lapply(players, function(x) paste('mr', x))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{Anonymous functions}}
+
+<<>>=
+# anonymous function
+lapply(players, function(x) grep('a', x, value = TRUE))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+Remember that a \code{data.frame} is internally stored as a list:
+<<>>=
+df <- data.frame(
+  name = c('Luke', 'Leia', 'R2-D2', 'C-3PO'),
+  gender = c('male', 'female', 'male', 'male'),
+  height = c(1.72, 1.50, 0.96, 1.67),
+  weight = c(77, 49, 32, 75)
+)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{lapply()}}
+
+Remember that a \code{data.frame} is internally stored as a list:
+<<>>=
+lapply(df, class)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{sapply()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Loops over vectors or lists}
+
+\bi
+  \item \code{sapply()} is a modified version of {\hilit \code{lapply()}}
+  \item \code{sapply()} stands for \textbf{simplified apply}
+  \item It takes a list or vector and a function as inputs
+  \item It applies the function to each element of the list
+  \item \code{sapply()} attempts to simplify the output (possibly as a vector or list)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{sapply()}}
+
+<<>>=
+players <- list(
+  warriors = c('kurry', 'iguodala', 'thompson', 'green'),
+  cavaliers = c('james', 'shumpert', 'thompson'),
+  rockets = c('harden', 'howard')
+)
+  
+sapply(players, length)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{sapply()}}
+
+<<>>=
+sapply(players, nchar)
+@
+
+when the output cannot be simplified, \code{sapply()} returns the same output as \code{lapply()}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{apply()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Loops on matrices (or arrays)}
+
+Consider a matrix:
+<<>>=
+(m <- matrix(1:20, 4, 5))
+@
+
+How can we get the median of each row?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Loops on matrices (or arrays)}
+
+We could write something like this (not recommended)
+<<>>=
+medians <- numeric(nrow(m))
+
+medians[1] <- median(m[1, ])
+medians[2] <- median(m[2, ])
+medians[3] <- median(m[3, ])
+medians[4] <- median(m[4, ])
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Loops on matrices (or arrays)}
+
+Repetition is error prone:
+<<>>=
+medians <- numeric(nrow(m))
+
+medians[1] <- median(m[1, ])
+medians[2] <- median(m[2, ])
+medians[3] <- median(m[2, ])
+medians[4] <- median(m[4, ])
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Loops on matrices (or arrays)}
+
+We could also write a \code{for} loop
+<<>>=
+medians <- numeric(nrow(m))
+
+for (r in 1:nrow(m)) {
+  medians[r] <- median(m[r, ])
+}
+
+medians
+@
+
+Or we could use the {\hilit \code{apply()}} function
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Loops over matrices or arrays}
+
+\bbi
+  \item {\hilit \code{apply()}} is perhaps the most popular apply function
+  \item It takes a matrix or array, an index and a function as inputs
+  \item Additionaly, it can take more arguments
+  \item The \code{MARGIN} index gives the subscript which the function will be applied over
+  \bi
+    \item \code{MARGIN = 1} indicates rows
+    \item \code{MARGIN = 2} indicates columns
+    \item \code{MARGIN = c(1, 2)} indicates both rows and columns
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{apply()}}
+
+<<>>=
+(m <- matrix(1:20, 4, 5))
+
+# median of rows
+apply(m, 1, median)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{apply()}}
+
+<<>>=
+(m <- matrix(1:20, 4, 5))
+
+# median of columns
+apply(m, 2, median)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{apply()}}
+
+\code{apply()} can be used on data frames
+<<>>=
+# mean height and weight (on columns)
+apply(df[ ,c('height', 'weight')], 2, mean)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{apply()}}
+
+\code{apply()} can be used on data frames
+<<>>=
+# product of height and weight (on rows)
+apply(df[ ,c('height', 'weight')], 1, prod)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{tapply()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Loops over vectors split by a factor}
+
+\bbi
+  \item \code{tapply()} 
+  \item the name does not mean anything
+  \item very useful to \textbf{aggregate} data
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{tapply()}}
+
+Say you need to obtain average height and weight by gender
+<<>>=
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Without \code{tapply()}}
+
+<<>>=
+# mean height by gender
+mean(df$height[df$gender == 'female'])
+mean(df$height[df$gender == 'male'])
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Without \code{tapply()}}
+
+<<>>=
+# mean weight by gender
+mean(df$weight[df$gender == 'female'])
+mean(df$weight[df$gender == 'male'])
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{tapply()}}
+
+<<>>=
+# mean height by gender
+tapply(df$height, df$gender, mean)
+
+# mean weight by gender
+tapply(df$weight, df$gender, mean)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{mapply()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Multiple-Input Apply}
+
+\bbi
+  \item \code{lapply()} only accepts a single vector or list to loop over
+  \item \code{lapply()} does not give you access to the names of the elements
+  \item \code{mapply()} solves this issues
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Multiple-Input Apply}
+
+\bi
+  \item {\hilit \code{mapply()}} stands for \textbf{multiple argument list apply}
+  \item it lets you pass in as many vectors as you like
+  \item the first argument is the function to be applied
+  \item the following arguments are vectors
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{mapply()}}
+
+<<size='scriptsize'>>=
+# pasting player name and team
+mapply(paste, players, names(players))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{mapply()}}
+
+How would you generate this list:
+<<echo = FALSE>>=
+mapply(rep, 1:4, 4:1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{mapply()}}
+
+<<>>=
+lst <- vector('list', 4)
+for (k in 1:4) {
+  lst[[k]] <- rep(k, 5-k)
+}
+lst
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{mapply()}}
+
+<<>>=
+# multiple input argument
+mapply(rep, 1:4, 4:1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{apply()} Related Functions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Related Functions}
+
+Some convenient functions (faster than using \code{apply()})
+\bi
+  \item \code{colMeans()}
+  \item \code{rowMeans()}
+  \item \code{colSums()}
+  \item \code{rowSums()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{colMeans()}}
+
+<<>>=
+# column means of height and weight
+colMeans(df[ ,c('height', 'weight')])
+
+# equivalent to:
+apply(df[ ,c('height', 'weight')], 2, mean)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{rowMeans()}}
+
+<<>>=
+# row means of height and weight
+rowMeans(df[ ,c('height', 'weight')])
+
+# equivalent to:
+apply(df[ ,c('height', 'weight')], 1, mean)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{rowSums()}}
+
+<<>>=
+# row sums of height and weight
+rowSums(df[ ,c('height', 'weight')])
+
+# equivalent to:
+apply(df[ ,c('height', 'weight')], 1, sum)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{colSums()}}
+
+<<>>=
+# column sums of height and weight
+colSums(df[ ,c('height', 'weight')])
+
+# equivalent to:
+apply(df[ ,c('height', 'weight')], 2, sum)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{aggregate()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Apply a function to data subsets}
+
+\bi
+  \item \code{aggregate()} can be thought as a generalization of \code{tapply()}
+  \item It splits the data into subsets, and applies a function
+  \item The subsets must be provided as a list
+  \item The output is returned in a ``convenient'' form
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{aggregate()}}
+
+<<>>=
+df <- data.frame(
+  name = c('Luke', 'Leia', 'R2-D2', 'C-3PO'),
+  gender = c('male', 'female', 'male', 'male'),
+  species = c('human', 'human', 'robot', 'robot'),
+  height = c(1.72, 1.50, 0.96, 1.67),
+  weight = c(77, 49, 32, 75)
+)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{aggregate()}}
+
+<<>>=
+# mean height and weight by gender
+aggregate(df[ ,c('height', 'weight')], 
+          list(df$gender), mean)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{aggregate()}}
+
+<<>>=
+# mean height and weight by species
+aggregate(df[ ,c('height', 'weight')], 
+          list(df$species), mean)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{aggregate()}}
+
+<<>>=
+# mean height and weight by gender and species
+aggregate(df[ ,c('height', 'weight')], 
+          list(df$gender, df$species), mean)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{sweep()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Sweep out array summaries}
+
+\bbi
+  \item Sometimes we need to sweep out a summary statistic
+  \item e.g. removing the mean on each column
+  \item \code{sweep()} is specially designed for this
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{sweep()} mean}
+
+<<>>=
+# mean height and weight
+hw_mean <- colMeans(df[ ,c('height', 'weight')])
+
+# centering height and weight
+sweep(df[ ,c('height', 'weight')], 2, hw_mean)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{sweep()} median}
+
+<<>>=
+# mean height and weight
+hw_median <- apply(df[ ,c('height', 'weight')], 2, median)
+
+# centering height and weight
+sweep(df[ ,c('height', 'weight')], 2, hw_median)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{R Package \code{"plyr"}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{R package \code{"plyr"}}
+
+\bi
+  \item \code{"plyr"} provides alternative functions to the apply-family functions in base R
+  \item Don't confuse \code{"plyr"} with \code{"dplyr"}
+  \item Functions in \code{"plyr"} are better designed, usually faster, and with better names of arguments
+  \item Read the paper \textbf{The Split-Apply-Combine Strategy for Data Analysis}
+  \item \url{http://www.jstatsoft.org/v40/i01}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

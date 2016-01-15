@@ -1,0 +1,1554 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Control Flow Structures}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Expressions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Expressions}
+
+\bb{R code is composed of a series of \textbf{expressions}}
+\bbi
+  \item assignment statements
+  \item arithmetic expressions
+  \item function calls
+  \item conditional statements
+  \item etc
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simple Expressions}
+<<eval = FALSE>>=
+# assignment statement
+a <- 12345
+
+# arithmetic expression
+525 + 34 - 280
+
+# function call
+median(1:10)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Expressions}
+
+One way to separate expressions is with new lines:
+<<eval = FALSE>>=
+a <- 12345
+525 + 34 - 280
+median(1:10)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Grouping Expressions}
+
+\bb{Constructs for grouping together expressions}
+\bbi
+  \item semicolons
+  \item curly braces
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Separating Expressions}
+
+Simple expressions separated with new lines:
+<<eval = FALSE>>=
+a <- 10
+b <- 20
+d <- 30
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Grouping Expressions}
+
+Grouping expressions with semicolons:
+<<eval = FALSE>>=
+a <- 10; b <- 20; d <- 30
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Grouping Expressions}
+
+Grouping expressions with braces:
+<<eval = FALSE>>=
+{
+  a <- 10
+  b <- 20
+  d <- 30
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Grouping Expressions}
+
+Multiple expressions in one line within braces:
+<<eval = FALSE>>=
+{a <- 10; b <- 20; d <- 30}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Brackets and Braces in R}
+\begin{center}
+\ig[width=9cm]{images/braces.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Brackets and Braces}
+<<eval = FALSE>>=
+# brackets for objects
+dataset[1:10]
+@
+
+\pause
+<<eval=FALSE>>=
+# parentheses for functions
+some_function(dataset)
+@
+
+\pause
+<<eval=FALSE>>=
+# brackets for expressions
+{
+  1 + 1
+  mean(1:5)
+  tbl <- read.csv('datafile.csv')
+}
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Test yourself}
+
+Which is NOT a valid option for indexing data.frames
+\bbi
+  \item[A)] Numeric vectors
+  \item[B)] Logical vectors
+  \item[C)] Missing values
+  \item[D)] Empty indices
+  \item[E)] Blank spaces
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Expressions}
+
+\bbi
+  \item A program is a set of instructions
+  \item Programs are made up of expressions
+  \item R expressions can be simple or compound
+  \item Every expression in R has a value
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Expressions}
+
+<<>>=
+# Expressions can be simple statements:
+5 + 3
+@
+
+<<>>=
+# Expressions can also be compound:
+{5 + 3; 4 * 2; 1 + 1}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Expressions}
+
+The value of an expression is the last evaluated statement:
+<<>>=
+# value of an expression
+{5 + 3; 4 * 2; 1 + 1}
+@
+The result has the visibility of the last evaluation
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simple Expressions}
+
+We use braces \{ \} to group the statements of an expression:
+<<>>=
+# simple expression
+{5 + 3}
+@
+For simple expressions there is really no need to use braces
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+\bbi
+  \item Compound expressions consist of multiple simple expressions
+  \item Compound expressions require braces
+  \item Simple expressions in a compound expression can be separated by semicolons or newlines
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+Simple expressions in a compound expression separated by semicolons:
+<<>>=
+# compound expression
+{mean(1:10); '3'; print("hello"); c(1, 3, 4)}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+Simple expressions in a compound expression separated by newlines:
+<<>>=
+# compound expression
+{
+  mean(1:10)
+  '3'
+  print("hello")
+  c(1, 3, 4)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+It is possible to have assignments within compound expressions:
+<<>>=
+{
+  x <- 4
+  y <- x^2
+  x + y
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+The variables inside the braces can be used in later expressions
+<<>>=
+z <- {x <- 4; y <- x^2; x + y}
+x
+y
+z
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+<<>>=
+# simple expressions in newlines
+z <- {
+  x <- 4
+  y <- x^2
+  x + y}
+x
+y
+z
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using Expressions}
+
+\bb{Expressions are typically used in}
+\bbi
+  \item Flow control structures (e.g. \code{for} loop)
+  \item Functions
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Compound Expressions}
+
+Do not confuse a function call (having arguments in multiple lines) with a compound expression
+<<eval = FALSE>>=
+# this is NOT a compound expression
+plot(x = runif(10), y = rnorm(10), 
+     pch = 19, col = "#89F39A", cex = 2,
+     main = "some plot",
+     xlab = 'x', ylab = 'y')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Control Flow Structures}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Control Flow}
+
+There are many times where you don't just want to execute one statement after another: you need to control the flow of execution.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Main Idea}
+
+\begin{center}
+{\mdlit \Large Execute some code when \\ a condition is fulfilled}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Control Flow Structures}
+
+\bi
+  \item if-then-else
+  \item switch cases
+  \item repeat loop
+  \item while loop
+  \item for loop
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{If-Then-Else}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If-Then-Else}
+
+\textbf{If-then-else} statements make it possible to choose between two (possibly compound) expressions depending on the value of a (logical) condition.
+
+<<eval=FALSE>>=
+# if-then-else
+if (condition) expression1 else expression2
+@
+If \code{condition} is true then \code{expression1} is evaluated otherwise \code{expression2} is executed.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If-Then-Else}
+
+If-then-else with \textbf{simple} expressions (equivalent forms):
+
+<<eval=FALSE>>=
+# no braces
+if (condition) expression1 else expression2
+
+
+# with braces
+if (condition) {
+  expression1 
+} else {
+  expression2
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If-Then-Else}
+
+If-then-else with \textbf{compound} expressions:
+
+<<eval = FALSE>>=
+# compound expressions require braces
+if (condition) {
+  expression1
+  expression2
+  ...
+} else {
+  expression3
+  expression4
+  ...
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example: If-Then-Else}
+
+Equivalent forms:
+<<>>=
+# simple if-then-else
+if (5 > 2) 5 * 2 else 5 / 2
+
+# simple if-then-else
+if (5 > 2) {
+  5 * 2 
+} else {
+  5 / 2
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example: If-Then-Else}
+
+Equivalent forms:
+<<eval=FALSE>>=
+# simple if-then-else
+if (x > 0) y <- sqrt(x) else y <- abs(x)
+
+# simple if-then-else
+if (x > 0) {
+  y <- sqrt(x) 
+} else {
+  y <- abs(x)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{If-Then-Else}
+
+\bi
+  \item {\hilit \code{if()}} takes a \textbf{logical} condition
+  \item the condition must be a logical value \textbf{of length one}
+  \item it executes the next statement if the condition is true
+  \item if the condition is false, then it executes the false expression
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{2 types of If conditions}
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+\textbf{if-then-else}
+<<eval=FALSE>>=
+# if and else
+if (condition) {
+  expression_true
+} else {
+  expression_false
+}
+@
+\end{column}
+
+\begin{column}{0.45\textwidth}
+\textbf{Just if}
+<<eval=FALSE>>=
+# simple if
+if (condition) {
+  expression_true
+}
+@
+\end{column}
+\end{columns}
+
+\bigskip
+It is also possible to just have the if clause (without \code{else})
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Just If}
+
+Just \code{if}
+<<eval=FALSE>>=
+# just if
+if (condition) {
+  expression1
+  ...
+}
+@
+
+Equivalent to:
+<<eval=FALSE>>=
+# just if (else NULL)
+if (condition) {
+  expression1
+  ...
+} else NULL
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{If and Else}
+
+\bi
+  \item \code{if()} takes a \textbf{logical} condition
+  \item the condition must be a logical value of length one
+  \item it executes the next statement if the condition is true
+  \item if the condition is false, and there is no \code{else}, then it stops
+  \item if the condition is false, and there is an \code{else}, then it executes the false expression
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reminder of Comparison Operators}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   operation & usage \\
+  \hline
+  less than & \code{x < x} \\
+  greater than & \code{x > y} \\
+  less than or equal & \code{x <= y} \\  
+  greater than or equal  & \code{x >= y} \\
+  equality & \code{x == y} \\
+  different & \code{x != y} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+Comparison operators produce logical values
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reminder of Logical Operators}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   operation & usage \\
+  \hline
+  NOT & \code{!x} \\
+  AND (elementwise) & \code{x \& y} \\
+  AND (1st element) & \code{x \&\& y} \\  
+  OR (elementwise)  & \code{x | y} \\
+  OR (1st element) & \code{x || y} \\
+  exclusive OR & \code{xor(x, y)} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+Logical operators produce logical values
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Just \code{if}'s behavior}
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+<<eval = FALSE>>=
+# this prints
+if (TRUE) {
+  print("It is true")
+}
+
+
+# this does not print
+if (FALSE) {
+  print("It is false")
+}
+@
+\end{column}
+
+\begin{column}{0.45\textwidth}
+<<eval = FALSE>>=
+# this does not print
+if (!TRUE) {
+  print("It is not true")
+}
+
+
+# this prints
+if (!FALSE) {
+  print("It is not false")
+}
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Just \code{if}}
+
+<<>>=
+x <- 7
+
+if (x >= 0) {
+  print("it is positive")
+}
+
+if (is.numeric(x)) {
+  print("it is numeric")
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If and Else}
+
+<<>>=
+y <- -5
+
+if (y >= 0) {
+  print("it is positive")
+} else {
+  print("it is negative")
+}
+@
+The \code{else} statement must occur on the same line as the closing brace from the \code{if} clause!
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If and Else}
+
+The logical condition must be of length one!
+<<>>=
+if (c(TRUE, TRUE)) {
+  print("it is positive")
+} else {
+  print("it is negative")
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If and Else}
+
+What's the length of the logical condition?
+<<>>=
+x <- 3
+y <- 4
+
+if (x > 0 & y > 0) {
+  print("they are not negative")
+} else {
+  print("they may be negative")
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If and Else}
+
+If there's is a single statement, you can omit the braces:
+<<eval = FALSE>>=
+if (TRUE) { print("It is true") }
+
+if (TRUE) print("It is true")
+
+# valid but not recommended
+if (TRUE) 
+  print("It is true")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Equivalent ways}
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+No braces:
+<<eval = FALSE>>=
+# ok
+if (TRUE) print("It's true")
+
+
+# valid but not recommended
+if (TRUE) 
+  print("It's true")
+@
+\end{column}
+
+\begin{column}{0.45\textwidth}
+With braces:
+<<eval = FALSE>>=
+# ok
+if (TRUE) {print("It's true")}
+
+
+# recommended
+if (TRUE) { 
+  print("It's true")
+}
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{If and Else}
+
+If there are multiple statements, you must use braces:
+<<eval = FALSE>>=
+if (x > 0) { 
+  a <- x^(2)
+  b <- 3 * a + 34.8 - exp(2)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple If's}
+
+Multiple conditions can be defined by combining \code{if} and \code{else} repeatedly:
+<<eval = TRUE>>=
+set.seed(9)
+x <- round(rnorm(1), 1)
+
+if (x > 0) { 
+  print("x is positive")
+} else if (x < 0) {
+  print("x is negative")
+} else if (x == 0) {
+  print("x is zero")
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectorized \code{ifelse()}}
+
+\code{if()} takes a single logical value. If you want to pass a logical vector of conditions, you can use {\hilit \code{ifelse()}}:
+<<>>=
+true_false <- c(TRUE, FALSE)
+
+ifelse(true_false, "true", "false")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectorized If}
+
+<<>>=
+# some numbers
+numbers <- c(1, 0, -4, 9, -0.9)
+
+# are they non-negative or negative?
+ifelse(numbers >= 0, "non-neg", "neg")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Test yourself}
+
+Which option will cause an error:
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+<<eval = FALSE>>=
+# A
+if (is.numeric(1:5)) {
+  print('ok')
+}
+
+
+# B
+if ("TRUE") {
+  print('ok')
+}
+@
+\end{column}
+
+\begin{column}{0.45\textwidth}
+<<eval = FALSE>>=
+# C
+if (0) print('ok')
+
+
+# D
+if (NA) print('ok')
+
+
+# E
+if ('yes') {
+  print('ok')
+}
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Switch}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+{\large When a condition has multiple options, combining several \code{if} and \code{else} can become cumbersome}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+
+<<>>=
+first_name <- "harry"
+
+if (first_name == "harry") {
+  last_name <- "potter"
+} else {
+  if (first_name == "ron") {
+    last_name <- "weasley"
+  } else {
+    if (first_name == "hermione") {
+      last_name <- "granger"
+    } else {
+      last_name <- "not available"
+    }
+  }
+}
+
+last_name
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+<<>>=
+first_name <- "ron"
+
+last_name <- switch(
+  first_name,
+  harry = "potter",
+  ron = "weasley",
+  hermione = "granger",
+  "not available")
+
+last_name
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+\bi
+  \item the \code{switch()} function makes it possible to choose between various alternatives
+  \item \code{switch()} takes a character string
+  \item followed by several named arguments
+  \item \code{switch()} will match the input string with the provided arguments
+  \item a default value can be given when there's no match
+  \item multiple expression can be enclosed by braces
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+<<eval=FALSE>>=
+switch(expr,
+       tag1 = rcode_block1,
+       tag2 = rcode_block2,
+       ...
+       )
+@
+\code{switch()} selects one of the code blocks, depending on the value of \code{expr}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+<<>>=
+operation <- "add"
+
+result <- switch(
+  operation,
+  add = 2 + 3,
+  product = 2 * 3,
+  division = 2 / 3,
+  other = {
+    a <- 2 + 3
+    exp(1 / sqrt(a))
+  }
+)
+
+result
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Selection with \code{switch()}}
+
+\bi
+  \item \code{switch()} can also take an integer as first argument
+  \item in this case the remaining arguments do not need names
+  \item instead, the they will have associated integers
+\ei
+
+<<>>=
+switch(
+  4,
+  "one",
+  "two",
+  "three",
+  "four")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty code blocks in \code{switch()}}
+
+Empty code blocks can be used to make several tags match the same code block:
+
+<<>>=
+student <- "ron"
+
+house <- switch(
+  student,
+  harry = ,
+  ron = ,
+  hermione = "gryffindor",
+  draco = "slytherin")
+@
+In this case a value of \code{"harry"}, \code{"ron"} or \code{"hermione"} will cause \code{"gryffindor"}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Loops}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About Loops}
+
+\bbi
+  \item Many times we need to perform a procedure several times
+  \item The main idea is that of \textbf{iteration}
+  \item For this purpose we use loops
+  \item We perform operations as long as some condition is fulfilled
+  \item R provides three basic paradigms:
+  \bi
+    \item \code{for}, \code{repeat}, \code{while}
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Repeat Loops}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Repeat Loops}
+
+\code{repeat} executes the same code over and over until a stop condition is met.
+
+<<eval = FALSE>>=
+repeat {
+  keep_doing_something
+  if (stop_condition) break
+}
+@
+
+The \code{break} statement stops the loops
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Repeat Loops}
+
+<<>>=
+value <- 2
+
+repeat {
+  value <- value * 2
+  print(value)
+  if (value >= 40) break
+}
+@
+
+If you enter an infinite loop, break it by pressing \code{ESC} key
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Repeat Loops}
+
+To skip a current iteration, use \code{next}
+<<>>=
+value <- 2
+
+repeat {
+  value <- value * 2
+  print(value)
+  if (value == 16) {
+    value <- value * 2
+    next
+  }
+  if (value > 80) break
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{While Loops}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{While Loops}
+
+It can also be useful to repeat a computation until a condition is false. A \code{while} loop provides this form of control flow
+<<eval = FALSE>>=
+while (condition) {
+  keep_doing_something
+}
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{While Loops}
+
+\bi
+  \item \code{while} loops are like backward \code{repeat} loops; 
+  \item \code{while} checks first and then attempts to execute
+  \item computations are carried out for as long as the condition is true
+  \item the loop stops when the condition is false
+  \item If you enter an infinite loop, break it by pressing \code{ESC} key
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{While Loops}
+
+<<>>=
+value <- 2
+
+while (value < 40) {
+  value <- value * 2
+  print(value)
+}
+@
+
+If you enter an infinite loop, break it by pressing \code{ESC} key
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{For Loops}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{For Loops}
+
+Often we want to repeatedly carry out some computation a fixed number of times. For instance, repeat an operation for each element of a vector. In R this is done with a {\hilit \code{for}} loop 
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops}
+
+\code{for} loops are used when we know exactly how many times we want the code to repeat
+<<eval = FALSE>>=
+for (iterator in times) {
+  do_something
+}
+@
+
+\code{for} takes an \textit{iterator} variable and a vector of \textit{times} to iterate through
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops}
+
+<<>>=
+value <- 2
+
+for (i in 1:5) {
+  value <- value * 2
+  print(value)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops}
+
+The vector of \textit{times} does not have to be a numeric vector; it can be any vector
+<<>>=
+value <- 2
+times <- c('1', '2', '3', '4', '5')
+
+for (i in times) {
+  value <- value * 2
+  print(value)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops and Next statement}
+
+Sometimes we need to skip a loop iteration if a given condition is met, this can be done with a \code{next} statement
+<<eval = FALSE>>=
+for (iterator in times) {
+  expr1
+  expr2
+  if (condition) {
+    next
+  }
+  expr3
+  expr4
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops and Next statement}
+
+<<>>=
+x <- 2
+for (i in 1:5) {
+  y <- x * i
+  if (y == 8) {
+    next
+  }
+  print(y)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loops}
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+For loop
+<<>>=
+# squaring values
+x <- 1:5
+y <- x
+
+for (i in 1:5) {
+  y[i] <- x[i]^2
+}
+
+y
+@
+\end{column}
+
+\begin{column}{0.45\textwidth}
+Vectorized computation
+<<>>=
+# squaring values
+x <- 1:5
+y <- x^2
+y
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nested Loops}
+
+It is common to have nested loops
+<<eval = FALSE>>=
+for (iterator1 in times1) {
+  for (iterator2 in times2) {
+    expr1
+    expr2
+    ...
+  }
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nested Loops}
+
+<<>>=
+# some matrix 
+A <- matrix(1:12, nrow = 3, ncol = 4)
+
+A
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nested Loops}
+<<>>=
+# nested loops
+for (i in 1:nrow(A)) {
+  for (j in 1:ncol(A)) {
+    if (A[i,j] < 6) A[i,j] <- 1 / A[i,j] 
+  }
+}
+
+A
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{For Loops and Vectorized Computations}
+
+\bi
+  \item R \code{for} loops have a bad reputation for being slow
+  \item Experienced users will tell you to avoid for loops in R (me included)
+  \item R provides a family of functions that tend to be more efficient than loops (i.e. \code{apply()} functions)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{For Loops and Vectorized Computations}
+
+\bi
+  \item For purposes of learning programming (and flow control structures in R), I won't demonize R loops
+  \item You can start solving a problem using a for loop
+  \item Once you solved it, try to see if you can find a vectorized alternative
+  \item It takes practice and experience to find alternative solutions to for loops
+  \item There are cases when using \code{for} loops is inevitable
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Repeat, While, For}
+
+\bi
+  \item If you don't know the number of times something will be done you can use either \code{repeat} or \code{while}
+  \item \code{while} evaluates the condition at the beginning
+  \item \code{repeat} executes operations until a stop condition is met
+  \item If you know the number of times that something will be done, use \code{for}
+  \item \code{for} needs an \textit{iterator} and a vector of \textit{times}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loop}
+
+This example is just for demo purposes (not recommended in R)
+<<>>=
+# empty numeric vector
+x <- numeric(0)
+x
+
+# for loop to fill x
+for (i in 1:5) {
+  x[i] <- i
+}
+x
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{For Loop}
+
+If you know the number of times
+<<>>=
+# empty numeric vector
+x <- numeric(5)
+x
+
+# for loop to fill x
+for (i in 1:5) {
+  x[i] <- i
+}
+x
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Quiz}
+
+\bbi
+  \item What happens if you pass \code{NA} as a condition to \code{if()}?
+  \item What happens if you pass \code{NA} as a condition to \code{ifelse()}?
+  \item What types of values can be passed as the first argument to the \code{switch()} function?
+  \item How do you stop a \code{repeat} loop executing?
+  \item How do you jump to the next iteration of a loop?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

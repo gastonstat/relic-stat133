@@ -1,0 +1,1018 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Functions - part 2}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Functions}
+
+R comes with many functions and packages that let us perform a wide variety of tasks. Sometimes, however, there's no function to do what we want to achieve. In these cases we need to create our own functions.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Writing Functions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Writing Functions}
+
+Writing Functions
+\bi
+  \item Choose meaningful names of functions
+  \item Preferably a verb
+  \item Choose meaningful names of arguments
+  \item Think about the users (who will use the function)
+  \item Think about extreme cases
+  \item If a function is too long, maybe you need to split it
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Names of functions}
+
+Avoid this:
+<<eval=FALSE>>=
+f <- function(x, y) {
+  x + y
+}
+@
+
+This is better
+<<eval=FALSE>>=
+add <- function(x, y) {
+  x + y
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Names of arguments}
+
+Give meaningful names to arguments:
+<<eval=FALSE>>=
+# Avoid this
+area_rect <- function(x, y) {
+  x * y
+}
+@
+
+This is better
+<<eval=FALSE>>=
+area_rect <- function(length, width) {
+  length * width
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Meaningful Names to Arguments}
+
+Avoid this:
+<<eval=FALSE>>=
+# what does this function do?
+ci <- function(p, r, n, ti) {
+  p * (1 + r/p)^(ti * p)
+}
+@
+
+\pause
+This is better:
+<<eval=FALSE>>=
+# OK
+compound_interest <- function(principal, rate, periods, time) {
+  principal * (1 + rate/periods)^(time * periods)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Meaningful Names to Arguments}
+
+<<eval=FALSE, size = 'scriptsize'>>=
+# names of arguments
+compound_interest <- function(principal = 1, rate = 0.01, 
+                              periods = 1, time = 1) 
+{
+  principal * (1 + rate/periods)^(time * periods)
+}
+
+compound_interest(principal = 100, rate = 0.05, 
+                  periods = 5, time = 1)
+
+compound_interest(rate = 0.05, periods = 5, 
+                  time = 1, principal = 100)
+
+compound_interest(rate = 0.05, time = 1, 
+                  periods = 5, principal = 100)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Describing functions}
+
+Also add a short description of what the arguments should be like. In this case, the description is outside the function
+<<eval=FALSE>>=
+# function for adding two numbers
+# x: number
+# y: number
+add <- function(x, y) {
+  x + y
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Describing functions}
+
+In this case, the description is inside the function
+<<eval=FALSE>>=
+add <- function(x, y) {
+  # function for adding two numbers
+  # x: number
+  # y: number
+  x + y
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Describing functions}
+
+<<eval=FALSE>>=
+# description of arguments
+compound_interest <- function(principal = 1, rate = 0.01, 
+                              periods = 1, time = 1) 
+{
+  # principal = Principal Amount
+  # rate = Annual Nominal Interest Rate as a decimal
+  # time = Time Involved in years
+  # periods = number of compounding periods per unit time
+  principal * (1 + rate/periods)^(time * periods)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Binary Operators}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Binary Operators}
+
+\bi
+  \item One type of functions very common in R are \textbf{binary operators}, eg:
+  \bi
+    \item \code{2 + 5} (sum)
+    \item \code{3 / 2} (division)
+    \item \code{a \%in\% b} (value matching)
+    \item \code{X \%*\% Y} (matrix multiplication)
+  \ei
+  \item Binary operators are actually functions
+  \item These functions take two inputs---hence the term \textit{binary}
+  \item It is possible to define your own binary operators
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binary Operators}
+
+Example:
+<<eval = FALSE>>=
+# addition operator
+2 + 3
+
+# equivalent to
+'+'(2, 3)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binary Operators}
+
+<<>>=
+# binary operator
+"%p%" <- function(x, y) {
+  paste(x, y, sep = " ")
+}
+
+'good' %p% 'morning'
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{How to create a binary operator?}
+
+
+\bbi
+  \item A binary operator is defined as one or more characters surrounded by percent symbols {\hilit \code{\%}}
+  \item When defining the function, the entire name must be quoted
+  \item Include two arguments
+  \item As usual, avoid using names of existing operators:
+  \bi
+    \item \code{"\%\%"}, \code{\%*\%}, \code{\%/\%}, \code{\%o\%}, \code{\%in\%}
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Another example}
+
+Here's another example:
+<<>>=
+# binary operator
+"%u%" <- function(x, y) {
+  union(x, y)
+}
+
+1:5 %u% c(1, 3, 5, 7, 9)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Lazy Evaluation}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Lazy Evaluation}
+
+Arguments to functions are evaluated lazily, that is, they are evaluated only as needed:
+<<>>=
+g <- function(a, b) {
+  a * a * a
+}
+
+g(2)
+@
+
+\code{g()} never uses the argument \code{b}, so calling \code{g(2)} does not produce an error
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Lazy Evaluation}
+
+Another example
+<<>>=
+g <- function(a, b) {
+  print(a)
+  print(b)
+}
+
+g(2)
+@
+
+Notice that \code{2} got printed before the error was triggered. This is because \code{b} did not have to be evaluated until after \code{print(a)}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Messages}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+
+There are two main functions for generating warnings and errors:
+\bbi
+  \item {\hilit \code{stop()}}
+  \item {\hilit \code{warning()}}
+\ei
+
+\bigskip
+{\footnotesize There's also the {\hilit \code{stopifnot()}} function}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Stop Execution}
+
+Use {\hilit \code{stop()}} to stop the execution of a function (this will raise an error)
+<<>>=
+meansd <- function(x, na.rm = FALSE) {
+  if (!is.numeric(x)) {
+    stop("x is not numeric")
+  }
+  # output
+  c(mean = mean(x, na.rm = na.rm), 
+    sd = sd(x, na.rm = na.rm))
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Stop Execution}
+
+Use {\hilit \code{stop()}} to stop the execution of a function (this will raise an error)
+<<>>=
+# ok
+meansd(c(4, 5, 3, 1, 2))
+
+# this causes an error
+meansd(c('a', 'b', 'c'))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Warning Messages}
+
+Use {\hilit \code{warning()}} to show a warning message
+<<>>=
+meansd <- function(x, na.rm = FALSE) {
+  if (!is.numeric(x)) {
+    warning("non-numeric input coerced to numeric")
+    x <- as.numeric(x)
+  }
+  # output
+  c(mean = mean(x, na.rm = na.rm), 
+    sd = sd(x, na.rm = na.rm))
+}
+@
+A warning is useful when we don't want to stop the execution, but we still want to show potential problems
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Warning Messages}
+
+Use {\hilit \code{warning()}} to show a warning message
+<<>>=
+# ok
+meansd(c(4, 5, 3, 1, 2))
+
+# this causes a warning
+meansd(c(TRUE, FALSE, TRUE, FALSE))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Stop Execution}
+
+{\hilit \code{stopifnot()}} ensures the truth of expressions:
+<<>>=
+meansd <- function(x, na.rm = FALSE) {
+  stopifnot(is.numeric(x))
+  # output
+  c(mean = mean(x, na.rm = na.rm), 
+    sd = sd(x, na.rm = na.rm))
+}
+
+meansd('hello')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Environments and Functions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Consider this example}
+
+<<>>=
+w <- 10
+
+f <- function(y) {
+  d <- 5
+  h <- function() {
+    d * (w + y)
+  }
+  return(h())
+}
+
+f(2)
+@
+
+How / Why does \code{f()} work?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Consider this other example}
+
+<<>>=
+w <- 10
+
+f <- function(y) {
+  d <- 5
+  return(h())
+}
+
+f(2)
+@
+
+Why \code{f()} does not work?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Environments}
+
+\bbi
+  \item All the variables that we create need to be stored somewhere
+  \item The place where they are stored is called an \textbf{environment}
+  \item R works with enviroments, all of which are in (virtual) memory
+  \item Usually, we don't need to explicitly deal with environments
+  \item Environments are nested
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Global Environment}
+
+\bi
+  \item The user workspace is the \textbf{global environment}
+  \item The global environment is the \textbf{top level} environment
+  \item It is formally referred to as \code{R\_GlobalEnv}
+  \item Variables defined in the global environment can be seen from anywhere
+  \item The contents of the global environment are listed with \code{ls()}
+\ei
+
+<<>>=
+# top level environment
+environment()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Searching objects}
+
+\bi
+  \item When R tries to bind a value to a symbol, it searches through a series of environments to find the appropriate value
+  \item To retrieve the value of an object the order is:
+  \item Search the current environment
+  \item Search the global environment for a symbol name matching the one requested
+  \item Search the namespaces of each of the packages on the search list: {\hilit \code{search()}}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Environments and Functions}
+
+\bbi
+  \item A function consists not only of its arguments and body but also of its \textit{environment}
+  \item An environment is made up of the collection of objects present at the time the function comes into existence
+  \item When a function is created by evaluating the corresponding expression, the current environment is recorded as a property of the function
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Let's go back to our first example}
+
+<<>>=
+w <- 10
+
+f <- function(y) {
+  d <- 5
+  h <- function() {
+    d * (w + y)
+  }
+  return(h())
+}
+
+f(2)
+@
+
+How does \code{f()} work?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Let's see the environments}
+
+<<>>=
+w <- 10   # variable (in global environment)
+
+# a function (in global environment)
+f <- function(y) {
+  d <- 5     # local variable
+  h <- function() {    # subfunction
+    d * (w + y)     # w is a free variable
+  }
+  return(h())
+}
+
+environment(f)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function Environment}
+
+\bi
+  \item \code{w} is a global variable (in global environment)
+  \item \code{f()} is a function in the global environment
+  \item \code{d} is a local variable---local to \code{f()}
+  \item \code{h()} is a subfunction---local to \code{f()}
+  \item \code{w} is not an argument but a free variable
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Let's see the environments}
+
+<<>>=
+f <- function(y) {
+  d <- 5
+  h <- function() {
+    d * (w + y)
+  }
+  print(environment(h))   # h()'s environment
+  return(h())
+}
+
+environment(f)
+f(2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn}
+
+<<eval=FALSE>>=
+# When executed, what does g() return?
+x <- 5
+
+g <- function(x = FALSE) {
+    y <- 10
+    list(x = x, y = y)
+}
+g()
+@
+\bi
+  \item[A)] \code{x = 5, y = 10}
+  \item[B)] \code{x = 0, y = 10}
+  \item[C)] \code{x = FALSE, y = 10}
+  \item[D)] \code{x = FALSE, y = 5}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Variable's Scope}
+
+\bi
+  \item A variable's \textbf{scope} is the set of places from which you can see the variable
+  \item R will try to find a variable in the current environment
+  \item If it doesn't find them it will look in the parent environment
+  \item And then that environment's parent
+  \item And so on until it reaches the global environment
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Variable's Scope}
+
+\bi
+  \item A variable's \textbf{scope} is the set of places from which you can see the variable
+  \item R will try to find a variable in the current environment
+  \item If it doesn't find them it will look in the parent environment
+  \item And then that environment's parent
+  \item And so on until it reaches the global environment
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Variable Scope}
+
+\bbi
+  \item When we define a variable inside a function, the rest of the statements in that function will have access to that variable
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Variable Scope}
+
+<<>>=
+f <- function(x) {
+  y <- 1
+  g <- function(x) {
+    (x + y) / 2
+  }
+  g(x)
+}
+
+f(5)
+@
+
+\code{g()} is a subfunction that have access to \code{y} in \code{f}'s environment.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Variable Scope}
+
+<<>>=
+f <- function(x) {
+  y <- 1
+  g(x)
+}
+
+g <- function(x) {
+  (x + y) / 2
+}
+
+f(5)
+@
+
+\code{g()} is a function that doesn't have access to \code{y}; \code{g()} can only see things in the global environment
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{One more thing ...}
+
+Let's look at another exmaple
+<<>>=
+mean(1:5)
+
+mean
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{One more thing ...}
+
+You can do things like this
+<<>>=
+# confusing but it works
+mean <- 1:5
+mean(mean)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Some issues}
+
+You can also do things like this
+<<>>=
+# not a good idea but you can do it
+mean <- function(x) 2*x + 5
+
+mean(1:5)
+@
+
+It seems we've lost the original \code{mean()} function
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The \code{::} Operator}
+
+\code{::} operator to the rescue
+<<>>=
+# my mean
+mean(1:5)
+
+# base mean
+base::mean(1:5)
+@
+
+Here we use the name espace \code{base} of the R package \code{"base"} to access the original \code{mean()}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Recovering original \code{mean()}}
+
+To recover the original \code{mean()} you have to remove the artificial \code{mean}
+<<>>=
+# remove my mean
+rm(mean)
+
+# now try it again
+mean(1:5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Your Turn}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+R has a function \code{summary()} that when applied on a numeric vector provides something like this:
+<<>>=
+summary(1:10)
+@
+
+Create a \code{describe()} function that takes a numeric vector and returns: minimum, maximum, mean, and standard deviation
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+First attempt
+<<>>=
+describe <- function(x) {
+  x_min <- min(x)
+  x_max <- max(x)
+  x_mean <- mean(x)
+  x_sd <- sd(x)
+  return(c(x_min, x_max, x_mean, x_sd))
+}
+
+describe(1:10)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Second attempt (adding names)
+<<>>=
+describe <- function(x) {
+  x_min <- min(x)
+  x_max <- max(x)
+  x_mean <- mean(x)
+  x_sd <- sd(x)
+  values <- c(x_min, x_max, x_mean, x_sd)
+  names(values) <- c("min", "max", "mean", "sd")
+  return(values)
+}
+
+describe(1:10)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Third attempt (using a list as output)
+
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+<<>>=
+describe <- function(x) {
+  list(
+    min = min(x),
+    max = max(x),
+    mean = mean(x),
+    sd = sd(x)
+  )
+}
+@
+\end{column}
+
+\begin{column}{0.4\textwidth}
+<<>>=
+describe(1:10)
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Probability Density of the Normal Distribution:
+$$
+f(x | \mu, \sigma) = \frac{1}{\sigma \sqrt{2 \pi}} e^{- \frac{(x - \mu)^2}{2 \sigma^2}}
+$$
+
+Write a function that takes a value $x$ (with parameters $\mu$ and $\sigma$) which computes the probability density distribution of the normal distribution
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Normal Distribution:
+<<>>=
+normal_dist <- function(x, mu = 0, sigma = 1) {
+  constant <- 1 / (sigma * sqrt(2*pi))
+  constant * exp(-((x - mu)^2) / (2 * sigma^2))
+}
+
+normal_dist(2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Argument Matching}
+
+<<eval = FALSE>>=
+normal_dist <- function(x, mu = 0, sigma = 1) {
+  constant <- 1 / (sigma * sqrt(2*pi))
+  constant * exp(-((x - mu)^2) / (2 * sigma^2))
+}
+
+normal_dist(2)
+normal_dist(2, sigma = 3, mu = 1)
+normal_dist(mu = 1, sigma = 3, 2)
+normal_dist(mu = 1, 2, sigma = 3)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Argument Matching}
+
+R is ``smart'' enough in doing pattern matching with arguments' names (not recommended though)
+<<>>=
+normal_dist(2)
+normal_dist(2, m = 0, s = 1)
+normal_dist(2, sig = 1, m = 0)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

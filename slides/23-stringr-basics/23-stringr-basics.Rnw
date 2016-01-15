@@ -1,0 +1,537 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{String Basics with \code{"stringr"}}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Package \code{"stringr"}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About \code{"stringr"}}
+
+\bb{About \code{"stringr"}}
+\bi
+  \item functions are more consistent, simpler and easier to use 
+  \item \code{"stringr"} ensures that function and argument names (and positions) are consistent
+  \item all functions deal with \code{NA}'s and zero length character appropriately
+  \item the output data structures from each function matches the input data structures of other functions
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About \code{"stringr"}}
+
+\code{"stringr"} provides functions for both:
+\bi
+  \item basic manipulations and,
+  \item for regular expression operations. 
+\ei
+
+In this set of slides we cover those functions that have to do with basic manipulations.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About \code{"stringr"}}
+
+<<install_stringr, message=FALSE, eval=FALSE>>=
+# installing 'stringr'
+install.packages("stringr")
+
+# load 'stringr'
+library(stringr)
+@
+
+<<load_stringr, echo=FALSE>>=
+library(stringr)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Basic \code{"stringr"} functions}
+
+{\small 
+\begin{center}
+  \begin{tabular}{l l l}
+  \hline
+    Function & Description & Similar to \\
+    \hline
+    \code{str\_c()} & string concatenation & \code{paste()} \\
+    \code{str\_length()} & number of characters & \code{nchar()} \\
+    \code{str\_sub()} & extracts substrings & \code{substring()} \\
+    \code{str\_dup()} & duplicates characters & \textit{none} \\
+    \code{str\_trim()} & removes leading and & \textit{none} \\
+      & trailing whitespace & \\
+    \code{str\_pad()} & pads a string & \textit{none} \\
+    \code{str\_wrap()} & wraps a string paragraph & \code{strwrap()} \\
+    \code{str\_trim()} & trims a string & \textit{none} \\
+    \hline
+ \end{tabular}
+\end{center}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About \code{"stringr"}}
+
+\code{stringr} provides functions for both:
+\bi
+  \item all functions in \code{"stringr"} start with {\hilit \code{str\_}}
+  \item some functions are designed to provide a better alternative to already existing functions
+  \item Other functions don't have a corresponding alternative
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_c()}}
+
+\code{str\_c()} is equivalent to \code{paste()} but instead of using the white space as the default separator, \code{str\_c()} uses the empty string \code{""}
+<<>>=
+# default usage
+str_c("May", "The", "Force", "Be", "With", "You")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_c()}}
+
+Another major difference between \code{str\_c()} and \code{paste()}: zero length arguments like \code{NULL} and \code{character(0)} are silently removed by \code{str\_c()}.
+
+<<>>=
+# removing zero length objects
+str_c("May", "The", "Force", NULL, "Be", "With", "You", 
+      character(0))
+
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_c()}}
+
+\code{str\_c()} is equivalent to \code{paste()} but instead of using the white space as the default separator, \code{str\_c()} uses the empty string \code{""}
+<<str_join>>=
+# changing separator
+str_c("May", "The", "Force", "Be", "With", "You", sep="_")
+
+# synonym function 'str_join'
+str_join("May", "The", "Force", "Be", "With", "You", sep="-")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_length()}}
+
+\code{str\_length()} is equivalent to \code{nchar()}, returning the number of characters in a string
+<<>>=
+# some text (NA included)
+some_text = c("one", "two", "three", NA, "five")
+
+# compare 'str_length' with 'nchar'
+nchar(some_text)
+str_length(some_text)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_length()}}
+
+\code{str\_length()} has the nice feature that it converts factors to characters, something that \code{nchar()} is not able to handle:
+<<str_length_with_factors>>=
+# some factor
+some_factor = factor(c(1, 1, 1, 2, 2, 2), 
+                     labels = c("good", "bad"))
+some_factor
+
+
+# 'str_length' on a factor:
+str_length(some_factor)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_length()}}
+
+Compare \code{str\_length()} against \code{nchar()}
+<<nchar_with_factors>>=
+# some factor
+some_factor = factor(c(1,1,1,2,2,2), 
+                     labels = c("good", "bad"))
+
+# now try 'nchar' on a factor
+nchar(some_factor)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_substr()}}
+
+<<str_sub_ex1>>=
+# some text
+lorem = "Lorem Ipsum"
+
+# apply 'str_sub'
+str_sub(lorem, start=1, end=5)
+
+# equivalent to 'substring'
+substring(lorem, first=1, last=5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_substr()}}
+
+\code{str\_sub()} allows you to work with negative indices in the \code{start} and \code{end} positions:
+<<str_sub_ex2>>=
+# some strings
+resto = c("brasserie", "bistrot", "creperie", "bouchon")
+
+# 'str_sub' with negative positions
+str_sub(resto, start=-4, end=-1)
+@
+When we use a negative position, \code{str\_sub()} counts backwards from last character.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_sub()}}
+
+A related function is \code{str\_sub()}; when given a set of positions they will be recycled over the string
+<<str_sub_ex3>>=
+# extracting sequentially
+str_sub(lorem, seq_len(nchar(lorem)))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_sub()}}
+
+We can also give \code{str\_sub()} a negative sequence, something that \code{substring()} ignores:
+<<str_sub_ex4>>=
+# reverse substrings with negative positions
+str_sub(lorem, -seq_len(nchar(lorem)))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_sub()}}
+
+We can use \code{str\_sub()} not only for extracting subtrings but also for replacing substrings:
+<<str_sub_ex5>>=
+# replacing 'Lorem' with 'Nullam'
+lorem <- "Lorem Ipsum"
+str_sub(lorem, 1, 5) <- "Nullam"
+lorem
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str\_sub()}}
+
+<<str_sub_ex6>>=
+# replacing with negative positions
+lorem = "Lorem Ipsum"
+str_sub(lorem, -1) <- "Nullam"
+lorem
+
+# multiple replacements 
+lorem = "Lorem Ipsum"
+str_sub(lorem, c(1,7), c(5,8)) <- c("Nullam", "Enim")
+lorem
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Duplication with \code{str\_dup()}}
+
+\code{str\_dup()} duplicates and concatenates strings within a character vector:
+<<str_dup_ex>>=
+# default usage
+str_dup("hola", 3)
+
+# use with differetn 'times'
+str_dup("adios", 1:3)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Duplication with \code{str\_dup()}}
+
+<<>>=
+# use with a string vector
+words <- c("lorem", "ipsum", "dolor")
+str_dup(words, 2)
+str_dup(words, 1:3)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_pad()}}
+
+Another handy function that we can find in \code{stringr} is \code{str\_pad()}  for \textit{padding} a string. Its default usage has the following form:
+\begin{verbatim}
+ str_pad(string, width, side = "left", pad = " ")
+\end{verbatim}
+The idea of \code{str\_pad()} is to take a string and pad it with leading or trailing characters to a specified total \code{width}.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_pad()}}
+
+<<str_pad_ex>>=
+# default usage
+str_pad("hola", width=7)
+
+# pad both sides
+str_pad("adios", width=7, side="both")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_pad()}}
+
+<<>>=
+# left padding with '#'
+str_pad("hashtag", width=8, pad="#")
+
+# pad both sides with '-'
+str_pad("hashtag", width=9, side="both", pad="-")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Wrapping with \code{str\_wrap()}}
+
+The function \code{str\_wrap()} is equivalent to \code{strwrap()} which can be used to \textit{wrap} a string to format paragraphs.
+Its default usage has the following form:
+\begin{verbatim}
+ str_wrap(string, width = 80, indent = 0, exdent = 0)
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_wrap()}}
+
+<<douglas_adams, tidy=FALSE>>=
+# quote (by Douglas Adams)
+some_quote <- c(
+  "I may not have gone",
+  "where I intended to go,", 
+  "but I think I have ended up",
+  "where I needed to be")
+
+# some_quote in a single paragraph
+some_quote <- paste(some_quote, collapse = " ")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_wrap()}}
+
+Say we want to display the text of \code{some\_quote} within some pre-specified column width (e.g. width of 30):
+<<str_wrap_ex1, tidy=FALSE>>=
+# display paragraph with width=30
+cat(str_wrap(some_quote, width = 30))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Trimming with \code{str\_trim()}}
+
+One of the typical tasks of string processing is that of parsing a text into individual words.
+
+Usually, we end up with words that have blank spaces, called \textit{whitespaces}, on either end of the word. In this situation, we can use the \code{str\_trim()} function to remove any number of whitespaces at the ends of a string. Its usage requires only two arguments:
+\begin{verbatim}
+ str_trim(string, side = "both")
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Padding with \code{str\_trim()}}
+
+<<steal, tidy=FALSE>>=
+# text with whitespaces
+bad_text <- c(" several   ", "   whitespaces ")
+
+# remove whitespaces on the left side
+str_trim(bad_text, side = "left")
+# remove whitespaces on the right side
+str_trim(bad_text, side = "right")
+# remove whitespaces on both sides
+str_trim(bad_text, side = "both")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Word extraction with \code{word()}}
+
+\code{word()} function that is designed to extract words from a sentence:
+\begin{verbatim}
+ word(string, start = 1L, end = start, sep = fixed(" "))
+\end{verbatim}
+
+The way in which we use \code{word()} is by passing it a \code{string}, together with a \code{start} position of the first word to extract, and an \code{end} position of the last word to extract. By default, the separator \code{sep} used between words is a single space.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Word extraction with \code{word()}}
+
+<<>>=
+# some sentence
+change = c("Be the change", "you want to be")
+
+# extract first word
+word(change, 1)
+
+# extract second word
+word(change, 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Word extraction with \code{word()}}
+
+<<>>=
+# some sentence
+change = c("Be the change", "you want to be")
+
+# extract last word
+word(change, -1)
+
+# extract all but the first words
+word(change, 2, -1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

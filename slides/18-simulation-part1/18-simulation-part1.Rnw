@@ -1,0 +1,1076 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Simulation - part 1}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\mdlit{How do we use a computer to simulate a chance process?}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Case Study}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Chevalier de Mere}
+
+\bbi
+  \item Antoine Gombaud (1607 - 1684)
+  \item \textit{Nom de plume} ``Chevalier de Mere''
+  \item French writer and gambler, but not a nobleman
+  \item Amateur mathematician
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=5cm]{images/dice4.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's games}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+Game 1
+\bi
+  \item One die
+  \item Four rolls
+  \item Win: at least one 6
+\ei
+\end{column}
+
+\pause
+
+\begin{column}{0.55\textwidth}
+Game 2
+\bi
+  \item Two dice
+  \item 24 rolls
+  \item Win: at least one double 6
+\ei
+\end{column}
+\end{columns}
+
+\bigskip
+\bigskip
+\pause
+De Mere was making money with game 1, but losing money with game 2. He turned to Blaise Pascal for help.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{De Mere's faulty reasoning}
+
+\bb{Game 1}
+\bbi
+  \item The chance of getting a six in one roll of a die is $\frac{1}{6}$.
+  \item In four rolls of a die, the chance of getting one six would be $\frac{4}{6}=\frac{2}{3}$.
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{De Mere's faulty reasoning}
+
+\bb{Game 2}
+\bbi
+  \item The chance of getting a double six in rolling a pair of dice is $\frac{1}{36}$.
+  \item In 24 rolls of a pair of dice, the chance of getting one double six would be $\frac{24}{36}=\frac{2}{3}$.
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Pascal and Fermat}
+
+\bbi
+  \item De Mere turned into Blaise Pascal
+  \item Pascal consulted with Pierre de Fermat
+  \item Beginning of Pascal's and Fermat's famous correspondence (1650's)
+  \item Origin of combinatorial probability
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=11cm]{images/pascal_fermat.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Letter from Pascal to Fermat}
+
+\begin{quotation}
+``If one undertakes to throw a six with one die, the advatange of undertaking it in 4 throws is as 671 to 625. If one undertakes to throw a double-six with two dice, there is a disadvantage of undertaking it in 24 throws. And nevertheless 24 is to 36 (which is the number of faces of two dice) as 4 to 6 (which is the number of faces of one die).''
+\end{quotation}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 1}
+
+Probability of no six in four rolls:
+$$
+\frac{5}{6} \times \frac{5}{6} \times \frac{5}{6} \times \frac{5}{6} = \frac{625}{1296} = 0.482253
+$$
+
+\bigskip
+\pause
+P(at least one six) = 1 - Probability of no six in four rolls:
+$$
+1 - \frac{625}{1296} = \frac{671}{1296} = 0.517747
+$$
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 2}
+
+Probability of no double six in 24 rolls:
+$$
+P(\text{no double six in 24 rolls}) = \left(\frac{35}{36}\right)^{24} = 0.5086
+$$
+
+\bigskip
+\pause
+P(at least one double six in 24 rolls) = 
+$$
+1 - 0.5086 = 0.4914
+$$
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\mdlit{Using a computer to simulate a chance process}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some Questions}
+
+\bbi
+  \item Rather than solve the problem analytically, we can simulate 4 rolls of a die and count the number of 6's
+  \item If we simulate rolling 4 dice many times, then the proportion of times we get 0, 1, 2, 3, or 4 sixes should be close to the chance of that many sixes on any 4 rolls
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some Questions}
+
+\bbi
+  \item What is the chance of getting one 6 when rolling a die?
+  \item What is the chance of getting one 6 when rolling two dice?
+  \item What is the chance of getting at least one 6 when rolling 4 dice?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{What are the steps?}
+
+\bbi
+  \item Simulate rolling one die
+  \item Simulate rolling a pair of dice
+  \item Simulate rolling four dice
+  \item Count the number of sixes
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Simulating one die}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=2cm]{images/die.jpg}
+\end{center}
+
+\bi
+  \item Let's start with one die
+  \item What features?
+  \item How to create a {\hilit \code{die}} object?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{One die}
+
+<<>>=
+die <- 1:6
+
+die
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your turn}
+
+Which option would produce an invalid die:
+<<>>=
+# A
+die <- 1L:6L
+
+# B
+die <- seq(from = 1, to = 6)
+
+# C
+die <- c(1, 2, 3, 4, 5, 6)
+
+# D
+die <- seq(from = 1, to = 6, by = 6)
+
+# E
+die <- seq_len(6)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Large{\mdlit{How to simulate the roll of a die?}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{sample()}}
+
+Very useful function for selecting from a discrete set (vector) of possibilities.
+
+\bb{\code{sample()} arguments}
+\bi
+  \item \code{x}
+  \item \code{size}
+  \item \code{replace}
+  \item \code{prob}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Roll a die}
+
+<<>>=
+# use of sample() to simulate the roll of a die
+sample(die, size = 1)
+@
+
+\pause
+<<echo = -1>>=
+set.seed(5)
+sample(die, size = 1)
+sample(die, size = 1)
+sample(die, size = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function: Roll one die}
+
+Write a function to make it more convenient
+<<eval=FALSE>>=
+# function
+rolldie <- function() {
+
+  
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function: Roll one die}
+
+Write a function to make it more convenient
+<<>>=
+# function
+rolldie <- function() {
+  die <- 1:6
+  sample(die, size = 1)
+}
+@
+
+\pause
+<<>>=
+rolldie()
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rolling one die}
+
+Let's simulate 10 rolls of a die
+<<>>=
+# roll 10 times
+for (i in 1:10) {
+  rolldie()
+}
+@
+
+\pause
+What's \textit{wrong}? \\
+{\lolit Why nothing is shown on screen?}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rolling one die}
+<<echo = -1>>=
+set.seed(1)
+# roll 10 times
+for (i in 1:10) {
+  print(rolldie())
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rolling one die}
+<<echo = -1>>=
+set.seed(15)
+# roll until first 5
+repeat {
+  rol <- rolldie()
+  print(rol)
+  if (rol == 5) break
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rolling one die}
+<<echo = -1>>=
+set.seed(15)
+# roll until first 5
+rol <- 1
+
+while (rol != 5) {
+  rol <- rolldie()
+  print(rol)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rolling one die}
+<<echo = -1>>=
+set.seed(1)
+# roll 10,000 times
+results <- numeric(10000)
+
+for (i in 1:10000) {
+  results[i] <- rolldie()
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rolling one die}
+<<>>=
+# frequencies
+table(results)
+
+# relative frequencies
+table(results) / 10000
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Distribution of results}
+
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center', echo = FALSE>>=
+barplot(table(results), border = NA, las = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Large{\mdlit{How to simulate a \textbf{loaded} die?}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Loaded Die}
+
+Changing argument {\hilit \code{prob}} to create a loaded die
+<<>>=
+probs <- c(1/21, 2/21,3/21, 4/21, 5/21, 6/21)
+
+# function
+loaded <- function() {
+  die <- 1:6
+  sample(die, size = 1, prob = probs)
+}
+@
+
+\pause
+<<>>=
+loaded()
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rolling a loaded die}
+<<echo = -1>>=
+set.seed(1)
+# roll 10 times
+for (i in 1:10) {
+  print(loaded())
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rolling a loaded die}
+<<echo = -1>>=
+set.seed(1)
+# roll 10,000 times
+results <- numeric(10000)
+
+for (i in 1:10000) {
+  results[i] <- loaded()
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rolling a lodade die}
+<<>>=
+# frequencies
+table(results)
+
+# relative frequencies
+table(results) / 10000
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Loaded Distribution}
+
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center', echo = FALSE>>=
+barplot(table(results), border = NA, las = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Simulating rolling a pair of dice}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=8cm]{images/dice2.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Roll a pair of dice}
+
+<<>>=
+# 1st die
+sample(die, size = 1)
+
+# 2nd die
+sample(die, size = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function: roll a pair of dice}
+
+<<eval = FALSE>>=
+# pair of dice function
+roll2 <- function() {
+
+  
+  
+
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function: roll a pair of dice}
+
+<<>>=
+# pair of dice function
+roll2 <- function() {
+  die <- 1:6
+  rol1 <- sample(die, size = 1)
+  rol2 <- sample(die, size = 1)
+  c(rol1, rol2)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Various rolls}
+
+<<>>=
+roll2()
+
+roll2()
+
+roll2()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function}
+
+<<eval = FALSE>>=
+# pair of dice function
+roll2 <- function() {
+  die <- 1:6
+  rol1 <- sample(die, size = 1)   
+  rol2 <- sample(die, size = 1)  # repeated command!
+  c(rol1, rol2)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Roll a pair of dice}
+
+<<>>=
+die <- 1:6
+
+# avoid repetition with one call of 'sample()'
+sample(die, size = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Roll a pair dice}
+
+<<size = 'scriptsize'>>=
+for (i in 1:15) {
+  print(sample(die, size = 2))
+}
+
+# Can you spot a problem?
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Roll a pair of dice}
+
+<<>>=
+die <- 1:6
+
+# sample with replacement
+sample(die, size = 2, replace = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Roll a pair of dice}
+
+<<size = 'scriptsize'>>=
+for (i in 1:15) {
+  print(sample(die, size = 2, replace = TRUE))
+}
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Roll a pair of dice}
+
+<<>>=
+# rewrite roll2()
+roll2 <- function() {
+  die <- 1:6
+  sample(die, size = 2, replace = TRUE)
+}
+@
+
+\pause
+<<>>=
+roll2()
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Rolling a die any number of times}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rolling several dice}
+
+More general function to roll a die any number of times
+<<>>=
+roll <- function(times = 1) {
+  die <- 1:6
+  sample(die, size = times, replace = TRUE)
+}
+@
+
+\pause
+<<>>=
+roll()
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rolling several dice}
+
+<<echo = -1>>=
+set.seed(99)
+# default (one roll)
+roll()
+
+# two rolls
+roll(2)
+
+# 4 rolls 
+roll(4)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{De Mere's Game 1}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 1}
+
+\bb{Game 1}
+\bi
+  \item One die
+  \item Four rolls
+  \item Win: at least one 6
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 1}
+
+<<echo = -1>>=
+set.seed(2)
+# play 100 times
+results <- matrix(0, nrow = 100, ncol = 4)
+
+for (i in 1:100) {
+  results[i, ] <- roll(times = 4)
+}
+
+head(results)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 1}
+
+<<>>=
+counts <- 0
+
+for (i in 1:100) {
+  if (any(results[i, ] == 6))
+    counts <- counts + 1
+}
+
+# proportion of wins
+counts / 100
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 1}
+
+<<>>=
+sixes <- apply(results, 1, function(x) sum(x == 6))
+
+table(sixes)
+@
+
+\pause
+<<>>=
+# rolls with at least one six
+sum(table(sixes)[-1])
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 1}
+
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center', echo = FALSE>>=
+barplot(table(sixes), border = NA, las = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 1}
+
+\bb{Considerations}
+\bbi
+  \item How would you make the code more flexible?
+  \item What type of ``parameters''?
+  \item Avoid Repetition
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 1}
+
+<<>>=
+games <- 10000
+results <- matrix(0, nrow = games, ncol = 4)
+
+for (i in 1:games) {
+  results[i, ] <- roll(times = 4)
+}
+
+counts <- 0
+for (i in 1:games) {
+  if (any(results[i, ] == 6))
+    counts <- counts + 1
+}
+
+counts / games  # proportion of wins
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 1}
+
+<<>>=
+sixes <- apply(results, 1, function(x) sum(x == 6))
+
+table(sixes)
+@
+
+\pause
+<<>>=
+# rolls with at least one six
+sum(table(sixes)[-1])
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 1}
+
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center', echo = FALSE>>=
+barplot(table(sixes), border = NA, las = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{De Mere's Game 2}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 2}
+
+\bb{Game 2}
+\bi
+  \item Two dice
+  \item 24 rolls
+  \item Win: at least one double 6
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 2}
+
+<<>>=
+roll2 <- function(times = 1) {
+  dice2 <- unlist(lapply(1:6, function(x) x + 1:6))
+  sample(dice2, size = times, replace = TRUE)
+}
+
+roll2()
+roll2(24)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 2}
+
+\bb{Game 2}
+\bbi
+  \item It's better if we sum the points of rolling two dice
+  \item Possible outcomes: $\{2, 3, 4, \dots, 10, 11, 12\}$
+  \item Double six is equivalent to 12 points
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 2}
+
+<<>>=
+games <- 10000
+results <- matrix(0, nrow = games, ncol = 24)
+
+for (i in 1:games) {
+  results[i, ] <- roll2(24)
+}
+
+doublesix <- apply(results, 1, function(x) sum(x == 12))
+
+sum(table(doublesix)[-1])
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 2}
+
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center', echo = FALSE>>=
+barplot(table(doublesix), border = NA, las = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{De Mere's Game 2}
+
+<<>>=
+counts <- 0
+for (i in 1:games) {
+  if (any(results[i, ] == 12))
+    counts <- counts + 1
+}
+
+counts / games  # proportion of wins
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

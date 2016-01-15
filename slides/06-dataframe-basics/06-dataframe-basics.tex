@@ -1,0 +1,1461 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Basics of Data Frames}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Frames}
+
+\bb{Data Frame}
+A {\hilit \code{data.frame}} is the primary data structure that R provides for handling tabular data sets (eg spreadsheet like).
+\eb
+
+\bb{Function \code{data.frame()}}
+The {\hilit \code{data.frame()}} function allows us to create data frames 
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Data Frame}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# data frame}
+\hlstd{df} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{name} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'Anakin'}\hlstd{,} \hlstr{'Padme'}\hlstd{,} \hlstr{'Luke'}\hlstd{,} \hlstr{'Leia'}\hlstd{),}
+  \hlkwc{gender} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'male'}\hlstd{,} \hlstr{'female'}\hlstd{,} \hlstr{'male'}\hlstd{,} \hlstr{'female'}\hlstd{),}
+  \hlkwc{height} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1.88}\hlstd{,} \hlnum{1.65}\hlstd{,} \hlnum{1.72}\hlstd{,} \hlnum{1.50}\hlstd{),}
+  \hlkwc{weight} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{84}\hlstd{,} \hlnum{45}\hlstd{,} \hlnum{77}\hlstd{,} \hlnum{49}\hlstd{)}
+\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+by default, \code{data.frame()} converts strings into factors
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simple data frame \code{df}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight
+## 1 Anakin   male   1.88     84
+## 2  Padme female   1.65     45
+## 3   Luke   male   1.72     77
+## 4   Leia female   1.50     49
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Inspecting Data Frames}
+\bi
+  \item dimensions (number of rows and columns)
+  \item type of data in each column
+  \item row names and column names
+  \item missing data
+  \item overall summary of each variable
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Overall structure}
+
+A summary of the structure can be obtained with {\hilit \code{str()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# structure of a data frame}
+\hlkwd{str}\hlstd{(df)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	4 obs. of  4 variables:
+##  $ name  : Factor w/ 4 levels "Anakin","Leia",..: 1 4 3 2
+##  $ gender: Factor w/ 2 levels "female","male": 2 1 2 1
+##  $ height: num  1.88 1.65 1.72 1.5
+##  $ weight: num  84 45 77 49
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str()}}
+
+\code{str()} applied on data frames provides:
+\bi
+  \item number of rows
+  \item number of variables
+  \item name of each column
+  \item mode (i.e. type) of each column (e.g. num, int, chr, factor)
+  \item number of levels for \code{factor} variables
+\ei
+
+\code{str()} is good for visual inspection, but doesn't give you direct access to the displayed information.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Information of Data Frames}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   Function & Description \\
+  \hline
+  \code{dim()} & dimensions (rows and columns) \\  
+  \code{nrow()} & number of rows \\
+  \code{ncol()} & number of columns \\  
+  \code{names()} & name of columns \\
+  \code{colnames()} & name of columns  \\
+  \code{rownames()} & names of rows \\
+  \code{dimnames()} & list with names of rows and columns \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Information of Data Frames}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{dim}\hlstd{(df)} \hlcom{# dimensions in a two element vector}
+\end{alltt}
+\begin{verbatim}
+## [1] 4 4
+\end{verbatim}
+\begin{alltt}
+\hlkwd{nrow}\hlstd{(df)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\begin{alltt}
+\hlkwd{ncol}\hlstd{(df)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Information of Data Frames}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{colnames}\hlstd{(df)}
+\end{alltt}
+\begin{verbatim}
+## [1] "name"   "gender" "height" "weight"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{rownames}\hlstd{(df)}
+\end{alltt}
+\begin{verbatim}
+## [1] "1" "2" "3" "4"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{dimnames}\hlstd{(df)} \hlcom{# names in a list}
+\end{alltt}
+\begin{verbatim}
+## [[1]]
+## [1] "1" "2" "3" "4"
+## 
+## [[2]]
+## [1] "name"   "gender" "height" "weight"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{object.size()}}
+
+To know how much memory space is allocated for a data frame (or any other R object) we use \code{object.size()}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{object.size}\hlstd{(df)}
+\end{alltt}
+\begin{verbatim}
+## 2136 bytes
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Functions \code{head()} and \code{tail}}
+
+Inspect the first and last rows, respectively:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# first 3 rows}
+\hlkwd{head}\hlstd{(df,} \hlkwc{n} \hlstd{=} \hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight
+## 1 Anakin   male   1.88     84
+## 2  Padme female   1.65     45
+## 3   Luke   male   1.72     77
+\end{verbatim}
+\begin{alltt}
+\hlcom{# last 2 rows}
+\hlkwd{tail}\hlstd{(df,} \hlkwc{n} \hlstd{=} \hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   name gender height weight
+## 3 Luke   male   1.72     77
+## 4 Leia female   1.50     49
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{summary()}}
+
+There's also the function \code{summary()}, which provides a descriptive summary of each column
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(df)}
+\end{alltt}
+\begin{verbatim}
+##      name      gender      height          weight     
+##  Anakin:1   female:2   Min.   :1.500   Min.   :45.00  
+##  Leia  :1   male  :2   1st Qu.:1.613   1st Qu.:48.00  
+##  Luke  :1              Median :1.685   Median :63.00  
+##  Padme :1              Mean   :1.688   Mean   :63.75  
+##                        3rd Qu.:1.760   3rd Qu.:78.75  
+##                        Max.   :1.880   Max.   :84.00
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Elementary Manipulations}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Accessing Elements}
+
+There are many different ways in which the elements of a \code{"data.frame"} can be accessed (i.e. retrieved, selected).
+
+\bi
+  \item accessing individual cells
+  \item accessing sets of cells
+  \item accessing entire rows
+  \item accessing entire columns
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Notation System Reminder}
+
+\bb{Notation system to extract values from data frames}
+\bbi
+  \item to extract values use brackets: \code{[ ]}
+  \item inside the brackets specify indices for rows and columns
+  \item each index is separated by comma
+  \item row indices can be numbers or logicals
+  \item column indices can be numbers, logicals, or names
+\ei
+\eb
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Single Cells}
+
+Using row and column indices to access a single cell
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# first cell 1,1}
+\hlstd{df[}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] Anakin
+## Levels: Anakin Leia Luke Padme
+\end{verbatim}
+\begin{alltt}
+\hlcom{# cell 3,4 }
+\hlstd{df[}\hlnum{3}\hlstd{,} \hlnum{4}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 77
+\end{verbatim}
+\begin{alltt}
+\hlcom{# last cell}
+\hlstd{df[}\hlnum{4}\hlstd{,} \hlnum{4}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 49
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Various Cells}
+
+Using vectors of row and column indices to access various cells
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# various adjacent cells}
+\hlstd{df[}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlnum{2}\hlopt{:}\hlnum{4}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+##   gender height weight
+## 1   male   1.88     84
+## 2 female   1.65     45
+## 3   male   1.72     77
+\end{verbatim}
+\begin{alltt}
+\hlcom{# various adjacent cells}
+\hlcom{# (permuted order)}
+\hlstd{df[}\hlnum{4}\hlopt{:}\hlnum{1}\hlstd{,} \hlnum{3}\hlopt{:}\hlnum{2}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+##   height gender
+## 4   1.50 female
+## 3   1.72   male
+## 2   1.65 female
+## 1   1.88   male
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Various Cells}
+
+Using vectors of row and column indices to access various cells
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# non-adjacent cells}
+\hlstd{df[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{),} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{3}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##    name height
+## 2 Padme   1.65
+## 4  Leia   1.50
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Various Cells}
+
+Using excluding indices
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# excluding various adjacent cells}
+\hlstd{df[}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{2}\hlstd{),} \hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{3}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##   name weight
+## 3 Luke     77
+## 4 Leia     49
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Retrieving Rows}
+
+Selecting rows
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# first row}
+\hlstd{df[}\hlnum{1}\hlstd{, ]}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight
+## 1 Anakin   male   1.88     84
+\end{verbatim}
+\begin{alltt}
+\hlcom{# rows 1 to 3}
+\hlstd{df[}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{, ]}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight
+## 1 Anakin   male   1.88     84
+## 2  Padme female   1.65     45
+## 3   Luke   male   1.72     77
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Retrieving Rows}
+
+Selecting rows (by excluding indices)
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# all rows except first one}
+\hlstd{df[}\hlopt{-}\hlnum{1}\hlstd{, ]}
+\end{alltt}
+\begin{verbatim}
+##    name gender height weight
+## 2 Padme female   1.65     45
+## 3  Luke   male   1.72     77
+## 4  Leia female   1.50     49
+\end{verbatim}
+\begin{alltt}
+\hlcom{# rows except 2 to 3}
+\hlstd{df[}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{3}\hlstd{), ]}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight
+## 1 Anakin   male   1.88     84
+## 4   Leia female   1.50     49
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Retrieving Columns}
+
+Selecting columns
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# 1st column (as a vector)}
+\hlstd{df[ ,} \hlnum{1}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] Anakin Padme  Luke   Leia  
+## Levels: Anakin Leia Luke Padme
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Using argument \code{drop=FALSE}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# 1st column (as a column)}
+\hlstd{df[ ,} \hlnum{1}\hlstd{,} \hlkwc{drop} \hlstd{=} \hlnum{FALSE}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+##     name
+## 1 Anakin
+## 2  Padme
+## 3   Luke
+## 4   Leia
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Retrieving Columns}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# columns 1 to 3}
+\hlstd{df[ ,} \hlnum{1}\hlopt{:}\hlnum{3}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+##     name gender height
+## 1 Anakin   male   1.88
+## 2  Padme female   1.65
+## 3   Luke   male   1.72
+## 4   Leia female   1.50
+\end{verbatim}
+\begin{alltt}
+\hlcom{# columns 2, 4}
+\hlstd{df[ ,} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##   gender weight
+## 1   male     84
+## 2 female     45
+## 3   male     77
+## 4 female     49
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Retrieving Columns}
+
+Selecting columns by excluding indices
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# all columns but 2, 4,}
+\hlstd{df[ ,} \hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##     name height
+## 1 Anakin   1.88
+## 2  Padme   1.65
+## 3   Luke   1.72
+## 4   Leia   1.50
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Accessing Single Columns}
+
+Besides using numeric indices, we can also access a single column using its name and following different syntax options:
+
+\bi
+  \item \code{df[ ,"name"]}
+  \item \code{df[["name"]]}
+  \item \code{df\$name} or \code{df\$"name"}
+  \item \code{df["name"]}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Column by Name}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# equivalent ways to retrieve one column}
+\hlstd{df[ ,}\hlstr{"name"}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] Anakin Padme  Luke   Leia  
+## Levels: Anakin Leia Luke Padme
+\end{verbatim}
+\begin{alltt}
+\hlstd{df[[}\hlstr{"gender"}\hlstd{]]}
+\end{alltt}
+\begin{verbatim}
+## [1] male   female male   female
+## Levels: female male
+\end{verbatim}
+\begin{alltt}
+\hlstd{df}\hlopt{$}\hlstd{height}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.88 1.65 1.72 1.50
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Columns by Name}
+
+Retrieve various columns by name:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# vector of names}
+\hlstd{df[ ,} \hlkwd{c}\hlstd{(}\hlstr{"name"}\hlstd{,} \hlstr{"gender"}\hlstd{,} \hlstr{"height"}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##     name gender height
+## 1 Anakin   male   1.88
+## 2  Padme female   1.65
+## 3   Luke   male   1.72
+## 4   Leia female   1.50
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Adding New Elements}
+
+A typical data frame modification consists in adding new elements, that is, new rows and columns.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding One Column}
+
+Adding a single column to a data frame 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# adding 'a_vector' as a 'new' column}
+\hlstd{df}\hlopt{$}\hlstd{eyecolor} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{'blue'}\hlstd{,} \hlstr{'brown'}\hlstd{,} \hlstr{'blue'}\hlstd{,} \hlstr{'brown'}\hlstd{)}
+
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight eyecolor
+## 1 Anakin   male   1.88     84     blue
+## 2  Padme female   1.65     45    brown
+## 3   Luke   male   1.72     77     blue
+## 4   Leia female   1.50     49    brown
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding One Column}
+
+Using \textit{column binding} \code{cbind()} to add a column to a data frame 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{haircolor} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{'blond'}\hlstd{,} \hlstr{'brown'}\hlstd{,} \hlstr{'blond'}\hlstd{,} \hlstr{'brown'}\hlstd{)}
+
+\hlcom{# binding a column}
+\hlstd{df} \hlkwb{<-} \hlkwd{cbind}\hlstd{(df, haircolor)}
+
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight eyecolor haircolor
+## 1 Anakin   male   1.88     84     blue     blond
+## 2  Padme female   1.65     45    brown     brown
+## 3   Luke   male   1.72     77     blue     blond
+## 4   Leia female   1.50     49    brown     brown
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding One Column}
+
+Remember the recycling rule:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# "human" will be recycled!}
+\hlstd{df}\hlopt{$}\hlstd{species} \hlkwb{<-} \hlstr{"human"}
+
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight eyecolor haircolor species
+## 1 Anakin   male   1.88     84     blue     blond   human
+## 2  Padme female   1.65     45    brown     brown   human
+## 3   Luke   male   1.72     77     blue     blond   human
+## 4   Leia female   1.50     49    brown     brown   human
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Several Columns}
+
+Equivalent ways to add several columns to a data frame
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# adding vectors x and y}
+\hlstd{df[ ,} \hlkwd{c}\hlstd{(}\hlstr{"x"}\hlstd{,} \hlstr{"y"}\hlstd{)]} \hlkwb{<-} \hlkwd{cbind}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,} \hlnum{5}\hlopt{:}\hlnum{8}\hlstd{)}
+
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight eyecolor haircolor species x y
+## 1 Anakin   male   1.88     84     blue     blond   human 1 5
+## 2  Padme female   1.65     45    brown     brown   human 2 6
+## 3   Luke   male   1.72     77     blue     blond   human 3 7
+## 4   Leia female   1.50     49    brown     brown   human 4 8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Several Columns}
+
+Equivalent ways to add several columns to a data frame
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# adding vectors u and v}
+\hlstd{uv} \hlkwb{<-} \hlkwd{cbind}\hlstd{(}\hlkwc{u} \hlstd{=} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,} \hlkwc{v} \hlstd{=} \hlnum{5}\hlopt{:}\hlnum{8}\hlstd{)}
+
+\hlstd{df} \hlkwb{<-} \hlkwd{cbind}\hlstd{(df, uv)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Removing Columns}
+
+Removing columns with the \code{NULL} object
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# removing x and y}
+\hlstd{df}\hlopt{$}\hlstd{x} \hlkwb{<-} \hlkwa{NULL}
+\hlstd{df}\hlopt{$}\hlstd{y} \hlkwb{<-} \hlkwa{NULL}
+
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight eyecolor haircolor species
+## 1 Anakin   male   1.88     84     blue     blond   human
+## 2  Padme female   1.65     45    brown     brown   human
+## 3   Luke   male   1.72     77     blue     blond   human
+## 4   Leia female   1.50     49    brown     brown   human
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Removing Columns}
+
+Removing columns by reassignment
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# removing columns 5, 6, ...}
+\hlstd{df} \hlkwb{<-} \hlstd{df[ ,} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{]}
+
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight
+## 1 Anakin   male   1.88     84
+## 2  Padme female   1.65     45
+## 3   Luke   male   1.72     77
+## 4   Leia female   1.50     49
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Rows}
+
+\bi
+  \item Another operation is adding rows
+  \item This can be done with \textit{row binding} \code{rbind()}
+  \item When adding rows to a data frame, we need to take into account the mode of each column
+  \item If all columns have the same mode, then we can add a vector
+  \item If columns have different modes, then we need to add data.frames
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Rows}
+
+Be careful when adding vector rows to data frames!
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# new vector}
+\hlstd{newone} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Han"}\hlstd{,} \hlstr{'male'}\hlstd{,} \hlnum{1.8}\hlstd{,} \hlnum{80}\hlstd{)}
+
+\hlcom{# trying to add a vector to data frame}
+\hlkwd{rbind}\hlstd{(df, newone)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in `[<-.factor`(`*tmp*`, ri, value = "{}Han"{}): invalid factor level, NA generated}}\begin{verbatim}
+##     name gender height weight
+## 1 Anakin   male   1.88     84
+## 2  Padme female   1.65     45
+## 3   Luke   male   1.72     77
+## 4   Leia female    1.5     49
+## 5   <NA>   male    1.8     80
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Rows}
+
+Since columns in \code{df} are of different modes, we must create a new row "vector" in \code{data.frame} format
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# creating a data frame "vector"}
+\hlstd{han} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{name} \hlstd{=} \hlstr{"Han"}\hlstd{,}
+  \hlkwc{gender} \hlstd{=} \hlstr{'male'}\hlstd{,}
+  \hlkwc{height} \hlstd{=} \hlnum{1.8}\hlstd{,}
+  \hlkwc{weight} \hlstd{=} \hlnum{80}\hlstd{)}
+
+\hlstd{han}
+\end{alltt}
+\begin{verbatim}
+##   name gender height weight
+## 1  Han   male    1.8     80
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Rows}
+
+Use row binding \code{rbind()} to add one or more rows:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# adding 'han' with rbind()}
+\hlstd{df} \hlkwb{<-} \hlkwd{rbind}\hlstd{(df, han)}
+
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight
+## 1 Anakin   male   1.88     84
+## 2  Padme female   1.65     45
+## 3   Luke   male   1.72     77
+## 4   Leia female   1.50     49
+## 5    Han   male   1.80     80
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Arranging Columns}
+A less common, but equally important type of \code{data.frame} modification involves rearranging or moving its columns.
+
+\bigskip
+
+The common approach to move columns is to define a vector with the column names in the desired order, and then redefine the current data frame.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rearranging columns}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# rearranging columns}
+\hlstd{df[ ,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##     name weight height gender
+## 1 Anakin     84   1.88   male
+## 2  Padme     45   1.65 female
+## 3   Luke     77   1.72   male
+## 4   Leia     49   1.50 female
+## 5    Han     80   1.80   male
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Column Names}
+
+Changing column names
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# change first column}
+\hlkwd{names}\hlstd{(df)[}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlstr{"Name"}
+
+\hlcom{# change weight}
+\hlkwd{names}\hlstd{(df)[}\hlnum{4}\hlstd{]} \hlkwb{<-} \hlstr{"wgt"}
+
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##     Name gender height wgt
+## 1 Anakin   male   1.88  84
+## 2  Padme female   1.65  45
+## 3   Luke   male   1.72  77
+## 4   Leia female   1.50  49
+## 5    Han   male   1.80  80
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Column Names}
+
+Changing column names
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# rename first column}
+\hlkwd{names}\hlstd{(df)[}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlstr{"name"}
+
+\hlcom{# rename weight}
+\hlkwd{names}\hlstd{(df)[}\hlnum{4}\hlstd{]} \hlkwb{<-} \hlstr{"weight"}
+
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight
+## 1 Anakin   male   1.88     84
+## 2  Padme female   1.65     45
+## 3   Luke   male   1.72     77
+## 4   Leia female   1.50     49
+## 5    Han   male   1.80     80
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Creating new column
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# height x weight}
+\hlstd{df}\hlopt{$}\hlstd{htwt} \hlkwb{<-} \hlstd{df}\hlopt{$}\hlstd{height} \hlopt{*} \hlstd{df}\hlopt{$}\hlstd{weight}
+
+\hlcom{# gender and species}
+\hlstd{df}\hlopt{$}\hlstd{new} \hlkwb{<-} \hlkwd{paste}\hlstd{(df}\hlopt{$}\hlstd{name, df}\hlopt{$}\hlstd{gender,} \hlkwc{sep} \hlstd{=} \hlstr{"_"}\hlstd{)}
+
+\hlstd{df}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight   htwt          new
+## 1 Anakin   male   1.88     84 157.92  Anakin_male
+## 2  Padme female   1.65     45  74.25 Padme_female
+## 3   Luke   male   1.72     77 132.44    Luke_male
+## 4   Leia female   1.50     49  73.50  Leia_female
+## 5    Han   male   1.80     80 144.00     Han_male
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Subsetting}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+
+Subsetting using comparisons (logical vectors \code{TRUE, FALSE})
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df}\hlopt{$}\hlstd{name} \hlopt{==} \hlstr{"Luke"}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE FALSE  TRUE FALSE FALSE
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Luke's info}
+\hlstd{df[df}\hlopt{$}\hlstd{name} \hlopt{==} \hlstr{"Luke"}\hlstd{, ]}
+\end{alltt}
+\begin{verbatim}
+##   name gender height weight   htwt       new
+## 3 Luke   male   1.72     77 132.44 Luke_male
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+
+Subsetting using comparisons (logical vectors \code{TRUE, FALSE})
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df}\hlopt{$}\hlstd{gender} \hlopt{==} \hlstr{"male"}
+\end{alltt}
+\begin{verbatim}
+## [1]  TRUE FALSE  TRUE FALSE  TRUE
+\end{verbatim}
+\begin{alltt}
+\hlcom{# male subjects}
+\hlstd{df[df}\hlopt{$}\hlstd{gender} \hlopt{==} \hlstr{"male"}\hlstd{, ]}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight   htwt         new
+## 1 Anakin   male   1.88     84 157.92 Anakin_male
+## 3   Luke   male   1.72     77 132.44   Luke_male
+## 5    Han   male   1.80     80 144.00    Han_male
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+
+Subsetting with composed statements
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# male with height > 1.75}
+\hlstd{df[df}\hlopt{$}\hlstd{gender} \hlopt{==} \hlstr{"male"} \hlopt{&} \hlstd{df}\hlopt{$}\hlstd{height} \hlopt{>} \hlnum{1.75}\hlstd{, ]}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight   htwt         new
+## 1 Anakin   male   1.88     84 157.92 Anakin_male
+## 5    Han   male   1.80     80 144.00    Han_male
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+
+Subsetting statements can become very verbose
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# male with height > 1.75 and weight > 80}
+\hlstd{df[df}\hlopt{$}\hlstd{gender} \hlopt{==} \hlstr{"male"}
+   \hlopt{&} \hlstd{df}\hlopt{$}\hlstd{height} \hlopt{>} \hlnum{1.75}
+   \hlopt{&} \hlstd{df}\hlopt{$}\hlstd{weight} \hlopt{>} \hlnum{80}\hlstd{, ]}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight   htwt         new
+## 1 Anakin   male   1.88     84 157.92 Anakin_male
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting with \code{subset()}}
+
+To reduce verbose subsetting statements we can use \code{subset()}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# male with height > 1.75}
+\hlkwd{subset}\hlstd{(df, gender} \hlopt{==} \hlstr{"male"} \hlopt{&} \hlstd{height} \hlopt{>} \hlnum{1.75}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight   htwt         new
+## 1 Anakin   male   1.88     84 157.92 Anakin_male
+## 5    Han   male   1.80     80 144.00    Han_male
+\end{verbatim}
+\begin{alltt}
+\hlcom{# male with height > 1.75 and weight > 80}
+\hlkwd{subset}\hlstd{(df, gender} \hlopt{==} \hlstr{"male"} \hlopt{&} \hlstd{height} \hlopt{>} \hlnum{1.75} \hlopt{&} \hlstd{weight} \hlopt{>} \hlnum{80}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight   htwt         new
+## 1 Anakin   male   1.88     84 157.92 Anakin_male
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting with \code{subset()}}
+
+\code{subset()} also allows you to select columns according to a specified condition
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# name and weight of male subjects}
+\hlkwd{subset}\hlstd{(df,}
+       \hlstd{gender} \hlopt{==} \hlstr{"male"}\hlstd{,}
+       \hlkwc{select} \hlstd{=} \hlkwd{c}\hlstd{(name, weight))}
+\end{alltt}
+\begin{verbatim}
+##     name weight
+## 1 Anakin     84
+## 3   Luke     77
+## 5    Han     80
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting with \code{subset()}}
+
+\code{subset()} also allows you to select columns according to a specified condition
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# excluding height of male subjects}
+\hlkwd{subset}\hlstd{(df,}
+       \hlstd{gender} \hlopt{==} \hlstr{"male"}\hlstd{,}
+       \hlkwc{select} \hlstd{=} \hlopt{-}\hlstd{height)}
+\end{alltt}
+\begin{verbatim}
+##     name gender weight   htwt         new
+## 1 Anakin   male     84 157.92 Anakin_male
+## 3   Luke   male     77 132.44   Luke_male
+## 5    Han   male     80 144.00    Han_male
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Ordering Rows}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sorting rows}
+
+Remember \code{sort()} and \code{order()}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# sort() sorts the values}
+\hlkwd{sort}\hlstd{(df}\hlopt{$}\hlstd{weight)}
+\end{alltt}
+\begin{verbatim}
+## [1] 45 49 77 80 84
+\end{verbatim}
+\begin{alltt}
+\hlcom{# order() gives you the position}
+\hlkwd{order}\hlstd{(df}\hlopt{$}\hlstd{weight)}
+\end{alltt}
+\begin{verbatim}
+## [1] 2 4 3 5 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+When sorting rows, we want to work with the ordered positions
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sorting rows}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# sorting rows by weight }
+\hlstd{df[}\hlkwd{order}\hlstd{(df}\hlopt{$}\hlstd{weight), ]}
+\end{alltt}
+\begin{verbatim}
+##     name gender height weight   htwt          new
+## 2  Padme female   1.65     45  74.25 Padme_female
+## 4   Leia female   1.50     49  73.50  Leia_female
+## 3   Luke   male   1.72     77 132.44    Luke_male
+## 5    Han   male   1.80     80 144.00     Han_male
+## 1 Anakin   male   1.88     84 157.92  Anakin_male
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sorting rows}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# sorting subjects by height }
+\hlstd{df[}\hlkwd{order}\hlstd{(df}\hlopt{$}\hlstd{height),} \hlkwd{c}\hlstd{(}\hlstr{'name'}\hlstd{,} \hlstr{'height'}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##     name height
+## 4   Leia   1.50
+## 2  Padme   1.65
+## 3   Luke   1.72
+## 5    Han   1.80
+## 1 Anakin   1.88
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sorting rows}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# sorting subjects by height in decreasing order}
+\hlstd{ht_sort} \hlkwb{<-} \hlkwd{order}\hlstd{(df}\hlopt{$}\hlstd{height,} \hlkwc{decreasing} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{df[ht_sort,} \hlkwd{c}\hlstd{(}\hlstr{'name'}\hlstd{,} \hlstr{'height'}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##     name height
+## 1 Anakin   1.88
+## 5    Han   1.80
+## 3   Luke   1.72
+## 2  Padme   1.65
+## 4   Leia   1.50
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

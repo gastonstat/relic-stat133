@@ -1,0 +1,958 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Command Line - Part 1}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat}{\tt \scriptsize \color{foreground} github.com/gastonstat}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{GUIs}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphical User Interfaces}
+
+\bi
+  \item Windows and Mac use a Graphical User Interface (GUI) for you to interact with the OS.
+  \item GUIs are easy to learn
+  \item GUIs rely on visual displays
+  \item GUIs can be extremely useful
+  \item GUIs have improved the friendliness and usability of computers
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{GUIs or Command Line?}
+
+\bi
+  \item However, GUIs come with trade-offs
+  \item They don't allow you to have more control over what your computer can do
+  \item Some operations are labor intensive and repetitive
+  \item You organize things by clicking and dragging with the cursor (which reduces reproducibility)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{GUI Disadvantages}
+\bbi
+  \item Lack of repeatability
+  \item Lack of reproducibility
+  \item Some tasks may be labor intensive using a GUI
+  \item GUIs limit analyses on a cluster of computers
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Command Line}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Command Line}
+\bbi
+  \item Instead of using a GUI, we can use a command line program
+  \item The command line program is known as the \textbf{shell}
+  \item By typing commands we perform tasks on the computer (without using a mouse)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Shell}
+
+\bi
+  \item You're working with a program called the \textbf{shell}
+  \item The shell interprets the commands you enter
+  \item It runs the program you've asked for
+  \item It coordinates what happens between you and the operating system
+  \item There are various kinds or flavors of shells: e.g. Bourne (BASH), Korn, C shell
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Command Line}
+
+\bbi
+  \item To interact with the shell we need a \textbf{terminal emulator}
+  \item In Unix-like systems (e.g. Mac) the terminal is usually known as ``terminal''
+  \item Windows does not really provide a terminal; instead it provides the \textit{command prompt}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Command Prompt in Windows}
+
+\bb{Finding MS Windows command prompt}
+\bi
+  \item Click the \textbf{Start} button
+  \item Click \textbf{All Programs}
+  \item Click \textbf{Accessories}
+  \item Click \textbf{Command Prompt}
+\ei
+Windows command prompt is not a UNIX shell
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Shells for Windows}
+
+\bi
+  \item Instead of using the command prompt you can use ad-hoc shell environments for Windows
+  \item e.g. Git-Bash, PowerShell, Cygwin
+  \item Git for Windows provides a BASH emulation
+  \item PowerShell is part of Windows Management Framework 4.0
+  \item Cygwin is large collection of GNU and Open Source tools
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Mac Terminal}
+\begin{center}
+\ig[width=3cm]{images/terminal.png}
+\end{center}
+
+\bi
+  \item Go to \textbf{Applications}
+  \item Go to \textbf{Utilities}
+  \item Click \textbf{Terminal}
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Try Some Commands}
+\bi
+  \item \code{date} (current time and date)
+  \item \code{cal} (calendar of current month)
+  \item \code{df} (amount of free space in your disk drives)
+  \item \code{who} (logged in users)
+  \item \code{echo `Hello'}
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Shell}
+\bi
+  \item Shells run in terminal emulators, or \textbf{terminals}
+  \item In Mac OS X, the default reminal program is called \textbf{Terminal}
+  \item The command line is displayed within the terminal window
+  \item The program behind the terminal is the \textbf{shell}
+  \item There are many different shell programs
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{BASH}
+
+The most common type of shell is BASH
+\bi
+  \item BASH: Bourne Again SHell
+  \item BASH is the default shell for Linux
+  \item BASH is usually the default shell on Mac
+  \item type {\hilit \code{echo \$SHELL}} to see your shell
+  \item type {\hilit \code{bash}} to get a bash shell
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{BASH}
+\bi
+  \item A shell does much more than simply run commands
+  \item It has wildcards for matching filenames
+  \item It has a command history to recall previous commands quickly
+  \item It has pipes for making the output of one command become the input of another
+  \item It has variables for storing values for use by the shell
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Command \code{who}}
+\bbi
+  \item \code{who} displays a list of users that are currently logged in
+  \item \code{who am i} (\code{whoami}) tells you the current user name
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Shell Command Syntax}
+
+\code{command -options arg1 arg2}
+
+\bigskip
+\bi
+  \item Blanks and \code{"-"} are delimiters
+  \item The number of arguments may vary
+  \item An argument comes at the end of the command line
+  \item It's usually the name of a file or some text
+  \item Many commands have default arguments
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Date and Calendar}
+\bi
+  \item \code{date}
+  \item \code{cal} (current calendar year)
+  \item \code{cal july 2015} (July 2015)
+  \item \code{cal jan 2000}
+  \item \code{ncal -w july 2015} (week number)
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Options}
+
+\code{command -options arg1 arg2}
+
+\bigskip
+\bi
+  \item Options come between the command and the arguments
+  \item They tell the command to do something other than its default
+  \item They are usually prefaced with one or two hyphens
+  \item e.g. \code{ncal -w july 2015}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some Control Sequences}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   keys & description \\
+  \hline
+  \code{Ctrl + l} & clear screen \\  
+  \code{Ctrl + c} & stop current command \\
+  \code{Ctrl + z} & suspend current command \\
+  \code{Ctrl + k} & kill to end of line \\
+  \code{Ctrl + r} & search history \\
+  \code{Ctrl + n} & next history item \\
+  \code{Ctrl + p} & previous history item \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Manual Documentation}
+
+\bi
+  \item To see the help documentation of a command use {\hilit \code{man}} followed by the name of the command:
+  \bi
+    \item \code{man cal}
+    \item \code{man date}
+    \item \code{man who}
+  \ei
+  \item {\hilit \code{q}} quits manual documentation
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Logging Out}
+\bi
+  \item {\hilit \code{exit}} logs you out
+  \item {\hilit \code{q}} quits manual documentation
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{System Navigation}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Filesystem Reminder}
+\bi
+  \item The nested hierarchy of folders and files on your computer is called the \textbf{filesystem}
+  \item The filesystem follows a tree-like structure
+  \item The root directory is the most includive folder on the system
+  \item The root directory serves as the container ofr all other files and folders
+  \item A Unix-based system (e.g. OS X) has a single root directoyr
+  \item Windows users usually have multiple roots (\code{C:, D:}, etc)
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Paths}
+\bi
+  \item Each file and directory has a unique name in the filesystem
+  \item Such unique name is called a \textbf{path}
+  \item A path can be \textbf{absolute} or \textbf{relative}
+  \item An \textbf{absolute path} is a complete and unambiguous description of where something is in relation to the root
+  \item A \textbf{relative} describes where a folder or file is in relation to another folder
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Paths}
+\bi
+  \item There are two special relative paths: \code{.} and \code{..}
+  \item The single period \code{.} refers to your current directory
+  \item The two periods means your parent directory, one level above
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Home Directory}
+\bi
+  \item User's personal files are found in the \code{/Users} directory
+  \item A user directory is the \textbf{home} directory
+  \item {\hilit \code{cd}} (with no other arguments) returns you to your home directory
+  \item {\hilit \code{echo \$HOME}} prints your home directory
+  \item {\hilit \code{cd $\sim$}} takes you to your home directory
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Working Directory}
+\bi
+  \item Another special type of directory is the so-called \textbf{working directory}
+  \item The working directory is the current directory where you perform any task
+  \item {\hilit \code{pwd}} prints the working directory
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Changing Directories}
+\bi
+  \item \code{cd}
+  \item \code{cd ..}
+  \item \code{cd /}
+  \item \code{cd $\sim$}
+  \item \code{cd $\sim$/Documents}
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Absolute Path Names}
+\begin{center}
+\ig[width=5cm]{images/treefiledir.pdf}
+\end{center}
+
+From the root directory to \code{D}: \\
+{\hilit \code{cd /A/B/D}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Relative Path Names}
+\begin{center}
+\ig[width=5cm]{images/treefiledir.pdf}
+\end{center}
+
+Changing directories from \code{D} to \code{C} \\
+{\hilit \code{cd ../../C}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Listing Contents in a Directory}
+\bi
+  \item \code{ls}
+  \item \code{ls -1} (one entry per line)
+  \item \code{ls -l} (list in long format)
+  \item \code{ls -a} (show files starting with a dot)
+  \item \code{man ls} (manual documentation)
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Listing Contents in a Directory}
+\bbi
+  \item \code{ls /} (specify root directory)
+  \item \code{ls /usr} (specifying a directory)
+  \item \code{ls $\sim$} (home directory)
+  \item \code{ls -lt} (long format, sorted by modification time)
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Listing Contents}
+\begin{center}
+\ig[width=5cm]{images/treefiledir.pdf}
+\end{center}
+
+Show contents in D from C \\
+{\hilit \code{ls ../B/D/}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Inspecting Files}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{File Permissions}
+\bi
+  \item run the command: \code{ls -l}
+  \item directories may be displayed as: \code{drwxr-xr-x}
+  \item files may be displayed as: \code{-rw-r--r--}
+  \item file permissions are the 10 most left characters
+  \item \code{r} means reads
+  \item \code{w} means write
+  \item \code{x} means execute
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{File Permissions}
+Read from left to right the permissions mean
+
+\begin{center}
+ \begin{tabular}{c l}
+  \hline
+   position & description \\
+  \hline
+  1 & File type. A dash \code{-} means a plain file \\
+    & and \code{d} means a directory. \\
+    & There are other less common options. \\  
+  2-4 & Owner permissions: read, write, and execute \\
+      & permissions for the file's owner. \\  
+  5-7 & Group permissions: read, write, and execute \\
+      & permissions for the file's group. \\
+  8-10 & World permissions: read, write, and execute \\
+       & permissions for all other users. \\
+  \hline
+ \end{tabular}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Type of File}
+Determine the type of a file: \\
+\code{file} \textit{filename}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some commands for inspecting text files}
+\bi
+  \item \code{wc} \textit{filename}
+  \item \code{cat} \textit{filename}
+  \item \code{head} \textit{filename}
+  \item \code{tail} \textit{filename}
+  \item \code{more} \textit{filename}
+  \item \code{less} \textit{filename}
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Viewing file contents with \code{less}}
+\bi
+  \item There are several commands that display the contents of text files
+  \item The most commonly used file viewer is {\hilit \code{less}}
+  \item \code{less} presents the contents of that file on the screen one page at a time
+  \item There are various keyboard surtcuts to navigate in \code{less}
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Viewing file contents with \code{less}}
+{\small
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   key & description \\
+  \hline
+  Page Up or \textbf{b} & scroll back one page \\
+  Page Down or & scroll forward one page \\
+  \textbf{space} & \\
+  Up Arrow & scroll up one line \\  
+  Down Arrow & scroll down one line \\
+  \textbf{G} & move to the end of text file \\  
+  \textbf{1G} or \textbf{g} & move to the beginning of the text file \\
+  \textbf{/hello} & search forward to next occurrence of hello \\
+  \textbf{n} & search for the next search occurrence \\
+  \textbf{h} & display help screen \\
+  \textbf{q} & quit less \\
+  \hline
+ \end{tabular}
+\end{center}
+}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Quoting Files}
+If you want a word to contain whitespace (e.g. a filename with a space in it), surround it with single or double quotes to make the shell treat it as a unit: \\
+\code{ls "My file"}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Exploring a file}
+\bi
+  \item \code{cd} into a given directory
+  \item List the directory contents with \code{ls -l}
+  \item Determine the contents of a file with \code{file}
+  \item If it looks like it might be text, try viewing it with \code{less}
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Editing text files at the command line}
+\bi
+  \item Sometimes it is more convenient to create or modify a file right at the command line
+  \item Although \code{less} is a convenient file viewer, it does not allow you to edit the contents
+  \item Depending on your operating system and shell tool, you may have one or more command-line text editors:
+  \item e.g. \code{vi}, \code{nano}, \code{gedit}
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Editing text files at the command line}
+\bi
+  \item One common text editor is \code{vi} (there's also \code{vim})
+  \item It should be available in Mac, and also in Git-Bash (Windows)
+  \item Depending on your operating system and shell tool, you may have one or more command-line text editors:
+  \item Type {\hilit \code{which vi}} to fing out if you have it
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Editing text files with \code{vi}}
+\bi
+  \item To create and start editing a file simply type \code{vi} followed by the name of the new file:
+  \item[] {\hilit \code{vi newfile.txt}}
+  \item Press the \textbf{I} key to start editing content
+  \item When you're done, press the \textbf{ESC} key
+  \item Then type \code{:wq} to save and quit
+  \item You can reopen it again with: \code{vi newfile.txt}
+\ei
+
+Google \textbf{vi cheat sheet} to find more information
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{File Management}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Managing Files}
+Common actions
+\bi
+  \item creating a directory
+  \item creating a file
+  \item copying a file
+  \item moving a file
+  \item deleting a file
+  \item searching a file
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Managing Files}
+Common actions
+\bi
+  \item creating a directory: \code{mkdir}
+  \item creating a file: usually through a text editor
+  \item copying a file: \code{cp}
+  \item moving a file: \code{mv}
+  \item deleting a file: \code{rm}
+  \item searching a file: ?
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating Directories and Files}
+
+Create a directory \code{"summer2015"} in my Documents
+<<eval=FALSE>>=
+cd ~/Documents
+mkdir summer2015
+@
+
+\bigskip
+Create an empty file \code{"README.md"} in \code{summer2015}
+<<eval=FALSE>>=
+cd summer2015
+touch README.md
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Copying Files}
+\bi
+  \item \code{cp} is the command to copy files
+  \item \code{cp} can be used in two ways:
+  \item \code{cp file1 file2} copies \code{file1} into \code{file2}
+  \item \code{cp file1 directory} copies \code{file1} into a directory (directory must already exists)
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Copying Files}
+
+Copying \code{functions.R} from Documents to HW6
+<<eval=FALSE>>=
+cp ~/Documents/functions.R ~/Desktop/HW6/
+@
+
+\bigskip
+Copying \code{starwars.csv} to current directory
+<<eval=FALSE>>=
+cp ~/Documents/starwars.csv .
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Deleting files}
+
+Deleting \code{README.md} and \code{starwars2.csv}
+<<eval=FALSE>>=
+cd ~/Documents/summer2015
+rm README.md
+rm starwars2.csv
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Wildcards}
+
+\bi
+  \item the shell provides special characters to specify filenames
+  \item these special characters are called \textbf{wildcards}
+  \item using wildcards allow you to select filenames based on patterns of characters
+  \item these wildcards are similar to some regular expression characters
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Wildcards}
+{\small
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   wildcard & description \\
+  \hline
+  \code{*} & matches any characters \\
+  \code{?} & matches any single character \\
+  \code{[characters]} & matches any character that is \\
+   & a member of the set \textit{characetrs} \\  
+  \code{[!characters]} & matches any character that is not \\
+   & a member of the set \textit{characters} \\  
+  \code{[[:class:]]} & matches any character that is \\
+   & a member of the specified \textit{class} \\
+  \hline
+ \end{tabular}
+\end{center}
+}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example}
+
+Create a directory \code{dummy}, \code{cd} to it, and then create empty files:
+<<eval=FALSE>>=
+$ mkdir dummy
+$ cd dummy
+$ touch AGing.txt Bing.xt Gagging.text Going.nxt ing.ext
+$ ls 
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{*} Wildcard}
+
+Use {\hilit \code{*}} to refer to multiple files at once; it stands for \textit{anything}
+<<eval=FALSE>>=
+$ ls
+  AGing.txt   Bing.xt
+  Gagging.text Going.nxt ing.ext
+
+$ ls G*
+  Gagging.txt Going.nxt
+
+$ ls *.xt
+  Bing.xt
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{?} Wildcard}
+
+The question mark {\hilit \code{?}} represents a \textit{single} character
+<<eval=FALSE>>=
+$ ls
+  AGing.txt   Bing.xt
+  Gagging.text Going.nxt ing.ext
+
+$ ls ?ing.xt
+  Bing.xt
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{[]} Wildcard}
+
+Brackets {\hilit \code{[]}} can be replaced by whatever characters are within those characters:
+<<eval=FALSE>>=
+$ ls
+  AGing.txt   Bing.xt
+  Gagging.text Going.nxt ing.ext
+
+$ ls [B]ing.*
+  Bing.xt
+
+$ ls [A-G]ing.*
+  Bing.xt
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Combining Wildcards}
+
+Wildcards can be combined:
+<<eval=FALSE>>=
+$ ls
+  AGing.txt   Bing.xt
+  Gagging.text Going.nxt ing.ext
+
+$ ls *G*
+  AGing.txt Gagging.txt Going.nxt
+
+$ ls *i*.*e*
+  Gagging.text ing.ext
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Test Yourself}
+<<eval=FALSE>>=
+  AGing.txt   Bing.xt
+  Gagging.text Going.nxt ing.ext
+@
+
+What command produces the output above:
+\bi
+  \item[A)] \code{ls *ing.*xt}
+  \item[B)] \code{ls ?ing.*xt}
+  \item[C)] \code{ls ?ing.?xt}
+  \item[D)] \code{ls ?ing.xt}
+  \item[E)] \code{ls *ing.?xt}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Test Yourself}
+<<eval=FALSE>>=
+  AGing.txt Going.nxt ing.ext
+@
+
+What command produces the output above:
+\bi
+  \item[A)] \code{ls *ing.*xt}
+  \item[B)] \code{ls ?ing.*xt}
+  \item[C)] \code{ls ?ing.?xt}
+  \item[D)] \code{ls ?ing.xt}
+  \item[E)] \code{ls *ing.?xt}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Wildcard Examples}
+{\small
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   Pattern & Matches \\
+  \hline
+  \code{*} & all files \\
+  \code{a*} & any file beginning with ``a'' \\
+  \code{*.txt} & any file ending with \code{.txt} \\
+  \code{b*.txt} & any file beginning with ``b'' followed \\
+   & by any characters and ending with ``.txt'' \\
+   \code{[gst]*} & any file beginning with either \\
+   & a ``g'', and ``s'', or a ``t'' \\
+  \code{[[:digit:]]*} & any file beginning with a number \\
+  \code{[[:upper:]]*} & any file beginning with an uppercase letter \\
+  \hline
+ \end{tabular}
+\end{center}
+}
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

@@ -1,0 +1,894 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Graphics in R}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{R Graphics}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Understanding Graphics in R}
+
+\centerline{\mdlit \Large 2 main graphics systems}
+
+\bigskip
+\centerline{\Large \code{"graphics"} \quad \& \quad \code{"grid"}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Basics of Graphics in R}
+
+\bb{Graphics Systems}
+\bbi
+  \item \code{"graphics"} and \code{"grid"} are the two main graphics systems in R
+  \item \code{"graphics"} is the \textit{traditional} system, also referred to as \textit{base graphics}
+  \item \code{"grid"} prodives low-level functions for programming plotting functions
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Basics of Graphics in R}
+
+\bb{Graphics Engine}
+\bbi
+  \item Underneath \code{"graphics"} and \code{"grid"} there is the package \code{"grDevices"}
+  \item \code{"grDevices"} is the graphics \textbf{engine} in R
+  \item It provides the graphics devices and support for colors and fonts
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{center}
+\ig[width=8cm]{images/graphic_systems.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Basics of Graphics in R}
+
+\bb{Package \code{"graphics"}}
+The package \code{"graphics"} is the traditional system; it provides functions for complete plots, as well as low-level facilities. 
+
+\bigskip
+Many other graphics packages are built on top of graphics like \code{"maps"}, \code{"diagram"}, \code{"pixmap"}, and many more.
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Understanding Graphics in R}
+
+\bb{Package \code{"grid"}}
+The \code{"grid"} package does not provide functions for drawing complete plots.
+
+\bigskip
+\code{"grid"} is not used directly to produce statistical plots. Instead, it is used to build other graphics packages like \code{"lattice"} or \code{"ggplot2"}.
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{In this course}
+
+\bbi
+ \item In this course we'll focus on the packages {\hilit \code{"graphics"}} and {\hilit \code{"ggplot2"}}
+ \item \code{"graphics"} is the traditional plotting system in R, and many functions and packages are built on top of it.
+ \item \code{"ggplot2"} excels at providing graphics for visualizing multivariate data sets ---in \code{data.frame} format---, while taking care of many issues for superior visual displays.
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{R Graphics by Paul Murrell}
+\begin{center}
+\ig[height=6cm]{images/rgraphics.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some Resources}
+
+\bi
+ \item \textbf{R Graphics} by Paul Murrell \\
+ \href{http://lux.e-reading.bz/bookreader.php/137370/C486x_C02.pdf}{\tt book} and \href{https://www.stat.auckland.ac.nz/~paul/RG2e/}{webpage}
+ \item \textbf{R Graphics Cookbook} by Winston Chang \\
+ \url{http://www.cookbook-r.com/Graphs/}
+ \item \textbf{ggplot2: Elegant Graphics for Data Analysis} by Hadley Wickham
+ \item \textbf{R Graphs Cookbook} by Hrishi Mittal
+ \item \textbf{Graphics for Statistics and Data Analysis with R} by Kevin Keen
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Traditional (Base) Graphics}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Base Graphics in R}
+
+\bb{Types of graphics functions}
+Graphics functions can be divided into two main types:
+ \bi
+  \item \textbf{high-level} functions produce complete plots, e.g. {\lit \code{barplot(), boxplot(), dotchart()}}
+  \item \textbf{low-level} functions add further output to an existing plot, e.g. {\lit \code{text(), points(), legend()}}
+ \ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{The \code{plot()} function}
+
+\bi
+ \item {\hilit \code{plot()}} is the most important high-level function in traditional graphics
+ \item The first argument to \code{plot()} provides the data to plot
+ \item The provided data can take different forms: e.g. vectors, factors, matrices, data frames.
+ \item To be more precise, \code{plot()} is a generic function
+ \item You can create your own \code{plot()} method function
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Basic Plots with \code{plot()}}
+
+In its basic form, we can use {\hilit \code{plot()}} to make graphics of:
+\bi
+  \item one single variable
+  \item two variables
+  \item multiple variables
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Plots of One Variable}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{High-level graphics of a single variable}
+
+\begin{center}
+ \begin{tabular}{l l l}
+  \hline
+   Function & Data & Description \\
+  \hline
+  \code{plot()} & numeric & scatterplot \\  
+  \code{plot()} & factor & barplot \\
+  \code{plot()} & 1-D table & barplot \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\code{numeric} can be either a vector or a 1-D array (e.g. row or column from a matrix) 
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{One variable objects}
+\begin{center}
+\ig[width=8cm]{images/one_variable_objs.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{plot()} of one variable}
+<<plot_single1, eval=FALSE, echo=-c(1,14)>>=
+op <- par(mfrow = c(1, 3))
+# plot numeric vector
+num_vec <- (c(1:10))^2
+plot(num_vec)
+
+# plot factor
+set.seed(4)
+abc <- factor(sample(c('A', 'B', 'C'), 20, replace = TRUE))
+plot(abc)
+
+# plot 1D-table
+abc_table <- table(abc)
+plot(abc_table)
+par(op)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{plot()} of one variable}
+<<plot_single1, fig.width=7, fig.height=3, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{More high-level graphics of a single variable}
+
+\begin{center}
+ \begin{tabular}{l l l}
+  \hline
+   Function & Data & Description \\
+  \hline
+  \code{barplot()} & numeric & barplot \\
+  \code{pie()} & numeric & pie chart  \\
+  \code{dotchart()} & numeric & dotplot \\
+   & & \\
+  \code{boxplot()} & numeric & boxplot \\
+  \code{hist()} & numeric & histogram  \\
+  \code{stripchart()} & numeric & 1-D scatterplot \\
+  \code{stem()} & numeric & stem-and-leaf plot \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of one variable}
+<<plot_single2, eval=FALSE, echo=-c(1,10)>>=
+op <- par(mfrow = c(1, 3))
+# barplot numeric vector
+barplot(num_vec)
+
+# pie chart
+pie(1:3)
+
+# dot plot
+dotchart(num_vec)
+par(op)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of one variable}
+<<plot_single2, fig.width=7, fig.height=3, out.width='.95\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of one variable}
+<<plot_single3, eval=FALSE, echo=-c(1,13)>>=
+op <- par(mfrow = c(1, 3))
+# barplot numeric vector
+boxplot(num_vec)
+
+# pie chart
+hist(num_vec)
+
+# dot plot
+stripchart(num_vec)
+
+# stem-and-leaf
+stem(num_vec)
+par(op)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{boxplot()}}
+<<fig.width=5, fig.height=5, out.width='.5\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+# boxplot
+boxplot(iris$Sepal.Length)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{hist()}}
+<<fig.width=5, fig.height=5, out.width='.5\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+# histogram
+hist(iris$Sepal.Length)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Test your knowledge}
+
+\bb{What option does not apply to histograms:}
+\bbi
+  \item[A)] adjacent bars (no gaps)
+  \item[B)] area of bars indicate proportions
+  \item[C)] bins of equal length
+  \item[D)] bars can be reordered
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{stripchart()}}
+<<fig.width=5, fig.height=3, out.width='.8\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+# strip-chart (1-D scatter plot)
+# (for small sample sizes)
+stripchart(num_vec)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{stem()}}
+<<>>=
+# stem-and-leaf plot
+# (for small sample sizes)
+stem(num_vec)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Kernel Density Curve}
+
+\bbi
+  \item Surprisingly, R does not have a specific function to plot density curves
+  \item R does have the \code{density()} function which computes a kernel density estimate
+  \item We can pass a \code{"density"} object to \code{plot()} in order to get a density curve.
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Kernel Density Curve}
+<<fig.width=4, fig.height=4, out.width='.5\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+# kernel density curve
+dens <- density(num_vec)
+plot(dens)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Test your knowledge}
+
+\bb{What type of plot is based on the five-number summary}
+\bbi
+  \item[A)] bar chart
+  \item[B)] box plot
+  \item[C)] histogram
+  \item[D)] scatterplot
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Plots of Two Variables}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{High-level graphics of two variables}
+
+\begin{center}
+ \begin{tabular}{l l l}
+  \hline
+   Function & Data & Description \\
+  \hline
+  \code{plot()} & numeric, numeric & scatterplot \\  
+  \code{plot()} & numeric, factor & stripcharts \\
+  \code{plot()} & factor, numeric & boxplots \\
+  \code{plot()} & factor, factor & spineplot \\
+  \code{plot()} & 2-column numeric matrix & scatterplot \\  
+  \code{plot()} & 2-column numeric data.frame & scatterplot \\  
+  \code{plot()} & 2-D table & mosaicplot \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Two variable objects}
+\begin{center}
+\ig[width=8cm]{images/two_variable_objs.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<plot_twovars, eval=FALSE, echo=-c(1,13)>>=
+op <- par(mfrow = c(1, 3))
+# plot numeric, numeric
+plot(iris$Petal.Length, iris$Sepal.Length)
+
+# plot numeric, factor
+plot(iris$Petal.Length, iris$Species)
+
+# plot factor, numeric
+plot(iris$Species, iris$Petal.Length)
+
+# plot factor, factor
+plot(iris$Species, iris$Species)
+par(op)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# plot numeric, numeric
+plot(iris$Petal.Length, iris$Sepal.Length)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# plot numeric, factor
+plot(iris$Petal.Length, iris$Species)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# plot factor, numeric
+plot(iris$Species, iris$Petal.Length)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<fig.width=6, fig.height=6, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# plot factor, factor
+plot(iris$Species, iris$Species)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<>>=
+# some fake data
+set.seed(1)
+
+# hair color
+hair <- factor(
+  sample(c('blond', 'black', 'brown'), 100, replace = TRUE))
+
+# eye color
+eye <- factor(
+  sample(c('blue', 'brown', 'green'), 100, replace = TRUE))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<fig.width=6, fig.height=6, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# plot factor, factor
+plot(hair, eye)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{More high-level graphics of two variables}
+
+{\footnotesize
+\begin{center}
+ \begin{tabular}{l l l}
+  \hline
+   Function & Data & Description \\
+  \hline
+  \code{sunflowerplot()} & numeric, numeric & sunflower scatterplot \\
+  \code{smoothScatter()} & numeric, numeric & smooth scatterplot \\
+   & & \\
+  \code{boxplot()} & list of numeric & boxplots \\
+  \code{barplot()} & matrix & stacked / side-by-side barplot  \\
+  \code{dotchart()} & matrix & dotplot \\
+   & & \\
+  \code{stripchart()} & list of numeric & stripcharts \\
+  \code{spineplot()} & numeric, factor & spinogram  \\
+  \code{cdplot()} & numeric, factor & conditional density plot  \\
+   & & \\
+  \code{fourfoldplot()} & 2x2 table & fourfold display \\
+  \code{assocplot()} & 2-D table & association plot \\  
+  \code{mosaicplot()} & 2-D table & mosaic plot \\
+  \hline
+ \end{tabular}
+\end{center}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# sunflower plot (numeric, numeric)
+sunflowerplot(iris$Petal.Length, iris$Sepal.Length)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# smooth scatter plot (numeric, numeric)
+smoothScatter(iris$Petal.Length, iris$Sepal.Length)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# boxplots (numeric, numeric)
+boxplot(iris$Petal.Length, iris$Sepal.Length)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+m <- matrix(1:8, 4, 2)
+# barplot (numeric matrix)
+barplot(m)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+m <- matrix(1:8, 4, 2)
+# barplot (numeric matrix)
+barplot(m, beside = TRUE)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two variables}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# conditional density plot (numeric, factor)
+cdplot(iris$Petal.Length, iris$Species)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Two categorical variables: frequency table}
+<<>>=
+# 2-D table (HairEyeColor data)
+x <- margin.table(HairEyeColor, c(1, 2))
+x
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two categorical variables}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# mosaic plot (2-D table)
+mosaicplot(x, main = "Relation between hair and eye color")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of two categorical variables}
+<<fig.width=5, fig.height=4, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# association plot (2-D table)
+assocplot(x, main = "Relation between hair and eye color")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Plots of Multiple Variables}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{High-level graphics of multiple variables}
+
+{\footnotesize
+\begin{center}
+ \begin{tabular}{l l l}
+  \hline
+   Function & Data & Description \\
+  \hline
+  \code{plot()} & data frame & scatterplot matrix \\
+  \code{pairs()} & matrix & scatterplot matrix \\
+  \code{matplot()} & matrix & scatterplot \\
+  \code{stars()} & matrix & star plots \\
+   & & \\
+  \code{image()} & numeric, numeric, numeric & image plot \\
+  \code{contour()} & numeric, numeric, numeric & contour plot  \\
+  \code{filled.contour()} & numeric, numeric, numeric & filled contour plot  \\
+  \code{persp()} & numeric, numeric, numeric & 3-D surface \\
+  \code{symbols()} & numeric, numeric, numeric & symbols scatterplot \\
+   & & \\
+  \code{mosaicplot()} & N-D table & mosaic plot \\
+  \hline
+ \end{tabular}
+\end{center}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of multiple variables}
+<<fig.width=5, fig.height=5, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# scatter plot matrix (data frame)
+plot(iris[ , 1:4])
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of multiple variables}
+<<fig.width=5, fig.height=5, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# scatter plot matrix (data frame)
+pairs(iris[ , 1:4])
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of multiple variables}
+<<fig.width=7, fig.height=5, out.width='.8\\linewidth', out.height='.65\\linewidth', fig.align='center'>>=
+# scatter plot matrix (data frame)
+matplot(iris[ , 1:4])
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of multiple variables}
+<<fig.width=5, fig.height=5, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# star plot (data frame)
+stars(iris[ , 1:4])
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of multiple variables}
+<<fig.width=7, fig.height=5, out.width='.8\\linewidth', out.height='.65\\linewidth', fig.align='center'>>=
+# color image (matrix)
+image(t(volcano)[ncol(volcano):1, ])
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of multiple variables}
+<<volcano, eval = FALSE>>=
+# display of Maunga Whau volcano
+x <- 10*(1:nrow(volcano))
+y <- 10*(1:ncol(volcano))
+image(x, y, volcano, col = terrain.colors(100), axes = FALSE)
+contour(x, y, volcano, levels = seq(90, 200, by = 5),
+        add = TRUE, col = "peru")
+axis(1, at = seq(100, 800, by = 100))
+axis(2, at = seq(100, 600, by = 100))
+box()
+title(main = "Maunga Whau Volcano", font.main = 4)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of multiple variables}
+<<volcano, fig.width=7, fig.height=5, out.width='.8\\linewidth', out.height='.65\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of multiple variables}
+<<fig.width=5, fig.height=4, out.width='.75\\linewidth', out.height='.65\\linewidth', fig.align='center'>>=
+# mosaic plot of N-D tables
+mosaicplot(HairEyeColor)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plots of multiple variables}
+<<fig.width=5, fig.height=4, out.width='.8\\linewidth', out.height='.65\\linewidth', fig.align='center', size='scriptsize'>>=
+# symbols scatter plots
+symbols(iris[, 1], iris[, 2], circles = iris[, 3]/100, 
+        inches = FALSE)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics Parameters}
+
+\bb{Graphics Functions and Arguments}
+\bi
+  \item Plot functions usually come with various arguments
+  \item Typically, the first argument(s) is the data object(s) to be plotted
+  \item Most of the other arguments have default options
+  \item Graphic arguments have a consisting naming convention, but there will always be some exception
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphical Parameters}
+
+\bb{Graphical Arguments}
+\bi
+  \item Some arguments are specific to a function (e.g. \code{horiz} or \code{beside} in \code{barplot()})
+  \item Other arguments are more general (e.g. \code{col}, \code{xlab}, \code{ylab})
+  \item General graphical parameters are listed in the documentation of the function {\hilit \code{par()}}
+  \item See \code{?par} for more information
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics in R}
+
+\bb{How to choose a graphics approach?}
+\bi
+  \item look first for an existing function that does what you want ---or something similar to what you want (don't reivent the wheel!)
+  \item Existing plotting functions can be combined and customized by using optional arguments or graphical parameters
+  \item For exploratory data analysis (quick and dirty) the plotting functions in \code{"graphics"} is a good option
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

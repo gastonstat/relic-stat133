@@ -1,0 +1,1006 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Graphics in R}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Base Graphics}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Graphics in R}
+
+\bb{Traditional Graphics}
+\bi
+  \item R \code{"graphics"} follows a static, "painting on canvas" model.
+  \item Graphics elements are drawn, and remain visible until painted over.
+  \item For dynamic and/or interactive graphics, R is limited.
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Traditional Graphics}
+
+\bb{Traditional graphics model}
+In the traditional model, we create a plot by first calling a high-level function that creates a complete plot, and then we call low-level functions to add more output if necessary
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dataset \code{mtcars}}
+<<size='scriptsize'>>=
+head(mtcars)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scatter plot}
+<<fig.width=5, fig.height=4, out.width='.65\\linewidth', out.height='.55\\linewidth', fig.align='center'>>=
+# simple scatter-plot
+plot(mtcars$mpg, mtcars$hp)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Axis Labels}
+<<fig.width=5, fig.height=4, out.width='.65\\linewidth', out.height='.6\\linewidth', fig.align='center', size='scriptsize'>>=
+# xlab and ylab
+plot(mtcars$mpg, mtcars$hp, xlab = "miles per gallon",
+     ylab = "horsepower")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Title and subtitle}
+<<fig.width=5, fig.height=4, out.width='.65\\linewidth', out.height='.6\\linewidth', fig.align='center', size='scriptsize'>>=
+# title and subtitle
+plot(mtcars$mpg, mtcars$hp, xlab = "miles per gallon",
+     ylab = "horsepower", main = "Simple Scatterplot",
+     sub = 'data matcars')
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{x and y coordinate ranges}
+<<fig.width=5, fig.height=4, out.width='.65\\linewidth', out.height='.6\\linewidth', fig.align='center', size='scriptsize'>>=
+# 'xlim' and 'ylim'
+plot(mtcars$mpg, mtcars$hp, xlim = c(10, 35), ylim = c(50, 400))
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Type}
+<<fig.width=5, fig.height=4, out.width='.65\\linewidth', out.height='.55\\linewidth', fig.align='center'>>=
+# using 'type' (e.g. lines)
+plot(mtcars$mpg, mtcars$hp, type = "l")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Points}
+<<fig.width=5, fig.height=4, out.width='.65\\linewidth', out.height='.55\\linewidth', fig.align='center'>>=
+# character expansion 'cex'
+# and 'point character'
+plot(mtcars$mpg, mtcars$hp, cex = 1.5, pch = 1)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Point symbols (\code{pch}) available in R}
+<<points_pch, size='scriptsize', fig.width=4, fig.height=4, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+x <- rep(1:5, times = 5)
+y <- rep(5:1, each = 5)
+op <- par(mar = c(1,1,1,1))
+plot(x, y, pch = 1:25, axes = FALSE, xlab = '', ylab = '',
+     ylim = c(0.5, 5), cex = 1.5)
+text(x, y, pch = 1:25, labels = 1:25, pos = 1, offset = 0.8)
+par(op)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Point Character}
+<<fig.width=5, fig.height=4, out.width='.65\\linewidth', out.height='.6\\linewidth', fig.align='center', size='scriptsize'>>=
+# 'pch' can be any character
+plot(mtcars$mpg, mtcars$hp, pch = "@")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Point Character}
+<<fig.width=5, fig.height=4, out.width='.65\\linewidth', out.height='.6\\linewidth', fig.align='center', size='scriptsize'>>=
+# 'pch' symbols will be recycled
+plot(mtcars$mpg, mtcars$hp, pch = 1:25)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Point Colors}
+<<fig.width=5, fig.height=4, out.width='.65\\linewidth', out.height='.6\\linewidth', fig.align='center', size='scriptsize'>>=
+# color argument 'col'
+plot(mtcars$mpg, mtcars$hp, pch = 19, col = "blue", cex = 1.2)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Coloring Point Symbols}
+
+\bi
+  \item the \code{col} argument can be used to color symbols
+  \item symbols 21 through 25 can additionally have
+their interiors filled by using the \code{bg} (background) argument
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Coloring Point symbols}
+<<points_cols, size='scriptsize', fig.width=4, fig.height=4, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+x <- rep(1:5, times = 5)
+y <- rep(5:1, each = 5)
+cols <- c("tomato", "orange", "green3", "blue", "purple")
+op <- par(mar = c(1,1,1,1))
+plot(x, y, pch = 1:25, axes = FALSE, xlab = '', ylab = '',
+     ylim = c(0.5, 5), col = cols, bg = cols, cex = 2)
+text(x, y, pch = 1:25, labels = 1:25, pos = 1, offset = 0.8)
+par(op)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{So far ...}
+<<plot_mtcars, eval=FALSE>>=
+# using plot()
+plot(mtcars$mpg, mtcars$hp, 
+     xlim = c(10, 35), ylim = c(50, 400),
+     xlab = "miles per gallon",
+     ylab = "horsepower", 
+     main = "Simple Scatterplot",
+     sub = 'data matcars', 
+     pch = 1:25, cex = 1.2, col = "blue")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+%\frametitle{So far ...}
+<<plot_mtcars, echo=FALSE, fig.width=5, fig.height=5, out.width='.8\\linewidth', out.height='.8\\linewidth', fig.align='center'>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Low-Level Functions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{High and Low level functions}
+
+\bi
+  \item Usually we call a high-level function
+  \item Most times we change the default arguments
+  \item Then we call low-level functions
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scatter plot}
+<<mtcars_plot1, eval = FALSE>>=
+# simple scatter-plot
+plot(mtcars$mpg, mtcars$hp)
+
+# adding text
+text(mtcars$mpg, mtcars$hp, labels = rownames(mtcars))
+
+# dummy legend
+legend("topright", legend = "a legend")
+
+# graphic title
+title("Miles Per Galon -vs- Horsepower")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+<<mtcars_plot1, fig.width=7, fig.height=5.5, out.width='.8\\linewidth', out.height='.7\\linewidth', fig.align='center', echo = FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scatter plot}
+<<mtcars_plot2, eval = FALSE>>=
+# simple scatter-plot
+plot(mtcars$mpg, mtcars$hp, type = "n", 
+     xlab = "miles per gallon", ylab = "horsepower")
+# grid lines
+abline(v = seq(from = 10, to = 30, by = 5), col = 'gray')
+abline(h = seq(from = 50, to = 300, by = 50), col = ' gray')
+# plot points
+points(mtcars$mpg, mtcars$hp, pch = 19, col = "blue")
+# plot text
+text(mtcars$mpg, mtcars$hp, labels = rownames(mtcars),
+     pos = 4, col = "gray50")
+# graphic title
+title("Miles Per Galon -vs- Horsepower")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+<<mtcars_plot2, fig.width=7, fig.height=5.5, out.width='.8\\linewidth', out.height='.7\\linewidth', fig.align='center', echo = FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Test your knowledge}
+
+\bb{The function \code{plot()}}
+\bbi
+  \item[A)] accepts any type of vector
+  \item[B)] is a generic function
+  \item[C)] works only for 1-D and 2-D objects
+  \item[D)] is designed to display scatterplots and boxplots
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Low-level functions}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   Function & Description \\
+  \hline
+  \code{points()} & points \\  
+  \code{lines()} & connected line segments \\
+  \code{abline()} & straight lines across a plot \\
+  \code{segments()} & disconnected line segments \\
+  \code{arrows()} & arrows \\
+  \code{rect()} & rectangles \\
+  \code{polygon()} & polygons \\
+  \code{text()} & text \\
+  \code{symbols()} & various symbols \\
+  \code{legend()} & legends \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Points with \code{points()}}
+
+\begin{verbatim}
+points(x, y, pch = int, col = str)
+\end{verbatim}
+
+\bi
+  \item \code{pch} integer or string indicating type of point character
+  \item \code{col} color of points
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+<<size='scriptsize', fig.width=4, fig.height=4, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# drawing points
+plot(mtcars$mpg, mtcars$hp, type = "n")
+points(mtcars$mpg, mtcars$hp)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Connected Line Segments}
+
+\begin{verbatim}
+lines(x, y, lty = str, lwd = num, col = str)
+\end{verbatim}
+\bi
+  \item \code{lty} specifies the line texture. It should be one of \code{"blank"} (0), \code{"solid"} (1), \code{"dashed"}(2), \code{"dotted"} (3), \code{"dotdash"} (4), \code{"longdash"} (5) or \code{"twodash"} (6).
+  \item \code{lwd} and \code{col} specify the line width and colour
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+<<size='scriptsize', fig.width=4, fig.height=4, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# connected lines
+plot(mtcars$mpg, mtcars$hp, type = "n")
+lines(mtcars$mpg, mtcars$hp, type = "s", lwd = 2)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Line Graph Options}
+
+The \code{type} argument can be used to produced other types of lines
+\bi
+  \item \code{type = "l"} line graph
+  \item \code{type = "s"} step function (horizontal first)
+  \item \code{type = "S"} step function (vertical first)
+  \item \code{type = "h"} high density (needle) plot
+  \item \code{type = "p"} draw points
+  \item \code{type = "b"} draw points and lines
+  \item \code{type = "o"} over-plotting points and lines
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Line Graph Options}
+<<line_types, size='scriptsize', fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+set.seed(5)
+x <- 1:20
+y <- x + runif(20)
+ltypes = c("l", "s", "S", "h")
+op <- par(mfrow = c(2, 2))
+for (i in 1:4) {
+  ops <- par(mar = rep(1, 4))
+  plot(x, y, axes = FALSE, xlab = '', ylab = '', type = "n")
+  lines(x, y, lwd = 2, type = ltypes[i])
+  legend("topleft", legend = sprintf("type = '%s'", ltypes[i]), bty = "n")
+  box()
+  par(ops)
+}
+par(op)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Connected Line Segments}
+<<line_segs, eval=FALSE>>=
+x <- 2005:2015
+y <- c(81, 83, 84.3, 85, 85.4, 86.5, 88.3, 
+       88.6, 90.8, 91.1, 91.3)
+
+plot(x, y, type = 'n', xlab = "Time", ylab = "Values")
+lines(x, y, lwd = 2)
+title(main = "Line Graph Example")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Connected Line Segments}
+<<line_segs, size='scriptsize', fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Straight Lines}
+
+\begin{verbatim}
+abline(a = intercept, b = slope)
+abline(h = numbers)
+abline(v = numbers)
+\end{verbatim}
+
+\bi
+  \item The \code{a / b} form specifies a line in intercept / slope form
+  \item \code{h} specifies horizontal lines at given y-values
+  \item \code{v} specifies vartical lines at given x-values
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+<<size='scriptsize', fig.width=4, fig.height=4, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# drawing straight lines
+plot(mtcars$mpg, mtcars$hp, type = "n")
+abline(v = seq(10, 30, by = 5), h = seq(50, 300, by = 50))
+points(mtcars$mpg, mtcars$hp, pch = 19, col = "red")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Disconnected Lines}
+
+Disconnected lines can be drawn with the function:
+\begin{verbatim}
+segments(x0, y0, x1, y1)
+\end{verbatim}
+
+\bi
+  \item The \code{x0, y0, x1, y1} arguments give the start and end coordinates of the segments.
+  \item Line texture, colour and width arguments can also be
+given.
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Line Segments}
+<<segments, eval=FALSE>>=
+n <- 11
+theta <- seq(0, 2 * pi, length = n + 1)[1:n]
+x <- sin(theta)
+y <- cos(theta)
+v1 <- rep(1:n, n)
+v2 <- rep(1:n, rep(n, n))
+
+plot(x, y, type = 'n')
+segments(x[v1], y[v1], x[v2], y[v2])
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+<<segments, size='scriptsize', fig.width=5, fig.height=5, out.width='.8\\linewidth', out.height='.8\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Polygons}
+
+Polygons can be drawn with the function:
+\begin{verbatim}
+polygon(x, y, col = str, border = str)
+\end{verbatim}
+
+\bi
+  \item \code{x, y} give the coordinates of the polygon vertexes. \code{NA} values separate polygons.
+  \item \code{col} specifies the color of the interior.
+  \item \code{border} specifies the color of the border.
+  \item line texture and width specifications can also be given
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Polygons}
+<<polygons, size='scriptsize', fig.width=5, fig.height=5, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+mpg_dens <- density(mtcars$mpg)
+plot(mpg_dens, main = "Kernel Density Curve")
+polygon(mpg_dens, col = 'gray')
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Text}
+
+We can add text using the function:
+\begin{verbatim}
+text(x, y, labels, ...)
+\end{verbatim}
+
+\bi
+  \item \code{x, y} give the coordinates of the text.
+  \item \code{labels} gives the actual text strings.
+  \item \code{font} optional font for the text.
+  \item \code{col} optional color for the text.
+  \item \code{srt} rotation of the text.
+  \item \code{adj} justification of the text.
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Text}
+<<draw_text, eval=FALSE>>=
+plot(0.5, 0.5, xlim = c(0, 1), ylim = c(0, 1), type = 'n')
+abline(h = c(.2, .5, .8),
+       v = c(.5, .2, .8), col = "lightgrey")
+text(0.5, 0.5, "srt = 45, adj = c(.5, .5)",
+     srt = 45, adj = c(.5, .5))
+text(0.5, 0.8, "adj = c(0, .5)", adj = c(0, .5))
+text(0.5, 0.2, "adj = c(1, .5)", adj = c(1, .5))
+text(0.2, 0.5, "adj = c(1, 1)", adj = c(1, 1))
+text(0.8, 0.5, "adj = c(0, 0)", adj = c(0, 0))
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Text}
+<<draw_text, size='scriptsize', fig.width=7, fig.height=6, out.width='.8\\linewidth', out.height='.75\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding a Legend}
+
+Legends can be added with:
+\begin{verbatim}
+legend(xloc, yloc, legend = text
+       lty = linetypes, lwd = linewidths,
+       pch = glyphname, col = colours,
+       xjust = justification, yjust = justification)
+\end{verbatim}
+
+\bi
+  \item \code{xloc} and \code{yloc} give the coordinates where the legend is to be placed
+  \item \code{xjust} and \code{yjust} give
+the justification of the legend box with respect to
+the location. 
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Legends}
+<<add_legend, size='scriptsize', fig.width=6, fig.height=5, out.width='.7\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+# coords of exact line
+plot(mtcars$mpg, mtcars$hp)
+legend("topright", legend = "A legend")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Plots from scratch}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Customizing Annotations}
+
+It is also possible to create a plot from scratch. Although this procedure is less documented, it is extremely flexible:
+\begin{enumerate}
+  \item call \code{plot.new()} to start a new plot frame
+  \item call \code{plot.window()} to define coordinates
+  \item then call low-level functions:
+  \item typical options involve \code{axis()}
+  \item then \code{title()} (title, subtitle)
+  \item after that call other function: e.g. \code{points()}, \code{lines()}, etc
+\end{enumerate}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plot from Scratch}
+<<bare_plot, eval = FALSE>>=
+plot.new()
+plot.window(xlim = c(0, 10), ylim = c(-2, 4), xaxs = "i")
+axis(1, col.axis = "grey30")
+axis(2, col.axis = "grey30", las = 1)
+title(main = "Main Title",
+      col.main = "tomato",
+      sub = "Plot Subtitle",
+      col.sub = "orange",
+      xlab = "x-axis", ylab = "y-axis",
+      col.lab = "blue", font.lab = 3)
+box("figure", col = "grey90")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Plot from Scratch}
+<<bare_plot, size='scriptsize', fig.width=5, fig.height=5, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Another plot from scratch}
+<<ablines, eval=FALSE>>=
+set.seed(5)
+x <- rnorm(200)
+y <- x + rnorm(200)
+
+plot.new()
+plot.window(xlim = c(-4.5, 4.5), xaxs = "i", 
+            ylim = c(-4.5, 4.5), yaxs = "i")
+z <- lm(y ~ x)
+abline(h = -4:4, v = -4:4, col = "lightgrey")
+abline(a = coef(z)[1], b = coef(z)[2], lwd = 2, col = "red")
+points(x, y)
+axis(1)
+axis(2, las = 1)
+box()
+title(main = "A Fitted Regression Line")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+<<ablines, size='scriptsize', fig.width=7, fig.height=5, out.width='.9\\linewidth', out.height='.7\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Plot from Scratch}
+
+\bbi
+  \item Start a new plot with \code{plot.new()}
+  \item \code{plot.new()} opens a new (empty) plot frame
+  \item \code{plot.new()} chooses a default plotting region
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Setting Up Coordinates}
+
+Then use \code{plot.window()} to set up the coordinate system for the plotting frame
+<<eval = FALSE>>=
+# axis limits (0,1)x(0,1)
+plot.window(xlim = c(0, 1), ylim = c(0, 1))
+@
+By default \code{plot.window()} produces axis limits which are expanded by 6\% over those actually specified. 
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Setting Up Coordinates}
+
+The default limits expansion can be turned-off by specifying \code{xaxs = "i"} and/or \code{yaxs = "i"}
+<<eval=FALSE>>=
+plot.window(xlim, ylim, xaxs = "i")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Aspect Ratio Control}
+
+Another important argument is \code{asp}, which allows us to specify the \textbf{aspect ratio}
+<<eval=FALSE>>=
+plot.window(xlim, ylim, xaxs = "i", asp = 1)
+@
+
+\code{asp = 1} means that unit steps in the x and y directions produce equal distances in the x and y directions on the plot.
+(Important to avoid distortion of circles that
+look like ellipses)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Axes}
+
+The \code{axis()} function can be used to draw axes at any of the four sides of a plot.
+\bi
+  \item \code{side=1} below the graph
+  \item \code{side=2} to the left of the graph
+  \item \code{side=3} above the graph
+  \item \code{side=4} to the right of the graph
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Customizing Axes}
+
+Axes can be customized via several arguments (see \code{?axis})
+\bi
+  \item location of tick-marks
+  \item labels of axis
+  \item colors
+  \item sizes
+  \item text fonts
+  \item text orientation 
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Plot Annotation}
+
+The function \code{title()} allows us to include labels in the margins
+\bi
+  \item \code{main} main title above the graph
+  \item \code{sub} subtitle below the graph
+  \item \code{xlab} label for the x-axis
+  \item \code{ylab} label for the y-axis
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Customizing Annotations}
+
+The annotations can be customized with additional arguments for the fonts, colors, and size (expansion)
+\bi
+  \item \code{font.main, col.main, cex.main} 
+  \item \code{font.sub, col.sub, cex.sub}
+  \item \code{font.lab, col.lab, cex.lab}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Arrows}
+
+Arrows can be drawn with the function:
+\begin{verbatim}
+arrows(x0, y0, x1, y1, code = int, 
+       length = num, angle = num)
+\end{verbatim}
+
+\bi
+  \item The \code{x0, y0, x1, y1} arguments give the start and end coordinates.
+  \item \code{code=1} head at the start, \code{code=2} head at the end, \code{code=3} head at both ends
+  \item \code{length} of the arrow head and \code{angle} to the shaft
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Arrows}
+<<arrows, eval=FALSE>>=
+plot.new()
+plot.window(xlim = c(0, 1), ylim = c(0, 1))
+arrows(.05, .075, .45, .9, code = 1)
+arrows(.55, .9, .95, .075, code = 2)
+arrows(.1, 0, .9, 0, code = 3)
+text(.5, 1, "A", cex = 1.5)
+text(0, 0, "B", cex = 1.5)
+text(1, 0, "C", cex = 1.5)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Arrows}
+<<arrows, size='scriptsize', fig.width=5, fig.height=5, out.width='.8\\linewidth', out.height='.8\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Rectangles}
+
+Rectangles can be drawn with the function:
+\begin{verbatim}
+rect(x0, y0, x1, y1, col = str, border = str)
+\end{verbatim}
+
+\bi
+  \item \code{x0, y0, x1, y1} give the coordinates of diagonally opposite corners of the rectangles.
+  \item \code{col} specifies the color of the interior.
+  \item \code{border} specifies the color of the border.
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Rectangles}
+<<rectangles, eval=FALSE>>=
+# barplot manually constructed
+plot.new()
+plot.window(xlim = c(0, 5), ylim = c(0, 10))
+rect(0:4, 0, 1:5, c(7, 8, 4, 3), 
+     col = "turquoise",
+     border = "white")
+axis(1)
+axis(2, las = 1)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Drawing Rectangles}
+<<rectangles, size='scriptsize', fig.width=5, fig.height=5, out.width='.8\\linewidth', out.height='.8\\linewidth', fig.align='center', echo=FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Plot Regions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Anatomy of Plot Frame and Region}
+\begin{center}
+\ig[width=6cm]{images/plot_region.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adjusting the Margins}
+
+Margins can be adjusted with the \code{par()} function in various ways:
+\bi
+  \item In inches: \code{par(mai = c(2, 2, 1, 1))}
+  \item In lines of text: \code{par(mar = c(4, 4, 2, 2))}
+  \item Width and Height in inches: \code{par(pin = c(5, 4))}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{One more scatter plot}
+<<margins_plot, eval = FALSE>>=
+# simple scatter-plot
+op <- par(mar = c(5, 4, 3, 1))
+plot(mtcars$mpg, mtcars$hp, type = "n", 
+     xlab = "miles per gallon", ylab = "horsepower")
+# grid lines
+abline(v = seq(from = 10, to = 30, by = 5), col = 'gray')
+abline(h = seq(from = 50, to = 300, by = 50), col = ' gray')
+# points
+points(mtcars$mpg, mtcars$hp, pch = 19, col = "blue")
+# text (point labels)
+text(mtcars$mpg, mtcars$hp, labels = rownames(mtcars),
+     pos = 4, col = "gray50")
+# title
+title("Miles Per Galon -vs- Horsepower")
+# reset graphical margins
+par(op)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+<<margins_plot, fig.width=7, fig.height=5.5, out.width='.8\\linewidth', out.height='.7\\linewidth', fig.align='center', echo = FALSE>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

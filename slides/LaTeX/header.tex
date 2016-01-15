@@ -1,0 +1,113 @@
+% get rid of junk
+\usetheme{default}
+\usefonttheme[onlymath]{serif}
+\beamertemplatenavigationsymbolsempty
+\hypersetup{pdfpagemode=UseNone} % don't show bookmarks on initial view
+
+% named colors
+\definecolor{offwhite}{RGB}{255,250,240}
+\definecolor{gray}{RGB}{155,155,155}
+
+\ifx\notescolors\undefined % slides
+
+  \definecolor{foreground}{RGB}{80,80,80}
+  \definecolor{background}{RGB}{255,255,255}
+  \definecolor{title}{RGB}{255,199,0}
+  \definecolor{subtitle}{RGB}{89,132,212}
+  \definecolor{hilit}{RGB}{248,117,79}
+  \definecolor{vhilit}{RGB}{255,111,207}
+  \definecolor{lolit}{RGB}{200,200,200}
+  \definecolor{lit}{RGB}{255,199,0}
+  \definecolor{mdlit}{RGB}{89,132,212}
+  \definecolor{link}{RGB}{248,117,79}
+
+\else % notes
+  \definecolor{background}{RGB}{255,255,255}
+  \definecolor{foreground}{RGB}{24,24,24}
+  \definecolor{title}{RGB}{27,94,134}
+  \definecolor{subtitle}{RGB}{22,175,124}
+  \definecolor{hilit}{RGB}{122,0,128}
+  \definecolor{vhilit}{RGB}{255,0,128}
+  \definecolor{lolit}{RGB}{95,95,95}
+\fi
+\definecolor{nhilit}{RGB}{128,0,128}  % hilit color in notes
+\definecolor{nvhilit}{RGB}{255,0,128} % vhilit for notes
+
+\newcommand{\hilit}{\color{hilit}}
+\newcommand{\vhilit}{\color{vhilit}}
+\newcommand{\nhilit}{\color{nhilit}}
+\newcommand{\nvhilit}{\color{nvhilit}}
+\newcommand{\lit}{\color{lit}}
+\newcommand{\mdlit}{\color{mdlit}}
+\newcommand{\lolit}{\color{lolit}}
+
+% use those colors
+\setbeamercolor{titlelike}{fg=title}
+\setbeamercolor{subtitle}{fg=subtitle}
+\setbeamercolor{frametitle}{fg=gray}
+\setbeamercolor{structure}{fg=subtitle}
+\setbeamercolor{institute}{fg=lolit}
+\setbeamercolor{normal text}{fg=foreground,bg=background}
+%\setbeamercolor{item}{fg=foreground} % color of bullets
+%\setbeamercolor{subitem}{fg=hilit}
+%\setbeamercolor{itemize/enumerate subbody}{fg=lolit}
+\setbeamertemplate{itemize subitem}{{\textendash}}
+\setbeamerfont{itemize/enumerate subbody}{size=\footnotesize}
+\setbeamerfont{itemize/enumerate subitem}{size=\footnotesize}
+
+% center title of slides
+\setbeamertemplate{blocks}[rounded]
+\setbeamertemplate{frametitle}[default][center]
+% margins
+\setbeamersize{text margin left=25pt,text margin right=25pt}
+
+% page number
+\setbeamertemplate{footline}{%
+    \raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[20pt]{\lolit
+          \scriptsize\insertframenumber}}}\hspace*{5pt}}
+
+% add a bit of space at the top of the notes page
+\addtobeamertemplate{note page}{\setlength{\parskip}{12pt}}
+
+% default link color
+\hypersetup{colorlinks, urlcolor={link}}
+
+\ifx\notescolors\undefined % slides
+  % set up listing environment
+  \lstset{language=bash,
+          basicstyle=\ttfamily\scriptsize,
+          frame=single,
+          commentstyle=,
+          backgroundcolor=\color{darkgray},
+          showspaces=false,
+          showstringspaces=false
+          }
+\else % notes
+  \lstset{language=bash,
+          basicstyle=\ttfamily\scriptsize,
+          frame=single,
+          commentstyle=,
+          backgroundcolor=\color{offwhite},
+          showspaces=false,
+          showstringspaces=false
+          }
+\fi
+
+% a few macros
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\hicode}[1]{{\hilit \texttt{#1}}}
+\newcommand{\bb}[1]{\begin{block}{#1}}
+\newcommand{\eb}{\end{block}}
+\newcommand{\bi}{\begin{itemize}}
+%\newcommand{\bbi}{\vspace{24pt} \begin{itemize} \itemsep8pt}
+\newcommand{\bbi}{\vspace{4pt} \begin{itemize} \itemsep8pt}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bv}{\begin{verbatim}}
+\newcommand{\ev}{\end{verbatim}}
+\newcommand{\ig}{\includegraphics}
+\newcommand{\subt}[1]{{\footnotesize \color{subtitle} {#1}}}
+\newcommand{\ttsm}{\tt \small}
+\newcommand{\ttfn}{\tt \footnotesize}
+\newcommand{\figh}[2]{\centerline{\includegraphics[height=#2\textheight]{#1}}}
+\newcommand{\figw}[2]{\centerline{\includegraphics[width=#2\textwidth]{#1}}}
+

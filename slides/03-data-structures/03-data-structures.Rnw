@@ -1,0 +1,1131 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Data Structures}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Types and Structures}
+
+To make the best of the R language, you'll need a strong understanding of the basic \textbf{data types} and \textbf{data structures} and how to operate on them.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Structures}
+
+There are various data structures in R (we'll describe them in detail later):
+
+\bi
+  \item vectors
+  \item matrices (2d arrays)
+  \item arrays (in general)
+  \item factors
+  \item lists
+  \item data frames
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Vectors}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Vectors}
+
+\bi
+  \item A vector is the most basic data structure in R
+  \item Vectors are contiguous cells containing data
+  \item Can be of any length (including zero)
+  \item R has five basic type of vectors: \\
+  integer, double, complex, logical, character
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectors}
+
+The most simple type of vectors are scalars or single values:
+<<eval = FALSE>>=
+# integer
+x <- 1L
+# double (real)
+y <- 5
+# complex
+z <- 3 + 5i
+# logical
+a <- TRUE
+# character
+b <- "yosemite"
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data modes}
+
+\bi
+  \item A \textbf{double} vector stores regular (i.e. real) numbers
+  \item An \textbf{integer} vector stores integers (no decimal component)
+  \item A \textbf{character} vector stores text
+  \item A \textbf{logical} vector stores \code{TRUE}'s and \code{FALSE}'s values
+  \item A \textbf{complex} vector stores complex numbers
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Types (or modes)}
+
+\begin{center}
+ \begin{tabular}{l l l l}
+  \hline
+   value & example & mode & storage \\
+  \hline
+  integer & \code{1L, 2L} & \code{numeric} & \code{integer} \\  
+  real & \code{1, -0.5} & \code{numeric} & \code{double} \\
+  complex & \code{3 + 5i} & \code{complex} & \code{complex} \\
+  logical & \code{TRUE, FALSE} & \code{logical} & \code{logical} \\
+  character & \code{"hello"} & \code{character} & \code{character}  \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Special Values}
+
+There are some special values 
+\bi
+  \item \code{NULL} is the null object (it has length zero)
+  \item Missing values are referred to by the symbol \code{NA}
+  \item \code{Inf} indicates positive infinite
+  \item \code{-Inf} indicates negative infinite
+  \item \code{NaN} indicates Not a Number
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectors}
+
+The function to create a vector from individual values is {\hilit \code{c()}}, short for \textbf{concatenate}:
+
+<<>>=
+# some vectors
+x <- c(1, 2, 3, 4, 5)
+
+y <- c("one", "two", "three")
+
+z <- c(TRUE, FALSE, FALSE)
+@
+Separate each element by a comma
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Atomic Vectors}
+
+\bi
+  \item vectors are \textbf{atomic} structures
+  \item the values in a vector must be ALL of the same type 
+  \item either all integers, or reals, or complex, or characters, or logicals
+  \item you cannot have a vector of different data types
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Atomic Vectors}
+
+If you mix different data values, R will \textbf{implicitly} coerce them so they are all of the same type
+<<>>=
+# mixing numbers and characters
+x <- c(1, 2, 3, "four", "five")
+x
+# mixing numbers and logical values
+y <- c(TRUE, FALSE, 3, 4)
+y
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Atomic Vectors}
+
+<<>>=
+# mixing numbers and logical values
+z <- c(TRUE, FALSE, "TRUE", "FALSE")
+z
+# mixing integer, real, and complex numbers
+w <- c(1L, -0.5, 3 + 5i)
+w
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{How does R coerce data types?}
+
+\bb{R follows two basic rules of implicit coercion}
+If a character is present, R will coerce everything else to characters
+
+\bigskip
+
+If a vector contains logicals and numbers, R will convert the logicals to numbers (\code{TRUE} to 1, \code{FALSE} to 0)
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Coercion functions}
+
+\bb{Coercion Functions}
+R provides a set of \textbf{explicit} coercion functions that allow us to ``convert'' one type of data into another
+\eb
+
+\bi
+  \item \code{as.character()}
+  \item \code{as.numeric()}
+  \item \code{as.logical()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Conversion between types}
+
+\begin{center}
+ \begin{tabular}{l l l l}
+  \hline
+   from & to & function & conversions \\
+  \hline
+  logical & numeric & \code{as.numeric} & \code{FALSE} $\rightarrow 0$ \\
+   & & & \code{TRUE} $\rightarrow 1$ \\
+  logical & character & \code{as.character} & \code{FALSE} $\rightarrow$ \code{"FALSE"} \\
+   & & & \code{TRUE} $\rightarrow$ \code{"TRUE"} \\
+  character & numeric & \code{as.numeric} & \code{"1", "2"} $\rightarrow$ \code{1, 2} \\
+   & & & \code{"A"} $\rightarrow$ \code{NA} \\
+  character & logical & \code{as.logical} & \code{"FALSE"} $\rightarrow$ \code{FALSE} \\
+   & & & \code{"TRUE"} $\rightarrow$ \code{TRUE} \\
+   & & & \textit{other} $\rightarrow$ \code{NA} \\
+   numeric & logical & \code{as.logical} & \code{0} $\rightarrow$ \code{FALSE} \\
+   & & & \textit{other} $\rightarrow$ \code{1} \\
+  numeric & character & \code{as.character} & \code{1, 2} $\rightarrow$ \code{"1", "2"} \\
+
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Properties of Vectors}
+
+\bi
+  \item all vectors have a length
+  \item vector elements can have associated names
+  \item vectors are objects of class \code{"vector"}
+  \item vectors have a mode (storage mode)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Properties of Vectors}
+
+<<>>=
+# vector with named elements
+x <- c(a = 1, b = 2.5, c = 3.7, d = 10)
+x
+length(x)
+mode(x)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Matrices and Arrays}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From Vectors to Arrays}
+
+We can transform a vector in an \textbf{n-dimensional} array by giving it a dimensions attribute \code{dim}
+<<>>=
+# positive: from 1 to 8
+x <- 1:8
+
+# adding 'dim' attribute
+dim(x) <- c(2, 4)
+x
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From Vectors to Arrays}
+
+\bi
+  \item a vector can be given a \code{dim} attribute
+  \item a \code{dim} attribute is a numeric vector of length \code{n}
+  \item R will reorganize the elements of the vector into \code{n} dimensions
+  \item each dimension will have as many rows (or columns, etc.) as the \code{n}-th value of the \code{dim} vector
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From Vectors to Arrays}
+
+<<>>=
+# dim attribute with 3 dimensions
+dim(x) <- c(2, 2, 2)
+x
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From Vector to Matrix}
+
+A \code{dim} attribute of length 2 will convert a vector into a matrix
+<<>>=
+# vector to matrix
+A <- 1:8
+class(A)
+
+dim(A) <- c(2, 4)
+class(A)
+@
+
+When using \code{dim()}, R always fills up each matrix by rows.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From Vector to Matrix}
+
+To have more control about how a matrix is filled, (by rows or columns), we use the \code{matrix()} function:
+<<>>=
+# vector to matrix (by rows)
+A <- 1:8
+
+matrix(A, nrow = 2, ncol = 4, byrow = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Matrices}
+
+\bi
+  \item Matrices store values in a two-dimensional array
+  \item To create a matrix, give a vector to \code{matrix()} and specify number of rows and columns
+  \item you can also assign row and column names to a matrix
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Matrix}
+
+Exercise: create the following matrix
+<<hp_chars, echo=FALSE>>=
+# vector of names
+hp <- c("Harry", "Potter", "Ron", "Weasley", 
+        "Hermione", "Granger")
+
+# matrix filled up by rows
+matrix(hp, nrow = 3, byrow = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Matrix}
+
+Solution:
+<<hp_chars>>=
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Arrays}
+
+\bi
+  \item Arrays store values in an n-dimensional array
+  \item To create an array, give a vector to \code{array()} and specify number of dimensions
+  \item you can also assign dim-names to an array
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating an Array}
+
+<<size = 'scriptsize'>>=
+ar <- array(c(1:4, 5:8, 9:12), dim = c(2, 2, 3))
+ar
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Factors}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Factors}
+
+\bi 
+  \item A similar structure to vectors are \textbf{factors}
+  \item factors are used for handling categorical (i.e. qualitative) data
+  \item they are represented as objects of class \code{"factor"}
+  \item internally, factors are stored as integers
+  \item factors behave much like vectors (but they are not vectors)
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Factors}
+
+To create a factor we use the function {\hilit \code{factor()}}
+<<>>=
+# factor
+cols <- c("blue", "red", "blue", "gray", "red")
+cols <- factor(cols)
+cols
+@
+
+The different values in a factor are called \textbf{levels}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{So far ...}
+
+\bi 
+  \item Vectors, matrices, and arrays are atomic structures (they can only store one type of data)
+  \item Many operations in R need atomic structures to make sure all values are of the same mode
+  \item In real life, however, many datasets contain multiple types of information
+  \item R provides other data structures to store different types of data
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Lists}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Lists}
+
+\bi 
+  \item Lists are the most general class of data container
+  \item Like vectors, lists group data into a one-dimensional set
+  \item Unlike vectors, lists can store all kinds of objects
+  \item Lists can be of any length
+  \item Elements of a list can be named, or not
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Lists}
+
+To create a list we use the function {\hilit \code{list()}}. The \code{list()} function creates a list the same way \code{c()} creates a vector:
+<<>>=
+lfriends <- list("Harry", "Ron", "Hermione")
+lfriends
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Lists}
+
+Lists can contain any type of data object (even other lists):
+<<eval=FALSE>>=
+lst <- list(
+  c("Harry", "Ron", "Hermione"),
+  matrix(1:6, nrow = 2, ncol = 3),
+  factor(c("yes", "no", "no", "no", "yes")),
+  lfriends
+)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Lists}
+
+Elements in a list can be named:
+<<eval=FALSE>>=
+list(
+  first = c("Harry", "Ron", "Hermione"),
+  second = matrix(1:6, nrow = 2, ncol = 3),
+  third = factor(c("yes", "no", "no", "no", "yes")),
+  fourth = lfriends
+)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a List}
+
+Exercise: create a list with your first name, middle name, and last name
+<<echo=FALSE>>=
+list(
+  first = "Gaston",
+  middle = NULL,
+  last = "Sanchez"
+)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Data Frames}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Frames}
+
+\bb{Data Frame}
+A {\hilit \code{data.frame}} is the primary data structure that R provides for handling tabular data sets (e.g. spreadsheet like).
+\eb
+
+\bb{Function \code{data.frame()}}
+The {\hilit \code{data.frame()}} function allows us to create data frames 
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Lists}
+
+\bi 
+  \item Data frames are the two-dimensional version of a list
+  \item They are the conventional data storage structure for data analysis
+  \item A data frame is displayed like a table (or matrix)
+  \item A data frame is stored as a list
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Data Frame}
+
+<<eval = TRUE>>=
+# creating a data frame (manually)
+elements <- data.frame(
+  name = c('hydrogen', 'nitrogen', 'oxygen'),  
+  symbol = c('H', 'N', 'O'),
+  number = c(1, 7, 8)
+)
+
+elements
+@
+
+(vectors defined inside the data frame function)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Creating a Data Frame}
+
+\bi 
+  \item Give \code{data.frame()} any number of vectors, each separated with a comma
+  \item Each vector should be set equal to a name that describes the vector
+  \item \code{data.frame()} will turn each vector into a column of the new data frame
+  \item All vectors should be of the same length
+  \item By default, \code{data.frame()} converts strings into factors
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Data Frame}
+
+Create the following data frame:
+<<states_df, echo = FALSE>>=
+states <- data.frame(
+  state = c('California', 'New York', 'Texas'),  
+  abbreviation = c('CA', 'NY', 'TX'),
+  capital = c('Sacramento', 'Albany', 'Austin'),
+  area = c(163707, 54475, 268601),
+  stringsAsFactors = FALSE
+)
+
+states
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Data Frame}
+
+Solution:
+<<states_df>>=
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{R common data structures}
+\begin{center}
+\ig[width=8cm]{images/data_structures.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Selecting Values}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Selecting Values}
+Data manipulation requires you to learn how to select and retrieve values from each of the data structures
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Notation System}
+
+\bb{Notation system to extract values from R objects}
+\bbi
+  \item to extract values use brackets: \code{[ ]}
+  \item inside the brackets specify indices
+  \item use as many indices as dimensions in the object
+  \item each index is separated by comma
+  \item indices can be numbers, logicals, or names
+\ei
+\eb
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Values of Vectors}
+
+<<>>=
+# some vector
+vec <- 1:5
+
+# adding names
+names(vec) <- letters[1:5]
+
+vec
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with numbers}
+
+<<>>=
+# first element 
+vec[1]
+
+# third element
+vec[3]
+
+# fifth element
+vec[5]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with positive vectors}
+
+<<>>=
+# range 1 to 3
+vec[1:3]
+
+# vector of positive numbers
+vec[c(1, 3, 4)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with negative numbers}
+
+<<>>=
+# all values except the first one
+vec[-1]
+
+# all values except 2nd and 4th
+vec[-c(2, 4)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with logicals}
+
+<<>>=
+# first element
+vec[c(TRUE, FALSE, FALSE, FALSE, FALSE)]
+
+# 4th and 5th elements
+vec[c(FALSE, FALSE, FALSE, TRUE, TRUE)]
+
+# logical negation (2nd and 4th)
+vec[!c(TRUE, FALSE, TRUE, FALSE, TRUE)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with names}
+
+Since \code{vec} has names, we can use characters to extract named values
+<<>>=
+# element 'a'
+vec['a']
+
+# elements 'b' and 'e'
+vec[c('b', 'e')]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with names}
+
+You can use repeated indices:
+<<>>=
+# element 2 (3-times)
+vec[c(2, 2, 2)]
+
+# element 'a' (four times)
+vec[c('a', 'a', 'a', 'a')]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+<<>>=
+states
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+Extracting a single cell
+<<>>=
+# value in row 1, and column 1
+states[1,1]
+
+# value in row 3, and column 3
+states[3,3]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+To extract just rows, leave the column index empty
+<<>>=
+# values in row 1
+states[1, ]
+
+# values in rows 1 to 2
+states[1:2, ]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+To extract just columns, leave the row index empty
+<<>>=
+# values in column 1
+states[ , 1]
+
+# values in columns 2 to 4
+states[ , 2:4]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+Extracting rows with negative indices
+<<>>=
+# excluding 3rd row
+states[-3, ]
+
+# excluding 1st and 3rd row
+states[-c(1, 3), ]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+Extracting columns with negative indices
+<<>>=
+# excluding 2nd column
+states[ , -2]
+
+# excluding 1st and 2dn columns
+states[ , -c(1, 2)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+You can use repetition of indices
+<<>>=
+# values in column 1
+states[ , c(1, 1)]
+
+# values in columns 2 to 4
+states[c(2, 2, 3), ]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+Extracting values with logicals
+<<>>=
+# exclude 3rd row
+states[c(TRUE, TRUE, FALSE), ]
+
+# exclude 3rd column
+states[  , c(TRUE, TRUE, FALSE, TRUE)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+Extracting columns by name
+<<>>=
+# column 'state'
+states[ , 'state']
+
+# columns 'state' and 'abbreviation'
+states[ , c('state', 'abbreviation')]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+When you select one column from a two-dimensional array, R will return a vector. To get a column output, use the argument \code{drop = FALSE}
+<<>>=
+# columns 'state' and 'abbreviation'
+states[ , 1, drop = FALSE]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Dollar signs and Double Brackets}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Dollar signs}
+
+R lists and data frames obey an optional second system of notation for extracting values: using the dollar sign {\hilit \code{\$}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dollar signs with data frames}
+
+The dollar sign \code{\$} notation works for selecting a column of a data frame using its name
+<<>>=
+states$state
+states$abbreviation
+states$capital
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dollar signs with data frames}
+
+You don't need to use quote marks, but you can if you want
+<<>>=
+states$'state'
+states$"abbreviation"
+states$`capital`
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dollar signs with lists}
+
+Elements in a named list can also be extracted with the dollar sign:
+<<>>=
+lst <- list(numbers = 1:3, letter = c('A', 'B', 'C'))
+
+lst$numbers
+lst$letters
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Double brackets}
+
+In addition, lists (and data frames) accept a third type of notation that uses double brackets: \code{[[ ]]}
+<<>>=
+lst[[1]]
+lst[[2]]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Double brackets}
+
+Double brackets are used when we want to get access to the individual elements; use double brackets followed by single brackets
+<<>>=
+lst[[2]]
+lst[[2]][3]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Elements-Extraction Notation System}
+
+\begin{center}
+ \begin{tabular}{l l l}
+  \hline
+   object & notation & example \\
+  \hline
+  vector & \code{[ ]} & \code{v[1:5]} \\  
+  factor & \code{[ ]} & \code{g[1:5]} \\  
+  matrix & \code{[ , ]} & \code{m[1:5, 1:3]} \\  
+  array & \code{[ , , ]} & \code{arr[1, 2, 3]} \\  
+        & \code{[ , , , ]} & \code{arr[1, 2, 3, 4]} \\  
+  list & \code{[ ]} & \code{lst[3]} \\
+       & \code{[[ ]]} & \code{lst[[3]]} \\
+       & \code{\$} & \code{lst\$name} \\
+  data frame & \code{[ , ]} & \code{df[1, 2]} \\
+             & \code{\$} & \code{df\$name} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

@@ -1,0 +1,578 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Command Line - Part 2}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat}{\tt \scriptsize \color{foreground} github.com/gastonstat}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Standard Input and Output}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{}
+
+\begin{center}
+\Large{Many commands accept {\hilit input} \\ 
+and produce {\mdlit output}}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Input}
+
+Input can come from:
+\bbi
+  \item the keyboard (a.k.a. \textbf{standard input})
+  \item other files
+  \item other commands
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Output}
+
+Output can be:
+\bbi
+  \item printed on screen 
+  \bi
+    \item the command's results (a.k.a. \textbf{standard output})
+    \item the status and error messages (a.k.a. \textbf{standard error})
+  \ei
+  \item written to files
+  \item sent to other commands
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Output of commands}
+
+\bi
+  \item Consider the command \code{ls}
+  \item \code{ls} sends the results to a special file called: \textit{standard output} or \textbf{stdout}
+  \item \code{ls} sends status messages to another file called \textit{standard error} or \textbf{stderr}
+  \item By default both \textit{stdout} and \textit{stderr} are linked to the screen and not saved into a disk file
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{SI and SO}
+
+\bbi
+  \item The ``standard input'' is usually your keyboard
+  \item The ``standard output'' is usually your terminal (monitor)
+  \item But we can also redirect inputs and outputs
+  \item I/O redirection allows us to change where output goes and where input comes from
+  \item I/O redirection is done via the {\hilit \code{>}} redirection operator
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Redirection Operator \code{>}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The \code{>} operator}
+
+We can tell the shell to send the output of the \code{ls} command to the file \code{ls-output.txt}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+ls -l ~/Documents > ls-output.txt
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The \code{>>} operator}
+
+We can tell the shell to send the output of the \code{ls} command and append it to the file \code{ls-output.txt}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+ls -l ~/Desktop >> ls-output.txt
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The contents in Desktop are appended to the file \code{ls-output.txt}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Redirection}
+
+\bbi
+  \item[] {\hilit \code{>}} redirects STDOUT to a file
+  \item[] {\hilit \code{<}} redirects STDIN from a file
+  \item[] {\hilit \code{>>}} redirects STDOUT to a file, but appends rather than overwrites
+  \item[] There is also {\hilit \code{<<}} but its use is more advanced than what we'll cover
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About Redirection}
+
+\bbi
+  \item Many times it is useful to send the output of a program to a file rather than to the screen
+  \item Redirecting output to files is very common when extracting and combining data (think of merge!)
+  \item Think of the redirection operator \code{">"} as an arrow that is pointing to where the output should go
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Joining files with \code{cat}}
+
+We can use {\hilit \code{cat}} and {\hilit \code{>}} to join two or more files:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# remember the files from HW5?}
+\hlcom{# (nflweather1960s.csv, ..., nflweather2010s.csv)}
+ls nflweather*s.csv
+
+\hlcom{# joining all the decades files in one single file}
+cat nflweather*s.csv > allnfl.csv
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+{\footnotesize The only issue here is that you would have appended column names}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Joining files with \code{cat}}
+
+Think about all the steps you would need to join the nfl-weather files without using the command line:
+\bi
+  \item You would have to open each file
+  \item Open a new file \code{allnfl.csv}
+  \item Start copy-pasting each adtaset into \code{allnfl.csv}
+  \item Close all the decades files
+  \item Save and close \code{allnfl.csv}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Redirection with pipes}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Redirection}
+
+\bbi
+  \item The idea behind pipes is that rather than redirecting output to a file, we redirect it into another command
+  \item STDOUT of one command is used as STDIN to another command
+  \item We can redirect inputs and outputs
+  \item Redirection is done via the {\hilit \code{|}} pipe operator
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Pipe example}
+
+Let's say you want to count the number of \code{.csv} files in a specfic directory:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# list csv files (one per line)}
+\hlstd{ls} \hlopt{-}\hlnum{1} \hlopt{*}\hlstd{.csv}
+
+\hlcom{# piping to count lines with 'wc -l'}
+\hlcom{# (how many lines)}
+\hlstd{ls} \hlopt{-}\hlnum{1} \hlopt{*}\hlstd{.csv} \hlopt{|} \hlstd{wc} \hlopt{-}\hlstd{l}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The output of \code{ls -1} is piped to \code{wc -l}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Pipe example}
+
+Let's say you want to inspect the contents of \code{/usr/bin}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# long list of contents}
+\hlstd{ls} \hlopt{/}\hlstd{usr}\hlopt{/}\hlstd{bin}
+
+\hlcom{# using 'less' as a pager to see all the contents}
+\hlstd{ls} \hlopt{/}\hlstd{usr}\hlopt{/}\hlstd{bin} \hlopt{|} \hlstd{less}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The output of \code{ls} is piped to \code{less}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Command \code{grep}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Regular Expressions with \code{grep}}
+
+\bbi
+  \item We can work with some regular expressions in the command line
+  \item For that purpose we use the command {\hilit \code{grep}}
+  \item \code{grep} can be very helpful for extracting particular rows from a file
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{grep} example}
+
+Consider the data \code{nflweather.csv}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# rows containing Oakland (Raiders)}
+grep \hlstr{'Oakland'} nflweather.csv
+
+\hlcom{# rows from 2013}
+grep \hlstr{'2013'} nflweather.csv
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{grep} example}
+
+Consider the raw data \code{weather\_20131231.csv}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# how many games in 2013}
+grep \hlstr{'2013'} weather_20131231.csv | wc -l
+
+\hlcom{# how many games in October 2013}
+grep \hlstr{'10/[0-9]*/2013'} weather_20131231.csv | wc -l
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Command \code{curl}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Command \code{curl}}
+
+\bbi
+  \item {\hilit \code{curl}} allows you to retrieve content from the Web
+  \item \code{curl} stands for ``see URL''
+  \item It access Internet files on your behalf, downling the content without any need of a browser window
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{curl} example}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# get the content of a URL}
+curl \hlstr{"http://www.stat.berkeley.edu/~nolan/data/stat133/Saratoga.txt"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{curl} example}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# get the content of a URL and save it to a file}
+curl \hlstr{"http://www.stat.berkeley.edu/~nolan/data/stat133/Saratoga.txt"} 
+-o saratoga.txt
+
+
+\hlcom{# equivalently}
+curl \hlstr{"http://www.stat.berkeley.edu/~nolan/data/stat133/Saratoga.txt"} 
+> saratoga.txt
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Overview}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{What good is it?}
+
+\bbi
+  \item Do I really need to learn these commands?
+  \item The GUI file finder can do most of what we've seen (e.g. \code{ls}, \code{cd}, \code{mkdir}, \code{rmdir})
+  \item Maybe it can't do what \code{cut} can do, but so what?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Advantages of shell commands}
+
+\bbi
+  \item Shell commands gives us a programatic way to work with files and processes
+  \item They allow you to \textbf{record} what you did
+  \item They allow you to repeat it another time
+  \item Volumne: Have many many operations to perform
+  \item Speed: need to perform things quickly
+  \item Less error prone: want to reduce mistakes
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Command \code{cut}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Command \code{cut}}
+
+\bbi
+  \item {\hilit \code{cut}} is most often used to extract columns of data from a field-delimited file
+  \item They allow you to \textbf{record} what you did
+  \item They allow you to repeat it another time
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{cut} example}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# 2nd column of a tab-separated file}
+cut -f 2 starwarstoy.tsv
+
+
+\hlcom{# 2nd column of a comma-separated file}
+cut -f 2 -d \hlstr{","} starwarstoy.csv
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{cut} example}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# columns 2-4 of a tab-separated file}
+cut -f 2-4 starwarstoy.tsv
+
+
+\hlcom{# columns 4-6 of a comma-separated file}
+cut -f 4-6 -d \hlstr{","} starwarstoy.csv
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{cut} example}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# columns 2-3 of first 10 rows in nflweather}
+head -n 10 nflweather.csv | cut -f 2-4 
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+
+
+\end{document}

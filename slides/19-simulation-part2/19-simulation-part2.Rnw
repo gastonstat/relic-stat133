@@ -1,0 +1,1140 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Simulation - part 2}
+\subtitle{Stat 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat}{\tt \scriptsize \color{foreground} github.com/gastonstat}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Random Numbers in R}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Generating Random Numbers}
+
+\Large Generation of random numbers is at the heart of many statistical methods
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Use of Random Numbers}
+
+\bb{Some uses of random numbers}
+\bbi
+  \item Sampling procedures
+  \item Simulation studies of stochastic processes
+  \item Analytically intractable mathematical expressions
+  \item Simulation of a population distribution by resampling from a given sample from that population
+  \item More general: Simulation, Monte Carlo, Resampling
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Random Samples}
+
+\bi
+  \item Many statistical methods rely on random samples:
+  \bi
+    \item Sampling techniques
+    \item Design of experiments
+    \item Surveys
+  \ei
+  \item Hence, we need a source of random numbers
+  \item Before computers, statisticians used \textit{tables of random numbers}
+  \item Now we use computers to generate ``random'' numbers
+  \item The random sampling required in most analyses is usually done by the computer
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Generating Random Numbers}
+
+\bbi
+  \item We cannot generate truly random numbers on a computer
+  \item Instead, we generate \textbf{pseudo-random} numbers
+  \item i.e. numbers that have the appearance of random numbers
+  \item they \textit{seem} to be randomly drawn from some known distribution
+  \item There are many methods that have been proposed to generate pseudo-random numbers
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Generating Random Numbers}
+
+\Large A very important advantage of using pseudo-random numbers is that, because they are deterministic, they can be reproduced (i.e. repeated)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Multiple Recursion}
+
+\bbi
+  \item Generate a sequence of numbers in a manner that appears to be random
+  \item Use a deterministic generator that yields numbers recursively (in a fixed sequence)
+  \item The previous $k$ numbers determine the next one
+\ei
+$$
+x_i = f(x_{i-1}, \dots, x_{i-k})
+$$
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Simple Congruential Generator}
+
+\bi
+  \item Congruential generators were the first reasonable class of pseudo-random number generators
+  \item The congruential method uses modular arithmetic to generate ``random'' numbers
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Ingredients}
+
+\bi
+  \item An integer $m$
+  \item An integer $a$ such that $a < m$
+  \item A starting integer $x_0$ (a.k.a. \textit{seed})
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simple Congruential Generator}
+
+The first number is obtained as: \\
+$
+x_{1} = (a \times x_{0}) \text{ mod } m
+$
+
+\bigskip
+The rest of the pseudorandom numbers are generated as:\\
+$
+x_{n+1} = (a \times x_{n}) \text{ mod } m
+$
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simple Congruential Generator}
+
+For example if we take $m = 64$, and $a = 3$, then for $x_0 = 17$ we have:
+
+\begin{align*} 
+x_1 &= (3 \times 17) \text{ mod } 64 = 51 \\ 
+x_2 &= (3 \times 51) \text{ mod } 64 = 25 \\
+x_3 &= (3 \times 25) \text{ mod } 64 = 11 \\
+x_4 &= (3 \times 11) \text{ mod } 64 = 33 \\ 
+x_5 &= (3 \times 33) \text{ mod } 64 = 35 \\
+x_6 &= (3 \times 35) \text{ mod } 64 = 41 \\
+\vdots \\
+\end{align*}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Congruential algorithm}
+
+<<>>=
+a <- 3;  m <- 64;  seed <- 17
+
+x <- numeric(20)
+
+x[1] <- (a * seed) %% m
+
+for (i in 2:20) {
+  x[i] <- (a * x[i-1]) %% m
+}
+
+x[1:16]; x[17:20]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Congruential algorithm}
+<<>>=
+cong <- function(n, a = 69069, m = 2^32, seed = 17) {
+  x <- numeric(n)
+  x[1] <- (a * seed) %% m
+  for (i in 2:n) {
+    x[i] <- (a * x[i-1]) %% m
+  }
+  x
+}
+
+y <- cong(20, a = 3, m = 64, seed = 17)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Congruential algorithm}
+<<echo = c(3), fig.width=4, fig.height=4, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center', size='tiny'>>=
+n <- length(y)
+op <- par(mar = c(4, 4, 1, 1))
+plot(y[1:(n-1)], y[2:n], pch = 19,
+     xlab = 'current value', ylab = 'next value')
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+
+\code{cong(n, a = 69069, m = 2\string^32, seed = 17)}
+<<echo = FALSE, fig.width=6, fig.height=5, out.width='.8\\linewidth', out.height='.65\\linewidth', fig.align='center'>>=
+op <- par(mar = c(4, 4, 1, 1))
+y <- cong(500, a = 69069, m = 2^32, seed = 17)
+n <- length(y)
+plot(y[1:(n-1)], y[2:n], xlab = 'current value', 
+     ylab = 'next value', pch = 19, col = '#77777799')
+par(op)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Ingredients}
+
+\bi
+  \item $m$ is the modulus ($0 < m$)
+  \item $a$ is the multiplier ($0 < a < m$)
+  \item $x_0$ is the seed ($0 \leq x_0 \leq m$)
+\ei
+
+\bigskip
+The period length of a Random Generator Number is at most $m$, and for some choices of $a$ much less than that.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About the seed}
+
+\bi
+  \item You can reproduce your simulation results by controlling the seed
+  \item {\hilit \code{set.seed()}} allows to do this
+  \item Every time you perform simulation studies indicate the random number generator and the seed that was used
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About the seed}
+
+<<>>=
+# set the seed
+set.seed(69069)
+
+runif(3)  # call the uniform RNG
+
+runif(3)  # call runif() again
+
+# set the seed back to 69069
+set.seed(69069)
+runif(3)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Simple Congruential Generator}
+
+We can use a congruential algorithm to generate uniform numbers
+
+\bigskip
+We'll describe one of the simplest methods for simulating independent uniform random variables on the interaval [0, 1]
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Generating Uniform Numbers}
+
+The generator proceeds as follows
+\begin{align*} 
+x_1 &= (a x_0) \text{ mod } m \\
+u_1 &= x_1 / m \\
+\end{align*}
+
+$u_1$ is the first pseudo-random number, taking some value between 0 and 1.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Ingredients}
+
+The second pseudorandom number is obtained as:
+\begin{align*} 
+x_2 &= (a x_1) \text{ mod } m \\
+u_2 &= x_2 / m \\
+\end{align*}
+
+$u_2$ is another pseudorandom number.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Generating Uniform Numbers}
+
+\bi
+  \item If $m$ and $a$ are chosen properly, it is difficult to predict the value $u_2$ given $u_1$
+  \item For most practical purposes $u_2$ is approximately independent of $u_1$
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simple Congruential Generator}
+
+For example if we take $m = 7$, and $a = 3$, then for $x_0 = 2$ we have:
+
+\begin{align*} 
+x_1 &= (3 \times 2) \text{ mod } 7 = 6, \quad u_1 = 0.857 \\ 
+x_2 &= (3 \times 6) \text{ mod } 7 = 4, \quad u_2 = 0.571 \\
+x_3 &= (3 \times 4) \text{ mod } 7 = 5, \quad u_3 = 0.714 \\
+x_4 &= (3 \times 5) \text{ mod } 7 = 1, \quad u_4 = 0.143 \\ 
+x_5 &= (3 \times 1) \text{ mod } 7 = 3, \quad u_5 = 0.429 \\
+x_6 &= (3 \times 3) \text{ mod } 7 = 2, \quad u_6 = 0.286 \\
+\vdots \\
+\end{align*}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Random Numbers in R}
+
+\bb{R uses a pseudo random number generator}
+\bi
+  \item It starts with a \textbf{seed} and an \textbf{algorithm} (i.e. function)
+  \item The seed is plugged into the algorithm and a number is returned
+  \item That number is then plugged into the algorithm and the next number is created
+  \item The algorithm is such that the produced numbers behave like random numbers
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{RNG functions in R}
+
+\begin{center}
+ \begin{tabular}{l l}
+ \hline
+  Function & Description \\
+  \hline
+  \code{runif()} & Uniform \\  
+  \code{rbinom()} & Binomial \\
+  \code{rmultinom()} & Multinomial \\  
+  \code{rnbinom()} & Negative binomial \\  
+  \code{rpois()} & Poisson \\  
+  \code{rnorm()} & Normal \\
+  \code{rbeta()} & Beta \\  
+  \code{rgamma()} & Gamma \\
+  \code{rchisq()} & Chi-squared \\
+  \code{rcauchy()} & Cauchy \\  
+  \hline
+ \end{tabular}
+\end{center}
+
+See more info: \code{?Distributions}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Random Number Functions}
+
+{\hilit \code{runif(n, min = 0, max = 1)}} sample from the uniform distribution on the interval (0,1)
+
+\bigskip
+The chance the value drawn is:
+\bi
+  \item between 0 and 1/3 has chance 1/3
+  \item between 1/3 and 1/2 has chance 1/6
+  \item between 9/10 and 1 has chance 1/10
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Random Number Functions}
+
+{\hilit \code{rnorm(n, mean = 0, sd = 1)}} sample from the normal distribution with center = \code{mean} and spread = \code{sd}
+
+\pause
+\bigskip
+{\hilit \code{rbinom(n, size, prob)}} sample from the binomial distribution with number of trials = \code{size} and chance of success = \code{prob}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{More Simulations}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Simulation Probability examples}
+
+\bb{For instance}
+\bbi
+  \item Simulate flipping a coin
+  \item Simulate rolling a die
+  \item Simulate drawing a card from a deck
+  \item Simulate a probability experiment with balls in an urn
+  \item Simulate the ``Monty Hall Problem''
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Flipping a Coin}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Simulating a Coin}
+
+How to simulate tossing a coin?
+
+\begin{center}
+\ig[width=2cm]{images/flip.jpg}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simulating a coin}
+
+One way to simulate a coin
+<<>>=
+coin <- c("heads", "tails")
+@
+
+\pause
+\bigskip
+One way to simulate flipping a coin
+<<>>=
+sample(coin, size = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Probability}
+
+Probability allows us to quantify statements about the chance of an event taking place
+
+\bigskip
+For example, flip a fair coin
+\bi
+  \item What's the chance it lands heads?
+  \item Flip it 4 times, what proportion of heads do you expect?
+  \item Will you get exactly that proportion?
+  \item What happens when you flip the coin 1000 times?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Simulating a Coin}
+
+\bb{When you flip a coin}
+\bbi
+  \item it may land heads
+  \item it may land tails
+  \item with what probability it lands heads?
+  \item If it is a fair coin: $p = 0.5$
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simulating a Coin}
+
+Tossing a coin can be modeled with a random variable following a Bernoulli distribution:
+\bi
+  \item heads ($X = 1$) with probability $p$
+  \item tails ($X = 0$) with probability $q = 1 - p$
+\ei
+
+\bigskip
+{\footnotesize The Bernoulli distribution is a special case of the Binomial distribution: $B(1, p)$}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simulating tossing a coin}
+
+Tossing a coin simulated with a \textbf{binomial} distribution: 
+<<eval = TRUE>>=
+# binomial distribution generator
+rbinom(n = 1, size = 1, prob = 0.5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Flipping a Coin function}
+
+Function that simulates flipping a coin
+<<>>=
+# flipping coin function
+coin <- function(prob = 0.5) {
+  rbinom(n = 1, size = 1, prob = prob)
+}
+
+coin()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Flipping a Coin function}
+
+It's better if we assign labels
+<<>>=
+# flipping coin function
+coin <- function(prob = 0.5) {
+  out <- rbinom(n = 1, size = 1, prob = prob)
+  ifelse(out, "heads", "tails")
+}
+
+coin()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Flipping a Coin function}
+
+<<>>=
+# 10 flips
+for (i in 1:10) {
+  print(coin())
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{4 Flips}
+
+\bb{In 4 flips}
+\bi
+  \item Possible outputs:
+  \bi
+    \item HHHH, THHH, HTHH, HHTH, HHHT, ...
+  \ei
+  \item we can get 0, 1, 2, 3, 4 heads
+  \item so the proportion of heads can be: 0, 0.25, 0.5, 0.75, 1
+  \item we expect the proportion to be 0.5
+  \item but a proportion of 0.25 is also possible
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{4 Flips}
+
+\bbi
+  \item we can think of the proportion of Heads in 4 flips as a \textbf{statistic} because it summarizes data 
+  \item this proportion is a random quantity: it takes on 5 possible values, each with some probability
+  \bi
+    \item $0 \rightarrow 1/16$
+    \item $0.25 \rightarrow 4/16$
+    \item $0.50 \rightarrow 8/16$
+    \item $0.75 \rightarrow 4/16$
+    \item $1.0 \rightarrow 1/16$
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simulating flipping $n$ coins}
+
+Function that simulates flipping a coin $n$ times (i.e. flipping $n$ coins)
+<<>>=
+# generic function
+flip_coins <- function(n = 1, prob = 0.5) {
+  out <- rbinom(n = n, size = 1, prob = prob)
+  ifelse(out, "heads", "tails")
+}
+
+flip_coins(5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Proportion of Heads}
+
+<<>>=
+# number of heads
+num_heads <- function(x) {
+  sum(x == "heads")
+}
+
+
+# proportion of heads
+prop_heads <- function(x) {
+  num_heads(x) / length(x)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{1000 Flips}
+
+\bbi
+  \item when we flip the coin 1000 times, we can get many different possible proportions of Heads
+  \item 0, 0.001, 0.002, 0.003, ..., 0.999, 1.000
+  \item It's highly unlikely that we would get 0 for the proportion---how unlikely?
+  \item what does the distribution of the porpotion of heads in 1000 flips look like?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{1000 Flips}
+
+\bbi
+  \item With some probability theory and math tools we can figure this out
+  \item But we can also get a good idea using simulation
+  \item In our simulation we'll assume that the chance of Heads is 0.5 (i.e. fair coin)
+  \item we can find out what the possible values for the proportion of heads in 1000 flips look like
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Flipping coins}
+
+<<>>=
+set.seed(99900)
+flips <- flip_coins(1000)
+
+num_heads(flips)
+prop_heads(flips)
+@
+
+<<eval=FALSE, echo=FALSE>>=
+plot(1:length(flips), factor(flips),
+     ylab = '', yaxt = 'n')
+axis(side = 2, at = 1:2, labels = c('heads', 'tails'), las = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Flipping coins}
+
+<<>>=
+set.seed(76547)
+a_flips <- flip_coins(1000)
+b_flips <- flip_coins(1000)
+
+num_heads(a_flips)
+num_heads(b_flips)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{1000 Flips 1000 times}
+
+<<>>=
+times <- 1000
+
+head_props <- numeric(times)
+
+for (s in 1:times) {
+  flips <- flip_coins(1000)
+  head_props[s] <- prop_heads(flips)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empirical distribution of 1000 flips}
+
+<<echo = FALSE, fig.width=5, fig.height=5, out.width='.7\\linewidth', out.height='.7\\linewidth', fig.align='center'>>=
+hist(head_props, col = 'gray80')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Flipping coins}
+
+Experiment: flipping a coin 100 times and counting number of heads
+
+\bigskip
+You flip a coin 100 times and you get 65 heads. Is it a fair coin?
+
+\bigskip
+\pause
+We could perform a hypothesis test, or we could perform resampling
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Flipping coins}
+
+<<>>=
+# repeat experiment 100 times
+times <- 10000
+head_times <- numeric(times)
+for (s in 1:times) {
+  flips <- flip_coins(100)
+  head_times[s] <- num_heads(flips)
+}
+
+sum(head_times >= 65)
+sum(head_times >= 65) / times
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Flipping coins}
+
+<<echo = FALSE, fig.width=5, fig.height=5, out.width='.7\\linewidth', out.height='.7\\linewidth', fig.align='center'>>=
+hist(head_times, col = 'gray80')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Bootstrapping}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Let's Generalize}
+
+\bbi
+  \item A \textbf{statistic} is just a function of a random sample
+  \item Statistics are used as estimators of quantities of interest about the distribution, called \textbf{parameters}
+  \item Statistics are random variables
+  \item Parameters are NOT random variables
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Let's Generalize}
+
+\bbi
+  \item In simple cases, we can study the \textit{sampling distribution} of the statistic analytically
+  \item e.g. we can prove under mild conditions that the distribution of the sample proportion is close to normal for large sample sizes
+  \item In more complicated cases we can turn to simulation
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Sampling Distributions}
+
+\bbi
+  \item In our example $X_1, X_2, \dots, X_n$ are independent observations from the same distribution
+  \item The distribution has center (mean value) $\mu$ and spread (standard deviation) $\sigma$
+  \item e.g. interest in the distribution of $median(X_1, X_2, \dots, X_n)$
+  \item We take many samples of size $n$, and study the behavior of the sample medians
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some Limitations}
+
+\bi
+  \item Consider \textit{t-test} procedures for inference about means
+  \item Most classical methods rest on the use of Normal Distributions
+  \item However, most real data are not Normal
+  \item We cannot use $t$ confidence intervals for strongly skewed data (unless samples are large)
+  \item What about inference for a \textit{ratio} of means? (no simple traditional inference)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Fundamental Reasoning}
+
+\bi
+  \item Apply computer power to relax some of the conditions needed in traditional tests
+  \item Have tools to do inference in new settings
+  \item What would happen if we applied this method many times?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Bootstrap Idea}
+
+\bi
+  \item Statistical inference is based on the sampling distributions of sample statistics
+  \item A sampling distribution is based on many random samples from the population
+  \item The bootstrap is a way of finding the sampling distribution (approximately)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bootstrap Samples}
+
+<<>>=
+x <- c(3.15, 0, 1.58, 19.65, 0.23, 2.21)
+mean(x)
+@
+
+\pause
+<<>>=
+(x1 <- sample(x, size = 6, replace = TRUE))
+mean(x1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bootstrap Samples}
+
+<<>>=
+(x2 <- sample(x, size = 6, replace = TRUE))
+mean(x2)
+
+(x3 <- sample(x, size = 6, replace = TRUE))
+mean(x3)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Procedure for Bootstrapping}
+
+\bbi
+  \item Repeatedly sampling \textbf{with replacement} from a random sample
+  \item Each bootstrap sample is the same size as the original sample
+  \item Calculate the statisc of interest (e.g. mean, median, sd)
+  \item Draw hundreds or thousands of samples
+  \item Obtain a bootstrap distribution
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bootstrap Samples}
+
+<<>>=
+bootstrap <- numeric(1000)
+
+for (b in 1:1000) {
+  boot_sample <- sample(x, size = 6, replace = TRUE)
+  bootstrap[b] <- mean(boot_sample)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bootstrap Distribution}
+<<fig.width=4, fig.height=4, out.width='.6\\linewidth', out.height='.6\\linewidth', fig.align='center', size='tiny'>>=
+hist(bootstrap, col = 'gray70', las = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{How does Bootstrapping work?}
+
+\bbi
+  \item We are not using the resamples as if they were real data
+  \item Bootstrap samples is not a substitute to gather more data to improve accuracy
+  \item The bootstrap idea is to use the resample statistics to estimate how the sample statistic varies from the studied random sample
+  \item The bootstrap distribution approximates the sampling distribution of the statistic
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Bootstrap samples}
+
+\bb{Computing the bootstrap distribution implies}
+\bbi
+  \item Calulate the statistic for each sample
+  \item The distribution of these resample statistics is the bootstrap distribution
+  \item A bootstrap sample is the same size as the original random sample
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Another Example}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bootstrap resampling}
+
+<<>>=
+# Iris Virginica subset (the "population")
+virginica <- subset(iris, Species == 'virginica')
+
+# random sample of Petal.Length (size = 5)
+set.seed(7359)
+rand_sample <- sample(virginica$Petal.Length, size = 5)
+rand_sample
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bootstrap resampling}
+
+<<>>=
+# create 500 bootstrap samples of size 5 with replacement
+resamples <- 500
+n <- length(rand_sample)
+
+boot_stats <- numeric(resamples)
+
+for (i in 1:resamples) {
+  boot_sample <- sample(rand_sample, size = n, replace = TRUE)
+  boot_stats[i] <- mean(boot_sample)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bootstrap resampling}
+
+<<>>=
+# "population" mean 
+mean(virginica$Petal.Length)
+
+# bootstrap mean
+mean(boot_stats)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bootstrap Distribution}
+
+<<echo = FALSE, fig.width=5, fig.height=5, out.width='.7\\linewidth', out.height='.7\\linewidth', fig.align='center'>>=
+hist(boot_stats, col = 'gray80')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Bootstrap standard error}
+
+The bootstrap standard error is just the standard deviation of the bootstrap samples
+<<>>=
+# descriptive statistics
+summary(boot_stats)
+
+# Bootstrap Standard Error
+sd(boot_stats)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

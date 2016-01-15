@@ -1,0 +1,601 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Getting started with ggplot2}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{ggplot2}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Resources for \code{"ggplot2"}}
+
+\bbi
+  \item Documentation: \url{http://docs.ggplot2.org/} 
+  \item Book: \textbf{ggplot2: Elegant Graphics for Data Analysis} (by Hadley Wickham)
+  \item Book: \textbf{R Graphics Cookbook} (by Winston Chang)
+  \item RStudio ggplot2 cheat sheet \\
+  {\tiny \url{https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf}}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{package \code{"ggplot2"}}
+<<install_ggplot2, eval=FALSE>>=
+# remember to install ggplot2 
+# (just once)
+install.packages("ggplot2")
+
+
+# load ggplot2
+library(ggplot2)
+
+
+# see basic documentation
+?ggplot
+@
+
+<<load_ggplot2, echo=FALSE, message=FALSE>>=
+library(ggplot2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{ggplot2 book}
+\begin{center}
+\ig[width=4.5cm]{images/ggplot2.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{R Graphics Cookbook}
+\begin{center}
+\ig[width=5cm]{images/graphics_cookbook.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+<<size='scriptsize', fig.width=5.5, fig.height=4, out.width='.9\\linewidth', out.height='.65\\linewidth', fig.align='center', echo = FALSE>>=
+mt <- mtcars
+mt$cyl <- factor(mtcars$cyl)
+ggplot(data = mt, 
+       aes(x = mpg, y = hp, color = cyl)) +
+  geom_point() + 
+  ggtitle("Miles per gallon -vs- Horsepower")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+<<size='scriptsize', fig.width=5.5, fig.height=4, out.width='.9\\linewidth', out.height='.65\\linewidth', fig.align='center', echo = FALSE>>=
+with(mt, 
+     plot(mpg, hp, col = cyl, pch = 19,
+          main = "Miles per gallon -vs- Horsepower"))
+legend('topright', legend = levels(mt$cyl), col = c('black', 'red', 'green3'), pch = 19)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About \code{"ggplot2"}}
+
+\bi
+  \item \code{"ggplot2"} (by Hadley Wickham) is an R package for producing statistical graphics
+  \item It provides a framework based on Leland Wilkinson's \textbf{Grammar of Graphics}
+  \item \code{"ggplot2"} provides beautiful plots while taking care of fiddly details like legends, axes, colors, etc.
+  \item \code{"ggplot2"} is built on the R graphics package \code{"grid"}
+  \item Underlying philosophy is to describe a wide range of graphics with a compact syntax and independent components
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The Grammar of Graphics}
+\begin{center}
+\ig[width=4.5cm]{images/grammar_graphics.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About the Grammar of Graphics}
+
+\bbi
+  \item \textit{The Grammar of Graphics} is Wilkinson's attempt to define a theoretical framework for graphics
+  \item \textbf{Grammar}: Formal system of rules for generating graphics
+  \bi
+    \item Some rules are mathematic
+    \item Some rules are aesthetic
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About the Grammar of Graphics}
+
+\bb{3 Stages of Graphic Creation}
+\bbi
+  \item \textbf{Specification}: link data to graphic objects
+  \item \textbf{Assembly}: put everything together
+  \item \textbf{Display}: render of a graphic
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About the Grammar of Graphics}
+
+\bb{Specification}
+Link data to graphic objects
+\bbi
+  \item Data
+  \item Transformation of variables (e.g. aggregation)
+  \item Scale transformations (e.g. log)
+  \item Coordinate system (e.g. cartesian)
+  \item Graphic Elements (e.g. points, lines)
+  \item Guides (e.g. labels, legends)
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{R package \code{"ggplot2"}}
+
+About \code{"ggplot2"}
+\bbi
+  \item Default appearance of plots carefully chosen
+  \item Designed with visual perception in mind
+  \item Inclusion of some components, like legends, are automated
+  \item Great flexibility for annotating, editing, and embedding output
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Base graphics -vs- \code{"ggplot2"}}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+\centerline{base graphics}
+<<echo = FALSE, fig.width=4, fig.height=4, out.width='1.05\\linewidth', out.height='1.05\\linewidth', fig.align='center'>>=
+op <- par(mar = c(5, 4, 1, 1))
+with(mtcars, plot(mpg, hp))
+par(op)
+@
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\centerline{ggplot2}
+<<echo = FALSE, fig.width=3.5, fig.height=3.5, out.width='.85\\linewidth', out.height='.8\\linewidth', fig.align='center'>>=
+ggplot(mtcars, aes(mpg, hp)) + 
+  geom_point()
+@
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About \code{"ggplot2"}}
+
+\bbi
+  \item \code{"ggplot2"} is the name of the package
+  \item The \code{gg} in \code{"ggplot2"} stands for \textit{Grammar of Graphics}
+  \item Inspired in the \textbf{Grammar of Graphics} by Lee Wilkinson
+  \item \code{"ggplot"} is the class of objects (plots)
+  \item \code{ggplot()} is the main function in \code{"ggplot2"}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{What is a Statistical Graphic?}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Some Data set}
+\code{mtcars}
+<<echo=FALSE>>=
+print(mtcars[1:10, c('mpg', 'hp', 'cyl')], print.gap = 2)
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{What is a statistical graphic?}
+<<size='scriptsize', fig.width=6, fig.height=4, out.width='.95\\linewidth', out.height='.65\\linewidth', fig.align='center', echo = FALSE>>=
+mt <- mtcars
+mt$cyl <- factor(mtcars$cyl)
+ggplot(data = mt, 
+       aes(x = mpg, y = hp)) +
+  geom_point(aes(color = cyl)) + 
+  geom_smooth(method = 'lm') +
+  ggtitle("Miles per gallon -vs- Horsepower")
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{What is a statistical graphic?}
+
+Elements to draw the chart ``manually'' 
+\pause
+
+\bbi
+  \item coordinate system
+  \item x and y axis (intervals)
+  \item axis tick marks
+  \item axis labels, and title
+  \item points (with colors)
+  \item regression line (and ribbon)
+  \item legend
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{What is a statistical graphic?}
+
+\bb{Simply put, a statistical graphic is:}
+\bi
+  \item A mapping from data to aesthetic attributes (color, shape, size) of geometric objects (points, lines, bars)
+  \item A plot may also contain statistical transformations of the data
+  \item A plot is drawn on a specific coordinate system
+  \item Sometimes faceting can be used to get the same plot for different subsets of the dataset
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Starting with \code{"ggplot2"}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{starwarstoy.csv}}
+<<echo=FALSE, size='scriptsize'>>=
+starwars <- read.csv('~/Documents/stat133/stat133/datasets/starwarstoy.csv')
+
+starwars
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scatterplot}
+<<sw_scatterplot, size='scriptsize', fig.width=4.5, fig.height=3, out.width='.85\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=FALSE>>=
+ggplot(data = starwars) +
+  geom_point(aes(x = height, y = weight, color = jedi))
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Main steps in creating ggplot graphics}
+\begin{center}
+\ig[width=8cm]{images/ggplot_steps.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Building a scatterplot}
+
+User specifications
+\bi
+  \item Dataset: \code{starwars} 
+  \item Variables: \code{height, weight, jedi}
+  \item Geoms: points
+  \item Aesthetics (attributes):
+  \bi
+    \item \textbf{x}: \code{height}
+    \item \textbf{y}: \code{weight}
+    \item \textbf{color}: \code{jedi}
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scatterplot with \code{"ggplot2"}}
+<<sw_scatterplot, eval = FALSE>>=
+@
+
+\pause
+\bi
+  \item {\hilit \code{ggplot()}} initializes a \code{"ggplot"} object
+  \item specify the dataset with {\mdlit \code{data}}
+  \item type of geometric object: {\hilit \code{geom\_point()}}
+  \item mapping aesthetic attributes to variables with {\hilit \code{aes()}}
+  \bi
+    \item x-position: \code{height}
+    \item y-position: \code{weight}
+    \item color: \code{jedi}
+  \ei
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scatterplot with \code{"ggplot2"}}
+<<sw_scatterplot, size='scriptsize', fig.width=4.5, fig.height=3, out.width='.8\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scatterplot with \code{"ggplot2"}}
+
+Automated things in \code{"ggplot2"}
+\bi
+  \item Axis labels
+  \item Legends (position, labels, symbols)
+  \item Choose of colors for points
+  \item Background color (e.g. gray)
+  \item Grid lines (major and minor)
+  \item Axis tick marks
+\ei
+
+{\lit \small you can always change the automated elements}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{\code{"ggplot2"} graphics}
+
+\bb{Philosophy of \code{"ggplot2"}}
+A graphic is a {\hilit \textbf{mapping}} from \textbf{data} to \textbf{aesthetic attributes} (color, shape, size) of \textbf{geometric objects} (points, lines, bars)
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scatterplot with \code{"ggplot2"}}
+<<sw_scatterplot, size='scriptsize', fig.width=4.5, fig.height=3, out.width='.8\\linewidth', out.height='.5\\linewidth', fig.align='center'>>=
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Mapping}
+\begin{center}
+\ig[width=11cm]{images/ggplot_mapping.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{\code{"ggplot2"} graphics}
+
+\bb{Philosophy of \code{"ggplot2"}}
+A graphic is a {\hilit \textbf{mapping}} from \textbf{data} to \textbf{aesthetic attributes} (color, shape, size) of \textbf{geometric objects} (points, lines, bars)
+\eb
+
+\bi
+  \item \code{ggplot(data, ...)}
+  \item \code{aes()}
+  \item \code{geom\_objects()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scatterplot with \code{"ggplot2"}}
+
+How does \code{"ggplot2"} work?
+\bi
+  \item plots are created piece-by-piece
+  \item plot components added with {\hilit \textbf{+}} operator
+  \item aesthetic attributes mapped to data values
+  \item computation of scales for aesthetic attributes
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{How does it work?}
+Usually, we specify the data and variables inside the function {\hilit \code{ggplot()}} 
+<<eval=FALSE>>=
+ggplot(data = mtcars, aes(x = mpg, y = hp))
+@
+Note the use of the internal function {\hilit \code{aes()}} to \textit{map} \code{x} to \code{mpg}, and \code{y} to \code{hp}.
+
+\bigskip
+Then we \textbf{add a layer} of geometric objects: points in this case
+<<eval=FALSE>>=
++ geom_point()
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Some alternative options}
+<<eval=FALSE>>=
+# option A
+ggplot(data = starwars,
+       aes(x = height, y = weight, color = jedi)) +
+  geom_point()
+@
+
+\pause
+<<eval=FALSE>>=
+# option B
+ggplot(data = starwars) +
+  geom_point(aes(x = height, y = weight, color = jedi))
+@
+
+\pause
+<<eval=FALSE>>=
+# option C
+ggplot() +
+  geom_point(data = starwars,
+             aes(x = height, y = weight, color = jedi))
+@
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Main inquiries}
+
+\bb{Always ask yourself ...}
+\bbi
+  \item What is the \textbf{data} set of interest?
+  \item What \textbf{variables} will be used to make the plot?
+  \item What \textbf{graphics shapes} will be used to display?
+  \item What \textbf{features} of the shapes will be used to represent the data values?
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{\code{"ggplot2"} basics}
+
+\bbi
+  \item The data must be in a \code{data.frame}
+  \item Variables are mapped to aesthetic attributes
+  \item Aesthetic attributes belong to geometric objects \textbf{geoms} (points, lines, polygons)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Basic Terminology}
+
+\bbi
+  \item \textbf{ggplot()} - The main function where you specify the dataset and variables to plot
+  \item \textbf{geoms} - geometric objetcs
+  \bi
+    \item \code{geom\_point()}, \code{geom\_bar()}, \code{geom\_line(), \code{geom\_density()}}
+  \ei
+  \item \textbf{aes} - aesthetics (i.e. attributes)
+  \bi
+    \item shape, color, fill, linetype
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Warning}
+
+\code{"ggplot2"} comes with the function {\hilit \code{qplot()}} (i.e. \textit{quick plot}). Avoid using it! 
+
+\bigskip
+As Karthik Ram says: ``you'll end up unlearning and relearning a good bit''
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

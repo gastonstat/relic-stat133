@@ -1,0 +1,1179 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Merging Data Tables}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Merging Data Tables}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging}
+
+{\Large 
+ Merging two or more tables is another frequent type of data manipulation
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{A} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{v1} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{2}\hlstd{),}
+  \hlkwc{v2} \hlstd{=} \hlnum{16}\hlopt{:}\hlnum{20}\hlstd{)}
+
+\hlstd{A}
+\end{alltt}
+\begin{verbatim}
+##   v1 v2
+## 1  2 16
+## 2  4 17
+## 3  6 18
+## 4  8 19
+## 5 10 20
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{B} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{v1} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0.1}\hlstd{,} \hlnum{0.5}\hlstd{,} \hlnum{0.1}\hlstd{),}
+  \hlkwc{v2} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0.6}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0.1}\hlstd{))}
+
+\hlstd{B}
+\end{alltt}
+\begin{verbatim}
+##    v1  v2
+## 1 0.1 0.6
+## 2 0.2 0.7
+## 3 0.3 0.8
+## 4 0.4 0.9
+## 5 0.5 1.0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Super basic merging}
+
+\bi
+  \item R provides the functions {\hilit \code{cbind()}} and {\hilit \code{rbind()}}
+  \item Column binding requires same number of rows
+  \item It works on matrices and data frames
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binding columns with \code{cbind()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# column binding}
+\hlstd{AB} \hlkwb{<-} \hlkwd{cbind}\hlstd{(A, B)}
+\hlstd{AB}
+\end{alltt}
+\begin{verbatim}
+##   v1 v2  v1  v2
+## 1  2 16 0.1 0.6
+## 2  4 17 0.2 0.7
+## 3  6 18 0.3 0.8
+## 4  8 19 0.4 0.9
+## 5 10 20 0.5 1.0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Can you see any potential problems in this case?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binding columns with \code{cbind()}}
+
+Notice that columns have repeated names:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{AB}
+\end{alltt}
+\begin{verbatim}
+##   v1 v2  v1  v2
+## 1  2 16 0.1 0.6
+## 2  4 17 0.2 0.7
+## 3  6 18 0.3 0.8
+## 4  8 19 0.4 0.9
+## 5 10 20 0.5 1.0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+What happens if we do this:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{AB}\hlopt{$}\hlstd{v1}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your Turn}
+
+What do you get in this case?
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{AB}\hlopt{$}\hlstd{v1}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\bi
+  \item[A)] Error
+  \item[B)] Warning
+  \item[C)] Both columns \code{v1}
+  \item[D)] First column \code{v1}
+  \item[E)] Second column \code{v1}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binding columns with \code{cbind()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# column 'v1'}
+\hlstd{AB}\hlopt{$}\hlstd{v1}
+\end{alltt}
+\begin{verbatim}
+## [1]  2  4  6  8 10
+\end{verbatim}
+\begin{alltt}
+\hlcom{# columns 'v1'}
+\hlstd{AB[ ,}\hlkwd{c}\hlstd{(}\hlstr{'v1'}\hlstd{,} \hlstr{'v1'}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##   v1 v1.1
+## 1  2    2
+## 2  4    4
+## 3  6    6
+## 4  8    8
+## 5 10   10
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binding various objects with \code{cbind()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# more cbind}
+\hlkwd{cbind}\hlstd{(A, B, A)}
+\end{alltt}
+\begin{verbatim}
+##   v1 v2  v1  v2 v1 v2
+## 1  2 16 0.1 0.6  2 16
+## 2  4 17 0.2 0.7  4 17
+## 3  6 18 0.3 0.8  6 18
+## 4  8 19 0.4 0.9  8 19
+## 5 10 20 0.5 1.0 10 20
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Super basic merging}
+
+\bi
+  \item Row binding requires same number of columns
+  \item It works on matrices and data frames
+  \item \code{rbind()} on data frames
+  \bi
+    \item require columns having same names
+    \item require column factors having same levels
+  \ei
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binding rows with \code{rbind()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# row binding}
+\hlkwd{rbind}\hlstd{(A, B)}
+\end{alltt}
+\begin{verbatim}
+##      v1   v2
+## 1   2.0 16.0
+## 2   4.0 17.0
+## 3   6.0 18.0
+## 4   8.0 19.0
+## 5  10.0 20.0
+## 6   0.1  0.6
+## 7   0.2  0.7
+## 8   0.3  0.8
+## 9   0.4  0.9
+## 10  0.5  1.0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging}
+
+\bbi
+  \item Row and column binding provide a very basic type of ``merging''
+  \item For more advanced merging operations, we usually require tables to have an \textbf{id} column
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{X} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{id} \hlstd{= letters[}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{],}
+  \hlkwc{x1} \hlstd{=} \hlnum{5}\hlopt{:}\hlnum{1}\hlstd{,}
+  \hlkwc{x2} \hlstd{=} \hlnum{10}\hlopt{:}\hlnum{6}\hlstd{)}
+
+\hlstd{X}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2
+## 1  a  5 10
+## 2  b  4  9
+## 3  c  3  8
+## 4  d  2  7
+## 5  e  1  6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Y} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{id} \hlstd{= letters[}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{],}
+  \hlkwc{y1} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0.1}\hlstd{,} \hlnum{0.5}\hlstd{,} \hlnum{0.1}\hlstd{),}
+  \hlkwc{y2} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0.6}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0.1}\hlstd{))}
+
+\hlstd{Y}
+\end{alltt}
+\begin{verbatim}
+##   id  y1  y2
+## 1  a 0.1 0.6
+## 2  b 0.2 0.7
+## 3  c 0.3 0.8
+## 4  d 0.4 0.9
+## 5  e 0.5 1.0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging with \code{merge()}}
+
+\bbi
+  \item The behavior of \code{merge()} depends on a combination of several arguments
+  \item Let's see some of the frequent scenarios
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic \code{merge()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# default merge}
+\hlkwd{merge}\hlstd{(X, Y)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2  y1  y2
+## 1  a  5 10 0.1 0.6
+## 2  b  4  9 0.2 0.7
+## 3  c  3  8 0.3 0.8
+## 4  d  2  7 0.4 0.9
+## 5  e  1  6 0.5 1.0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\code{merge()} will search a common column in both data frames (i.e. column with same name)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic \code{merge()}}
+
+We can explicitly define the name of the column used for merging:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{merge}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2  y1  y2
+## 1  a  5 10 0.1 0.6
+## 2  b  4  9 0.2 0.7
+## 3  c  3  8 0.3 0.8
+## 4  d  2  7 0.4 0.9
+## 5  e  1  6 0.5 1.0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Let's make it more interesting}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# shuffling rows in data frame Y}
+\hlstd{Y} \hlkwb{<-} \hlstd{Y[}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{1}\hlstd{), ]}
+\hlstd{Y}
+\end{alltt}
+\begin{verbatim}
+##   id  y1  y2
+## 3  c 0.3 0.8
+## 2  b 0.2 0.7
+## 5  e 0.5 1.0
+## 4  d 0.4 0.9
+## 1  a 0.1 0.6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic \code{merge()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{merge}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2  y1  y2
+## 1  a  5 10 0.1 0.6
+## 2  b  4  9 0.2 0.7
+## 3  c  3  8 0.3 0.8
+## 4  d  2  7 0.4 0.9
+## 5  e  1  6 0.5 1.0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{No common column names}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{X} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{x1} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{10}\hlstd{,} \hlnum{20}\hlstd{),}
+  \hlkwc{x2} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{30}\hlstd{,} \hlnum{40}\hlstd{))}
+
+\hlstd{X}
+\end{alltt}
+\begin{verbatim}
+##   x1 x2
+## 1 10 30
+## 2 20 40
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Y} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{y1} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.1}\hlstd{,} \hlnum{0.2}\hlstd{,} \hlnum{0.3}\hlstd{),}
+  \hlkwc{y2} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.4}\hlstd{,} \hlnum{0.5}\hlstd{,} \hlnum{0.6}\hlstd{))}
+
+\hlstd{Y}
+\end{alltt}
+\begin{verbatim}
+##    y1  y2
+## 1 0.1 0.4
+## 2 0.2 0.5
+## 3 0.3 0.6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Recycled \code{merge()}}
+
+If there are no common column names, then recycling is applied:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{merge}\hlstd{(X, Y)}
+\end{alltt}
+\begin{verbatim}
+##   x1 x2  y1  y2
+## 1 10 30 0.1 0.4
+## 2 20 40 0.1 0.4
+## 3 10 30 0.2 0.5
+## 4 20 40 0.2 0.5
+## 5 10 30 0.3 0.6
+## 6 20 40 0.3 0.6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging with uncommon names}
+\begin{center}
+\ig[width=10cm]{images/merge_uncommon_names.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Advanced Mergings}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Different number of rows}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{X} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{id} \hlstd{= letters[}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{],}
+  \hlkwc{x1} \hlstd{=} \hlnum{4}\hlopt{:}\hlnum{1}\hlstd{,}
+  \hlkwc{x2} \hlstd{=} \hlnum{10}\hlopt{:}\hlnum{7}\hlstd{)}
+
+\hlstd{X}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2
+## 1  a  4 10
+## 2  b  3  9
+## 3  c  2  8
+## 4  d  1  7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Y} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{id} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'b'}\hlstd{,} \hlstr{'d'}\hlstd{),}
+  \hlkwc{y1} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.1}\hlstd{,} \hlnum{0.2}\hlstd{),}
+  \hlkwc{y2} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.6}\hlstd{,} \hlnum{0.7}\hlstd{))}
+
+\hlstd{Y}
+\end{alltt}
+\begin{verbatim}
+##   id  y1  y2
+## 1  b 0.1 0.6
+## 2  d 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Default \code{merge()}}
+
+Merging rows that share \code{id}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{merge}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2  y1  y2
+## 1  b  3  9 0.1 0.6
+## 2  d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Different number of rows}
+
+Values of rows not matching the \code{id} are filled with \code{NA}'s
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{merge}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{,} \hlkwc{all} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2  y1  y2
+## 1  a  4 10  NA  NA
+## 2  b  3  9 0.1 0.6
+## 3  c  2  8  NA  NA
+## 4  d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Advanced \code{merge()}}
+
+We can specify which data frame columns to include:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{merge}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{,} \hlkwc{all.x} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2  y1  y2
+## 1  a  4 10  NA  NA
+## 2  b  3  9 0.1 0.6
+## 3  c  2  8  NA  NA
+## 4  d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Advanced \code{merge()}}
+
+We can specify which data frame columns to include:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{merge}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{,} \hlkwc{all.y} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2  y1  y2
+## 1  b  3  9 0.1 0.6
+## 2  d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging Types}
+\begin{center}
+\ig[width=10cm]{images/merge_id1.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging Types (cont'd)}
+\begin{center}
+\ig[width=10cm]{images/merge_id2.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging Types}
+\begin{center}
+\ig[width=8cm]{images/merges.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{More Mergings}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Different id columns}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{X} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{idx} \hlstd{= letters[}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{],}
+  \hlkwc{x1} \hlstd{=} \hlnum{4}\hlopt{:}\hlnum{1}\hlstd{,}
+  \hlkwc{x2} \hlstd{=} \hlnum{10}\hlopt{:}\hlnum{7}\hlstd{)}
+
+\hlstd{X}
+\end{alltt}
+\begin{verbatim}
+##   idx x1 x2
+## 1   a  4 10
+## 2   b  3  9
+## 3   c  2  8
+## 4   d  1  7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Y} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{idy} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'b'}\hlstd{,} \hlstr{'d'}\hlstd{),}
+  \hlkwc{y1} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.1}\hlstd{,} \hlnum{0.2}\hlstd{),}
+  \hlkwc{y2} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.6}\hlstd{,} \hlnum{0.7}\hlstd{))}
+
+\hlstd{Y}
+\end{alltt}
+\begin{verbatim}
+##   idy  y1  y2
+## 1   b 0.1 0.6
+## 2   d 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More \code{merge()} options}
+
+Sometimes the id columns have different names:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{merge}\hlstd{(X, Y,} \hlkwc{by.x} \hlstd{=} \hlstr{'idx'}\hlstd{,} \hlkwc{by.y} \hlstd{=} \hlstr{'idy'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   idx x1 x2  y1  y2
+## 1   b  3  9 0.1 0.6
+## 2   d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More \code{merge()} options}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{merge}\hlstd{(X, Y,} \hlkwc{by.x} \hlstd{=} \hlstr{'idx'}\hlstd{,} \hlkwc{by.y} \hlstd{=} \hlstr{'idy'}\hlstd{,} \hlkwc{all} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   idx x1 x2  y1  y2
+## 1   a  4 10  NA  NA
+## 2   b  3  9 0.1 0.6
+## 3   c  2  8  NA  NA
+## 4   d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More \code{merge()} options}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{merge}\hlstd{(X, Y,} \hlkwc{by.x} \hlstd{=} \hlstr{'idx'}\hlstd{,} \hlkwc{by.y} \hlstd{=} \hlstr{'idy'}\hlstd{,} \hlkwc{all.x} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   idx x1 x2  y1  y2
+## 1   a  4 10  NA  NA
+## 2   b  3  9 0.1 0.6
+## 3   c  2  8  NA  NA
+## 4   d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic \code{merge()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{merge}\hlstd{(X, Y,} \hlkwc{by.x} \hlstd{=} \hlstr{'idx'}\hlstd{,} \hlkwc{by.y} \hlstd{=} \hlstr{'idy'}\hlstd{,} \hlkwc{all.y} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   idx x1 x2  y1  y2
+## 1   b  3  9 0.1 0.6
+## 2   d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Package \code{"dplyr"}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Package \code{"dplyr"}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# install "dplyr"}
+\hlkwd{install.packages}\hlstd{(}\hlstr{"dplyr"}\hlstd{)}
+
+\hlcom{# load "dplyr"}
+\hlkwd{library}\hlstd{(dplyr)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Join Functions}
+
+\bi
+  \item \code{inner\_join()}
+  \item \code{left\_join()}
+  \item \code{right\_join()}
+  \item \code{full\_join()}
+  \item \code{semi\_join()}
+  \item \code{anti\_join()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Different number of rows}
+
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{X} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{id} \hlstd{= letters[}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{],}
+  \hlkwc{x1} \hlstd{=} \hlnum{4}\hlopt{:}\hlnum{1}\hlstd{,}
+  \hlkwc{x2} \hlstd{=} \hlnum{10}\hlopt{:}\hlnum{7}\hlstd{,}
+  \hlkwc{stringsAsFactors} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+\hlstd{X}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2
+## 1  a  4 10
+## 2  b  3  9
+## 3  c  2  8
+## 4  d  1  7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Y} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{id} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'b'}\hlstd{,} \hlstr{'d'}\hlstd{),}
+  \hlkwc{y1} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.1}\hlstd{,} \hlnum{0.2}\hlstd{),}
+  \hlkwc{y2} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.6}\hlstd{,} \hlnum{0.7}\hlstd{),}
+  \hlkwc{stringsAsFactors} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+\hlstd{Y}
+\end{alltt}
+\begin{verbatim}
+##   id  y1  y2
+## 1  b 0.1 0.6
+## 2  d 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{inner\_join()}}
+
+\code{inner\_join()} returns all rows from \code{X} where there are matching valuesin \code{Y}, and all columns from \code{X} and \code{Y}.
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{inner_join}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2  y1  y2
+## 1  b  3  9 0.1 0.6
+## 2  d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{left\_join()}}
+
+\code{left\_join()} returns all rows from \code{X}, and all columns from \code{X} and \code{Y}.
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{left_join}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2  y1  y2
+## 1  a  4 10  NA  NA
+## 2  b  3  9 0.1 0.6
+## 3  c  2  8  NA  NA
+## 4  d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{right\_join()}}
+
+\code{right\_join()} returns all rows from \code{Y}, and all columns from \code{X} and \code{Y}.
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{right_join}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2  y1  y2
+## 1  b  3  9 0.1 0.6
+## 2  d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{full\_join()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{full_join}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2  y1  y2
+## 1  a  4 10  NA  NA
+## 2  b  3  9 0.1 0.6
+## 3  c  2  8  NA  NA
+## 4  d  1  7 0.2 0.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=8cm]{images/joins.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{semi\_join()}}
+
+\code{semi\_join()} returns all rows from \code{X} where there are matching values in \code{Y}, keeping just columns from \code{X}.
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{semi_join}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2
+## 1  b  3  9
+## 2  d  1  7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{anti\_join()}}
+
+\code{anti\_join()} returns all rows from \code{X} where there are not matching values in \code{Y}, keeping just columns from \code{X}.
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anti_join}\hlstd{(X, Y,} \hlkwc{by} \hlstd{=} \hlstr{'id'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   id x1 x2
+## 1  c  2  8
+## 2  a  4 10
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Semi and Anti joins}
+\begin{center}
+\ig[width=10cm]{images/semi-anti-joins.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

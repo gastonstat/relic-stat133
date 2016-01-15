@@ -1,0 +1,31 @@
+\frametitle{Function \code{as.Date()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{as.Date}\hlstd{(}\hlstr{"6/8/2015"}\hlstd{,} \hlkwc{format} \hlstd{=} \hlstr{"%m/%d/%Y"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2015-06-08"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{as.Date}\hlstd{(}\hlstr{"6/8/2015"}\hlstd{,} \hlkwc{format} \hlstd{=} \hlstr{"%m/%d/%Y"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2015-06-08"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{as.Date}\hlstd{(}\hlstr{"June 8, 2015"}\hlstd{,} \hlkwc{format} \hlstd{=} \hlstr{"%B %d, %Y"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2015-06-08"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{as.Date}\hlstd{(}\hlstr{"8JUNE15"}\hlstd{,} \hlkwc{format} \hlstd{=} \hlstr{"%d%b%y"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2015-06-08"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

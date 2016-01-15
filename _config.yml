@@ -1,0 +1,26 @@
+# Dependencies
+markdown:         redcarpet
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+relative_permalinks: true
+
+# Setup
+title:            Stat 133
+tagline:          'UCB - Stat 133'
+description:      'Concepts in Computing with Data'
+url:              http://gastonsanchez.com/stat133
+baseurl:          http://gastonsanchez.com/stat133
+
+author:
+  name:           'Gaston Sanchez'
+  url:            http://gastonsanchez.com
+
+paginate:         5
+
+# Custom vars
+version:          Fall 2015
+
+github:
+  repo:           https://github.com/gastonstat/stat133

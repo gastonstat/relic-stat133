@@ -1,0 +1,23 @@
+\frametitle{Bootstrap standard error}
+
+The bootstrap standard error is just the standard deviation of the bootstrap samples
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# descriptive statistics}
+\hlkwd{summary}\hlstd{(boot_stats)}
+\end{alltt}
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+##    5.20    5.52    5.60    5.60    5.70    5.80
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Bootstrap Standard Error}
+\hlkwd{sd}\hlstd{(boot_stats)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.1167183
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

@@ -1,0 +1,34 @@
+\frametitle{Some alternative options}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# option A}
+\hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= starwars,}
+       \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= height,} \hlkwc{y} \hlstd{= weight,} \hlkwc{color} \hlstd{= jedi))} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{()}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\pause
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# option B}
+\hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= starwars)} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= height,} \hlkwc{y} \hlstd{= weight,} \hlkwc{color} \hlstd{= jedi))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\pause
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# option C}
+\hlkwd{ggplot}\hlstd{()} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= starwars,}
+             \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= height,} \hlkwc{y} \hlstd{= weight,} \hlkwc{color} \hlstd{= jedi))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}

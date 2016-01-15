@@ -1,0 +1,1029 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{XML - Part 1}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat}{\tt \scriptsize \color{foreground} github.com/gastonstat}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{XML}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+
+\bb{XML \& HTML}
+The goal of these slides is to give you a \textbf{crash introduction to XML and HTML} so you can get a good grasp of those formats for the following lectures
+\eb
+
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Datasets}
+
+\bb{You'll have some sort of (raw) data to work with}
+\eb
+\begin{center}
+\ig[width=10cm]{images/tabular_nontabular.pdf}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Motivation}
+
+\bb{Two main limitations of field-delimited files}
+\bbi
+  \item In plain text formats there is no information to describe the location of the data values
+  \item There is no recognizable label for each data value within the file
+  \item Serious limitations to store data with hierarchical structure 
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Hierarchical data}
+\begin{center}
+\ig[width=10cm]{images/hierarchical_data.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Hierarchical data}
+
+Field-delimited files have limitations with hierarchical data
+\bigskip
+
+\begin{verbatim}
+                   John      33  male
+                   Julia     32  female
+    John   Julia   Jack       6  male
+    John   Julia   Jill       4  female
+    John   Julia   John jnr   2  male
+                   David     45  male
+                   Debbie    42  female
+    David  Debbie  Donald    16  male
+    David  Debbie  Dianne    12  female
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XML format}
+
+\bb{XML advantages}
+\bbi
+  \item XML is a storage format that is still based on plain text
+  \item In XML formats every single value is distinctly labeled
+  \item Moreover, every single value is self-described
+  \item The information is organized in a much more sophisticated manner
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Hierarchical data}
+
+An example of hierarchical data in XML
+<<eval=FALSE, message=FALSE>>=
+<family>
+  <parent gender="male" name="John" age="33" />
+  <parent gender="female" name="Julia" age="32" />
+  <child gender="male" name="Jack" age="6" />
+  <child gender="female" name="Jill" age="4" />
+  <child gender="male" name="John jnr" age="2" />
+</family>
+<family>
+  <parent gender="male" name="David" age="45" />
+  <parent gender="female" name="Debbie" age="42" />
+  <child gender="male" name="Donald" age="16" />
+  <child gender="female" name="Dianne" age="12" />
+</family>
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XML and HTML}
+
+\bb{Why should you care about XML and HTML?}
+\bbi
+  \item Large amounts of data and information are stored, shared and distributed using HTML and XML-dialects
+  \item They are widely adopted and used in many applications
+  \item Working with data from the Web means dealing with HTML
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+ \begin{center}
+  {\Huge \hilit XML}
+  
+  \bigskip
+  {\Large \hilit eXtensible Markup Language}
+ \end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some Definitions}
+
+\begin{quotation}
+``XML is a markup language that defines a set of rules for encoding documents in a format that is both human-readable and machine-readable''
+\end{quotation}
+
+{\footnotesize 
+\hspace{8mm} \url{http://en.wikipedia.org/wiki/XML}
+}
+
+\bigskip
+\begin{quotation}
+``XML is a data description language used for describing data''
+\end{quotation}
+
+{\footnotesize 
+\hspace{8mm} {\hilit Paul Murrell} \\
+\hspace{8mm} {\lolit Introduction to Data Technologies}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some Definitions}
+
+\begin{quotation}
+``XML is a very general structure with which we can define any number of new formats to represent arbitrary data''
+\end{quotation}
+
+\begin{quotation}
+``XML is a standard for the semantic, hierarchical representation of data''
+\end{quotation}
+
+{\footnotesize 
+\hspace{8mm} {\hilit Deb Nolan \& Duncan Temple Lang} \\
+\hspace{8mm} {\lolit XML and Web Technologies for Data Sciences with R}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About XML}
+
+\bb{XML}
+XML stands for \textbf{eXtensible Markup Language}
+\eb
+
+\bb{Broadly speaking ...}
+XML provides a flexible framework to create formats for describing and representing data
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Markups}
+
+\bb{Markup}
+A \textbf{markup} is a sequence of characters or other symbols inserted at certain places in a document to indicate either: 
+\bi
+ \item how the content should be displayed when printed or in screen
+ \item describe the document's structure
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Markups}
+
+\bb{Markup Language}
+A markup language is a system for \textbf{annotating} (i.e. \textit{marking}) a document in a way that the content is distinguished from its representation (eg LaTeX, PostScript, HTML, SVG)
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{LaTeX example}
+
+\begin{columns}[t]
+\begin{column}{0.1\textwidth}
+\end{column}
+\begin{column}{0.6\textwidth}
+<<eval=FALSE, size='tiny'>>=
+\documentclass{article}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{Introduction to XML}
+\author{First Last}
+\maketitle
+
+\section{Introduction}
+Here is the text of your introduction.
+
+\begin{equation}
+    \label{simple_equation}
+    \alpha = \sqrt{ \beta }
+\end{equation}
+
+\subsection{Subsection Heading Here}
+Write your subsection text here.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=3.0in]{myfigure}
+    \caption{Simulation Results}
+    \label{simulationfigure}
+\end{figure}
+
+\end{document}
+@
+\end{column}
+
+\begin{column}{0.1\textwidth}
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Markups}
+
+\bb{XML Markups}
+In XML (as well as in HTML) the marks (aka \textit{tags}) are defined using angle brackets: {\Large {\hilit \code{<>}}}
+\eb
+
+\bigskip
+
+\code{{\hilit <mark>}Text marked with special tag{\hilit </mark>} }
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extensible}
+
+\bb{Extensible?}
+The concept of \textit{extensibility} means that we can define our own marks, the order in which they occur, and how they should be processed. For example:
+ \bi
+  \item \code{<my\_mark>}
+  \item \code{<awesome>}
+  \item \code{<boring>}
+  \item \code{<cool>}
+ \ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About XML}
+
+\bb{XML is NOT}
+\bbi
+ \item a programming language
+ \item a network transfer protocol
+ \item a database
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About XML}
+
+\bb{XML is}
+\bbi
+ \item more than a markup language
+ \item a generic language that provides structure and syntax for representing any type of information
+ \item a meta-language: it allows us to create or define other languages
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XML Applications}
+
+\bb{Some XML dialects}
+\bbi
+ \item \textbf{KML} (\textit{Keyhole Markup Language}) for describing geo-spatial information used in Google Earth, Google Maps, Google Sky
+ \item \textbf{SVG} (\textit{Scalable Vector Graphics}) for visual graphical displays of two-dimensional graphics with support for interactivity and animation
+ \item \textbf{PMML} (\textit{Predictive Model Markup Language}) for describing and exchanging models produced by data mining and machine learning algorithms
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Keyhole Markup Language example}
+
+<<eval=FALSE>>=
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+<Placemark>
+  <name>New York City</name>
+  <description>New York City</description>
+  <Point>
+    <coordinates>-74.006393,40.714172,0</coordinates>
+  </Point>
+</Placemark>
+</Document>
+</kml>
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Scalable Vector Graphics example}
+
+<<eval=FALSE, size='scriptsize'>>=
+<svg width="100" height="100">
+  <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" />
+</svg>
+  
+  
+<svg width="400" height="110">
+  <rect width="300" height="100" style="fill:rgb(0,0,255)" />
+</svg>
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Minimalist Example}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{}
+\begin{center}
+\ig[width=10cm]{images/goodwillhunting.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{XML Example}
+
+\begin{block}{Ultra Simple XML}
+{\Large \begin{verbatim}
+<movie>
+  Good Will Hunting
+</movie>
+\end{verbatim}
+}
+\end{block}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{XML Example}
+
+\begin{block}{Ultra Simple XML}
+\begin{verbatim}
+<movie>
+  Good Will Hunting
+</movie>
+\end{verbatim}
+\end{block}
+
+\bigskip
+
+\bi
+ \item one single element {\textit{movie}}
+ \item start-tag: {\hilit \code{<movie>}}
+ \item end-tag: {\hilit \code{</movie>}}
+ \item content: \code{Good Will Hunting}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{XML Example}
+
+\bb{Ultra Simple XML}
+\begin{verbatim}
+<movie mins="126" lang="en">
+  Good Will Hunting
+</movie>
+\end{verbatim}
+\eb
+
+\bigskip
+
+\bi
+ \item xml elements can have \textbf{attributes}
+ \item attributes:  \code{\hilit mins} (minutes) and \code{\hilit lang} (language)
+ \item attributes are \textit{attached} to the element's start tag
+ \item attribute values \textbf{must be quoted!}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{XML Example}
+
+\bb{Minimalist XML}
+\begin{verbatim}
+<movie mins="126" lang="en">
+  <title>Good Will Hunting</title>
+  <director>Gus Van Sant</director>
+  <year>1998</year>
+  <genre>drama</genre>
+</movie>
+\end{verbatim}
+\eb
+
+\bigskip
+
+\bi
+ \item an xml element may contain other elements
+ \item \textit{movie} contains several elements: \textit{title, director, year, genre}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{XML Example}
+
+\bb{Simple XML}
+\begin{verbatim}
+<movie mins="126" lang="en">
+  <title>Good Will Hunting</title>
+  <director>
+    <first_name>Gus</first_name>
+    <last_name>Van Sant</last_name>
+  </director>
+  <year>1998</year>
+  <genre>drama</genre>
+</movie>
+\end{verbatim}
+\eb
+
+\bigskip
+
+\bi
+ \item Now \textit{director} has two child elements: \textit{first\_name} and \textit{last\_name}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{XML Hierarchy Structure}
+
+\begin{block}{Conceptual XML}
+\begin{verbatim}
+<Root>
+  <child_1>...</child_1>
+  <child_2>...</child_2>
+    <subchild>...</subchild>
+  <child_3>...</child_3>
+</Root>
+\end{verbatim}
+\end{block}
+
+\bigskip
+
+\bi
+ \item An XML document can be represented with a \textbf{tree structure}
+ \item An XML document must have \textbf{one single Root} element
+ \item The \code{Root} may contain \code{child} elements
+ \item A \code{child} element may contain \code{subchild} elements
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{}
+\begin{center}
+\ig[width=10cm]{images/xml_movie_tree1.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{}
+\begin{center}
+\ig[width=10cm]{images/xml_movie_tree2.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Well-Formedness}
+
+\bb{Well-formed XML}
+We say that an XML document is \textbf{well-formed} when it obeys the basic syntax rules of XML. Some of those rules are:
+\bi
+ \item one root element containing the rest of elements
+ \item properly nested elements
+ \item self-closing tags
+ \item attributes appear in start-tags of elements
+ \item attribute values must be quoted
+ \item element names and attribute names are case sensitive
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Well-Formedness}
+
+\begin{verbatim}
+<movie mins="126" lang="en">
+  <title>Good Will Hunting</title>
+  <director>
+    <first_name>Gus</first_name>
+    <last_name>Van Sant</last_name>
+  </director>
+  <year>1998</year>
+  <genre>drama</genre>
+</movie>
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Well-Formedness}
+
+\bb{Importance of Well-formed XML}
+Not well-formed XML documents produce potentially fatal errors or warnings when parsed.
+
+\bigskip
+Documents may be well-formed but not valid. Well-formed just guarantees that the document meets the basic XML structure, not that the content is valid.
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Additional XML Elements}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Some Additional Elements}
+
+{ \small
+\begin{verbatim}
+<?xml version="1.0"? encoding="UTF-8" ?>
+<![CDATA[ a > 5 & b < 10 ]]>
+<?GS print(format = TRUE)>
+<!DOCTYPE Movie>
+<!-- This is a commet -->
+<movie mins="126" lang="en">
+  <title>Good Will Hunting</title>
+  <director>
+    <first_name>Gus</first_name>
+    <last_name>Van Sant</last_name>
+  </director>
+  <year>1998</year>
+  <genre>drama</genre>
+</movie>
+\end{verbatim}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Additional Optional XML Elements}
+
+{\small 
+\begin{tabular}{l l}
+  \hline
+  Markup & Description \\
+  \hline
+  \code{<?xml >} & XML Declaration \\
+  & \textit{identifies content as an XML document} \\
+  \code{<?PI >} & Processing Instruction \\
+  & \textit{processing instructions passed to application} \code{PI} \\
+  \code{<!DOCTYPE >} & Document-type Declaration \\
+  & \textit{defines the structure of an XML document} \\
+  \code{<![CDATA[ ]]>} & CDATA Character Data \\
+  & \textit{anything inside a CDATA is ignored by the parser} \\
+  \code{<!--  -->} & Comment \\
+  & \textit{for writing comments} \\
+  \hline
+\end{tabular}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{DTD}
+
+\bb{Document-Type Declaration}
+The Document-type Declaration identifies the \textbf{type} of the document. The \textit{type} indicates the structure of a \textbf{valid} document: 
+
+\bi
+ \item what elements are allowed to be present
+ \item how elements can be combined
+ \item how elements must be ordered
+\ei
+\eb
+
+Basically, the DTD specifies what the format allows to do.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Wrapping Up}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About XML}
+
+\bb{About XML}
+\bi
+ \item designed to store and transfer data
+ \item designed to be self-descriptive
+ \item tags are not predefined and can be extended
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Characteristics of XML}
+
+\bb{XML is}
+\bi
+ \item a generic language that provides structure and syntax for many markup dialects
+ \item is a syntax or format for defining markup languages
+ \item a standard for the semantic, hierarchical representation of data
+ \item provides a general approach for representing all types of information  dialects
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{XML document example}
+
+\bb{Simple XML}
+\begin{verbatim}
+<?xml version="1.0"?>
+<!DOCTYPE movies>
+<movie mins="126" lang="en">
+  <!-- this is a comment -->
+  <title>Good Will Hunting</title>
+  <director>
+    <first_name>Gus</first_name>
+    <last_name>Van Sant</last_name>
+  </director>
+  <year>1998</year>
+  <genre>drama</genre>
+</movie>
+\end{verbatim}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XML Tree Structure}
+
+\bb{Each Node can have:}
+\bi
+ \item a Name
+ \item any number of attributes
+ \item optional content
+ \item other nested elements
+\ei
+\eb
+
+\bb{Traversing the tree}
+There's a \textbf{unique} path from the root node to any given node 
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{HTML}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{HTML}
+
+\bb{About HTML}
+\bi
+ \item HyperText Markup Language
+ \item standard markup language used to create web pages
+ \item HTML describes the structure of a website semantically along with cues for presentation
+ \item Web browsers can read HTML files and render them into visible or audible web pages
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Hello World example}
+
+<<eval=FALSE>>=
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>This is a title</title>
+  </head>
+  <body>
+    <p>Hello world!</p>
+  </body>
+</html>
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{HTML}
+
+\bi
+ \item Open a new text file
+ \item Add osme HTML content (e.g. hello world example)
+ \item Save your file with extension \code{.html}
+ \item Click on your html file
+ \item Should be displayed in your browser
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Header Element}
+
+Header of the HTML document: is declared with the tag {\hilit \code{<head>...</head>}}
+<<eval=FALSE>>=
+<head>
+  <title>The Title</title>
+</head>
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Headings}
+
+HTML headings are defined with the {\hilit \code{<h1>, <h2>, ... <h6>}} tags:
+<<eval=FALSE>>=
+<h1>Heading level 1</h1>
+<h2>Heading level 2</h2>
+<h3>Heading level 3</h3>
+<h4>Heading level 4</h4>
+<h5>Heading level 5</h5>
+<h6>Heading level 6</h6>
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Paragraphs}
+
+Paragraphs are defined with the {\hilit \code{<p>}} tag:
+<<eval=FALSE>>=
+<p>This is the first paragraph</p>
+  
+<p>
+  This is the second paragraph.
+  The quick brown fox jumps over the lazy dog.
+</p>
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Links and comments}
+
+Links require the anchor tag {\hilit \code{<a>}} and the attribute {\hilit \code{href=}}
+<<eval=FALSE>>=
+<a href="https://www.wikipedia.org/">A link to Wikipedia!</a>
+@
+
+\bigskip
+Comments:
+<<eval=FALSE>>=
+<!-- This is a comment -->
+  
+<!-- 
+  This is also a comment 
+-->
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Images}
+
+Images are included with the {\hilit \code{<img>}} tag and the attribtue {\hilit \code{src=}}:
+<<eval=FALSE>>=
+<img src="image.gif">
+@
+
+\bigskip
+Image with a link:
+<<eval=FALSE>>=
+<a href="http://example.org">
+  <img src="image.gif" alt="descriptive text">
+</a>
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{HTML Example}
+
+<<eval=FALSE, size='scriptsize'>>=
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>This is a title</title>
+  </head>
+  <!-- this is a commetn -->
+  <body>
+    <h1>Heading level 1</h1>
+    <h2>Heading level 2</h2>
+    <h3>Heading level 3</h3>
+    <h4>Heading level 4</h4>
+    <h5>Heading level 5</h5>
+    <h6>Heading level 6</h6>  
+
+    <p>Hello world!</p>
+    <img src="http://www.r-statistics.com/wp-content/uploads/2013/05/R_logo-e1369060981211.png">
+  
+    <a href="https://www.r-project.org/">This is a link</a>
+  </body>
+</html>
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some References}
+
+\bi
+ \item XML Files website {\scriptsize (\url{http://www.xmlfiles.com})} \\
+ {\lolit by Jan Egil Refsnes}
+ \item XML in a  Nutshell \\
+ {\lolit by Elliotte Rusty Harold; W. Scott Means}
+ \item XML Tutorial {\scriptsize (\url{http://www.w3schools.com/xml/default.asp})} \\
+ {\lolit by w3schools}
+ \item Introduction to Data Technologies \\
+ {\lolit by Paul Murrell}
+ \item XML and Web Technologies for Data Sciences with R \\
+ {\lolit by Deb Nolan and Duncan Temple Lang}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

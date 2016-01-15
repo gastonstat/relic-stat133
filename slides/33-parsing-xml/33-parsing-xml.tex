@@ -1,0 +1,1635 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Parsing XML}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat}{\tt \scriptsize \color{foreground} github.com/gastonstat}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Parsing XML \\ and HTML Content}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Motivation}
+
+\bb{In a nutshell}
+We'll cover a variety of situations you most likely will find yourself dealing with:
+\bi
+ \item R package XML
+ \item Navigating the xml tree structure
+ \item Main functions in package XML
+ \item XPath
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Parsing}
+
+\begin{quotation}
+``A parser is a software component that takes input data (frequently text) and builds a data structure ---often some kind of parse tree, abstract syntax tree or other hierarchical structure--- giving a structural representation of the input, checking for correct syntax in the process''
+\end{quotation}
+
+{\footnotesize 
+\url{http://en.wikipedia.org/wiki/Parsing\#Parser} \\
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Parsing XML and HTML Content}
+
+\bb{Parsing XML and HTML?}
+Getting data from the web often involves reading and processing content from xml and html documents. This is known as parsing. 
+
+\bigskip
+Luckily for us there's the R package \code{"XML"} (by Duncan Temple Lang) that allows us to parse such types of documents.
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{R Package \code{"XML"}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{R Package XML}
+
+The package \code{"XML"} is designed for 2 major purposes
+\begin{enumerate}
+ \item parsing xml / html content
+ \item writing xml / html content
+\end{enumerate}
+
+\bigskip
+
+We won't cover the functions and utilities that have to do with writing xml / html content
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{What can we do with "XML"?}
+
+We'll cover 4 major types of tasks that we can perform with \code{"XML"}
+\begin{enumerate}
+ \item parsing (i.e. \textit{reading}) xml / html content
+ \item obtaining descriptive information about parsed contents
+ \item navigating the tree structure (i.e. accessing its components)
+ \item querying and extracting data from parsed contents
+\end{enumerate}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{"XML"}}
+
+Remember to install \code{"XML"} first
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# installing xml}
+\hlkwd{install.packages}\hlstd{(}\hlstr{"xml"}\hlstd{,} \hlkwc{dependencies} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+
+\hlcom{# load XML}
+\hlkwd{library}\hlstd{(XML)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+More info about \code{"XML"} at: \\
+{\scriptsize \url{http://www.omegahat.org/RSXML}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Parsing Functions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Parsing Functions}
+
+Main parsing functions in \code{"XML"}
+\bbi
+ \item \code{xmlParse()}
+ \item \code{xmlTreeParse()}
+ \item \code{htmlParse()}
+ \item \code{htmlTreeParse()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Function \code{xmlParse()}}
+
+\bb{\code{xmlParse()}}
+\bi
+\item \code{"XML"} comes with the \textit{almighty} parser function {\hilit \code{xmlParse()}}
+ \item the main input for {\hilit \code{xmlParse()}} is a file: either a local file, a complete URL or a text string
+ \bi
+ \item[ex1:] \code{xmlParse("Documents/file.xml")}
+ \item[ex2:] \code{xmlParse("http://www.xyz.com/some\_file.xml")}
+ \item[ex3:] \code{xmlParse(xml\_string, asText=TRUE)}
+ \ei
+ \item the rest of the 20+ parameters are optional, and provide options to control the parsing procedure
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{xmlParse()}}
+
+Ultra simple example:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{doc} \hlkwb{<-} \hlkwd{xmlParse}\hlstd{(}\hlstr{"<foo><bar>Some text</bar></foo>"}\hlstd{,}
+                \hlkwc{asText} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+
+\hlstd{doc}
+\end{alltt}
+\begin{verbatim}
+## <?xml version="1.0"?>
+## <foo>
+##   <bar>Some text</bar>
+## </foo>
+## 
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{}
+\begin{center}
+\ig[width=10cm]{images/xml_parse.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{xmlParse()} default behavior}
+
+\bb{Default behavior of \code{xmlParse()}}
+\bi
+ \item it is a DOM parser: it reads an XML document into a hierarchical structure representation
+ \item it builds an XML tree as a native C-level data structure \\
+ (not an R data structure)
+ \item it returns an object of class {\hilit \code{"XMLInternalDocument"}}
+ \item can read content from compressed files without us needing to explicitly uncompress the file
+ \item it does NOT handle \code{HTTPS} (secured HTTP)
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{xmlParse()} default behavior}
+
+Simple usage of \code{xmlParse()} on an XML document:
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# parsing an xml document}
+\hlstd{doc1} \hlkwb{=} \hlkwd{xmlParse}\hlstd{(}\hlstr{"http://www.xmlfiles.com/examples/plant_catalog.xml"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+by default \code{xmlParse()} returns an object of class {\hilit \code{"XMLInternalDocument"}} which is a C-level internal data structure
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# class }
+\hlkwd{class}\hlstd{(doc1)}
+\end{alltt}
+\begin{verbatim}
+## [1] "XMLInternalDocument" "XMLAbstractDocument"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About \code{xmlParse()} (con't)}
+
+\bb{Argument \code{useInternalNodes = FALSE}}
+Instead of parsing content as an internal C-level structure, we can parse it into an R structure by specifying the parameter {\hilit \code{useInternalNodes = FALSE}}
+\eb
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# parsing an xml document into an R structure}
+\hlstd{doc2} \hlkwb{=} \hlkwd{xmlParse}\hlstd{(}\hlstr{"http://www.xmlfiles.com/examples/plant_catalog.xml"}\hlstd{,}
+                \hlkwc{useInternalNodes} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+the output is of class {\hilit \code{"XMLDocument"}} and is implemented as a hierarchy of lists
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About \code{xmlParse()} (con't)}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# parsing an xml document into an R structure}
+\hlstd{doc2} \hlkwb{=} \hlkwd{xmlParse}\hlstd{(}\hlstr{"http://www.xmlfiles.com/examples/plant_catalog.xml"}\hlstd{,}
+                \hlkwc{useInternalNodes} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# class }
+\hlkwd{class}\hlstd{(doc2)}
+\end{alltt}
+\begin{verbatim}
+## [1] "XMLDocument"         "XMLAbstractDocument"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{is.list}\hlstd{(doc2)}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About \code{xmlTreeParse()}}
+
+\bb{Argument \code{useInternalNodes = FALSE}}
+\code{"XML"} provides the function {\hilit \code{xmlTreeParse()}} as a convenient synonym for \code{xmlParse(file, useInternalNodes = FALSE)}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# parse an xml document into an R structure}
+\hlstd{doc3} \hlkwb{=} \hlkwd{xmlTreeParse}\hlstd{(}\hlstr{"http://www.xmlfiles.com/examples/plant_catalog.xml"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+As expected, the output is of class {\hilit \code{"XMLDocument"}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# class }
+\hlkwd{class}\hlstd{(doc3)}
+\end{alltt}
+\begin{verbatim}
+## [1] "XMLDocument"         "XMLAbstractDocument"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{HTML Content}
+
+\bb{Parsing HTML content}
+In theory, we could use {\hilit \code{xmlParse()}} with its default settings to parse HTML documents. 
+
+\bigskip
+However \code{xmlParse()} ---with its default behavior--- will not work properly when HTML documents are not well-formed:
+\bi
+ \item no xml declaration
+ \item no DOCTYPE
+ \item no closure of tags
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{xmlParse()} and HTML Content}
+
+\bb{Argument \code{isHTML = TRUE}}
+One option to parse HTML documents is by using \code{xmlParse()} with the argument {\hilit \code{isHTML = TRUE}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# parsing an html document with 'xmlParse()'}
+\hlstd{doc4} \hlkwb{=} \hlkwd{xmlParse}\hlstd{(}\hlstr{"http://www.r-project.org/mail.html"}\hlstd{,}
+                \hlkwc{isHTML} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+the output is of class {\hilit \code{"HTMLInternalDocument"}}
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# class }
+\hlkwd{class}\hlstd{(doc4)}
+\end{alltt}
+\begin{verbatim}
+## [1] "HTMLInternalDocument" "HTMLInternalDocument" "XMLInternalDocument" 
+## [4] "XMLAbstractDocument"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{htmlParse()} and HTML Content}
+
+\bb{Function \code{htmlParse()}}
+Another option is to use the function {\hilit \code{htmlParse()}} which is equivalent to \code{xmlParse(file, isHTML = TRUE)}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# parsing an html document with 'htmlParse()'}
+\hlstd{doc5} \hlkwb{=} \hlkwd{htmlParse}\hlstd{(}\hlstr{"http://www.r-project.org/mail.html"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+again, the output is of class {\hilit \code{"HTMLInternalDocument"}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# class }
+\hlkwd{class}\hlstd{(doc5)}
+\end{alltt}
+\begin{verbatim}
+## [1] "HTMLInternalDocument" "HTMLInternalDocument" "XMLInternalDocument" 
+## [4] "XMLAbstractDocument"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{htmlTreeParse()}}
+
+\bb{Function \code{htmlTreeParse()}}
+To parse content into an R structure we have to use {\hilit \code{htmlTreeParse()}} which is equivalent to \code{htmlParse(file, useInternalNodes = FALSE)}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# parsing an html document into an  R structure}
+\hlstd{doc6} \hlkwb{=} \hlkwd{htmlTreeParse}\hlstd{(}\hlstr{"http://www.r-project.org/mail.html"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+in this case the output is of class {\hilit \code{"XMLDocumentContent"}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# class }
+\hlkwd{class}\hlstd{(doc6)}
+\end{alltt}
+\begin{verbatim}
+## [1] "XMLDocumentContent"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{HTML Content}
+
+\bb{About parsing HTML documents}
+\bi
+ \item \code{xmlParse()} can do the job but only on well-formed HTML
+ \item it is better to be conservative and use the argument {\hilit \code{isHTML = TRUE}}, which is equivalent to using \code{htmlParse()}
+ \item we can use {\hilit \code{htmlParse()}} or {\hilit \code{htmlTreeParse()}} which try to correct not well-formed docs by using heuristics that will take care of the missing elements
+ \item in a worst-case scenario we can use {\hilit \code{tidyHTML()}} from the R package \code{"RTidyHTML"}, and then pass the result to \code{htmlParse()}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Parsing Functions Summary}
+
+\bb{\code{xmlParse(file)}}
+\bi
+ \item main parsing function
+ \item returns class \code{"XMLInternalDocument"} (C-level structure)
+\ei
+\eb
+
+\bb{\code{xmlTreeParse(file)}}
+\bi
+ \item returns class \code{"XMLDocument"} (R data structure)
+ \item equivalent to \code{xmlParse(file, useInternalNodes = FALSE)}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Parsing Functions Summary}
+
+\bb{\code{htmlParse(file)}}
+\bi
+ \item especially suited for parsing HTML content
+ \item returns class \code{"HTMLInternalDocument"} (C-level structure)
+ \item equivalent to \code{xmlParse(file, isHTML = TRUE)}
+\ei
+\eb
+
+\bb{\code{htmlTreeParse(file)}}
+\bi
+ \item especially suited for parsing HTML content
+ \item returns class \code{"XMLDocumentContent"} (R data structure)
+ \item equivalent to
+ \begin{itemize}
+  \item \code{xmlParse(file, isHTML = TRUE, useInternalNodes = FALSE)}
+  \item \code{htmlParse(file, useInternalNodes = FALSE)}
+ \end{itemize}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Parsing Functions}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+  Function & relation with \code{xmlParse()} \\
+  \hline
+  \code{xmlParse()} & \textit{default} \\
+  & \\
+  \code{xmlTreeParse()} & \code{useInternalNodes = FALSE} \\
+  & \\
+  \code{htmlParse()} & \code{isHTML = TRUE} \\
+  & \\
+  \code{htmlTreeParse()} & \code{isHTML = TRUE} \\
+  & \code{useInternalNodes = FALSE} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Working with \\ Parsed Documents}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Parsed Documents}
+
+\bb{\code{xmlRoot()} and \code{xmlChildren()}}
+Having parsed an XML / HTML document, we can use 2 main functions to start working on the tree structure:
+\bi
+ \item {\hilit \code{xmlRoot()}} gets access to the root node and its elements 
+ \item {\hilit \code{xmlChildren()}} gets access to the child elements of a given node
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Conceptual Diagram}
+\begin{center}
+\ig[width=10cm]{images/xml_tree_navigate.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some Additional Functions}
+
+\begin{center}
+{\mdlit Functions for a given node}
+\end{center}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+  Function & Description \\
+  \hline
+  \code{xmlName()} & name of the node \\
+  \code{xmlSize()} & number of subnodes \\
+  \code{xmlAttrs()} & named character vector of all attributes \\
+  \code{xmlGetAttr()} & value of a single attribute \\
+  \code{xmlValue()} & contents of a leaf node \\
+  \code{xmlParent()} & name of parent node \\
+  \code{xmlAncestors()} & name of ancestor nodes \\
+  \code{getSibling()} & siblings to the right or to the left \\
+  \code{xmlNamespace()} & the namespace (if there's one) \\  
+  \hline
+ \end{tabular}
+\end{center}
+
+{\scriptsize The applicability of the functions depends on the class of objects we are working on}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Toy Example: Movies XML}
+
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# define some xml content}
+\hlstd{xml_string} \hlkwb{=} \hlkwd{c}\hlstd{(}
+  \hlstr{'<?xml version="1.0" encoding="UTF-8"?>'}\hlstd{,}
+  \hlstr{'<movies>'}\hlstd{,}
+  \hlstr{'<movie mins="126" lang="eng">'}\hlstd{,}
+  \hlstr{'<title>Good Will Hunting</title>'}\hlstd{,}
+  \hlstr{'<director>'}\hlstd{,}
+  \hlstr{'<first_name>Gus</first_name>'}\hlstd{,}
+  \hlstr{'<last_name>Van Sant</last_name>'}\hlstd{,}
+  \hlstr{'</director>'}\hlstd{,}
+  \hlstr{'<year>1998</year>'}\hlstd{,}
+  \hlstr{'<genre>drama</genre>'}\hlstd{,}
+  \hlstr{'</movie>'}\hlstd{,}
+  \hlstr{'<movie mins="106" lang="spa">'}\hlstd{,}
+  \hlstr{'<title>Y tu mama tambien</title>'}\hlstd{,}
+  \hlstr{'<director>'}\hlstd{,}
+  \hlstr{'<first_name>Alfonso</first_name>'}\hlstd{,}
+  \hlstr{'<last_name>Cuaron</last_name>'}\hlstd{,}
+  \hlstr{'</director>'}\hlstd{,}
+  \hlstr{'<year>2001</year>'}\hlstd{,}
+  \hlstr{'<genre>drama</genre>'}\hlstd{,}
+  \hlstr{'</movie>'}\hlstd{,}
+  \hlstr{'</movies>'}\hlstd{)}
+
+\hlcom{# parse xml content}
+\hlstd{movies_xml} \hlkwb{<-} \hlkwd{xmlParse}\hlstd{(xml_string,} \hlkwc{asText} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Toy Example: Movies XML}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# check movies_xml}
+\hlstd{movies_xml}
+\end{alltt}
+\begin{verbatim}
+## <?xml version="1.0" encoding="UTF-8"?>
+## <movies>
+##   <movie mins="126" lang="eng">
+##     <title>Good Will Hunting</title>
+##     <director>
+##       <first_name>Gus</first_name>
+##       <last_name>Van Sant</last_name>
+##     </director>
+##     <year>1998</year>
+##     <genre>drama</genre>
+##   </movie>
+##   <movie mins="106" lang="spa">
+##     <title>Y tu mama tambien</title>
+##     <director>
+##       <first_name>Alfonso</first_name>
+##       <last_name>Cuaron</last_name>
+##     </director>
+##     <year>2001</year>
+##     <genre>drama</genre>
+##   </movie>
+## </movies>
+## 
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Movies XML: Root Node}
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# examine class}
+\hlcom{# (movies_xml is a C-level object)}
+\hlkwd{class}\hlstd{(movies_xml)}
+\end{alltt}
+\begin{verbatim}
+## [1] "XMLInternalDocument" "XMLAbstractDocument"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# get root node}
+\hlstd{root} \hlkwb{<-} \hlkwd{xmlRoot}\hlstd{(movies_xml)}
+
+\hlcom{# examine class}
+\hlkwd{class}\hlstd{(root)}
+\end{alltt}
+\begin{verbatim}
+## [1] "XMLInternalElementNode" "XMLInternalNode"        "XMLAbstractNode"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# display root node}
+\hlstd{root}
+\end{alltt}
+\begin{verbatim}
+## <movies>
+##   <movie mins="126" lang="eng">
+##     <title>Good Will Hunting</title>
+##     <director>
+##       <first_name>Gus</first_name>
+##       <last_name>Van Sant</last_name>
+##     </director>
+##     <year>1998</year>
+##     <genre>drama</genre>
+##   </movie>
+##   <movie mins="106" lang="spa">
+##     <title>Y tu mama tambien</title>
+##     <director>
+##       <first_name>Alfonso</first_name>
+##       <last_name>Cuaron</last_name>
+##     </director>
+##     <year>2001</year>
+##     <genre>drama</genre>
+##   </movie>
+## </movies>
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Movies XML: movie children}
+
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# children of root node}
+\hlstd{movie_child} \hlkwb{<-} \hlkwd{xmlChildren}\hlstd{(root)}
+
+\hlstd{movie_child}
+\end{alltt}
+\begin{verbatim}
+## $movie
+## <movie mins="126" lang="eng">
+##   <title>Good Will Hunting</title>
+##   <director>
+##     <first_name>Gus</first_name>
+##     <last_name>Van Sant</last_name>
+##   </director>
+##   <year>1998</year>
+##   <genre>drama</genre>
+## </movie> 
+## 
+## $movie
+## <movie mins="106" lang="spa">
+##   <title>Y tu mama tambien</title>
+##   <director>
+##     <first_name>Alfonso</first_name>
+##     <last_name>Cuaron</last_name>
+##   </director>
+##   <year>2001</year>
+##   <genre>drama</genre>
+## </movie> 
+## 
+## attr(,"class")
+## [1] "XMLInternalNodeList" "XMLNodeList"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Movies XML: movie children}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# first movie}
+\hlstd{goodwill} \hlkwb{<-} \hlstd{movie_child[[}\hlnum{1}\hlstd{]]}
+\hlstd{goodwill}
+\end{alltt}
+\begin{verbatim}
+## <movie mins="126" lang="eng">
+##   <title>Good Will Hunting</title>
+##   <director>
+##     <first_name>Gus</first_name>
+##     <last_name>Van Sant</last_name>
+##   </director>
+##   <year>1998</year>
+##   <genre>drama</genre>
+## </movie>
+\end{verbatim}
+\begin{alltt}
+\hlcom{# second movie}
+\hlstd{tumama} \hlkwb{<-} \hlstd{movie_child[[}\hlnum{2}\hlstd{]]}
+\hlstd{tumama}
+\end{alltt}
+\begin{verbatim}
+## <movie mins="106" lang="spa">
+##   <title>Y tu mama tambien</title>
+##   <director>
+##     <first_name>Alfonso</first_name>
+##     <last_name>Cuaron</last_name>
+##   </director>
+##   <year>2001</year>
+##   <genre>drama</genre>
+## </movie>
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Movies XML: movie children}
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# node name}
+\hlkwd{xmlName}\hlstd{(goodwill)}
+\end{alltt}
+\begin{verbatim}
+## [1] "movie"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# number of children}
+\hlkwd{xmlSize}\hlstd{(goodwill)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\begin{alltt}
+\hlcom{# node attributes}
+\hlkwd{xmlAttrs}\hlstd{(goodwill)}
+\end{alltt}
+\begin{verbatim}
+##  mins  lang 
+## "126" "eng"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# get specific attribute value}
+\hlkwd{xmlGetAttr}\hlstd{(goodwill,} \hlkwc{name} \hlstd{=} \hlstr{'lang'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "eng"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# node name}
+\hlkwd{xmlName}\hlstd{(tumama)}
+\end{alltt}
+\begin{verbatim}
+## [1] "movie"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# number of children}
+\hlkwd{xmlSize}\hlstd{(tumama)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\begin{alltt}
+\hlcom{# node attributes}
+\hlkwd{xmlAttrs}\hlstd{(tumama)}
+\end{alltt}
+\begin{verbatim}
+##  mins  lang 
+## "106" "spa"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# get specific attribute value}
+\hlkwd{xmlGetAttr}\hlstd{(tumama,} \hlkwc{name} \hlstd{=} \hlstr{'lang'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "spa"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Movies XML: movie Good Will Hunting}
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# node content (as character string)}
+\hlkwd{xmlValue}\hlstd{(goodwill)}
+\end{alltt}
+\begin{verbatim}
+## [1] "Good Will HuntingGusVan Sant1998drama"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# child nodes of goodwill node}
+\hlkwd{xmlChildren}\hlstd{(goodwill)}
+\end{alltt}
+\begin{verbatim}
+## $title
+## <title>Good Will Hunting</title> 
+## 
+## $director
+## <director>
+##   <first_name>Gus</first_name>
+##   <last_name>Van Sant</last_name>
+## </director> 
+## 
+## $year
+## <year>1998</year> 
+## 
+## $genre
+## <genre>drama</genre> 
+## 
+## attr(,"class")
+## [1] "XMLInternalNodeList" "XMLNodeList"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# director nodes of goodwill node}
+\hlstd{gusvan} \hlkwb{<-} \hlkwd{xmlChildren}\hlstd{(goodwill)[[}\hlnum{2}\hlstd{]]}
+\hlstd{gusvan}
+\end{alltt}
+\begin{verbatim}
+## <director>
+##   <first_name>Gus</first_name>
+##   <last_name>Van Sant</last_name>
+## </director>
+\end{verbatim}
+\begin{alltt}
+\hlcom{# parent}
+\hlkwd{xmlParent}\hlstd{(gusvan)}
+\end{alltt}
+\begin{verbatim}
+## <movie mins="126" lang="eng">
+##   <title>Good Will Hunting</title>
+##   <director>
+##     <first_name>Gus</first_name>
+##     <last_name>Van Sant</last_name>
+##   </director>
+##   <year>1998</year>
+##   <genre>drama</genre>
+## </movie>
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Movies XML: movie Good Will Hunting}
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# director children}
+\hlkwd{xmlChildren}\hlstd{(gusvan)}
+\end{alltt}
+\begin{verbatim}
+## $first_name
+## <first_name>Gus</first_name> 
+## 
+## $last_name
+## <last_name>Van Sant</last_name> 
+## 
+## attr(,"class")
+## [1] "XMLInternalNodeList" "XMLNodeList"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# sibling of goodwill node}
+\hlkwd{getSibling}\hlstd{(goodwill)}
+\end{alltt}
+\begin{verbatim}
+## <movie mins="106" lang="spa">
+##   <title>Y tu mama tambien</title>
+##   <director>
+##     <first_name>Alfonso</first_name>
+##     <last_name>Cuaron</last_name>
+##   </director>
+##   <year>2001</year>
+##   <genre>drama</genre>
+## </movie>
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Looping Over Nodes}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looping Over Nodes}
+
+\bb{Looping over nodes}
+Extracting data from an XML / HTML document involves applying a given function to a subset of nodes. This means iterating over such subset.
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looping Over Nodes}
+
+There are various ways to loop over a subset of nodes:
+\bbi
+ \item the most basic approach is with \code{sapply()} or \code{lapply()}
+ \item anoter way is by using the ad-hoc functions {\hilit \code{xmlApply()}} and {\hilit \code{xmlSApply()}}, which are simple wrappers for the \code{lapply()} and \code{sapply()} functions. 
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looping Over Nodes}
+
+Some iteration examples with {\hilit \code{sapply()}}
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# length}
+\hlkwd{sapply}\hlstd{(movie_child, length)}
+\end{alltt}
+\begin{verbatim}
+## movie movie 
+##     1     1
+\end{verbatim}
+\begin{alltt}
+\hlcom{# names in child nodes}
+\hlkwd{sapply}\hlstd{(movie_child, names)}
+\end{alltt}
+\begin{verbatim}
+##          movie      movie     
+## title    "title"    "title"   
+## director "director" "director"
+## year     "year"     "year"    
+## genre    "genre"    "genre"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sapply}\hlstd{(movie_child, xmlSize)}
+\end{alltt}
+\begin{verbatim}
+## movie movie 
+##     4     4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# attributes of root child nodes}
+\hlkwd{sapply}\hlstd{(movie_child, xmlAttrs)}
+\end{alltt}
+\begin{verbatim}
+##      movie movie
+## mins "126" "106"
+## lang "eng" "spa"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# names in child nodes}
+\hlkwd{sapply}\hlstd{(movie_child, xmlValue)}
+\end{alltt}
+\begin{verbatim}
+##                                     movie 
+##   "Good Will HuntingGusVan Sant1998drama" 
+##                                     movie 
+## "Y tu mama tambienAlfonsoCuaron2001drama"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looping Over Nodes}
+
+{\hilit \code{xmlApply()}} and {\hilit \code{xmlSApply()}} operate on the sub-nodes of an \code{XMLNode}:
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# names in child nodes}
+\hlkwd{xmlSApply}\hlstd{(root, names)}
+\end{alltt}
+\begin{verbatim}
+##          movie      movie     
+## title    "title"    "title"   
+## director "director" "director"
+## year     "year"     "year"    
+## genre    "genre"    "genre"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# size of movie children}
+\hlkwd{xmlSApply}\hlstd{(root, xmlSize)}
+\end{alltt}
+\begin{verbatim}
+## movie movie 
+##     4     4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# attributes of root child nodes}
+\hlkwd{xmlSApply}\hlstd{(root, xmlAttrs)}
+\end{alltt}
+\begin{verbatim}
+##      movie movie
+## mins "126" "106"
+## lang "eng" "spa"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# names in child nodes}
+\hlkwd{xmlSApply}\hlstd{(root, xmlValue)}
+\end{alltt}
+\begin{verbatim}
+##                                     movie 
+##   "Good Will HuntingGusVan Sant1998drama" 
+##                                     movie 
+## "Y tu mama tambienAlfonsoCuaron2001drama"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Looping Over Nodes}
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# length of nodes in movie 1}
+\hlkwd{xmlSApply}\hlstd{(root[[}\hlnum{1}\hlstd{]], length)}
+\end{alltt}
+\begin{verbatim}
+##    title director     year    genre 
+##        1        1        1        1
+\end{verbatim}
+\begin{alltt}
+\hlcom{# size in child nodes in movie 1}
+\hlkwd{xmlSApply}\hlstd{(root[[}\hlnum{1}\hlstd{]], xmlSize)}
+\end{alltt}
+\begin{verbatim}
+##    title director     year    genre 
+##        1        2        1        1
+\end{verbatim}
+\begin{alltt}
+\hlcom{# attribute values of nodes in movie 1}
+\hlkwd{xmlSApply}\hlstd{(root[[}\hlnum{1}\hlstd{]], xmlValue)}
+\end{alltt}
+\begin{verbatim}
+##               title            director                year 
+## "Good Will Hunting"       "GusVan Sant"              "1998" 
+##               genre 
+##             "drama"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# length of nodes in movie 2}
+\hlkwd{xmlSApply}\hlstd{(root[[}\hlnum{2}\hlstd{]], length)}
+\end{alltt}
+\begin{verbatim}
+##    title director     year    genre 
+##        1        1        1        1
+\end{verbatim}
+\begin{alltt}
+\hlcom{# size in child nodes in movie 2}
+\hlkwd{xmlSApply}\hlstd{(root[[}\hlnum{2}\hlstd{]], xmlSize)}
+\end{alltt}
+\begin{verbatim}
+##    title director     year    genre 
+##        1        2        1        1
+\end{verbatim}
+\begin{alltt}
+\hlcom{# attribute values of nodes in movie 2}
+\hlkwd{xmlSApply}\hlstd{(root[[}\hlnum{2}\hlstd{]], xmlValue)}
+\end{alltt}
+\begin{verbatim}
+##               title            director                year 
+## "Y tu mama tambien"     "AlfonsoCuaron"              "2001" 
+##               genre 
+##             "drama"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Case Study}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XML}
+
+Example from \code{www.xmlfiles.com}
+
+\url{http://www.xmlfiles.com/examples/plant_catalog.xml}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{XPath Language}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{XPath}
+
+\bb{Querying Trees}
+The real parsing power comes from the ability to \textbf{locate nodes and extract information from them}. For this, we need to be able to perform queries on the parsed content.
+\eb
+
+\bb{XPath}
+The solution is provided by \textbf{XPath}, which is a language to navigate through elements and attributes in an XML/HTML document
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XPath}
+
+\bb{XPath}
+\bi
+ \item is a language for finding information in an XML document
+ \item uses path expressions to select nodes or node-sets in an XML document
+ \item works by identifying patterns to match data or content
+ \item includes over 100 built-in functions
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About XPath}
+
+\bb{XPath Syntax}
+XPath uses \textbf{path expressions} to select nodes in an XML document. It has a computational model to identify sets of nodes (node-sets)
+\eb
+
+\bb{XPath Syntax}
+We can specify paths through the tree structure:
+\bi
+ \item based on node names
+ \item based on node content
+ \item based on a node's relationship to other nodes
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About XPath}
+
+\bb{XPath Syntax}
+The key concept is knowing how to write XPath expressions. XPath expressions have a syntax similar to the way files are located in a hierarchy of directories/folders in a computer file system. For instance:
+\eb
+
+{\hilit \code{/movies/movie[1]}}
+
+\bigskip
+is the XPath expression to locate the first {\hilit \code{movie}} element that is the child of the {\hilit \code{movies}} element
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Selecting Nodes}
+
+\bb{XPath Syntax}
+The main path expressions (i.e. symbols) are:
+\eb
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+  Symbol & Description \\
+  \hline
+  \code{/} & selects from the root node \\
+  \code{//} & selects nodes anywhere \\
+  \code{.} & selects the current node \\
+  \code{..} & Selects the parent of the current node \\
+  \code{@} & Selects attributes \\
+  \code{[]} & Square brackets to indicate attributes \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Selecting Unknown Nodes}
+
+\bb{XPath wildcards for unknown nodes}
+XPath wildcards can be used to select unknown XML elements
+\eb
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+  Symbol & Description \\
+  \hline
+  \code{*} & matches any element node \\
+  \code{@*} & matches any attribute node \\
+  \code{node()} & matches any node of any kind \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Movies Tree Structure}
+\begin{center}
+\ig[width=10cm]{images/xpath_tree.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XPath: movie nodes}
+\begin{center}
+\ig[width=10cm]{images/xpath_movie.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XPath: movie title nodes}
+\begin{center}
+\ig[width=10cm]{images/xpath_title.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XPath: movie director's first name nodes}
+\begin{center}
+\ig[width=10cm]{images/xpath_firstname.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XPath: movie director nodes}
+\begin{center}
+\ig[width=10cm]{images/xpath_director.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XPath: last name nodes}
+\begin{center}
+\ig[width=10cm]{images/xpath_lastname.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{XPath: title node of movie in Spanish}
+\begin{center}
+\ig[width=10cm]{images/xpath_ytmt.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Querying parsed documents}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{XPath in "XML"}
+
+\bb{XPath in \code{"XML"}}
+To work with XPath expressions using the \code{"XML"} package, we have the auxiliary function {\hilit \code{getNodeSet()}} that accepts XPath expressions in order to 
+select node-sets. Its main usage is:
+\begin{verbatim}
+    getNodeSet(doc, path)
+\end{verbatim}
+\eb
+
+where {\hilit \code{doc}} is an object of class \code{"XMLInternalDocument"} and {\hilit \code{path}} is a string giving the XPath expression to be evaluated
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some References}
+
+\bi
+ \item An Introduction to the XML Package for R \\
+{\scriptsize \url{http://www.omegahat.org/RSXML/Tour.pdf}}
+ \item A Short Introduction to the XML package for R \\
+{\scriptsize \url{http://www.omegahat.org/RSXML/shortIntro.pdf}}
+ \item R and Splus XML Parsers \\
+ {\scriptsize \url{http://www.omegahat.org/RSXML/Overview.html}}
+ \item XML and Web Technlogies for Data Sciences with R \\
+ by Deb Nolan and Duncan Temple Lang
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+
+
+\end{document}

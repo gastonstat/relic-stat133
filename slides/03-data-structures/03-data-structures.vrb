@@ -1,0 +1,20 @@
+\frametitle{Double brackets}
+
+Double brackets are used when we want to get access to the individual elements; use double brackets followed by single brackets
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lst[[}\hlnum{2}\hlstd{]]}
+\end{alltt}
+\begin{verbatim}
+## [1] "A" "B" "C"
+\end{verbatim}
+\begin{alltt}
+\hlstd{lst[[}\hlnum{2}\hlstd{]][}\hlnum{3}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] "C"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

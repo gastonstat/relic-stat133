@@ -1,0 +1,12 @@
+\frametitle{XPath in "XML"}
+
+\bb{XPath in \code{"XML"}}
+To work with XPath expressions using the \code{"XML"} package, we have the auxiliary function {\hilit \code{getNodeSet()}} that accepts XPath expressions in order to
+select node-sets. Its main usage is:
+\begin{verbatim}
+    getNodeSet(doc, path)
+\end{verbatim}
+\eb
+
+where {\hilit \code{doc}} is an object of class \code{"XMLInternalDocument"} and {\hilit \code{path}} is a string giving the XPath expression to be evaluated
+

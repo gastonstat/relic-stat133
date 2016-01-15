@@ -1,0 +1,26 @@
+\frametitle{Argument Matching}
+
+R is ``smart'' enough in doing pattern matching with arguments' names (not recommended though)
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{normal_dist}\hlstd{(}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.05399097
+\end{verbatim}
+\begin{alltt}
+\hlkwd{normal_dist}\hlstd{(}\hlnum{2}\hlstd{,} \hlkwc{m} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{s} \hlstd{=} \hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.05399097
+\end{verbatim}
+\begin{alltt}
+\hlkwd{normal_dist}\hlstd{(}\hlnum{2}\hlstd{,} \hlkwc{sig} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{m} \hlstd{=} \hlnum{0}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.05399097
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

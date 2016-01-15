@@ -1,0 +1,33 @@
+\frametitle{}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{head}\hlstd{(swim1500)}
+\end{alltt}
+\begin{verbatim}
+##   #    Time                             Name   Nationality
+## 1 1 22:48.4      Taylor , Henry Henry Taylor Great Britain
+## 2 2 22:00.0  Hodgson , George George Hodgson        Canada
+## 3 3 21:35.3            Borg , Arne Arne Borg        Sweden
+## 4 4 21:15.0            Borg , Arne Arne Borg        Sweden
+## 5 5 21:11.4            Borg , Arne Arne Borg        Sweden
+## 6 6 20:06.6      Charlton , Boy Boy Charlton     Australia
+##                           Date          Meet
+## 1 01908-07-25-0000Jul 25, 1908 Olympic Games
+## 2 01912-07-10-0000Jul 10, 1912 Olympic Games
+## 3  01923-07-08-0000Jul 8, 1923             -
+## 4 01924-01-30-0000Jan 30, 1924             -
+## 5 01924-07-13-0000Jul 13, 1924             -
+## 6 01924-07-15-0000Jul 15, 1924 Olympic Games
+##                                           Location Ref
+## 1 United Kingdom, London !  London, United Kingdom
+## 2           Sweden, Stockholm !  Stockholm, Sweden
+## 3         Sweden, Gothenburg !  Gothenburg, Sweden
+## 4           Australia, Sydney !  Sydney, Australia
+## 5                   France, Paris !  Paris, France
+## 6                   France, Paris !  Paris, France
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

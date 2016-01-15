@@ -1,0 +1,11 @@
+\frametitle{Related functions}
+
+\bi
+  \item \code{file.info()}
+  \item \code{file.mode()}
+  \item \code{file.mtime()}
+  \item \code{file.size()}
+  \item \code{file.access()}
+  \item \code{system()}
+\ei
+

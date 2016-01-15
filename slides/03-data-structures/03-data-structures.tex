@@ -1,0 +1,1679 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Data Structures}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Types and Structures}
+
+To make the best of the R language, you'll need a strong understanding of the basic \textbf{data types} and \textbf{data structures} and how to operate on them.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Structures}
+
+There are various data structures in R (we'll describe them in detail later):
+
+\bi
+  \item vectors
+  \item matrices (2d arrays)
+  \item arrays (in general)
+  \item factors
+  \item lists
+  \item data frames
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Vectors}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Vectors}
+
+\bi
+  \item A vector is the most basic data structure in R
+  \item Vectors are contiguous cells containing data
+  \item Can be of any length (including zero)
+  \item R has five basic type of vectors: \\
+  integer, double, complex, logical, character
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectors}
+
+The most simple type of vectors are scalars or single values:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# integer}
+\hlstd{x} \hlkwb{<-} \hlnum{1L}
+\hlcom{# double (real)}
+\hlstd{y} \hlkwb{<-} \hlnum{5}
+\hlcom{# complex}
+\hlstd{z} \hlkwb{<-} \hlnum{3} \hlopt{+} \hlnum{5i}
+\hlcom{# logical}
+\hlstd{a} \hlkwb{<-} \hlnum{TRUE}
+\hlcom{# character}
+\hlstd{b} \hlkwb{<-} \hlstr{"yosemite"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data modes}
+
+\bi
+  \item A \textbf{double} vector stores regular (i.e. real) numbers
+  \item An \textbf{integer} vector stores integers (no decimal component)
+  \item A \textbf{character} vector stores text
+  \item A \textbf{logical} vector stores \code{TRUE}'s and \code{FALSE}'s values
+  \item A \textbf{complex} vector stores complex numbers
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Types (or modes)}
+
+\begin{center}
+ \begin{tabular}{l l l l}
+  \hline
+   value & example & mode & storage \\
+  \hline
+  integer & \code{1L, 2L} & \code{numeric} & \code{integer} \\  
+  real & \code{1, -0.5} & \code{numeric} & \code{double} \\
+  complex & \code{3 + 5i} & \code{complex} & \code{complex} \\
+  logical & \code{TRUE, FALSE} & \code{logical} & \code{logical} \\
+  character & \code{"hello"} & \code{character} & \code{character}  \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Special Values}
+
+There are some special values 
+\bi
+  \item \code{NULL} is the null object (it has length zero)
+  \item Missing values are referred to by the symbol \code{NA}
+  \item \code{Inf} indicates positive infinite
+  \item \code{-Inf} indicates negative infinite
+  \item \code{NaN} indicates Not a Number
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Vectors}
+
+The function to create a vector from individual values is {\hilit \code{c()}}, short for \textbf{concatenate}:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some vectors}
+\hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)}
+
+\hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"one"}\hlstd{,} \hlstr{"two"}\hlstd{,} \hlstr{"three"}\hlstd{)}
+
+\hlstd{z} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+Separate each element by a comma
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Atomic Vectors}
+
+\bi
+  \item vectors are \textbf{atomic} structures
+  \item the values in a vector must be ALL of the same type 
+  \item either all integers, or reals, or complex, or characters, or logicals
+  \item you cannot have a vector of different data types
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Atomic Vectors}
+
+If you mix different data values, R will \textbf{implicitly} coerce them so they are all of the same type
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mixing numbers and characters}
+\hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlstr{"four"}\hlstd{,} \hlstr{"five"}\hlstd{)}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## [1] "1"    "2"    "3"    "four" "five"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# mixing numbers and logical values}
+\hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{)}
+\hlstd{y}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 0 3 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Atomic Vectors}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mixing numbers and logical values}
+\hlstd{z} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlstr{"TRUE"}\hlstd{,} \hlstr{"FALSE"}\hlstd{)}
+\hlstd{z}
+\end{alltt}
+\begin{verbatim}
+## [1] "TRUE"  "FALSE" "TRUE"  "FALSE"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# mixing integer, real, and complex numbers}
+\hlstd{w} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1L}\hlstd{,} \hlopt{-}\hlnum{0.5}\hlstd{,} \hlnum{3} \hlopt{+} \hlnum{5i}\hlstd{)}
+\hlstd{w}
+\end{alltt}
+\begin{verbatim}
+## [1]  1.0+0i -0.5+0i  3.0+5i
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{How does R coerce data types?}
+
+\bb{R follows two basic rules of implicit coercion}
+If a character is present, R will coerce everything else to characters
+
+\bigskip
+
+If a vector contains logicals and numbers, R will convert the logicals to numbers (\code{TRUE} to 1, \code{FALSE} to 0)
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Coercion functions}
+
+\bb{Coercion Functions}
+R provides a set of \textbf{explicit} coercion functions that allow us to ``convert'' one type of data into another
+\eb
+
+\bi
+  \item \code{as.character()}
+  \item \code{as.numeric()}
+  \item \code{as.logical()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Conversion between types}
+
+\begin{center}
+ \begin{tabular}{l l l l}
+  \hline
+   from & to & function & conversions \\
+  \hline
+  logical & numeric & \code{as.numeric} & \code{FALSE} $\rightarrow 0$ \\
+   & & & \code{TRUE} $\rightarrow 1$ \\
+  logical & character & \code{as.character} & \code{FALSE} $\rightarrow$ \code{"FALSE"} \\
+   & & & \code{TRUE} $\rightarrow$ \code{"TRUE"} \\
+  character & numeric & \code{as.numeric} & \code{"1", "2"} $\rightarrow$ \code{1, 2} \\
+   & & & \code{"A"} $\rightarrow$ \code{NA} \\
+  character & logical & \code{as.logical} & \code{"FALSE"} $\rightarrow$ \code{FALSE} \\
+   & & & \code{"TRUE"} $\rightarrow$ \code{TRUE} \\
+   & & & \textit{other} $\rightarrow$ \code{NA} \\
+   numeric & logical & \code{as.logical} & \code{0} $\rightarrow$ \code{FALSE} \\
+   & & & \textit{other} $\rightarrow$ \code{1} \\
+  numeric & character & \code{as.character} & \code{1, 2} $\rightarrow$ \code{"1", "2"} \\
+
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Properties of Vectors}
+
+\bi
+  \item all vectors have a length
+  \item vector elements can have associated names
+  \item vectors are objects of class \code{"vector"}
+  \item vectors have a mode (storage mode)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Properties of Vectors}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# vector with named elements}
+\hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwc{a} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{b} \hlstd{=} \hlnum{2.5}\hlstd{,} \hlkwc{c} \hlstd{=} \hlnum{3.7}\hlstd{,} \hlkwc{d} \hlstd{=} \hlnum{10}\hlstd{)}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+##    a    b    c    d 
+##  1.0  2.5  3.7 10.0
+\end{verbatim}
+\begin{alltt}
+\hlkwd{length}\hlstd{(x)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\begin{alltt}
+\hlkwd{mode}\hlstd{(x)}
+\end{alltt}
+\begin{verbatim}
+## [1] "numeric"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Matrices and Arrays}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From Vectors to Arrays}
+
+We can transform a vector in an \textbf{n-dimensional} array by giving it a dimensions attribute \code{dim}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# positive: from 1 to 8}
+\hlstd{x} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{8}
+
+\hlcom{# adding 'dim' attribute}
+\hlkwd{dim}\hlstd{(x)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{)}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    3    5    7
+## [2,]    2    4    6    8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From Vectors to Arrays}
+
+\bi
+  \item a vector can be given a \code{dim} attribute
+  \item a \code{dim} attribute is a numeric vector of length \code{n}
+  \item R will reorganize the elements of the vector into \code{n} dimensions
+  \item each dimension will have as many rows (or columns, etc.) as the \code{n}-th value of the \code{dim} vector
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From Vectors to Arrays}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# dim attribute with 3 dimensions}
+\hlkwd{dim}\hlstd{(x)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{)}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## , , 1
+## 
+##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4
+## 
+## , , 2
+## 
+##      [,1] [,2]
+## [1,]    5    7
+## [2,]    6    8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From Vector to Matrix}
+
+A \code{dim} attribute of length 2 will convert a vector into a matrix
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# vector to matrix}
+\hlstd{A} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{8}
+\hlkwd{class}\hlstd{(A)}
+\end{alltt}
+\begin{verbatim}
+## [1] "integer"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{dim}\hlstd{(A)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{)}
+\hlkwd{class}\hlstd{(A)}
+\end{alltt}
+\begin{verbatim}
+## [1] "matrix"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+When using \code{dim()}, R always fills up each matrix by rows.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From Vector to Matrix}
+
+To have more control about how a matrix is filled, (by rows or columns), we use the \code{matrix()} function:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# vector to matrix (by rows)}
+\hlstd{A} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{8}
+
+\hlkwd{matrix}\hlstd{(A,} \hlkwc{nrow} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{ncol} \hlstd{=} \hlnum{4}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    4
+## [2,]    5    6    7    8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Matrices}
+
+\bi
+  \item Matrices store values in a two-dimensional array
+  \item To create a matrix, give a vector to \code{matrix()} and specify number of rows and columns
+  \item you can also assign row and column names to a matrix
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Matrix}
+
+Exercise: create the following matrix
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+##      [,1]       [,2]     
+## [1,] "Harry"    "Potter" 
+## [2,] "Ron"      "Weasley"
+## [3,] "Hermione" "Granger"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Matrix}
+
+Solution:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# vector of names}
+\hlstd{hp} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Harry"}\hlstd{,} \hlstr{"Potter"}\hlstd{,} \hlstr{"Ron"}\hlstd{,} \hlstr{"Weasley"}\hlstd{,}
+        \hlstr{"Hermione"}\hlstd{,} \hlstr{"Granger"}\hlstd{)}
+
+\hlcom{# matrix filled up by rows}
+\hlkwd{matrix}\hlstd{(hp,} \hlkwc{nrow} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##      [,1]       [,2]     
+## [1,] "Harry"    "Potter" 
+## [2,] "Ron"      "Weasley"
+## [3,] "Hermione" "Granger"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Arrays}
+
+\bi
+  \item Arrays store values in an n-dimensional array
+  \item To create an array, give a vector to \code{array()} and specify number of dimensions
+  \item you can also assign dim-names to an array
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating an Array}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ar} \hlkwb{<-} \hlkwd{array}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,} \hlnum{5}\hlopt{:}\hlnum{8}\hlstd{,} \hlnum{9}\hlopt{:}\hlnum{12}\hlstd{),} \hlkwc{dim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{))}
+\hlstd{ar}
+\end{alltt}
+\begin{verbatim}
+## , , 1
+## 
+##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4
+## 
+## , , 2
+## 
+##      [,1] [,2]
+## [1,]    5    7
+## [2,]    6    8
+## 
+## , , 3
+## 
+##      [,1] [,2]
+## [1,]    9   11
+## [2,]   10   12
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Factors}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Factors}
+
+\bi 
+  \item A similar structure to vectors are \textbf{factors}
+  \item factors are used for handling categorical (i.e. qualitative) data
+  \item they are represented as objects of class \code{"factor"}
+  \item internally, factors are stored as integers
+  \item factors behave much like vectors (but they are not vectors)
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Factors}
+
+To create a factor we use the function {\hilit \code{factor()}}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# factor}
+\hlstd{cols} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,} \hlstr{"red"}\hlstd{,} \hlstr{"blue"}\hlstd{,} \hlstr{"gray"}\hlstd{,} \hlstr{"red"}\hlstd{)}
+\hlstd{cols} \hlkwb{<-} \hlkwd{factor}\hlstd{(cols)}
+\hlstd{cols}
+\end{alltt}
+\begin{verbatim}
+## [1] blue red  blue gray red 
+## Levels: blue gray red
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+The different values in a factor are called \textbf{levels}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{So far ...}
+
+\bi 
+  \item Vectors, matrices, and arrays are atomic structures (they can only store one type of data)
+  \item Many operations in R need atomic structures to make sure all values are of the same mode
+  \item In real life, however, many datasets contain multiple types of information
+  \item R provides other data structures to store different types of data
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Lists}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Lists}
+
+\bi 
+  \item Lists are the most general class of data container
+  \item Like vectors, lists group data into a one-dimensional set
+  \item Unlike vectors, lists can store all kinds of objects
+  \item Lists can be of any length
+  \item Elements of a list can be named, or not
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Lists}
+
+To create a list we use the function {\hilit \code{list()}}. The \code{list()} function creates a list the same way \code{c()} creates a vector:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lfriends} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlstr{"Harry"}\hlstd{,} \hlstr{"Ron"}\hlstd{,} \hlstr{"Hermione"}\hlstd{)}
+\hlstd{lfriends}
+\end{alltt}
+\begin{verbatim}
+## [[1]]
+## [1] "Harry"
+## 
+## [[2]]
+## [1] "Ron"
+## 
+## [[3]]
+## [1] "Hermione"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Lists}
+
+Lists can contain any type of data object (even other lists):
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lst} \hlkwb{<-} \hlkwd{list}\hlstd{(}
+  \hlkwd{c}\hlstd{(}\hlstr{"Harry"}\hlstd{,} \hlstr{"Ron"}\hlstd{,} \hlstr{"Hermione"}\hlstd{),}
+  \hlkwd{matrix}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{6}\hlstd{,} \hlkwc{nrow} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{ncol} \hlstd{=} \hlnum{3}\hlstd{),}
+  \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"yes"}\hlstd{,} \hlstr{"no"}\hlstd{,} \hlstr{"no"}\hlstd{,} \hlstr{"no"}\hlstd{,} \hlstr{"yes"}\hlstd{)),}
+  \hlstd{lfriends}
+\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Lists}
+
+Elements in a list can be named:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{list}\hlstd{(}
+  \hlkwc{first} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"Harry"}\hlstd{,} \hlstr{"Ron"}\hlstd{,} \hlstr{"Hermione"}\hlstd{),}
+  \hlkwc{second} \hlstd{=} \hlkwd{matrix}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{6}\hlstd{,} \hlkwc{nrow} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{ncol} \hlstd{=} \hlnum{3}\hlstd{),}
+  \hlkwc{third} \hlstd{=} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"yes"}\hlstd{,} \hlstr{"no"}\hlstd{,} \hlstr{"no"}\hlstd{,} \hlstr{"no"}\hlstd{,} \hlstr{"yes"}\hlstd{)),}
+  \hlkwc{fourth} \hlstd{= lfriends}
+\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a List}
+
+Exercise: create a list with your first name, middle name, and last name
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## $first
+## [1] "Gaston"
+## 
+## $middle
+## NULL
+## 
+## $last
+## [1] "Sanchez"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Data Frames}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Frames}
+
+\bb{Data Frame}
+A {\hilit \code{data.frame}} is the primary data structure that R provides for handling tabular data sets (e.g. spreadsheet like).
+\eb
+
+\bb{Function \code{data.frame()}}
+The {\hilit \code{data.frame()}} function allows us to create data frames 
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Lists}
+
+\bi 
+  \item Data frames are the two-dimensional version of a list
+  \item They are the conventional data storage structure for data analysis
+  \item A data frame is displayed like a table (or matrix)
+  \item A data frame is stored as a list
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Data Frame}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# creating a data frame (manually)}
+\hlstd{elements} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{name} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'hydrogen'}\hlstd{,} \hlstr{'nitrogen'}\hlstd{,} \hlstr{'oxygen'}\hlstd{),}
+  \hlkwc{symbol} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'H'}\hlstd{,} \hlstr{'N'}\hlstd{,} \hlstr{'O'}\hlstd{),}
+  \hlkwc{number} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{7}\hlstd{,} \hlnum{8}\hlstd{)}
+\hlstd{)}
+
+\hlstd{elements}
+\end{alltt}
+\begin{verbatim}
+##       name symbol number
+## 1 hydrogen      H      1
+## 2 nitrogen      N      7
+## 3   oxygen      O      8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+(vectors defined inside the data frame function)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Creating a Data Frame}
+
+\bi 
+  \item Give \code{data.frame()} any number of vectors, each separated with a comma
+  \item Each vector should be set equal to a name that describes the vector
+  \item \code{data.frame()} will turn each vector into a column of the new data frame
+  \item All vectors should be of the same length
+  \item By default, \code{data.frame()} converts strings into factors
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Data Frame}
+
+Create the following data frame:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+##        state abbreviation    capital   area
+## 1 California           CA Sacramento 163707
+## 2   New York           NY     Albany  54475
+## 3      Texas           TX     Austin 268601
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Data Frame}
+
+Solution:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{states} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{state} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'California'}\hlstd{,} \hlstr{'New York'}\hlstd{,} \hlstr{'Texas'}\hlstd{),}
+  \hlkwc{abbreviation} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'CA'}\hlstd{,} \hlstr{'NY'}\hlstd{,} \hlstr{'TX'}\hlstd{),}
+  \hlkwc{capital} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'Sacramento'}\hlstd{,} \hlstr{'Albany'}\hlstd{,} \hlstr{'Austin'}\hlstd{),}
+  \hlkwc{area} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{163707}\hlstd{,} \hlnum{54475}\hlstd{,} \hlnum{268601}\hlstd{),}
+  \hlkwc{stringsAsFactors} \hlstd{=} \hlnum{FALSE}
+\hlstd{)}
+
+\hlstd{states}
+\end{alltt}
+\begin{verbatim}
+##        state abbreviation    capital   area
+## 1 California           CA Sacramento 163707
+## 2   New York           NY     Albany  54475
+## 3      Texas           TX     Austin 268601
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{R common data structures}
+\begin{center}
+\ig[width=8cm]{images/data_structures.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Selecting Values}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Selecting Values}
+Data manipulation requires you to learn how to select and retrieve values from each of the data structures
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Notation System}
+
+\bb{Notation system to extract values from R objects}
+\bbi
+  \item to extract values use brackets: \code{[ ]}
+  \item inside the brackets specify indices
+  \item use as many indices as dimensions in the object
+  \item each index is separated by comma
+  \item indices can be numbers, logicals, or names
+\ei
+\eb
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Values of Vectors}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some vector}
+\hlstd{vec} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{5}
+
+\hlcom{# adding names}
+\hlkwd{names}\hlstd{(vec)} \hlkwb{<-} \hlstd{letters[}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}
+
+\hlstd{vec}
+\end{alltt}
+\begin{verbatim}
+## a b c d e 
+## 1 2 3 4 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with numbers}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# first element }
+\hlstd{vec[}\hlnum{1}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## a 
+## 1
+\end{verbatim}
+\begin{alltt}
+\hlcom{# third element}
+\hlstd{vec[}\hlnum{3}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## c 
+## 3
+\end{verbatim}
+\begin{alltt}
+\hlcom{# fifth element}
+\hlstd{vec[}\hlnum{5}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## e 
+## 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with positive vectors}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# range 1 to 3}
+\hlstd{vec[}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## a b c 
+## 1 2 3
+\end{verbatim}
+\begin{alltt}
+\hlcom{# vector of positive numbers}
+\hlstd{vec[}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## a c d 
+## 1 3 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with negative numbers}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# all values except the first one}
+\hlstd{vec[}\hlopt{-}\hlnum{1}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## b c d e 
+## 2 3 4 5
+\end{verbatim}
+\begin{alltt}
+\hlcom{# all values except 2nd and 4th}
+\hlstd{vec[}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## a c e 
+## 1 3 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with logicals}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# first element}
+\hlstd{vec[}\hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{FALSE}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## a 
+## 1
+\end{verbatim}
+\begin{alltt}
+\hlcom{# 4th and 5th elements}
+\hlstd{vec[}\hlkwd{c}\hlstd{(}\hlnum{FALSE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{TRUE}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## d e 
+## 4 5
+\end{verbatim}
+\begin{alltt}
+\hlcom{# logical negation (2nd and 4th)}
+\hlstd{vec[}\hlopt{!}\hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{TRUE}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## b d 
+## 2 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with names}
+
+Since \code{vec} has names, we can use characters to extract named values
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# element 'a'}
+\hlstd{vec[}\hlstr{'a'}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## a 
+## 1
+\end{verbatim}
+\begin{alltt}
+\hlcom{# elements 'b' and 'e'}
+\hlstd{vec[}\hlkwd{c}\hlstd{(}\hlstr{'b'}\hlstd{,} \hlstr{'e'}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## b e 
+## 2 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values with names}
+
+You can use repeated indices:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# element 2 (3-times)}
+\hlstd{vec[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## b b b 
+## 2 2 2
+\end{verbatim}
+\begin{alltt}
+\hlcom{# element 'a' (four times)}
+\hlstd{vec[}\hlkwd{c}\hlstd{(}\hlstr{'a'}\hlstd{,} \hlstr{'a'}\hlstd{,} \hlstr{'a'}\hlstd{,} \hlstr{'a'}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## a a a a 
+## 1 1 1 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{states}
+\end{alltt}
+\begin{verbatim}
+##        state abbreviation    capital   area
+## 1 California           CA Sacramento 163707
+## 2   New York           NY     Albany  54475
+## 3      Texas           TX     Austin 268601
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+Extracting a single cell
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# value in row 1, and column 1}
+\hlstd{states[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] "California"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# value in row 3, and column 3}
+\hlstd{states[}\hlnum{3}\hlstd{,}\hlnum{3}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] "Austin"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+To extract just rows, leave the column index empty
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# values in row 1}
+\hlstd{states[}\hlnum{1}\hlstd{, ]}
+\end{alltt}
+\begin{verbatim}
+##        state abbreviation    capital   area
+## 1 California           CA Sacramento 163707
+\end{verbatim}
+\begin{alltt}
+\hlcom{# values in rows 1 to 2}
+\hlstd{states[}\hlnum{1}\hlopt{:}\hlnum{2}\hlstd{, ]}
+\end{alltt}
+\begin{verbatim}
+##        state abbreviation    capital   area
+## 1 California           CA Sacramento 163707
+## 2   New York           NY     Albany  54475
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+To extract just columns, leave the row index empty
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# values in column 1}
+\hlstd{states[ ,} \hlnum{1}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] "California" "New York"   "Texas"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# values in columns 2 to 4}
+\hlstd{states[ ,} \hlnum{2}\hlopt{:}\hlnum{4}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+##   abbreviation    capital   area
+## 1           CA Sacramento 163707
+## 2           NY     Albany  54475
+## 3           TX     Austin 268601
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+Extracting rows with negative indices
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# excluding 3rd row}
+\hlstd{states[}\hlopt{-}\hlnum{3}\hlstd{, ]}
+\end{alltt}
+\begin{verbatim}
+##        state abbreviation    capital   area
+## 1 California           CA Sacramento 163707
+## 2   New York           NY     Albany  54475
+\end{verbatim}
+\begin{alltt}
+\hlcom{# excluding 1st and 3rd row}
+\hlstd{states[}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{3}\hlstd{), ]}
+\end{alltt}
+\begin{verbatim}
+##      state abbreviation capital  area
+## 2 New York           NY  Albany 54475
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+Extracting columns with negative indices
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# excluding 2nd column}
+\hlstd{states[ ,} \hlopt{-}\hlnum{2}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+##        state    capital   area
+## 1 California Sacramento 163707
+## 2   New York     Albany  54475
+## 3      Texas     Austin 268601
+\end{verbatim}
+\begin{alltt}
+\hlcom{# excluding 1st and 2dn columns}
+\hlstd{states[ ,} \hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##      capital   area
+## 1 Sacramento 163707
+## 2     Albany  54475
+## 3     Austin 268601
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+You can use repetition of indices
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# values in column 1}
+\hlstd{states[ ,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##        state    state.1
+## 1 California California
+## 2   New York   New York
+## 3      Texas      Texas
+\end{verbatim}
+\begin{alltt}
+\hlcom{# values in columns 2 to 4}
+\hlstd{states[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{), ]}
+\end{alltt}
+\begin{verbatim}
+##        state abbreviation capital   area
+## 2   New York           NY  Albany  54475
+## 2.1 New York           NY  Albany  54475
+## 3      Texas           TX  Austin 268601
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+Extracting values with logicals
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# exclude 3rd row}
+\hlstd{states[}\hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{), ]}
+\end{alltt}
+\begin{verbatim}
+##        state abbreviation    capital   area
+## 1 California           CA Sacramento 163707
+## 2   New York           NY     Albany  54475
+\end{verbatim}
+\begin{alltt}
+\hlcom{# exclude 3rd column}
+\hlstd{states[  ,} \hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{TRUE}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##        state abbreviation   area
+## 1 California           CA 163707
+## 2   New York           NY  54475
+## 3      Texas           TX 268601
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+Extracting columns by name
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# column 'state'}
+\hlstd{states[ ,} \hlstr{'state'}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] "California" "New York"   "Texas"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# columns 'state' and 'abbreviation'}
+\hlstd{states[ ,} \hlkwd{c}\hlstd{(}\hlstr{'state'}\hlstd{,} \hlstr{'abbreviation'}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##        state abbreviation
+## 1 California           CA
+## 2   New York           NY
+## 3      Texas           TX
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting values of two-dimensional objects}
+
+When you select one column from a two-dimensional array, R will return a vector. To get a column output, use the argument \code{drop = FALSE}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# columns 'state' and 'abbreviation'}
+\hlstd{states[ ,} \hlnum{1}\hlstd{,} \hlkwc{drop} \hlstd{=} \hlnum{FALSE}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+##        state
+## 1 California
+## 2   New York
+## 3      Texas
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Dollar signs and Double Brackets}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Dollar signs}
+
+R lists and data frames obey an optional second system of notation for extracting values: using the dollar sign {\hilit \code{\$}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dollar signs with data frames}
+
+The dollar sign \code{\$} notation works for selecting a column of a data frame using its name
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{states}\hlopt{$}\hlstd{state}
+\end{alltt}
+\begin{verbatim}
+## [1] "California" "New York"   "Texas"
+\end{verbatim}
+\begin{alltt}
+\hlstd{states}\hlopt{$}\hlstd{abbreviation}
+\end{alltt}
+\begin{verbatim}
+## [1] "CA" "NY" "TX"
+\end{verbatim}
+\begin{alltt}
+\hlstd{states}\hlopt{$}\hlstd{capital}
+\end{alltt}
+\begin{verbatim}
+## [1] "Sacramento" "Albany"     "Austin"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dollar signs with data frames}
+
+You don't need to use quote marks, but you can if you want
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{states}\hlopt{$}\hlstr{'state'}
+\end{alltt}
+\begin{verbatim}
+## [1] "California" "New York"   "Texas"
+\end{verbatim}
+\begin{alltt}
+\hlstd{states}\hlopt{$}\hlstr{"abbreviation"}
+\end{alltt}
+\begin{verbatim}
+## [1] "CA" "NY" "TX"
+\end{verbatim}
+\begin{alltt}
+\hlstd{states}\hlopt{$}\hlstd{`capital`}
+\end{alltt}
+\begin{verbatim}
+## [1] "Sacramento" "Albany"     "Austin"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dollar signs with lists}
+
+Elements in a named list can also be extracted with the dollar sign:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lst} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwc{numbers} \hlstd{=} \hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlkwc{letter} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'A'}\hlstd{,} \hlstr{'B'}\hlstd{,} \hlstr{'C'}\hlstd{))}
+
+\hlstd{lst}\hlopt{$}\hlstd{numbers}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3
+\end{verbatim}
+\begin{alltt}
+\hlstd{lst}\hlopt{$}\hlstd{letters}
+\end{alltt}
+\begin{verbatim}
+## NULL
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Double brackets}
+
+In addition, lists (and data frames) accept a third type of notation that uses double brackets: \code{[[ ]]}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lst[[}\hlnum{1}\hlstd{]]}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3
+\end{verbatim}
+\begin{alltt}
+\hlstd{lst[[}\hlnum{2}\hlstd{]]}
+\end{alltt}
+\begin{verbatim}
+## [1] "A" "B" "C"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Double brackets}
+
+Double brackets are used when we want to get access to the individual elements; use double brackets followed by single brackets
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lst[[}\hlnum{2}\hlstd{]]}
+\end{alltt}
+\begin{verbatim}
+## [1] "A" "B" "C"
+\end{verbatim}
+\begin{alltt}
+\hlstd{lst[[}\hlnum{2}\hlstd{]][}\hlnum{3}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] "C"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Elements-Extraction Notation System}
+
+\begin{center}
+ \begin{tabular}{l l l}
+  \hline
+   object & notation & example \\
+  \hline
+  vector & \code{[ ]} & \code{v[1:5]} \\  
+  factor & \code{[ ]} & \code{g[1:5]} \\  
+  matrix & \code{[ , ]} & \code{m[1:5, 1:3]} \\  
+  array & \code{[ , , ]} & \code{arr[1, 2, 3]} \\  
+        & \code{[ , , , ]} & \code{arr[1, 2, 3, 4]} \\  
+  list & \code{[ ]} & \code{lst[3]} \\
+       & \code{[[ ]]} & \code{lst[[3]]} \\
+       & \code{\$} & \code{lst\$name} \\
+  data frame & \code{[ , ]} & \code{df[1, 2]} \\
+             & \code{\$} & \code{df\$name} \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

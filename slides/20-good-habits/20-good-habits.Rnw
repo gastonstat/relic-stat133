@@ -1,0 +1,1561 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Good Habits in R Programming}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Good Coding Habits}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Code Habits}
+
+Now that you've worked with various R scripts, written some functions, and done some data manipulation, it's time to look at some good coding practices.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Code Habits}
+
+Popular style guides among useR's
+\bbi
+  \item \url{https://google-styleguide.googlecode.com/svn/trunk/Rguide.xml}
+  \item \url{http://adv-r.had.co.nz/Style.html}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=10cm]{images/google-style.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=10cm]{images/hadley-style.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Editor}
+
+\bb{Text Editor}
+\bbi
+ \item Text editor $\neq$ word processor
+ \item Use a good text editor
+ \item e.g. vim, sublime text, text wrangler, notepad, etc
+ \item With syntax highlighting
+ \item Or use an Integrated Development Environment (IDE) like RStudio
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Without Syntax Highlighting}
+
+\begin{verbatim}
+a <- 2
+x <- 3
+y <- log(sqrt(x))
+3*x^7 - pi * x / (y - a)
+"some strings"
+dat <- read.table(file = 'data.csv', header = TRUE)
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Syntax Highlighting}
+
+<<eval = FALSE, size='normalsize'>>=
+a <- 2
+x <- 3
+y <- log(sqrt(x))
+3*x^7 - pi * x / (y - a)
+"some strings"
+dat <- read.table(file = 'data.csv', header = TRUE)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Syntax Highlight}
+
+{\mdlit Without highlighting it's harder to detect syntax errors:}
+\begin{verbatim}
+numbers <- c("one", "two, "three")
+
+if (x > 0) {
+  3 * x + 19
+} esle {
+  2 * x - 20
+}
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Syntax Highlight}
+
+{\hilit With highlighting it's easier to detect syntax errors:}
+<<eval = FALSE>>=
+numbers <- c("one", "two, "three")
+@
+
+<<eval=FALSE>>=
+if (x > 0) {
+  3 * x + 19
+} esle {
+  2 * x - 20
+}
+@
+
+<<eval = FALSE, echo = FALSE>>=
+"s
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your Turn}
+
+{\mdlit Which instruction is free of errors}
+\begin{verbatim}
+A) mean(numbers, na.mr = TRUE)
+
+B) read.table(~/Documents/rawdata.txt, sep = '\t')
+
+C) barplot(x, horiz = TURE)
+
+D) matrix(1:12, nrow = 3, ncol = 4)
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Use an IDE}
+
+\bi
+  \item Syntax highlighting
+  \item Syntax aware 
+  \item Able to evaluate R code
+  \bi
+    \item by line
+    \item by selection
+    \item entire file
+  \ei
+  \item Command completion
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Use an IDE}
+
+Use an IDE with autocompletion
+\begin{center}
+\ig[width=10cm]{images/rstudio_ide1.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Use an IDE}
+
+Use an IDE that provides helpful documentation 
+\begin{center}
+\ig[width=10cm]{images/rstudio_ide3.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Good Source Code}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Literate Programming}
+
+Think about programs/scripts/code as \textbf{works of literature}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Important Aspects}
+
+\bbi
+  \item Indentation of lines
+  \item Use of spaces
+  \item Use of comments
+  \item Naming style
+  \item Use of white space
+  \item Consistency
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Literate Programming}
+
+\bb{Good source code}
+\bbi
+  \item Well readable by humans
+  \item As much self-explaining as possible
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Literate Programming}
+
+{\large ``Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do''}
+
+\bigskip
+Donald Knuth. ``Literate Programming (1984)''
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Literate Programming}
+
+\bbi
+  \item Choose the names of variables carefully
+  \item Explain what each variable means
+  \item Strive for a program that is comprehensible
+  \item Introduce concepts in an order that is best for human understanding
+\ei
+
+\bigskip
+{\footnotesize (From Donald Knuth's: Literate Programming, 1984)}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Literate Programming}
+
+Instructing a computer what to do
+<<eval = FALSE>>=
+# good for computers (not much for humans)
+if (is.numeric(x) & x > 0 & x %% 1 == 0) TRUE else FALSE
+@
+
+\pause
+
+\bigskip
+Explaining a human being what we want a computer to do
+<<eval=FALSE>>=
+# good for humans
+is_positive_integer(x)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Literate Programming}
+
+<<>>=
+# example
+is_positive_integer <- function(x) {
+  (is.numeric(x) & x > 0 & x %% 1 == 0)
+}
+
+is_positive_integer(2)
+
+is_positive_integer(2.1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Indentation}
+
+\bi
+  \item Keep your indentation style consistent
+  \item There is more than one way of indenting code
+  \item There is no ``best'' style that everyone should be following
+  \item You can indent using spaces or tabs (but don't mix them)
+  \item Can help in detecting errors in your code because it can expose lack of symmetry
+  \item Do this systematically (RStudio editor helps a lot)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Indentation}
+
+<<eval =FALSE>>=
+# Don't do this!
+if(!is.vector(x)) {
+stop('x must be a vector')
+} else {
+if(any(is.na(x))){
+x <- x[!is.na(x)]
+}
+total <- length(x)
+x_sum <- 0
+for (i in seq_along(x)) {
+  x_sum <- x_sum + x[i]
+}
+x_sum / total
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Indentation}
+
+<<eval =FALSE>>=
+# better with indentation
+if(!is.vector(x)) {
+  stop('x must be a vector')
+} else {
+  if(any(is.na(x))) {
+    x <- x[!is.na(x)]
+  }
+  total <- length(x)
+  x_sum <- 0
+  for (i in seq_along(x)) {
+    x_sum <- x_sum + x[i]
+  }
+  x_sum / total
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Indenting Styles}
+
+<<eval=FALSE>>=
+# style 1
+find_roots <- function(a = 1, b = 1, c = 0) 
+{
+  if (b^2 - 4*a*c < 0) 
+  {
+    return("No real roots")
+  } else 
+  {
+    return(quadratic(a = a, b = b, c = c))
+  }
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Indenting Styles}
+
+<<eval=FALSE>>=
+# style 2
+find_roots <- function(a = 1, b = 1, c = 0) {
+  if (b^2 - 4*a*c < 0) {
+    return("No real roots")
+  } else {
+    return(quadratic(a = a, b = b, c = c))
+  }
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Indentation}
+
+\bb{Benefits of code indentation:}
+\bi
+  \item Easier to read
+  \item Easier to understand
+  \item Easier to modify
+  \item Easier to maintain
+  \item Easier to enhance
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reformat Code in RStudio}
+
+\bi
+  \item RStudio provides \textit{code reformatting} (use it!)
+  \item Click \textbf{Code} on the menu bar
+  \item Then click \textbf{Reformat Code}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=10cm]{images/reformat_code.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reformat Code in RStudio}
+
+<<size = 'scriptsize'>>=
+# unformatted code
+quadratic<-function(a=1,b=1,c=0){
+root<-sqrt(b^2-4*a*c)
+x1<-(-b+root)/2*a
+x2<-(-b-root)/2*a
+list(sol1=x1,sol2=x2)
+}
+@
+
+\pause
+<<size = 'scriptsize'>>=
+# reformatted code
+quadratic <- function(a = 1,b = 1,c = 0) {
+  root <- sqrt(b ^ 2 - 4 * a * c)
+  x1 <- (-b + root) / 2 * a
+  x2 <- (-b - root) / 2 * a
+  list(sol1 = x1,sol2 = x2)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Meaningful Names}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Naming Style}
+
+Choose a consistent naming style for objects and functions
+\bbi
+  \item \code{someObject} (lowerCamelCase)
+  \item \code{SomeObject} (UpperCamelCase)
+  \item \code{some\_object} (underscore separation)
+  \item \code{some.object} (dot separation)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Naming Style}
+
+Avoid using names of standard R objects
+\bi
+  \item \code{vector}
+  \item \code{mean}
+  \item \code{list}
+  \item \code{data}
+  \item \code{c}
+  \item \code{colors}
+  \item \textit{etc}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Naming Style}
+
+If you're thinking about using names of R objects, prefer something like this
+\bi
+  \item \code{xvector}
+  \item \code{xmean}
+  \item \code{xlist}
+  \item \code{xdata}
+  \item \code{xc}
+  \item \code{xcolors}
+  \item \textit{etc}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Naming Style}
+
+Better to add meaning like this
+\bi
+  \item \code{mean\_salary}
+  \item \code{input\_vector}
+  \item \code{data\_list}
+  \item \code{data\_table}
+  \item \code{first\_last}
+  \item \code{some\_colors}
+  \item \textit{etc}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Naming Style}
+
+<<eval = FALSE>>=
+# what does getThem() do?
+getThem <- function(values, y) {
+  list1 <- c()
+  
+  for (i in values) {
+    if (values[i] == y)
+      list1 <- c(list1, x)
+  }
+  return(list1)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Naming Style}
+
+<<eval = FALSE>>=
+# this is more meaningful
+getFlaggedCells <- function(gameBoard, flagged) {
+  flaggedCells <- c()
+  
+  for (cell in gameBoard) {
+    if (gameBoard[cell] == flagged)
+      flaggedCells <- c(flaggedCells, x)
+  }
+  return(flaggedCells)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Meaningful Distinctions}
+
+<<eval = FALSE>>=
+# argument names 'a1' and 'a2'?
+move_strings <- function(a1, a2) {
+  for (i in seq_along(a1)) {
+    a1[i] <- toupper(substr(a1, 1, 3))
+  }
+  a2
+}
+@
+
+\pause
+<<eval = FALSE>>=
+# argument names 
+move_strings <- function(origin, destination) {
+  for (i in seq_along(origin)) {
+    destination[i] <- toupper(substr(origin, 1, 3))
+  }
+  destination
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Pronounceable Names}
+
+<<eval = FALSE>>=
+# cryptic abbreviations 
+DtaRcrd102 <- list(
+  nm = 'John Doe',
+  bdg = 'Valley Life Sciences Building',
+  rm = 2060
+)
+@
+
+\pause
+<<eval = FALSE>>=
+# pronounceable names 
+Customer <- list(
+  name = 'John Doe',
+  building = 'Valley Life Sciences Building',
+  room = 2060
+)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Your Turn}
+
+Which of the following is NOT a valid name:
+\bbi
+  \item A) \code{x12345}
+  \item B) \code{data\_}
+  \item C) \code{oBjEcT}
+  \item D) \code{5ummary}
+  \item E) \code{data.frame}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Syntax}
+
+\bb{White Spaces}
+\bi
+ \item Use a lot of it
+ \item around operators (assignment and arithmetic)
+ \item between function arguments and list elements
+ \item between matrix/array indices, in particular for missing indices
+ \item Split long lines at meaningful places
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{White spaces}
+
+Avoid this
+<<eval = FALSE>>=
+a<-2
+x<-3
+y<-log(sqrt(x))
+3*x^7-pi*x/(y-a)
+@
+
+Much Better
+<<eval = FALSE>>=
+a <- 2
+x <- 3
+y <- log(sqrt(x))
+3*x^7 - pi * x / (y - a)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{White spaces}
+
+<<eval = FALSE>>=
+# Avoid this
+plot(x,y,col=rgb(0.5,0.7,0.4),pch='+',cex=5)
+@
+
+\pause
+<<eval = FALSE>>=
+# OK
+plot(x, y, col = rgb(0.5, 0.7, 0.4), pch = '+', cex = 5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Readability}
+
+Lines should be broken/wrapped around so that they are less than 80 columns wide
+<<eval = FALSE, size='scriptsize'>>=
+# lines too long
+histogram <- function(data){
+hist(data, col = 'gray90', xlab = 'x', ylab = 'Frequency', main= 'Histogram of x')
+abline(v = c(min(data), max(data), median(data), mean(data)),
+col = c('gray30', 'gray30', 'orange', 'tomato'), lty = c(2,2,1,1), lwd = 3)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Readability}
+
+Lines should be broken/wrapped aroung so that they are less than 80 columns wide
+<<eval = FALSE, size = 'scriptsize'>>=
+# lines too long
+histogram <- function(data) {
+  hist(data, col = 'gray90', xlab = 'x', ylab = 'Frequency', 
+       main = 'Histogram of x')
+  abline(v = c(min(data), max(data), median(data), mean(data)),
+         col = c('gray30', 'gray30', 'orange', 'tomato'), 
+         lty = c(2,2,1,1), lwd = 3)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{White spaces}
+
+\bbi
+  \item Spacing forms the second important part in code indentation and formatting. 
+  \item Spacing makes the code more readable
+  \item Follow proper spacing through out your coding 
+  \item Use spacing consistently
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{White spaces}
+
+<<eval = FALSE>>=
+# this can be improved
+stats <- c(min(x), max(x), max(x)-min(x),
+  quantile(x, probs=0.25), quantile(x, probs=0.75), IQR(x),
+  median(x), mean(x), sd(x)
+)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{White spaces}
+
+Don't be afraid of splitting one long line into individual pieces:
+<<eval = FALSE>>=
+# much better
+stats <- c(
+  min(x), 
+  max(x), 
+  max(x) - min(x),
+  quantile(x, probs = 0.25),
+  quantile(x, probs = 0.75),
+  IQR(x),
+  median(x), 
+  mean(x), 
+  sd(x)
+)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{White spaces}
+
+You can even do this:
+<<eval = FALSE>>=
+# also OK
+stats <- c(
+  min    = min(x), 
+  max    = max(x), 
+  range  = max(x) - min(x),
+  q1     = quantile(x, probs = 0.25),
+  q3     = quantile(x, probs = 0.75),
+  iqr    = IQR(x),
+  median = median(x), 
+  mean   = mean(x), 
+  stdev  = sd(x)
+)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{White spaces}
+
+\bbi
+  \item All commas and semicolons must be followed by single whitespace
+  \item All binary operators should maintain a space on either side of the operator
+  \item Left parenthesis should start immediately after a function name
+  \item All keywords like \code{if, while, for, repeat} should be followed by a single space.
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{White spaces}
+
+All binary operators should maintain a space on either side of the operator
+<<eval = FALSE>>=
+# NOT Recommended 
+a=b-c
+a = b-c
+a=b - c; 
+
+# Recommended 
+a = b - c
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{White spaces}
+
+All binary operators should maintain a space on either side of the operator
+<<eval = FALSE>>=
+# Not really recommended 
+z <- 6*x + 9*y
+
+# Recommended (option 1)
+z <- 6 * x + 9 * y
+
+# Recommended (option 2)
+z <- (7 * x) + (9 * y)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{White spaces}
+
+Left parenthesis should start immediately after a function name
+<<eval = FALSE>>=
+# NOT Recommended 
+read.table ('data.csv', header = TRUE, row.names = 1)
+
+# Recommended 
+read.table('data.csv', header = TRUE, row.names = 1)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{White spaces}
+
+All keywords like \code{if, while, for, repeat} should be followed by a single space.
+<<eval = FALSE>>=
+# not bad
+if(is.numeric(object)) {
+  mean(object)
+}
+
+# much better
+if (is.numeric(object)) {
+  mean(object)
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Syntax: Parentheses}
+
+Use parentheses for clarity even if not needed for order of operations. 
+<<>>=
+a <- 2
+x <- 3
+y <- 4
+
+a/y*x
+
+# better
+(a / y) * x
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Use Parentheses}
+
+<<>>=
+# confusing
+1:3^2
+
+# better
+1:(3^2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{\code{\#} Comments}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Comments}
+
+\bb{Comment your code}
+\bi
+ \item Add lots of comments
+ \item But don't belabor the obvious
+ \item Use blank lines to separate blocks of code and comments to say what the block does
+ \item Remember that in a few months, you may not follow your own code any better than a stranger
+ \item Some key things to document:
+ \bi
+    \item summarizing a block of code
+    \item explaining a very complicated piece of code
+    \item explaining arbitrary constant values
+  \ei
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Line spaces and Comments}
+
+<<eval = FALSE>>=
+MV <- get_manifests(Data, blocks)
+check_MV <- test_manifest_scaling(MV, specs$scaling)
+gens <- get_generals(MV, path_matrix)
+names(blocks) <- gens$lvs_names
+block_sizes <- lengths(blocks)
+blockinds <- indexify(blocks) 
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Line spaces and Comments}
+
+<<eval = FALSE>>=
+# ==================================================
+# Preparing data and blocks indexification
+# ==================================================
+# building data matrix 'MV'
+MV <- get_manifests(Data, blocks)
+check_MV <- test_manifest_scaling(MV, specs$scaling)
+
+# generals about obs, mvs, lvs
+gens <- get_generals(MV, path_matrix)
+
+# indexing blocks
+names(blocks) <- gens$lvs_names
+block_sizes <- lengths(blocks)
+blockinds <- indexify(blocks)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Line spaces and Comments}
+
+Different line styles:
+<<eval = FALSE>>=
+####################################################
+
+
+# ==================================================
+
+
+# **************************************************
+
+
+# --------------------------------------------------
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Line spaces and Comments}
+
+<<eval = FALSE>>=
+# ==================================================
+# Preparing data and blocks indexification
+# ==================================================
+# building data matrix 'MV'
+MV <- get_manifests(Data, blocks)
+check_MV <- test_manifest_scaling(MV, specs$scaling)
+@
+
+\pause
+<<eval = FALSE>>=
+# ---- Preparing data and blocks indexification ----
+
+# building data matrix 'MV'
+MV <- get_manifests(Data, blocks)
+check_MV <- test_manifest_scaling(MV, specs$scaling)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comments}
+
+Include comments to say what a block does, or what a block is intended for
+<<eval = FALSE>>=
+# =====================================================
+# Data: liga2015
+# =====================================================
+# For this session we'll be using the dataset that 
+# comes in the file 'liga2015.csv' (see github repo)
+# This dataset contains basic statistics from the
+# Spanish soccer league during the season 2014-2015
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comments}
+
+<<eval = FALSE>>=
+x <- matrix(1:10, nrow = 2, ncol = 5)
+
+# mean vectors by rows and columns
+xmean1 <- apply(x, 1, mean)
+xmean2 <- apply(x, 2, mean)
+
+# Subtract off the mean of each row/column
+y <- sweep(x, 1, xmean1)
+z <- sweep(x, 2, xmean2)
+
+# Multiply by the mean of each column (for some reason)
+w <- sweep(x, 2, xmean1, FUN = "*")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About Comments}
+
+Be careful with your comments (you never know who will end up looking at your code, or where you'll be in the future)
+<<eval = FALSE>>=
+# F***ing piece of code that drives me bananas
+
+# wtf function
+
+# best for loop ever
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Good coding practices: Syntax}
+
+\bb{Code Files}
+\bi
+ \item Break code into separate files (<2000-3000 lines per file) 
+ \item Give files meaningful names 
+ \item Group related functions within a file
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{R Scripts}
+
+\bb{Include Header information such as}
+\bi
+ \item Who wrote / programmed it
+ \item When was it done
+ \item What is it all about
+ \item How the code might fit within a larger program
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{R Scripts}
+
+Header example:
+<<eval = FALSE>>=
+# ===================================================
+# Some Title
+# Author(s): First Last
+# Date: month-day-year
+# Description: what this code is about
+# Data: perhaps is designed for a specific data set
+# ===================================================
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{R Scripts}
+
+If you need to load R packages, do so at the beginning of your script, after the header:
+<<eval = FALSE>>=
+# ===================================================
+# Some Title
+# Author(s): First Last
+# Date: month-day-year
+# Description: what this code is about
+# Data: perhaps is designed for a specific data set
+# ===================================================
+
+library(stringr)
+library(ggplot2)
+library(MASS)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Functions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Functions}
+
+\bi
+ \item Functions are tools and operations
+ \item Functions form the building blocks for larger tasks
+ \item Functions allow us to reuse blocks of code easily for later use
+ \item Use functions whenever possible
+ \item Try to write functions rather than carry out your 
+ work using blocks of code
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Length of Functions}
+
+\bb{Some rules of thumb (in order of preference)}
+\bbi
+ \item Ideal length between 2 and 4 lines of code
+ \item No more than 10 lines
+ \item No more than 20 lines
+ \item Should not exceed the size of the text editor window
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Length of Functions}
+
+\bi
+ \item Don't write long functions
+ \item Rewrite long functions by converting collections 
+ of related expression into separate functions
+ \item Smaller functions are easier to debug, easier to understand, 
+ and can be combined in a modular fashion
+ \item Functions shouldn't be longer than one visible screen 
+ (with reasonable font)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Length of Functions}
+
+\bi
+ \item Separate small functions
+ \item are easier to reason about and manage
+ \item are easier to test and verify they are correct
+ \item are more likely to be reusable
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some considerations}
+
+\bi
+ \item Think about different scenarios and contexts in which a function might be used
+ \item Can you generalize it?
+ \item Who will use it?
+ \item Who is going to maintain the code?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Naming Functions}
+
+\bi
+  \item Use descriptive names
+  \item Readers (including you) should infer the operation by looking at the call of the function
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Functions}
+
+\bb{Functions should:}
+\bi
+ \item be modular (having a single task)
+ \item have meaningful name
+ \item have a comment describing their purpose, inputs and outputs
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Functions: Example}
+
+<<eval = FALSE, size='scriptsize'>>=
+# find mean of Y on the data z, Y in last column, and predict at xnew
+meany <- function(predpt,nearxy) {
+   ycol <- ncol(nearxy)
+   mean(nearxy[,ycol])
+}
+
+# find variance of Y in the neighborhood of predpt
+vary <- function(predpt,nearxy) {
+   ycol <- ncol(nearxy)
+   var(nearxy[,ycol])
+}
+
+# fit linear model to the data z, Y in last column, and predict at xnew
+loclin <- function(predpt,nearxy) {
+   ycol <- ncol(nearxy)
+   bhat <- coef(lm(nearxy[,ycol] ~ nearxy[,-ycol]))
+   c(1,predpt) %*% bhat
+}
+@
+
+{\footnotesize source: Norm Matloff}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Functions and Global Variables}
+
+\bi
+ \item Functions should not modify global variables
+ \item except connections or environments
+ \item should not change global \code{par()} settings
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{DRY}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{Don't Repeat Yourself}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Large{Every piece of knowledge must have a single, unambiguous, authoritative representation within a system.}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{DRY}
+
+<<eval=FALSE, size = 'scriptsize'>>=
+# avoid repetition
+plot(x, y, type = 'n')
+points(x[size == 'xsmall'], y[size == 'xsmall'], col = 'purple')
+points(x[size == 'small'], y[size == 'small'], col = 'blue')
+points(x[size == 'medium'], y[size == 'medium'], col = 'green')
+points(x[size == 'large'], y[size == 'large'], col = 'orange')
+points(x[size == 'xlarge'], y[size == 'xlarge'], col = 'red')
+@
+
+\pause
+<<eval=FALSE, size = 'scriptsize'>>=
+# avoid repetition
+size_colors <- c('purple', 'blue', 'green', 'orange', 'red')
+plot(x, y, type = 'n')
+for (i in seq_along(levels(size))) {
+  points(x[size == i], y[size == i], col = size_colors[i])
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{RStudio Code Tools}
+\begin{center}
+\ig[width=10cm]{images/code_tools.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{RStudio Shortcuts}
+\begin{center}
+\ig[width=10cm]{images/shortcuts.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Strongly Recommended}
+
+\bb{Look at other people's code}
+\bi
+ \item \url{https://github.com/hadley}
+ \item \url{https://github.com/yihui}
+ \item \url{https://github.com/karthik}
+ \item \url{https://github.com/kbroman}
+ \item \url{https://github.com/cboettig}
+ \item \url{https://github.com/garrettgman}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Your Own Style}
+
+\bi
+ \item It takes time to develop a personal style
+ \item Try different styles and see which one best fits you
+ \item Sometimes you have to adapt to a company's style
+ \item There is no one single best style
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Test Yourself}
+
+What's wrong with this function?
+<<eval = FALSE>>=
+average <- function(x) {
+  l <- length(x)
+  for(i in l) {
+    y[i] <- x[i]/l
+    z <- sum(y[1:l])
+    return(as.numeric(z))
+  }
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Test Yourself}
+
+What's wrong with this function?
+<<eval = FALSE>>=
+freq_table <- function(x) {
+  table <- table(x)
+  'category' <- levels(x)
+  'count' <- print(table)
+  'prop' <- table/length(x)
+  'cumcount' <- print(table)
+  'cumprop' <- table/length(x)
+  if(is.factor(x)) {
+    return(data.frame(rownames=c('category', 'count','prop',
+                                 'cumcount','cumprop')))
+  } else {
+    stop('Not a factor')
+  }
+}
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Discussion}
+
+\bbi
+ \item What other suggestions do you have?
+ \item How could we restructure the code, to make it easier to read?
+ \item Grab a buddy and practice ``code review''. We do it for methods and papers, why not code? 
+ \item Our code is a major scientific product and the result of a lot of hard work!
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

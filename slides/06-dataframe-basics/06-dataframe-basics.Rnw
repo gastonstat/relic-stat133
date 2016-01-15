@@ -1,0 +1,880 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Basics of Data Frames}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Frames}
+
+\bb{Data Frame}
+A {\hilit \code{data.frame}} is the primary data structure that R provides for handling tabular data sets (eg spreadsheet like).
+\eb
+
+\bb{Function \code{data.frame()}}
+The {\hilit \code{data.frame()}} function allows us to create data frames 
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Creating a Data Frame}
+
+<<eval = TRUE>>=
+# data frame
+df <- data.frame(
+  name = c('Anakin', 'Padme', 'Luke', 'Leia'),  
+  gender = c('male', 'female', 'male', 'female'),
+  height = c(1.88, 1.65, 1.72, 1.50),
+  weight = c(84, 45, 77, 49)
+)
+@
+
+by default, \code{data.frame()} converts strings into factors
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Simple data frame \code{df}}
+
+<<>>=
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Inspecting Data Frames}
+\bi
+  \item dimensions (number of rows and columns)
+  \item type of data in each column
+  \item row names and column names
+  \item missing data
+  \item overall summary of each variable
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Overall structure}
+
+A summary of the structure can be obtained with {\hilit \code{str()}}
+
+<<>>=
+# structure of a data frame
+str(df)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{str()}}
+
+\code{str()} applied on data frames provides:
+\bi
+  \item number of rows
+  \item number of variables
+  \item name of each column
+  \item mode (i.e. type) of each column (e.g. num, int, chr, factor)
+  \item number of levels for \code{factor} variables
+\ei
+
+\code{str()} is good for visual inspection, but doesn't give you direct access to the displayed information.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Information of Data Frames}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   Function & Description \\
+  \hline
+  \code{dim()} & dimensions (rows and columns) \\  
+  \code{nrow()} & number of rows \\
+  \code{ncol()} & number of columns \\  
+  \code{names()} & name of columns \\
+  \code{colnames()} & name of columns  \\
+  \code{rownames()} & names of rows \\
+  \code{dimnames()} & list with names of rows and columns \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Information of Data Frames}
+
+<<>>=
+dim(df) # dimensions in a two element vector
+nrow(df)
+ncol(df)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic Information of Data Frames}
+
+<<>>=
+colnames(df)
+rownames(df)
+dimnames(df) # names in a list
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{object.size()}}
+
+To know how much memory space is allocated for a data frame (or any other R object) we use \code{object.size()}
+<<>>=
+object.size(df)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Functions \code{head()} and \code{tail}}
+
+Inspect the first and last rows, respectively:
+<<>>=
+# first 3 rows
+head(df, n = 3)
+
+# last 2 rows
+tail(df, n = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{summary()}}
+
+There's also the function \code{summary()}, which provides a descriptive summary of each column
+<<>>=
+summary(df)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Elementary Manipulations}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Accessing Elements}
+
+There are many different ways in which the elements of a \code{"data.frame"} can be accessed (i.e. retrieved, selected).
+
+\bi
+  \item accessing individual cells
+  \item accessing sets of cells
+  \item accessing entire rows
+  \item accessing entire columns
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Notation System Reminder}
+
+\bb{Notation system to extract values from data frames}
+\bbi
+  \item to extract values use brackets: \code{[ ]}
+  \item inside the brackets specify indices for rows and columns
+  \item each index is separated by comma
+  \item row indices can be numbers or logicals
+  \item column indices can be numbers, logicals, or names
+\ei
+\eb
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Single Cells}
+
+Using row and column indices to access a single cell
+<<>>=
+# first cell 1,1
+df[1, 1]
+
+# cell 3,4 
+df[3, 4]
+
+# last cell
+df[4, 4]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Various Cells}
+
+Using vectors of row and column indices to access various cells
+<<>>=
+# various adjacent cells
+df[1:3, 2:4]
+
+# various adjacent cells
+# (permuted order)
+df[4:1, 3:2]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Various Cells}
+
+Using vectors of row and column indices to access various cells
+<<>>=
+# non-adjacent cells
+df[c(2, 4), c(1, 3)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Various Cells}
+
+Using excluding indices
+<<>>=
+# excluding various adjacent cells
+df[-c(1:2), -c(2:3)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Retrieving Rows}
+
+Selecting rows
+<<>>=
+# first row
+df[1, ]
+
+# rows 1 to 3
+df[1:3, ]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Retrieving Rows}
+
+Selecting rows (by excluding indices)
+<<>>=
+# all rows except first one
+df[-1, ]
+
+# rows except 2 to 3
+df[-c(2:3), ]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Retrieving Columns}
+
+Selecting columns
+<<>>=
+# 1st column (as a vector)
+df[ , 1]
+@
+
+Using argument \code{drop=FALSE}
+<<>>=
+# 1st column (as a column)
+df[ , 1, drop = FALSE]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Retrieving Columns}
+
+<<>>=
+# columns 1 to 3
+df[ , 1:3]
+
+# columns 2, 4
+df[ , c(2,4)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Retrieving Columns}
+
+Selecting columns by excluding indices
+<<eval = TRUE>>=
+# all columns but 2, 4,
+df[ , -c(2,4)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Accessing Single Columns}
+
+Besides using numeric indices, we can also access a single column using its name and following different syntax options:
+
+\bi
+  \item \code{df[ ,"name"]}
+  \item \code{df[["name"]]}
+  \item \code{df\$name} or \code{df\$"name"}
+  \item \code{df["name"]}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Column by Name}
+
+<<>>=
+# equivalent ways to retrieve one column
+df[ ,"name"]
+df[["gender"]]
+df$height
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Columns by Name}
+
+Retrieve various columns by name:
+<<>>=
+# vector of names
+df[ , c("name", "gender", "height")]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Adding New Elements}
+
+A typical data frame modification consists in adding new elements, that is, new rows and columns.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding One Column}
+
+Adding a single column to a data frame 
+<<>>=
+# adding 'a_vector' as a 'new' column
+df$eyecolor <- c('blue', 'brown', 'blue', 'brown')
+
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding One Column}
+
+Using \textit{column binding} \code{cbind()} to add a column to a data frame 
+<<>>=
+haircolor <- c('blond', 'brown', 'blond', 'brown')
+
+# binding a column
+df <- cbind(df, haircolor)
+
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding One Column}
+
+Remember the recycling rule:
+<<>>=
+# "human" will be recycled!
+df$species <- "human"
+
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Several Columns}
+
+Equivalent ways to add several columns to a data frame
+<<eval = TRUE>>=
+# adding vectors x and y
+df[ , c("x", "y")] <- cbind(1:4, 5:8)
+
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Several Columns}
+
+Equivalent ways to add several columns to a data frame
+<<eval = FALSE>>=
+# adding vectors u and v
+uv <- cbind(u = 1:4, v = 5:8)
+
+df <- cbind(df, uv)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Removing Columns}
+
+Removing columns with the \code{NULL} object
+<<eval = TRUE>>=
+# removing x and y
+df$x <- NULL
+df$y <- NULL
+
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Removing Columns}
+
+Removing columns by reassignment
+<<eval = TRUE>>=
+# removing columns 5, 6, ...
+df <- df[ , 1:4]
+
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Rows}
+
+\bi
+  \item Another operation is adding rows
+  \item This can be done with \textit{row binding} \code{rbind()}
+  \item When adding rows to a data frame, we need to take into account the mode of each column
+  \item If all columns have the same mode, then we can add a vector
+  \item If columns have different modes, then we need to add data.frames
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Rows}
+
+Be careful when adding vector rows to data frames!
+<<eval = TRUE>>=
+# new vector
+newone <- c("Han", 'male', 1.8, 80)
+
+# trying to add a vector to data frame
+rbind(df, newone)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Rows}
+
+Since columns in \code{df} are of different modes, we must create a new row "vector" in \code{data.frame} format
+<<eval = TRUE>>=
+# creating a data frame "vector"
+han <- data.frame(
+  name = "Han",
+  gender = 'male', 
+  height = 1.8,
+  weight = 80)
+
+han
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding Rows}
+
+Use row binding \code{rbind()} to add one or more rows:
+<<eval = TRUE>>=
+# adding 'han' with rbind()
+df <- rbind(df, han)
+
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Arranging Columns}
+A less common, but equally important type of \code{data.frame} modification involves rearranging or moving its columns.
+
+\bigskip
+
+The common approach to move columns is to define a vector with the column names in the desired order, and then redefine the current data frame.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Rearranging columns}
+
+<<eval = TRUE>>=
+# rearranging columns
+df[ , c(1, 4, 3, 2)]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Column Names}
+
+Changing column names
+<<eval = TRUE>>=
+# change first column
+names(df)[1] <- "Name"
+
+# change weight
+names(df)[4] <- "wgt"
+
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Column Names}
+
+Changing column names
+<<eval = TRUE>>=
+# rename first column
+names(df)[1] <- "name"
+
+# rename weight
+names(df)[4] <- "weight"
+
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise}
+
+Creating new column
+<<>>=
+# height x weight
+df$htwt <- df$height * df$weight
+
+# gender and species
+df$new <- paste(df$name, df$gender, sep = "_")
+
+df
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Subsetting}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+
+Subsetting using comparisons (logical vectors \code{TRUE, FALSE})
+<<>>=
+df$name == "Luke"
+
+# Luke's info
+df[df$name == "Luke", ]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+
+Subsetting using comparisons (logical vectors \code{TRUE, FALSE})
+<<>>=
+df$gender == "male"
+
+# male subjects
+df[df$gender == "male", ]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+
+Subsetting with composed statements
+<<>>=
+# male with height > 1.75
+df[df$gender == "male" & df$height > 1.75, ]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+
+Subsetting statements can become very verbose
+<<>>=
+# male with height > 1.75 and weight > 80
+df[df$gender == "male" 
+   & df$height > 1.75
+   & df$weight > 80, ]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting with \code{subset()}}
+
+To reduce verbose subsetting statements we can use \code{subset()}
+<<>>=
+# male with height > 1.75
+subset(df, gender == "male" & height > 1.75)
+
+# male with height > 1.75 and weight > 80
+subset(df, gender == "male" & height > 1.75 & weight > 80)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting with \code{subset()}}
+
+\code{subset()} also allows you to select columns according to a specified condition
+<<>>=
+# name and weight of male subjects
+subset(df, 
+       gender == "male",
+       select = c(name, weight))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subsetting with \code{subset()}}
+
+\code{subset()} also allows you to select columns according to a specified condition
+<<>>=
+# excluding height of male subjects
+subset(df, 
+       gender == "male",
+       select = -height)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Ordering Rows}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sorting rows}
+
+Remember \code{sort()} and \code{order()}
+<<>>=
+# sort() sorts the values
+sort(df$weight)
+
+# order() gives you the position
+order(df$weight)
+@
+When sorting rows, we want to work with the ordered positions
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sorting rows}
+
+<<>>=
+# sorting rows by weight 
+df[order(df$weight), ]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sorting rows}
+
+<<>>=
+# sorting subjects by height 
+df[order(df$height), c('name', 'height')]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sorting rows}
+
+<<>>=
+# sorting subjects by height in decreasing order
+ht_sort <- order(df$height, decreasing = TRUE)
+df[ht_sort, c('name', 'height')]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

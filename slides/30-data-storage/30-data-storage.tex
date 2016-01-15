@@ -1,0 +1,996 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Data Storage}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat}{\tt \scriptsize \color{foreground} github.com/gastonstat}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Data Storage}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Awesome Resource}
+
+\bb{Introduction to Data Technologies}
+\bi
+  \item \textbf{ItDT} by Paul Murrell
+  \item Basic introduction to a number of computer technologies
+  \item e.g. HTML, XML, Databases, SQL, regular expressions
+  \item Book's website: \\
+  \url{https://www.stat.auckland.ac.nz/~paul/ItDT/}
+  \item PDF version: \\
+  {\scriptsize \url{https://www.stat.auckland.ac.nz/~paul/ItDT/itdt-2013-03-26.pdf}}
+  \item Paul's website \\
+  \url{https://www.stat.auckland.ac.nz/~paul/}  
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From ItDT}
+
+\begin{quotation}
+In a book on data analysis, we would assume that the data are already in a form that can be conveniently loaded into statistical software, and the emphasis would be on how to analyze these data. However, that is not the focus of this book. Here, we are interested in all of the steps that must be taken before the data can be conveniently loaded into statistical software.
+
+\bigskip
+{\footnotesize Paul Murrell}
+\end{quotation}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{From ItDT}
+
+\begin{quotation}
+As anyone who has worked with data knows, it often takes more time and effort to get the data ready than it takes to perform the data analysis. And yet there are many more books on how to analyze data than there are on how to prepare data for analysis. This book aims to redress that balance.
+
+\bigskip
+{\footnotesize Paul Murrell}
+\end{quotation}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Motivation}
+
+\bb{Various formats}
+\bbi
+  \item We don't usually have control over the format in which data is given to us
+  \item Consider the \textbf{IBTrACS Data} \\
+  {\scriptsize \url{https://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-data}}
+  \item IBTrACS available formats: ATCF, CSV, cXML, HURDAT, netCDF, WMO
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Case Study}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{IBTrACS Data}
+
+\bb{IBTrACS}
+\bbi
+  \item International Best Track Archive for Climate Stewardship
+  \item \url{https://www.ncdc.noaa.gov/ibtracs/index.php}
+  \item Tropical cyclone best track data 
+  \item Aims at understanding the distribution, frequency, and intensity of tropical cyclones worldwide
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Why use IBTrACS?}
+
+\bbi
+  \item Contains the most complete global set of historical tropical cyclones available
+  \item Combines information from numerous tropical cyclone datasets
+  \item Simplifies inter-agency comparisons by providing storm data from multiple sources in one place
+  \item Provides data in popular formats to facilitate analysis
+  \item Checks the quality of storm inventories, positions, pressures, and wind speeds, passing the information on to the user
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{IBTrACS-WMO Data}
+
+{\scriptsize \url{https://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-data}}
+
+\bigskip
+Data files are available in the following ways:
+\bi
+  \item \textbf{By storm}: each storm is in a separate file.
+  \item \textbf{All storms}: all IBTrACS storms in one file.
+  \item \textbf{Storms by basin}: all IBTrACS storms for a particular basin (all years).
+  \item \textbf{Storms by year}: all IBTrACS storms for a particular year (all basins).
+  \item \textbf{Storms by hemisphere}: all IBTrACS storms for a hemisphere.
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{IBTrACS-WMO Formats}
+{\scriptsize \url{https://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-data}}
+
+\bigskip
+\begin{center}
+\ig[width=10cm]{images/ibtracs_formats.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{IBTrACS-WMO Data Format Samples}
+
+Data Format Samples:
+\bi
+  \item {\scriptsize \url{https://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-samples\#atcf}}
+  \item {\scriptsize \url{https://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-samples\#csv}}
+  \item {\scriptsize \url{https://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-samples\#cxml}}
+  \item {\scriptsize \url{https://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-samples\#netcdf}}
+  \item {\scriptsize \url{https://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-samples\#hurdat}}
+  \item {\scriptsize \url{https://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-samples\#wmo}}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{IBTrACS Formats}
+\begin{center}
+\ig[width=10cm]{images/hurdat_atcf.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{IBTrACS Formats}
+\begin{center}
+\ig[width=10cm]{images/cxml.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{IBTrACS Formats}
+\begin{center}
+\ig[width=10cm]{images/ibtracs_wmo.png}
+\end{center}
+
+{\scriptsize Description} \\
+{\tiny \url{ftp://eclipse.ncdc.noaa.gov/pub/ibtracs/documents/Best-Track_WMO-format_Revised2002.pdf}}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{WMO Format Description}
+\begin{center}
+\ig[width=7cm]{images/wmo_description.png}
+
+{\hilit {\tiny check pdf to see complete metadata}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Storm Tracker}
+\begin{center}
+\ig[width=10cm]{images/sandy.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{CSV data}
+\begin{center}
+\ig[width=10cm]{images/sandy_csv.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Some variables in CSV - IBTrACS}
+
+\begin{center}
+\begin{tabular}{l l}
+  \hline
+  Variables & Variables \\
+  \hline
+  Serial\_Num & Wind(WMO) \\
+  Season & Pres(WMO) \\
+  Num & Center \\
+  Basin & Wind(WMO) Percentile \\
+  Sub\_basin & Pres(WMO) Percentile \\
+  Name & Track\_type N/A \\
+  ISO\_time & Year \\
+  Nature & \# \\
+  Latitude & BB \\
+  Longitude & YYYY-MM-DD HH:MM:SS \\
+  \hline
+\end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{IBTrACS Formats}
+
+\bbi
+  \item We're able to read and see most IBTrACS data files 
+  \item IBTrACS formats are plain text formats
+  \item We can look at the sample formats
+  \item We can read the metadata of each format
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Motivation}
+
+\bb{Various formats}
+\bbi
+  \item There is no overall best storage format
+  \item The correct choice will depend on:
+  \bi
+    \item the size and complexity of the data set 
+    \item what the data set will be used for
+  \ei
+  \item Every storage format has its strengths and weaknesses
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Reading Files \\ from the Web}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Motivation}
+
+\bi
+  \item We've talked before about importing data tables
+  \item e.g. field-delimited files
+  \item But not all data come in the form of a table
+  \item We'll see other ways in which we can import data in R
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Motivation}
+
+We'll cover a variety of situations you most likely will find yourself dealing with:
+\bbi
+ \item reading raw (plain) text
+ \item reading tabular (spreadsheet-like) data
+ \item reading structured data (xml, html) as text
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Keep in mind}
+
+All the material described in this presentation relies on 3 key assumptions:  
+\bi
+ \item we know {\hilit where} the data is located
+ \item we know {\hilit how} the data is stored (i.e. type of file)
+ \item all we want is to import the data in R
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Basics First}
+
+R is equipped with a set of handy functions that allow us to read a wide range of data files
+
+\bigskip
+
+The trick to use those functions depends on the format of the data we want to read, and the way R handles the imported values:
+\begin{itemize}
+ \item what type of objets (e.g. \code{vector}, \code{list}, \code{data.frame})
+ \item what kind of modes (e.g. \code{character}, \code{numeric}, \code{factor})
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Basics First}
+
+\bb{Fundamentals}
+Let's start with the basic reading functions and some R technicalities
+ \bi
+  \item {\hilit \code{scan()}}
+  \item {\hilit \code{readLines()}}
+  \item {\hilit \code{connections}}
+ \ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Built-in reading functions}
+
+\bi
+ \item The primary functions to read files in R are {\hilit \code{scan()}} and {\hilit \code{readLines()}}
+
+ \item {\hilit \code{readLines()}} is the workhorse function to read raw text in R as character strings
+
+ \item {\hilit \code{scan()}} is a low-level function for reading data values, and it is extended by {\hilit \code{read.table()}} and its related functions
+
+ \item When reading files, there's the special concept under the hood called R {\hilit \code{connections}}
+
+ \item Both \code{scan()} and \code{readLines()} take a {\hilit \code{connection}} as input
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{R Reading Files}
+\begin{center}
+\ig[width=10cm]{images/read_functions.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Connections}
+
+\bb{R connections?}
+\textbf{Connection} is the term used in R to define a mechanism for handling input (reading) and output (writing) operations. 
+\eb
+
+\bb{What do they do?}
+A \textbf{connection} is just an object that tells R to be prepared for opening a data source (eg file in local directory, or a file url) \\
+See the full help documentation with: {\hilit \code{?connections}}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Connections (con't)}
+
+\bb{Usefulness}
+Connections provide a \textbf{means to have more control} over the way R will ``comunicate'' with the resources to be read (or written).
+\eb
+
+\bb{Keep in mind}
+Most of the times you don't need to use or worry about connections. However, you should know that they can play an important role behind the built-in fuctions to read data in R.
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About Connections}
+
+\bb{Should we care?}
+ \bi
+  \item Again, most of the times we don't need to explicitly use {\hilit \code{url()}}
+  \item Connections can be used anywhere a file name could be passed to functions like \code{scan()} or \code{read.table()}. 
+  \item Usually, the reading functions ---eg \code{readLines()}, \code{read.table()}, \code{read.csv()}--- will take care of the URL connection for us.
+  \item However, there may be occassions in which we will need to specify a \code{url()} connection.
+ \ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Reading Text}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reading Text}
+
+\bb{Reading Text Files As Text}
+In this section we'll talk about reading text files with the purpose of importing their contents as \textit{raw text} (ie character strings) in R.
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About Text Files}
+
+Some considerations so we can all be on the same page:
+\bi
+ \item By \textbf{text files} we mean \textit{plain text files} \\
+ \item \textit{Plain text} as an umbrella term for any file that is in a human-readable form (e.g. \code{.txt, .csv, .xml, .html})
+ \item Text files stored as a sequence of characters 
+ \item Each character stored as a single byte of data
+ \item Data is arranged in rows, with several values stored on each row
+ \item Text files that can be read and manipulated with a text editor
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reading Text Functions}
+
+\bb{Functions for reading text}
+\bi
+ \item {\hilit \code{readLines()}} is the main function to read text files as \textit{raw text} in R
+ \item {\hilit \code{scan()}} is another function that can be used to read text files. It is more generic and low-level but we can specify some of its parameters to import content as text
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{About \code{readLines()}}
+
+\bb{Function \code{readLines()}}
+\bi
+ \item {\hilit \code{readLines()}} is the workhorse function to read text files as \textit{raw text} in R
+
+ \item The main input is the file to be read, either specified with a {\hilit \code{connection}} or with the file name 
+
+\item \code{readLines()} treats each line as a string, and it returns a character vector
+
+ \item The output vector will contain as many elements as number of lines in the read file
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{readLines()}
+
+\bb{Using \code{readLines()}}
+ \begin{verbatim}
+readLines(con = stdin(), n = -1L, ok = TRUE, 
+          warn = TRUE, encoding = "unknown")
+ \end{verbatim}
+\eb
+
+\bi
+ \item \code{con} a connection, which in our case will be a complete URL
+ \item \code{n} the number of lines to read
+ \item \code{ok} whether to reach the end of the connection
+ \item \code{warn} warning if there is no End-Of-Line
+ \item \code{encoding} types of encoding for input strings
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example}
+
+\bb{Project Gutenberg}
+A great collection of texts are available from the \textbf{Project Gutenberg} which has a catalog of more than 25,000 free online books: \\
+{ \footnotesize \url{http://www.gutenberg.org}}
+\eb
+
+\bb{Moby Dick}
+Let's consider the famous novel \textbf{Moby Dick} by Herman Melville. 
+A plain text file of Moby Dick can be found at: \\
+{ \footnotesize \url{http://www.gutenberg.org/cache/epub/2701/pg2701.txt}}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading Raw text}
+
+Here's how you could read the first 500 lines of cotent with {\hilit \code{readLines()}}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# url of Moby Dick (project Gutenberg)}
+\hlstd{moby_url} \hlkwb{<-} \hlkwd{url}\hlstd{(}\hlstr{"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"}\hlstd{)}
+
+\hlcom{# reading the content (first 500 lines)}
+\hlstd{moby_dick} \hlkwb{<-} \hlkwd{readLines}\hlstd{(moby_url,} \hlkwc{n} \hlstd{=} \hlnum{500}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+{\footnotesize Each line read is stored as an element in the character vector \code{moby\_dick}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Goot to Know}
+
+\bb{Terms of Service}
+Some times, reading data directly from a website may be against the \textbf{terms of use} of the site.
+\eb
+
+\bb{Web Politeness}
+When you're reading (and ``playing'' with) content from a web page, make a local copy as a courtesy to the owner of the web site so you don't overload their server by constantly rereading the page. To make a copy from inside of R, look at the {\hilit \code{download.file()}} function. 
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Download Moby Dick}
+
+\bb{Downloading}
+It is good advice to download a copy of the file to your computer, and then play with it. 
+
+\bigskip
+
+Let's use {\hilit \code{download.file()}} to save a copy in our working directory. In this case we create the file \code{"mobydick.txt"}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# download a copy in the working directory}
+\hlkwd{download.file}\hlstd{(}\hlstr{"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"}\hlstd{,}
+              \hlstr{"mobydick.txt"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Abut scan()}
+
+\begin{block}{Function \code{scan()}}
+Another very useful function that we can use to read text is {\hilit \code{scan()}}. By default, \code{scan()} expects to read numeric values, but we can change this behavior with the argument \code{what}
+
+{\footnotesize
+\begin{verbatim}
+scan(file = "", what = double(), nmax = -1, n = -1, sep = "",
+     quote = if(identical(sep, "\n")) "" else "'\"", dec = ".",
+     skip = 0, nlines = 0, na.strings = "NA",
+     flush = FALSE, fill = FALSE, strip.white = FALSE,
+     quiet = FALSE, blank.lines.skip = TRUE, multi.line = TRUE,
+     comment.char = "", allowEscapes = FALSE,
+     fileEncoding = "", encoding = "unknown", text)
+ \end{verbatim}
+}
+
+\end{block}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function scan() (con't)}
+
+\bb{Some \code{scan()} arguments}
+\bi
+ \item \code{file} the file name or a connection
+ \item \code{what} type of data to be read
+ \item \code{n} maximum number of data values to read
+ \item \code{sep} type of separator
+ \item \code{skip} number of lines to skip before reading values
+ \item \code{nlines} maximum number of lines to be read
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading Some Lines}
+
+If we want to read just a pre-specified number of lines, we have to loop over the file lines and read the content with {\hilit \code{scan()}}. For instance, let's skip the first 535 lines, and then read the following 10 lines of Chapter 1
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# empty vector to store results}
+\hlstd{moby_dick_chap1} \hlkwb{<-} \hlkwd{rep}\hlstd{(}\hlstr{""}\hlstd{,} \hlnum{10}\hlstd{)}
+
+\hlcom{# number of lines to skip until Chapter 1}
+\hlstd{skip} \hlkwb{=} \hlnum{535}
+
+\hlcom{# reading 10 lines (line-by-line using scan)}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1L}\hlopt{:}\hlnum{10}\hlstd{) \{}
+  \hlstd{one_line} \hlkwb{=} \hlkwd{scan}\hlstd{(}\hlstr{"mobydick.txt"}\hlstd{,} \hlkwc{what} \hlstd{=} \hlstr{""}\hlstd{,} \hlkwc{skip} \hlstd{= skip,} \hlkwc{nlines} \hlstd{=} \hlnum{1}\hlstd{)}
+  \hlcom{# pasting the contents in one_line}
+  \hlstd{moby_dick_chap1[i]} \hlkwb{=} \hlkwd{paste}\hlstd{(one_line,} \hlkwc{collapse} \hlstd{=} \hlstr{" "}\hlstd{)}
+  \hlstd{skip} \hlkwb{=} \hlstd{skip} \hlopt{+} \hlnum{1}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading an HTML file}
+
+\bb{HTML File}
+Our third example involves reading the contents of an html file. We're just illustrating how to import html content as raw text in R. (We are not \textit{parsing} html; we'll see that topic in the next lecture)
+\eb
+
+\bb{Egyptian Skulls}
+Let's consider the file containing information about the Egyptian Skulls data set by Thomson \textit{et al}: \\
+{ \scriptsize \url{http://lib.stat.cmu.edu/DASL/Datafiles/EgyptianSkulls.html}}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Skulls Data}
+
+To read the html content we use {\hilit \code{readLines()}}
+
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# read html file content as a string vector}
+\hlstd{skulls} \hlkwb{<-} \hlkwd{readLines}\hlstd{(}\hlstr{"http://lib.stat.cmu.edu/DASL/Datafiles/EgyptianSkulls.html"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Iris Example}
+
+\bb{Iris Data}
+Data set {\hilit \code{"iris"}} from UCI Machine Learning Repo \\
+{\scriptsize 
+\url{https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data}}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Iris Data}
+
+\bb{How do we read the data?}
+If you try to simply use \code{read.csv()}, you'll be disappointed:
+\eb
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# URL of data file}
+\hlstd{uci} \hlkwb{<-} \hlstr{"https://archive.ics.uci.edu/ml/machine-learning-databases/"}
+\hlstd{iris_file} \hlkwb{<-} \hlkwd{paste0}\hlstd{(uci,} \hlstr{"iris/iris.data"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# this won't work}
+\hlstd{iris_data} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(iris_file,} \hlkwc{header} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Note that the URL starts with {\hilit \code{https://}}, that means a secured connection.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Iris Data}
+
+One solution is to use the package \code{"readr"}. Another solution requires some special functions:
+\bbi
+ \item We need to use the R package {\hilit \code{"RCurl"}} to make an \code{HTTPS} request with {\hilit \code{getURL()}}
+ \item We also need to use {\hilit \code{textConnection()}} inside \code{read.csv()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading Iris Data}
+
+Here's how to read the iris data in R (without \code{"readr"}):
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# URL of data file}
+\hlstd{uci} \hlkwb{<-} \hlstr{"https://archive.ics.uci.edu/ml/machine-learning-databases/"}
+\hlstd{iris_file} \hlkwb{<-} \hlkwd{paste0}\hlstd{(uci,} \hlstr{"iris/iris.data"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+{\hilit \code{getURL}} downloads the specified URL (and handles \code{https}). Then we pass it as a text-connection to a read-table function:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(RCurl)}
+\hlstd{iris_url} \hlkwb{<-} \hlkwd{getURL}\hlstd{(iris_file)}
+\hlstd{iris_data} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwd{textConnection}\hlstd{(iris_url),} \hlkwc{header} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Wikipedia Table}
+
+\bb{Wikipedia Table}
+Let's read an HTML table from Wikipedia. This is not technically a file, but a piece of content from an html document
+\eb
+
+\begin{center}
+\ig[width=6.5cm]{images/wikipedia_table.png}
+
+\scalebox{.5}{\url{https://en.wikipedia.org/wiki/World_record_progression_1500_metres_freestyle
+}}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+
+Since Jun-12-2015, wikipedia uses \textit{HTTPS}, so the first step is to get the URL content via {\hilit \code{getURL}} (from \code{"RCurl"}). Then we parse the HTML document, and finally import tables with \code{readHTMLTable()}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(RCurl)}
+\hlkwd{library}\hlstd{(XML)}
+
+\hlcom{# url}
+\hlstd{swim_url} \hlkwb{<-} \hlstr{"https://en.wikipedia.org/wiki/World_record_progression_1500_metres_freestyle"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# parse HTML content}
+\hlstd{swim_wiki} \hlkwb{<-} \hlkwd{htmlParse}\hlstd{(}\hlkwd{getURL}\hlstd{(swim_url))}
+
+\hlcom{# reading HTML table}
+\hlstd{swim1500} \hlkwb{<-} \hlkwd{readHTMLTable}\hlstd{(swim_wiki)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The output is a list with as many data.frames as tables in the read document
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading data in an HTML Table}
+
+Since we want just the first table, we can use the {\hilit \code{which = 1}} argument:
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# reading HTML table}
+\hlstd{swim1500men} \hlkwb{<-} \hlkwd{readHTMLTable}\hlstd{(swim_wiki,} \hlkwc{which} \hlstd{=} \hlnum{1}\hlstd{,}
+                             \hlkwc{stringsAsFactors} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Note that we can pass \code{data.frame()} parameters, in this case \code{stringsAsFactors = FALSE}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{head}\hlstd{(swim1500)}
+\end{alltt}
+\begin{verbatim}
+##   #    Time                             Name   Nationality
+## 1 1 22:48.4      Taylor , Henry Henry Taylor Great Britain
+## 2 2 22:00.0  Hodgson , George George Hodgson        Canada
+## 3 3 21:35.3            Borg , Arne Arne Borg        Sweden
+## 4 4 21:15.0            Borg , Arne Arne Borg        Sweden
+## 5 5 21:11.4            Borg , Arne Arne Borg        Sweden
+## 6 6 20:06.6      Charlton , Boy Boy Charlton     Australia
+##                           Date          Meet
+## 1 01908-07-25-0000Jul 25, 1908 Olympic Games
+## 2 01912-07-10-0000Jul 10, 1912 Olympic Games
+## 3  01923-07-08-0000Jul 8, 1923             -
+## 4 01924-01-30-0000Jan 30, 1924             -
+## 5 01924-07-13-0000Jul 13, 1924             -
+## 6 01924-07-15-0000Jul 15, 1924 Olympic Games
+##                                           Location Ref
+## 1 United Kingdom, London !  London, United Kingdom    
+## 2           Sweden, Stockholm !  Stockholm, Sweden    
+## 3         Sweden, Gothenburg !  Gothenburg, Sweden    
+## 4           Australia, Sydney !  Sydney, Australia    
+## 5                   France, Paris !  Paris, France    
+## 6                   France, Paris !  Paris, France
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\end{document}

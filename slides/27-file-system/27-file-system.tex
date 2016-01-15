@@ -1,0 +1,832 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{File System Tree}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat}{\tt \scriptsize \color{foreground} github.com/gastonstat}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Managing Files}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{File Management}
+
+File management is crucial for any data analysis project
+
+Common types of files:
+\bi
+  \item Data files
+  \item Code files (e.g. functions)
+  \item Analysis files
+  \item Presentation and Report files
+\ei
+
+Also, many tools such as R, LaTeX, markdown, etc require knowing where files are located in your computer
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{File Management}
+
+Good file managment allows you to:
+\bi
+  \item find things more easily
+  \item make changes more easily
+  \item benefit from work you've already done
+  \item be understood by others
+  \item collaborate with others
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Why File Management?}
+
+Common tasks
+\bi
+  \item Access and organize your files
+  \item Control creation of files
+  \item Control deletion of files
+  \item Control relocation of files
+  \item Control modification of files
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Organization of Files}
+
+\begin{center}
+{\LARGE How does our computer organize files?}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Files and Directories}
+\begin{center}
+\ig[width=11cm]{images/macfiles.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Organization of Files}
+
+\bi
+  \item The computer organizes files within directories
+  \item Directories and files follow a tree structure
+  \item A tree structure is a hierarchical structure
+  \item Hierarchical means that directories are located inside other directories
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Files and Directories}
+\begin{center}
+\ig[width=8cm]{images/directories.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Filesystem}
+
+\bbi
+  \item The nested hierarchy of folders and files on your computer is called the \textbf{filesystem}
+  \item The filesystem follows a tree-like structure
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Directories}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Files and Directories}
+
+\bb{There are two special directories in UNIX-like OS:}
+\bbi
+  \item The top level directory, named \textbf{"/"}, called the \textbf{root directory}
+  \item The \textbf{home directory}, named \textbf{\textasciitilde}, which contains all your files
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Root Directories}
+
+\bi
+  \item A root directory is the first level in a disk (such as a hard drive)
+  \item It is the root out of which the file tree ``grows''
+  \item All other directories are subdirectories of the root directory
+  \item On Unix-like system, including Macs, the root directory is denoted by a forward slash: {\hilit \code{/}}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Root Directory}
+
+\bi
+  \item The root directory is the most includive folder on the system
+  \item The root directory serves as the container of all other files and folders
+  \item A Unix-based system (e.g. OS X) has a single root directory
+  \item Windows users usually have multiple roots (\code{C:, D:}, etc)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Root Directories on Windows}
+
+\bi
+  \item On Windows computers you can have multiple root directories (one for each storage device)
+  \item On Windows, root directories are given a drive letter assignment
+  \item On Windows, the most common root directory is {\hilit \code{C:\textbackslash}} (denoting the C partition of the hard drive)
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Home Directory}
+\bi
+  \item User's personal files are found in the \code{/Users} directory
+  \item e.g. mine is \code{/Users/Gaston}
+  \item A user directory is the \textbf{home} directory
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Subdirectories and Parent Directories}
+
+\bi
+  \item We store files in subdirectories of the root directory
+  \item Inside these subdirectories may be further subdirectories and so on
+  \item A directory containing other directories is referred to as the \textbf{parent directory}
+  \item Directories inside other directories are referred to as \textbf{child directories}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Directories and Subdirectories}
+\begin{center}
+\ig[width=6cm]{images/treefiledir.pdf}
+\end{center}
+
+\bi
+  \item {\hilit \code{A}} is a child directory of the root directory
+  \item {\hilit \code{A}} is the parent directory of \code{B} and \code{C}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Working Directory}
+
+\bi
+  \item Another special type of directory is the so-called \textbf{working directory}
+  \item The working directory is the current directory where you perform any task
+  \item If you go to your Desktop, then the \code{Desktop} is your current directory
+  \item When you use R, the working directory is the directory where the program automatically looks for files 
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Working Directory}
+\begin{center}
+\ig[width=6cm]{images/treefiledir.pdf}
+\end{center}
+
+If you are standing in {\hilit \code{B}}, then this is your working directory
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Paths}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Path}
+\bbi
+  \item Each file and directory has a unique name in the filesystem
+  \item Such unique name is called a \textbf{path}
+  \item The path is simply the desription of where something is located in the filesystem
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Filesystem}
+\bi
+  \item The path is a list of directory names separated by slashes
+  \item If the path is for a file, then the last element of the path is the file's name
+  \item e.g. \code{/Users/Gaston/Documents/data.txt}
+  \item A path can be \textbf{absolute} or \textbf{relative}
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Paths}
+\bi
+  \item An \textbf{absolute path} is a complete and unambiguous description of where something is in relation to the \textbf{root}
+  \item If a path begins with a slash (i.e. the root), then it's called an absolute path
+  \item A \textbf{relative} describes where a folder or file is in relation to another folder (typically the working directory)
+  \item If a path does not begin with a slash, then it is a relative path
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Paths}
+\bi
+  \item There are two special relative paths: \code{.} and \code{..}
+  \item The single period \code{.} refers to the current directory
+  \item The two periods means the parent directory, one level above
+  \item For instance, if the current directory is \code{/Users/XYZ/abc}, then \code{.} refers to this directory, and \code{..} refers to \code{/Users/XYZ}
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Files and Directories}
+\begin{center}
+\ig[width=8cm]{images/directories.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Path Names}
+
+\bb{Full path name}
+\bi
+  \item path from the top level directory, \code{/}, to the file or directory of interest
+  \item For \code{mary} the full pathname is: \code{/Users/mary}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Files and Directories}
+\begin{center}
+\ig[width=9cm]{images/treefiledir.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Path Names}
+
+\bb{Relative path name}
+\bi
+  \item path from the current directory to the file or directory of interest
+  \item Relative path to \code{D} from \code{A}: {\hilit \code{B/D}}
+  \item Equivalently: {\hilit \code{./B/D}}  (. refers to current directory)
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Relative Path Names}
+\begin{center}
+\ig[width=6cm]{images/treefiledir.pdf}
+\end{center}
+Relative path to \code{D} from \code{A}: {\hilit \code{B/D}} \\
+Equivalently: {\hilit \code{./B/D}}  (. refers to current directory)
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Relative Path Names}
+\begin{center}
+\ig[width=6cm]{images/treefiledir.pdf}
+\end{center}
+Relative path to \code{D} from \code{C}: {\hilit \code{../B/D}} \\
+(.. refers to parent directory)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Relative Path Names}
+\begin{center}
+\ig[width=6cm]{images/treefiledir.pdf}
+\end{center}
+Relative path to \code{x} at the top from within \code{C}?
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Relative Path Names}
+\begin{center}
+\ig[width=5cm]{images/treefiledir.pdf}
+\end{center}
+
+Relative path to \code{x} at the top from within \code{C}?
+\bi
+  \item[a)] \code{../A/x}
+  \item[b)] \code{../../x}
+  \item[c)] \code{../x}
+  \item[d)] \code{/x}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Relative Path Names}
+\begin{center}
+\ig[width=5cm]{images/treefiledir.pdf}
+\end{center}
+
+Relative path to \code{x} in \code{D} from within \code{C}?
+\bi
+  \item[a)] \code{../D/x}
+  \item[b)] \code{../B/D/x}
+  \item[c)] \code{../../A/B/D/x}
+  \item[d)] \code{/A/B/D/x}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Filesystem}
+\bi
+  \item Root Directory
+  \item Home Directory
+  \item Working Directory
+  \item Directory Tree
+  \item Absolute path names
+  \item Relative path names
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{File Manipulation \\ Commands in R}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{R File Management Functions}
+
+{\small
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   function & description \\
+  \hline
+  \code{getwd()} & shows the current working directory \\  
+  \code{list.files()} & see all the files and subdirectories  \\
+   & in the current working directory \\
+  \code{setwd()} & sets the current working directory \\
+  \code{dir.create()} & create a new directory \\
+  \code{file.create()} & create a new blank file \\
+  \code{cat()} & create a new file and put text into it, \\
+   & or append text to an existing file \\
+  \code{file.append()} & attempts to append two files \\
+  \code{unlink()} & delete files and directories \\
+  \code{file.rename()} & rename a file or move a file \\
+  \code{file.copy()} & copy a file to another directory \\
+  \code{file.exists()} & check whether a file exists \\
+  \hline
+ \end{tabular}
+\end{center}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{getwd()}}
+
+{\hilit \code{getwd()}} allows you to find your current working directory
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# working directory (for these slides)}
+\hlkwd{getwd}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## [1] "/Users/gaston/Dropbox/course_stat133/stat133/slides/27-file-system"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{list.files()}}
+
+{\hilit \code{list.files()}} displays the files and subdirectories of the working directory
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# files and directories in my working directory}
+\hlstd{wd} \hlkwb{<-} \hlkwd{list.files}\hlstd{()}
+\hlkwd{head}\hlstd{(wd)}
+\end{alltt}
+\begin{verbatim}
+## [1] "27-file-system-concordance.tex" "27-file-system.log"            
+## [3] "27-file-system.nav"             "27-file-system.pdf"            
+## [5] "27-file-system.Rnw"             "27-file-system.snm"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{list.files()}}
+
+You can also specify a different \code{path}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# contents in the stat133 github repo}
+\hlkwd{list.files}\hlstd{(}\hlkwc{path} \hlstd{=} \hlstr{'~/Documents/stat133/stat133'}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## character(0)
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{setwd()}}
+
+{\hilit \code{setwd()}} allows you to set a working directory (this is where R will look for files and subdirectories)
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# setting a working directory}
+\hlkwd{setwd}\hlstd{(}\hlstr{'~/Documents/Consulting'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{setwd()}}
+
+Assuming that there is a subdirectory \code{Data} inside \code{Consulting}, we could read a file like so:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# setting a working directory}
+\hlstd{df} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{'Data/dataset.csv'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{dir.create()}}
+
+{\hilit \code{dir.create()}} allows you to create a new directory
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# new directory}
+\hlkwd{dir.create}\hlstd{(}\hlstr{'/Users/john/Documents/stat133/HW6'}\hlstd{)}
+
+\hlcom{# new directory (Windows)}
+\hlkwd{dir.create}\hlstd{(}\hlstr{'C:\textbackslash{}\textbackslash{}Documents\textbackslash{}\textbackslash{}stat133\textbackslash{}\textbackslash{}HW6'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{file.create()}}
+
+{\hilit \code{file.create()}} allows you to create a new blank file
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# new file 'functions.R'}
+\hlkwd{file.create}\hlstd{(}\hlstr{'/Users/john/Documents/stat133/HW6/functions.R'}\hlstd{)}
+
+\hlcom{# new file (on Windows)}
+\hlkwd{file.create}\hlstd{(}\hlstr{'C:\textbackslash{}\textbackslash{}Documents\textbackslash{}\textbackslash{}stat133\textbackslash{}\textbackslash{}HW6\textbackslash{}\textbackslash{}functions.R'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{cat()}}
+
+{\hilit \code{cat()}} can be used to create a new file and put text into it
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# new file 'functions.R'}
+\hlkwd{cat}\hlstd{(}\hlstr{'# Homework 6'}\hlstd{,}
+    \hlstr{'\textbackslash{}n# Your name'}\hlstd{,}
+    \hlstr{'\textbackslash{}n# Description'}\hlstd{,}
+    \hlkwc{file} \hlstd{=} \hlstr{'/Users/john/Documents/stat133/HW6/myscript.R'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{file.append()}}
+
+{\hilit \code{file.append()}} attempts to append two files
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# append two files}
+\hlkwd{file.append}\hlstd{(}\hlstr{'data1.csv'}\hlstd{,} \hlstr{'data2.csv'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{unlink()}}
+
+{\hilit \code{unlink()}} deletes files and directories (warning: deletion is permanently)
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# delete a file}
+\hlkwd{unlink}\hlstd{(}\hlstr{'/Users/john/Documents/stat133/HW6/myscript.R'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{file.rename()}}
+
+{\hilit \code{file.rename()}} renames a file
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# rename a file}
+\hlkwd{file.rename}\hlstd{(}\hlkwc{from} \hlstd{=} \hlstr{'script.R'}\hlstd{,} \hlkwc{to} \hlstd{=} \hlstr{'analysis.R'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{file.rename()}}
+
+{\hilit \code{file.rename()}} can also be used to fully move a file form one directory to another
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# move a file}
+\hlkwd{file.rename}\hlstd{(}\hlkwc{from} \hlstd{=} \hlstr{'old-project/analysis.R'}\hlstd{,}
+            \hlkwc{to} \hlstd{=} \hlstr{'new-project/analysis.R'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{file.copy()}}
+
+{\hilit \code{file.copy()}} copies a file to another directory
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# move a file}
+\hlkwd{file.copy}\hlstd{(}\hlkwc{from} \hlstd{=} \hlstr{'old-project/analysis.R'}\hlstd{,}
+            \hlkwc{to} \hlstd{=} \hlstr{'new-project/analysis.R'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{file.exists()}}
+
+{\hilit \code{file.exists()}} checks whether a file exists
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# checking existance of a file}
+\hlkwd{file.exists}\hlstd{(}\hlstr{'homework05_instructions.pdf'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Related functions}
+
+\bi
+  \item \code{file.info()}
+  \item \code{file.mode()}
+  \item \code{file.mtime()}
+  \item \code{file.size()}
+  \item \code{file.access()}
+  \item \code{system()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+
+
+\end{document}

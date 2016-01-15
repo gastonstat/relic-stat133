@@ -1,0 +1,884 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Course Introduction}
+\subtitle{Stat 133 - Concepts in Computing with Data}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Concepts in Computing \\ with Data}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{}
+\begin{center}
+\ig[width=6cm]{images/my_name.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{A little bit about me}
+
+\bbi
+ \item Originally from Mexico
+ \item Applied Statistician
+ \item Statistical Programmer
+ \item Data Analyst - Consultant
+ \item Lecturer
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\ig[width=11cm]{images/bikeuser.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\ig[width=11cm]{images/bikemaker.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+{\Large \hilit{Concepts in Computing with Data?}}
+\pause
+
+\bigskip
+{\Large \mdlit{Computational Data Analysis}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\mdlit{How to use computational tools to conduct a statistical analysis of data}}
+
+\pause
+\bigskip
+\Huge{\lit{And thinking about Data Analysis}}
+
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Analysis}
+
+\Large ``Data Analysis is the process by which data becomes understanding, knowledge and insight'' \\
+{\lit \small{Hadley Wickham}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Analysis}
+
+\bi
+  \item Use the computer expressively to conduct statistical analysis of data
+  \item Use existing software rather than build routines from the ground up
+  \item Focus on aspects of computing to conduct statistical analysis, NOT the computational aspects of statistical methods
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Quick Questions}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Major}
+
+\bb{How many of you are}
+\bbi
+ \item Stats / Math majors?
+ \item Non-stats majors?
+ \item Double majors?
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Data Analysis Experience}
+
+\bb{What's your data analysis experience?}
+\bbi
+ \item I'm completely new to data analysis
+ \item I've analyzed data in Excel
+ \item I've used statistical software (SAS, SPSS, etc)
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Programming Experience}
+
+\bb{What's your programming experience?}
+\bbi
+ \item I have no programming experience
+ \item I have some programming experience
+ \item I've written some scripts in R, Python, Matlab
+ \item I've used the command line (shell or terminal)
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Writing Documents}
+
+\bb{When writing Docs and Reports}
+\bbi
+ \item I use word processors: \\
+ Word, Pages, Google Docs, etc
+ \item I use typesetting systems: \\
+ LaTeX, markdown + pandoc
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Preparing Slides}
+
+\bb{When preparing slides}
+\bbi
+ \item I use Power Point, Keynote, Google Slides
+ \item I use LaTeX beamer, markdown, HTML5
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Syllabus}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Course webpage}
+\begin{center}
+\Large{gastonsanchez.com/teaching/stat133}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Tentative Content}
+
+\bi
+ \item R Basics
+ \item Statistical Graphics
+ \item Exploratory Data Analysis
+ \item Programming in R
+ \item Regular Expressions
+ \item Data Manipulation
+ \item Data Technologies
+ \item Simulations
+ \item Reporting and Communicating
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Course Info}
+
+\bbi
+ \item $\sim$ 15 weeks (Aug 26 - Dec 14)
+ \item $\sim$ 45 hours of lecture
+ \item $\sim$ 30 lab hours
+ \item 3 units
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Course Work}
+
+\bb{Course Work}
+\bbi
+ \item $\sim$ 8 Homework assignments
+ \item $\sim$ 8 Lab assignments
+ \item 2 Exams (midterm Oct-22/23, final Dec-14/15)
+ \item 1 Individual project \\ 
+ \item 1 Group project \\
+{\lit more about the projects in the next weeks}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Overall Score}
+
+\begin{center}
+ \begin{tabular}{l c}
+  \hline
+  Value & Concept \\
+  \hline
+  10\% & Participation \\
+  15\% & Lab \\
+  25\% & Homework \\
+  25\% & Midterm \& Final exam \\
+  25\% & Projects \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Attendance Policy}
+
+\begin{center}
+\Huge{\hilit{You are expected to attend all lectures and lab discussions}}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Office Hours}
+
+To be announced ... or by appointment (preferred)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Course Policies}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{}
+\begin{center}
+\ig[width=11cm]{images/dos-donts.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{}
+\begin{center}
+\ig[width=10cm]{images/nocellphones.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{}
+\begin{center}
+\ig[width=8cm]{images/laptop.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\ig[width=11cm]{images/pleasedont.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\ig[width=11cm]{images/honorcode.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Academic Integrity}
+
+\bi
+ \item Write your own scripts and code
+ \item You can share ideas and exchange suggestions, but code must be yours
+ \item If you use someone else's code (e.g. find it online), give credit
+ \item Plagiarism won't be tolerated
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Email Policy}
+
+\begin{center}
+\Huge No email
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Email}
+
+\bb{Email Policy}
+\bi
+ \item Use email as a tool to set up a one-on-one meeting
+ \item Use the subject line {\hilit Meeting Request}
+ \item Include at least two times when you would like to meet 
+ \item Include a brief (one-two sentence) description of the reason for the meeting
+ \item Email sent for any other reason will NOT be considered or acknowledge
+ \item Don't expect me to reply right away \\
+ {\lolit I'm a data analyst, not a professional email responder}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Let's talk}
+
+\bb{Q \& A's}
+I strongly encourage you to ask questions about the syllabus and assignments during class time. 
+
+\bigskip
+For more in-depth discussions (such as guidance on assignments) please plan to meet in person.
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Resources}
+
+\bb{Course webpage}
+  \url{http://gastonsanchez.com/teaching/stat133}
+\eb
+
+\bb{Github Repo}
+  \url{https://github.com/gastonstat/stat133}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{About this course}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Computing with Data (CwD)}
+
+\bb{Computing with Data (CwD)}
+\pause
+\bbi
+ \item CwD means everything and nothing at the same time
+ \item Data Analysis
+ \item Data Manipulation
+ \item Statistical Programming
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Computing with Data}
+
+\Large ``Computing with data refers to activities in which data is acquired, managed, and processed for a great variety of purposes: organization, visualization, summaries, analysis, etc'' \\
+{\lit \small{John Chambers}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Computing with Data}
+
+\Large ``Computing with data refers to activities in which data is \textbf{acquired}, \textbf{managed}, and \textbf{processed} for a great variety of purposes: \textbf{organization}, \textbf{visualization}, \textbf{summaries}, \textbf{analysis}, etc'' \\
+{\lit \small{John Chambers}}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Understanding the Data Analysis Process}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{center}
+\ig[width=11cm]{images/data-by-the-numbers.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{center}
+\ig[width=3cm]{images/databynumbers1.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{center}
+\ig[width=3cm]{images/databynumbers2.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{center}
+\ig[width=3cm]{images/databynumbers3.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{center}
+\ig[width=3cm]{images/databynumbers4.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Data Analysis Stages}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Workflow}
+
+\bb{Data Workflow}
+\begin{enumerate}
+ \item Acquisition-collection
+ \item Processing and Cleaning
+ \item Exploration and Visualization
+ \item Modeling
+ \item Reporting and Communication
+\end{enumerate}
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Main Stages of a Data Analysis Cycle}
+\begin{center}
+\ig[width=11cm]{images/analysis-cycle.pdf}
+
+\bigskip
+{\lit This is not a linear workflow; \\ there are iterative cycles at any stage}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{center}
+\ig[width=8cm]{images/theory-practice.pdf}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Data Analysis is a lot like cooking \& baking}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Work Environment}
+\begin{center}
+\ig[width=10.5cm]{images/kitchen.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Tools \& Utensils}
+\begin{center}
+\ig[width=7cm]{images/tools.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Raw Data}
+\begin{center}
+\ig[width=10cm]{images/raw-ingredients.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Processing, Cleaning, Organizing}
+\begin{center}
+\ig[width=10cm]{images/ingredients.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Manipulation}
+\begin{center}
+\ig[width=10cm]{images/dough.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Modeling}
+\begin{center}
+\ig[width=10cm]{images/cherry-pie.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Presentation \& Consumption}
+\begin{center}
+\ig[width=9cm]{images/pie-slice.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Good -vs- Bad Practices}
+\begin{center}
+\ig[width=10cm]{images/kitchen-mess.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Housekeeping}
+\begin{center}
+\ig[width=8.5cm]{images/washing.jpg}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+  \begin{center}
+    \Huge{Becoming a data scientist \\ is a {\hilit \textbf{Marathon}}, not a sprint}
+  \end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Working Environment}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Tools}
+
+\bb{Tools for this course}
+\bi
+ \item Computer
+ \item Text Editor
+ \item R (software for data analysis)
+ \item RStudio (IDE)
+ \item Terminal or Command Line
+ \item Latex
+ \item git*
+ \item github account*
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Tools}
+
+\bb{Text editors for OS X, Windows and Linux}
+Choose a text editor of your preference:
+\bi
+ \item Emacs:
+ {\scriptsize \url{http://www.gnu.org/software/emacs/}}
+ \item Atom: 
+ {\scriptsize \url{https://atom.io/}}
+ \item Sublime Text: 
+ {\scriptsize \url{http://www.sublimetext.com/}}
+ \item Vim 
+ {\scriptsize \url{http://www.vim.org/download.php}}
+ \item TextWrangler (Mac OS X only): 
+ {\scriptsize \url{http://www.barebones.com/products/textwrangler/}}
+ \item Notepad ++ (Windows only): 
+ {\scriptsize \url{https://notepad-plus-plus.org/}}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\ig[width=11cm]{images/r-website.png}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Getting R}
+
+\bb{Download R}
+\bi
+ \item R project website \\
+ \url{http://www.r-project.org}
+ \item Go to CRAN \\
+ \url{http://cran.r-project.org/mirrors.html}
+ \item Select closest mirror, e.g. \\
+ \url{http://cran.cnr.Berkeley.edu/}
+ \item Choose the right version for your Operating System \\
+ {\lolit (e.g. Linux, Mac, Windows)}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Getting RStudio}
+
+\bb{Download RStudio}
+\bi
+ \item Rstudio \\
+ \url{http://www.rstudio.com/}
+ \item RStudio desktop \\
+ \small{\url{http://www.rstudio.com/products/rstudio/download/}}
+ \item Choose the right version for your Operating System \\
+ {\lolit (e.g. Linux, Mac, Windows)}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Tools}
+
+\bb{Rtools (for Windows only)}
+If you work with Windows, you'll need \textbf{Rtools}:
+ {\scriptsize \url{http://cran.r-project.org/bin/windows/Rtools/}}
+\eb
+
+\bb{Command Line Tools (Mac)}
+If you've never used the Mac Terminal before, it's likely that you'll need to install the {\lit Command Line Tools} (you'll know if you need this).
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Tools}
+
+\bb{LaTeX}
+If you don't have it, install LaTeX:
+\bi
+ \item TeX Live (Linux):
+ {\scriptsize \url{http://www.tug.org/texlive/}}
+ \item MacTeX (Mac OS X): 
+ {\scriptsize \url{http://www.tug.org/mactex/}}
+ \item ProTeXt (Windows): 
+ {\scriptsize \url{http://www.tug.org/protext/}}
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Tools}
+
+\bb{git}
+For all platforms:
+ {\scriptsize \url{http://git-scm.com/book/en/v2/Getting-Started-Installing-Git}}
+\eb
+
+\bb{github}
+If you don't have it yet, open a (free) account in github
+ {\scriptsize \url{https://github.com/join}}
+\eb
+
+\end{frame}
+
+
+%------------------------------------------------
+
+\end{document}

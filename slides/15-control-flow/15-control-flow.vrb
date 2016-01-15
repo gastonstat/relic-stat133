@@ -1,0 +1,26 @@
+\frametitle{For Loop}
+
+If you know the number of times
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# empty numeric vector}
+\hlstd{x} \hlkwb{<-} \hlkwd{numeric}\hlstd{(}\hlnum{5}\hlstd{)}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## [1] 0 0 0 0 0
+\end{verbatim}
+\begin{alltt}
+\hlcom{# for loop to fill x}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{) \{}
+  \hlstd{x[i]} \hlkwb{<-} \hlstd{i}
+\hlstd{\}}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3 4 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

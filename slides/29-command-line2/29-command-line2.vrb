@@ -1,0 +1,11 @@
+\frametitle{\code{cut} example}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# columns 2-3 of first 10 rows in nflweather}
+head -n 10 nflweather.csv | cut -f 2-4
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+

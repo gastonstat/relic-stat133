@@ -1,0 +1,1807 @@
+\documentclass[12pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Strings Basics}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Character Vectors Reminder}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We express character strings using single or double quotes:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# string with single quotes}
+\hlstr{'a character string using single quotes'}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# string with double quotes}
+\hlstr{"a character string using double quotes"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We can insert single quotes in a string with double quotes, and vice versa:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# single quotes within double quotes}
+\hlstr{"The 'R' project for statistical computing"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# double quotes within single quotes}
+\hlstr{'The "R" project for statistical computing'}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We cannot insert single quotes in a string with single quotes, neither we can insert double quotes in a string with double quotes (Don't do this!):
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# don't do this!}
+\hlstr{"This "}is\hlstr{" totally unacceptable"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+                                                            
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# don't do this!}
+\hlstr{'This '}is\hlstr{' absolutely wrong'}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{character()}}
+
+Besides the single quotes or double quotes, R provides the function \code{character()} to create vectors of type character. 
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# character vector of 5 elements}
+\hlstd{a} \hlkwb{<-} \hlkwd{character}\hlstd{(}\hlnum{5}\hlstd{)}
+
+\hlstd{a}
+\end{alltt}
+\begin{verbatim}
+## [1] "" "" "" "" ""
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty string}
+
+The most basic string is the \textbf{empty string} produced by consecutive quotation marks: \code{""}. 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# empty string}
+\hlstd{empty_str} \hlkwb{<-} \hlstr{""}
+
+\hlstd{empty_str}
+\end{alltt}
+\begin{verbatim}
+## [1] ""
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Technically, \code{""} is a string with no characters in it, hence the name \textit{empty string}.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty character vector}
+
+Another basic string structure is the \textbf{empty character vector} produced by \code{character(0)}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# empty character vector}
+\hlstd{empty_chr} \hlkwb{<-} \hlkwd{character}\hlstd{(}\hlnum{0}\hlstd{)}
+
+\hlstd{empty_chr}
+\end{alltt}
+\begin{verbatim}
+## character(0)
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty character vector}
+
+Do not to confuse the empty character vector \code{character(0)} with the empty string \code{""}; they have different lengths:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# length of empty string}
+\hlkwd{length}\hlstd{(empty_str)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+\begin{alltt}
+\hlcom{# length of empty character vector}
+\hlkwd{length}\hlstd{(empty_chr)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Vectors}
+
+You can use the concatenate function {\hilit \code{c()}} to create character vectors:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{strings} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{'one'}\hlstd{,} \hlstr{'2'}\hlstd{,} \hlstr{'III'}\hlstd{,} \hlstr{'four'}\hlstd{)}
+\hlstd{strings}
+\end{alltt}
+\begin{verbatim}
+## [1] "one"  "2"    "III"  "four"
+\end{verbatim}
+\begin{alltt}
+\hlstd{example} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{'mon'}\hlstd{,} \hlstr{'tues'}\hlstd{,} \hlstr{'wed'}\hlstd{,} \hlstr{'thu'}\hlstd{,} \hlstr{'fri'}\hlstd{)}
+\hlstd{example}
+\end{alltt}
+\begin{verbatim}
+## [1] "mon"  "tues" "wed"  "thu"  "fri"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replicate elements}
+
+You can also use the function {\hilit \code{rep()}} to create character vectors of replicated elements:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{rep}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlkwc{times} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"b"}\hlstd{,} \hlstr{"c"}\hlstd{),} \hlkwc{times} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"b"}\hlstd{,} \hlstr{"c"}\hlstd{),} \hlkwc{times} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{1}\hlstd{))}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"b"}\hlstd{,} \hlstr{"c"}\hlstd{),} \hlkwc{each} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"b"}\hlstd{,} \hlstr{"c"}\hlstd{),} \hlkwc{length.out} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"b"}\hlstd{,} \hlstr{"c"}\hlstd{),} \hlkwc{each} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{times} \hlstd{=} \hlnum{2}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+The function {\hilit \code{paste()}} is perhaps one of the most important functions that we can use to create and build strings. 
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{paste}\hlstd{(...,} \hlkwc{sep} \hlstd{=} \hlstr{" "}\hlstd{,} \hlkwc{collapse} \hlstd{=} \hlkwa{NULL}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\code{paste()} takes one or more R objects, converts them to \code{"character"}, and then it concatenates (pastes) them to form one or several character strings.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+Simple example using \code{paste()}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# paste}
+\hlstd{PI} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"The life of"}\hlstd{, pi)}
+
+\hlstd{PI}
+\end{alltt}
+\begin{verbatim}
+## [1] "The life of 3.14159265358979"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+The default separator is a blank space (\code{sep = " "}). But you can select another character, for example \code{sep = "-"}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# paste}
+\hlstd{tobe} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"to"}\hlstd{,} \hlstr{"be"}\hlstd{,} \hlstr{"or"}\hlstd{,} \hlstr{"not"}\hlstd{,} \hlstr{"to"}\hlstd{,} \hlstr{"be"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"-"}\hlstd{)}
+
+\hlstd{tobe}
+\end{alltt}
+\begin{verbatim}
+## [1] "to-be-or-not-to-be"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+If we give \code{paste()} objects of different length, then the recycling rule is applied:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# paste with objects of different lengths}
+\hlkwd{paste}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"."}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "X.1" "X.2" "X.3" "X.4" "X.5"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+To see the effect of the \code{collapse} argument, let's compare the difference with collapsing and without it:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# paste with collapsing}
+\hlkwd{paste}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"!"}\hlstd{,} \hlstr{"?"}\hlstd{,} \hlstr{"+"}\hlstd{),} \hlkwc{sep} \hlstd{=} \hlstr{''}\hlstd{,} \hlkwc{collapse} \hlstd{=} \hlstr{""}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "1!2?3+"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# paste without collapsing}
+\hlkwd{paste}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"!"}\hlstd{,} \hlstr{"?"}\hlstd{,} \hlstr{"+"}\hlstd{),} \hlkwc{sep} \hlstd{=} \hlstr{''}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "1!" "2?" "3+"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Printing Strings}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Printing Methods}
+Functions for printing strings can be very useful when creating our own functions. They help us have more control on the way the output gets printed either on screen or in a file.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Example \code{str()}}
+
+Many functions print output to the console. Some examples are  {\hilit \code{summary()}} and {\hilit \code{str()}}:
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# str}
+\hlkwd{str}\hlstd{(mtcars,} \hlkwc{vec.len} \hlstd{=} \hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	32 obs. of  11 variables:
+##  $ mpg : num  21 21 ...
+##  $ cyl : num  6 6 ...
+##  $ disp: num  160 160 ...
+##  $ hp  : num  110 110 ...
+##  $ drat: num  3.9 3.9 ...
+##  $ wt  : num  2.62 ...
+##  $ qsec: num  16.5 ...
+##  $ vs  : num  0 0 ...
+##  $ am  : num  1 1 ...
+##  $ gear: num  4 4 ...
+##  $ carb: num  4 4 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Printing Characters}
+
+R provides a series of functions for printing strings.
+
+\begin{center}
+  \begin{tabular}{l l}
+  \multicolumn{2}{c}{\textbf{Printing functions}} \\
+  \hline
+  Function & Description \\
+    \hline
+    \code{print()} & generic printing \\
+    \code{noquote()} & print with no quotes \\
+    \code{cat()} & concatenation \\
+    \code{format()} & special formats \\
+    \code{toString()} & convert to string \\
+    \code{sprintf()} & C-style printing \\
+    \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Method \code{print()}}
+
+The \textit{workhorse} printing function in R is {\hilit \code{print()}}, which prints its argument on the console:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# text string}
+\hlstd{my_string} \hlkwb{<-} \hlstr{"programming with data is fun"}
+
+\hlcom{# print string}
+\hlkwd{print}\hlstd{(my_string)}
+\end{alltt}
+\begin{verbatim}
+## [1] "programming with data is fun"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+To be more precise, \code{print()} is a generic function, which means that you should use this function when creating printing methods for programmed classes.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Method \code{print()}}
+
+If we want to print character strings with no quotes 
+we can set the argument \code{quote = FALSE} 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# print without quotes}
+\hlkwd{print}\hlstd{(my_string,} \hlkwc{quote} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] programming with data is fun
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{noquote()}}
+
+An alternative option for achieving a similar output is by using \code{noquote()}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# print without quotes}
+\hlkwd{noquote}\hlstd{(my_string)}
+\end{alltt}
+\begin{verbatim}
+## [1] programming with data is fun
+\end{verbatim}
+\begin{alltt}
+\hlcom{# similar to:}
+\hlkwd{print}\hlstd{(my_string,} \hlkwc{quote} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] programming with data is fun
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cat()}}
+
+Another very useful function is {\hilit \code{cat()}} which allows us to concatenate objects and print them either on screen or to a file. Its usage has the following structure:
+\begin{verbatim}
+cat(..., file = "", sep = " ", fill = FALSE, 
+    labels = NULL, append = FALSE)
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cat()}}
+
+If we use \code{cat()} with only one single string, you get a similar (although not identical) result as \code{noquote()}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# simply print with 'cat()'}
+\hlkwd{cat}\hlstd{(my_string)}
+\end{alltt}
+\begin{verbatim}
+## programming with data is fun
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\code{cat()} prints its arguments without quotes. In essence, \code{cat()} simply displays its content (on screen or in a file).
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cat()}}
+
+When we pass vectors to \code{cat()}, each of the elements are treated as though they were separate arguments:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# first four months}
+\hlkwd{cat}\hlstd{(month.name[}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{],} \hlkwc{sep} \hlstd{=} \hlstr{" "}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## January February March April
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cat()}}
+
+The argument \code{fill} allows us to break long strings; this is achieved when we specify the string width with an integer number:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# fill = 30}
+\hlkwd{cat}\hlstd{(}\hlstr{"Loooooooooong strings"}\hlstd{,} \hlstr{"can be displayed"}\hlstd{,}
+    \hlstr{"in a nice format"}\hlstd{,}
+    \hlstr{"by using the 'fill' argument"}\hlstd{,} \hlkwc{fill} \hlstd{=} \hlnum{30}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## Loooooooooong strings 
+## can be displayed 
+## in a nice format 
+## by using the 'fill' argument
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cat()}}
+
+Last but not least, we can specify a file output in \code{cat()}. For instance, to save the output in the file \code{output.txt} located in your working directory:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# cat with output in a given file}
+\hlkwd{cat}\hlstd{(my_string,} \hlstr{"with R"}\hlstd{,} \hlkwc{file} \hlstd{=} \hlstr{"output.txt"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{format()}}
+
+The function \code{format()} allows us to format an R object for pretty printing. This is especially useful when printing numbers and quantities under different formats.
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# default usage}
+\hlkwd{format}\hlstd{(}\hlnum{13.7}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "13.7"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# another example}
+\hlkwd{format}\hlstd{(}\hlnum{13.12345678}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "13.12346"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{format()}}
+
+Some useful arguments of \code{format()}:
+\bi
+ \item \code{width} the (minimum) width of strings produced
+ \item \code{trim} if set to \code{TRUE} there is no padding with spaces
+ \item \code{justify} controls how padding takes place for strings. Takes the values \code{"left", "right", "centred", "none"}
+\ei
+
+For controling the printing of numbers, use these arguments:
+\bi
+ \item \code{digits} The number of digits to the right of the decimal place.
+ \item \code{scientific} use \code{TRUE} for scientific notation, \code{FALSE} for standard notation
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{format()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# justify options}
+\hlkwd{format}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"A"}\hlstd{,} \hlstr{"BB"}\hlstd{,} \hlstr{"CCC"}\hlstd{),} \hlkwc{width} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{justify} \hlstd{=} \hlstr{"centre"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "  A  " " BB  " " CCC "
+\end{verbatim}
+\begin{alltt}
+\hlkwd{format}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"A"}\hlstd{,} \hlstr{"BB"}\hlstd{,} \hlstr{"CCC"}\hlstd{),} \hlkwc{width} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{justify} \hlstd{=} \hlstr{"left"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "A    " "BB   " "CCC  "
+\end{verbatim}
+\begin{alltt}
+\hlkwd{format}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"A"}\hlstd{,} \hlstr{"BB"}\hlstd{,} \hlstr{"CCC"}\hlstd{),} \hlkwc{width} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{justify} \hlstd{=} \hlstr{"right"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "    A" "   BB" "  CCC"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{format}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"A"}\hlstd{,} \hlstr{"BB"}\hlstd{,} \hlstr{"CCC"}\hlstd{),} \hlkwc{width} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{justify} \hlstd{=} \hlstr{"none"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "A"   "BB"  "CCC"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{format()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# digits}
+\hlkwd{format}\hlstd{(}\hlnum{1}\hlopt{/}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,} \hlkwc{digits} \hlstd{=} \hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "1.00" "0.50" "0.33" "0.25" "0.20"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# use of 'digits', widths and justify}
+\hlkwd{format}\hlstd{(}\hlkwd{format}\hlstd{(}\hlnum{1}\hlopt{/}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,} \hlkwc{digits} \hlstd{=} \hlnum{2}\hlstd{),} \hlkwc{width} \hlstd{=} \hlnum{6}\hlstd{,} \hlkwc{justify} \hlstd{=} \hlstr{"c"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] " 1.00 " " 0.50 " " 0.33 " " 0.25 " " 0.20 "
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{string formatting with \code{sprintf()}}
+
+The function {\hilit \code{sprintf()}} is a wrapper for the \texttt{C} function \code{sprintf()} that returns a formatted string combining text and variable values. Its usage has the following form:
+\begin{verbatim}
+sprintf(fmt, ...)
+\end{verbatim}
+
+The nice feature about \code{sprintf()} is that it provides us a very flexible way of formatting vector elements as character strings. 
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{sprintf()}}
+
+Several ways in which the number \code{pi} can be formatted:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# "%f" indicates 'fixed point' decimal notation}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"%f"}\hlstd{, pi)}
+\end{alltt}
+\begin{verbatim}
+## [1] "3.141593"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# decimal notation with 3 decimal digits}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"%.3f"}\hlstd{, pi)}
+\end{alltt}
+\begin{verbatim}
+## [1] "3.142"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# 1 integer and 0 decimal digits}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"%1.0f"}\hlstd{, pi)}
+\end{alltt}
+\begin{verbatim}
+## [1] "3"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{sprintf()}}
+
+Several ways in which the number \code{pi} can be formatted:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# more options}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"%5.1f"}\hlstd{, pi)}
+\end{alltt}
+\begin{verbatim}
+## [1] "  3.1"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"%05.1f"}\hlstd{, pi)}
+\end{alltt}
+\begin{verbatim}
+## [1] "003.1"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{sprintf()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# print with sign (positive)}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"%+f"}\hlstd{, pi)}
+\end{alltt}
+\begin{verbatim}
+## [1] "+3.141593"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# prefix a space}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"% f"}\hlstd{, pi)}
+\end{alltt}
+\begin{verbatim}
+## [1] " 3.141593"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# left adjustment}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"%-10f"}\hlstd{, pi)} \hlcom{# left justified}
+\end{alltt}
+\begin{verbatim}
+## [1] "3.141593  "
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{sprintf()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# exponential decimal notation "e"}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"%e"}\hlstd{, pi)}
+\end{alltt}
+\begin{verbatim}
+## [1] "3.141593e+00"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# exponential decimal notation "E"}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"%E"}\hlstd{, pi)}
+\end{alltt}
+\begin{verbatim}
+## [1] "3.141593E+00"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# number of significant digits (6 by default)}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"%g"}\hlstd{, pi)}
+\end{alltt}
+\begin{verbatim}
+## [1] "3.14159"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using \code{sprintf()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# more sprintf examples}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"Harry's age is %s"}\hlstd{,} \hlnum{12}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "Harry's age is 12"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sprintf}\hlstd{(}\hlstr{"five is %s, six is %s"}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{6}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "five is 5, six is 6"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Comparing printing methods}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# printing method }
+\hlkwd{print}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)}
+\hlcom{# convert to character}
+\hlkwd{as.character}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)}
+\hlcom{# concatenation}
+\hlkwd{cat}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"-"}\hlstd{)}
+\hlcom{# default pasting}
+\hlkwd{paste}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)}
+\hlcom{# paste with collapsing}
+\hlkwd{paste}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,} \hlkwc{collapse} \hlstd{=} \hlstr{""}\hlstd{)}
+\hlcom{# convert to a single string}
+\hlkwd{toString}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)}
+\hlcom{# unquoted output}
+\hlkwd{noquote}\hlstd{(}\hlkwd{as.character}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{ggplot2 \code{summary()}}
+
+{\scriptsize \url{https://github.com/hadley/ggplot2/blob/master/R/summary.r}}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{summary.ggplot} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{object}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+  \hlstd{wrap} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{paste}\hlstd{(}
+    \hlkwd{paste}\hlstd{(}\hlkwd{strwrap}\hlstd{(x,} \hlkwc{exdent} \hlstd{=} \hlnum{2}\hlstd{),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),} \hlstr{"\textbackslash{}n"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{""}\hlstd{)}
+
+  \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(object}\hlopt{$}\hlstd{data)) \{}
+    \hlstd{output} \hlkwb{<-} \hlkwd{paste}\hlstd{(}
+      \hlstr{"data:     "}\hlstd{,} \hlkwd{paste}\hlstd{(}\hlkwd{names}\hlstd{(object}\hlopt{$}\hlstd{data),} \hlkwc{collapse} \hlstd{=} \hlstr{", "}\hlstd{),}
+      \hlstr{" ["}\hlstd{,} \hlkwd{nrow}\hlstd{(object}\hlopt{$}\hlstd{data),} \hlstr{"x"}\hlstd{,} \hlkwd{ncol}\hlstd{(object}\hlopt{$}\hlstd{data),} \hlstr{"] "}\hlstd{,}
+      \hlstr{"\textbackslash{}n"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{""}\hlstd{)}
+    \hlkwd{cat}\hlstd{(}\hlkwd{wrap}\hlstd{(output))}
+  \hlstd{\}}
+  \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(object}\hlopt{$}\hlstd{mapping)} \hlopt{>} \hlnum{0}\hlstd{) \{}
+    \hlkwd{cat}\hlstd{(}\hlstr{"mapping:  "}\hlstd{,} \hlkwd{clist}\hlstd{(object}\hlopt{$}\hlstd{mapping),} \hlstr{"\textbackslash{}n"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{""}\hlstd{)}
+  \hlstd{\}}
+  \hlkwa{if} \hlstd{(object}\hlopt{$}\hlstd{scales}\hlopt{$}\hlkwd{n}\hlstd{()} \hlopt{>} \hlnum{0}\hlstd{) \{}
+    \hlkwd{cat}\hlstd{(}\hlstr{"scales:  "}\hlstd{,} \hlkwd{paste}\hlstd{(object}\hlopt{$}\hlstd{scales}\hlopt{$}\hlkwd{input}\hlstd{(),} \hlkwc{collapse} \hlstd{=} \hlstr{", "}\hlstd{),} \hlstr{"\textbackslash{}n"}\hlstd{)}
+  \hlstd{\}}
+  \hlkwd{cat}\hlstd{(}\hlstr{"faceting: "}\hlstd{)}
+  \hlkwd{print}\hlstd{(object}\hlopt{$}\hlstd{facet)}
+  \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(object}\hlopt{$}\hlstd{layers)} \hlopt{>} \hlnum{0}\hlstd{)}
+    \hlkwd{cat}\hlstd{(}\hlstr{"-----------------------------------\textbackslash{}n"}\hlstd{)}
+  \hlkwd{invisible}\hlstd{(}\hlkwd{lapply}\hlstd{(object}\hlopt{$}\hlstd{layers,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+    \hlkwd{print}\hlstd{(x)}
+    \hlkwd{cat}\hlstd{(}\hlstr{"\textbackslash{}n"}\hlstd{)}
+  \hlstd{\}))}
+
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{ggplot2 object}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(ggplot2)}
+
+\hlstd{gg} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= mtcars,} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= mpg,} \hlkwc{y} \hlstd{= hp))} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{()}
+
+\hlkwd{summary}\hlstd{(gg)}
+\end{alltt}
+\begin{verbatim}
+## data: mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb [32x11]
+## mapping:  x = mpg, y = hp
+## faceting: facet_null() 
+## -----------------------------------
+## geom_point: na.rm = FALSE 
+## stat_identity:  
+## position_identity: (width = NULL, height = NULL)
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Reading Raw Text}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reading Text with \code{readlines()}}
+
+\bi
+  \item {\hilit \code{readLines()}} allows us to import text \textit{as is} (i.e. we want to read raw text)
+  \item Use \code{readLines()} if you don't want R to assume that the data is any particular form
+  \item \code{readLines()} takes the name of a file or the name of a URL that we want to read
+  \item The output is a character vector with one element for each line of the file or url
+\ei
+  
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading Text with \code{readlines()}}
+
+For instance, here's how to read the file located at: \\
+\url{http://www.textfiles.com/music/ktop100.txt}
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# read 'ktop100.txt' file}
+\hlstd{ktop} \hlkwb{<-} \hlstr{"http://www.textfiles.com/music/ktop100.txt"}
+
+\hlstd{top105} \hlkwb{<-} \hlkwd{readLines}\hlstd{(ktop)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Reading Text with \code{readlines()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{head}\hlstd{(top105,} \hlkwc{n} \hlstd{=} \hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "From: ed@wente.llnl.gov (Ed Suranyi)"
+## [2] "Date: 12 Jan 92 21:23:55 GMT"        
+## [3] "Newsgroups: rec.music.misc"          
+## [4] "Subject: KITS' year end countdown"   
+## [5] ""
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Basic String Manipulation}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{String Manipulation}
+
+There are a number of very handy functions in R for doing some basic manipulation of strings:
+
+\begin{center}
+  \begin{tabular}{l l}
+  \multicolumn{2}{c}{\textbf{Manipulation of strings}} \\
+  \hline
+  Function & Description \\
+    \hline
+    \code{nchar()} & number of characters \\
+    \code{tolower()} & convert to lower case \\
+    \code{toupper()} & convert to upper case \\
+    \code{casefold()} & case folding \\
+    \code{chartr()} & character translation \\
+    \code{abbreviate()} & abbreviation \\
+    \code{substring()} & substrings of a character vector \\
+    \code{substr()} & substrings of a character vector \\
+    \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Counting number of characters}
+
+\code{nchar()} counts the number of characters in a string, that is, the ``length'' of a string:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# how many characters?}
+\hlkwd{nchar}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"How"}\hlstd{,} \hlstr{"many"}\hlstd{,} \hlstr{"characters?"}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1]  3  4 11
+\end{verbatim}
+\begin{alltt}
+\hlcom{# how many characters?}
+\hlkwd{nchar}\hlstd{(}\hlstr{"How many characters?"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 20
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Notice that the white spaces between words in the second example are also counted as characters. 
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Counting number of characters}
+
+Do not confuse \code{nchar()} with \code{length()}. The former gives us the \textbf{number of characters}, the later only gives the \textbf{number of elements} in a vector:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# how many elements?}
+\hlkwd{length}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"How"}\hlstd{,} \hlstr{"many"}\hlstd{,} \hlstr{"characters?"}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\begin{alltt}
+\hlcom{# how many elements?}
+\hlkwd{length}\hlstd{(}\hlstr{"How many characters?"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Convert to lower case with \code{tolower()}}
+
+R comes with three functions for text casefolding. The first function we'll discuss is \code{tolower()} which converts any upper case characters into lower case:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# to lower case}
+\hlkwd{tolower}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"aLL ChaRacterS in LoweR caSe"}\hlstd{,} \hlstr{"ABCDE"}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] "all characters in lower case" "abcde"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Convert to upper case with \code{toupper()}}
+
+The opposite function of \code{tolower()} is \code{toupper}. As you may guess, this function converts any lower case characters into upper case:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# to upper case}
+\hlkwd{toupper}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"All ChaRacterS in Upper Case"}\hlstd{,} \hlstr{"abcde"}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] "ALL CHARACTERS IN UPPER CASE" "ABCDE"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Case conversion with \code{casefold()}}
+
+\code{casefold()} converts all characters to lower case, but we can use the argument \code{upper = TRUE} to indicate the opposite (characters in upper case):
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# lower case folding}
+\hlkwd{casefold}\hlstd{(}\hlstr{"aLL ChaRacterS in LoweR caSe"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "all characters in lower case"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# upper case folding}
+\hlkwd{casefold}\hlstd{(}\hlstr{"All ChaRacterS in Upper Case"}\hlstd{,} \hlkwc{upper} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "ALL CHARACTERS IN UPPER CASE"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character translation with \code{chartr()}}
+
+There's also the function \code{chartr()} which stands for \textit{character translation}. 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# character translation}
+\hlkwd{chartr}\hlstd{(old, new, x)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\code{chartr()} takes three arguments: an \code{old} string, a \code{new} string, and a character vector \code{x}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character translation with \code{chartr()}}
+
+The way \code{chartr()} works is by replacing the characters in \code{old} that appear in \code{x} by those indicated in \code{new}. For example, suppose we want to translate the letter \code{"a"} (lower case) with \code{"A"} (upper case) in the sentence \code{x}:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# replace 'a' by 'A'}
+\hlkwd{chartr}\hlstd{(}\hlstr{"a"}\hlstd{,} \hlstr{"A"}\hlstd{,} \hlstr{"This is a boring string"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "This is A boring string"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character translation with \code{chartr()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# multiple replacements}
+\hlstd{crazy} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Here's to the crazy ones"}\hlstd{,}
+           \hlstr{"The misfits"}\hlstd{,}
+           \hlstr{"The rebels"}\hlstd{)}
+
+\hlkwd{chartr}\hlstd{(}\hlstr{"aei"}\hlstd{,} \hlstr{"#!?"}\hlstd{, crazy)}
+\end{alltt}
+\begin{verbatim}
+## [1] "H!r!'s to th! cr#zy on!s" "Th! m?sf?ts"             
+## [3] "Th! r!b!ls"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Abbreviate strings with \code{abbreviate()}}
+
+Another useful function for basic manipulation of character strings is \code{abbreviate()}. Its usage has the following structure:
+
+\begin{verbatim}
+abbreviate(names.org, minlength = 4, dot = FALSE, 
+           strict =FALSE,
+           method = c("left.keep", "both.sides"))
+\end{verbatim}
+
+Although there are several arguments, the main parameter is the character vector (\code{names.org}) which will contain the names that we want to abbreviate
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Abbreviate strings with \code{abbreviate()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some color names}
+\hlstd{some_colors} \hlkwb{<-} \hlkwd{colors}\hlstd{()[}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{]}
+
+\hlcom{# abbreviate (default usage)}
+\hlstd{colors1} \hlkwb{<-} \hlkwd{abbreviate}\hlstd{(some_colors)}
+\hlstd{colors1}
+\end{alltt}
+\begin{verbatim}
+##         white     aliceblue  antiquewhite antiquewhite1 
+##        "whit"        "alcb"        "antq"        "ant1"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Abbreviate strings with \code{abbreviate()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# abbreviate with 'minlength'}
+\hlstd{colors2} \hlkwb{<-} \hlkwd{abbreviate}\hlstd{(some_colors,} \hlkwc{minlength} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlstd{colors2}
+\end{alltt}
+\begin{verbatim}
+##         white     aliceblue  antiquewhite antiquewhite1 
+##       "white"       "alcbl"       "antqw"       "antq1"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# abbreviate}
+\hlstd{colors3} \hlkwb{<-} \hlkwd{abbreviate}\hlstd{(some_colors,} \hlkwc{minlength} \hlstd{=} \hlnum{3}\hlstd{,}
+                      \hlkwc{method} \hlstd{=} \hlstr{"both.sides"}\hlstd{)}
+\hlstd{colors3}
+\end{alltt}
+\begin{verbatim}
+##         white     aliceblue  antiquewhite antiquewhite1 
+##         "wht"         "alc"         "ant"         "an1"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substr()}}
+
+The function \code{substr()} extracts or replaces substrings in a character vector. Its usage has the following form:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# replace}
+\hlkwd{substr}\hlstd{(x, start, stop)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\code{x} is a character vector, \code{start} indicates the first element to be extracted (or replaced), and \code{stop} indicates the last element to be extracted (or replaced)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Extracting substrings with \code{substr()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# extract characters in positions 1, 2, 3}
+\hlkwd{substr}\hlstd{(}\hlstr{"abcdef"}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "abc"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# extract 'area code' }
+\hlkwd{substr}\hlstd{(}\hlstr{"(510) 987 6543"}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "510"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substr()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# replace 2nd letter with hash symbol}
+\hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"may"}\hlstd{,} \hlstr{"the"}\hlstd{,} \hlstr{"force"}\hlstd{,} \hlstr{"be"}\hlstd{,} \hlstr{"with"}\hlstd{,} \hlstr{"you"}\hlstd{)}
+
+\hlkwd{substr}\hlstd{(x,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{)} \hlkwb{<-} \hlstr{"#"}
+
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## [1] "m#y"   "t#e"   "f#rce" "b#"    "w#th"  "y#u"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substr()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# replace 2nd and 3rd letters with ":)"}
+\hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"may"}\hlstd{,} \hlstr{"the"}\hlstd{,} \hlstr{"force"}\hlstd{,} \hlstr{"be"}\hlstd{,} \hlstr{"with"}\hlstd{,} \hlstr{"you"}\hlstd{)}
+
+\hlkwd{substr}\hlstd{(y,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{)} \hlkwb{<-} \hlstr{":)"}
+
+\hlstd{y}
+\end{alltt}
+\begin{verbatim}
+## [1] "m:)"   "t:)"   "f:)ce" "b:"    "w:)h"  "y:)"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substr()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# replacement with recycling}
+\hlstd{z} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"may"}\hlstd{,} \hlstr{"the"}\hlstd{,} \hlstr{"force"}\hlstd{,} \hlstr{"be"}\hlstd{,} \hlstr{"with"}\hlstd{,} \hlstr{"you"}\hlstd{)}
+
+\hlkwd{substr}\hlstd{(z,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"#"}\hlstd{,} \hlstr{"@"}\hlstd{)}
+
+\hlstd{z}
+\end{alltt}
+\begin{verbatim}
+## [1] "m#y"   "t@e"   "f#rce" "b@"    "w#th"  "y@u"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substring()}}
+
+Closely related to \code{substr()}, the function {\hilit \code{substring()}} extracts or replaces substrings in a character vector. Its usage has the following form:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{substring}\hlstd{(text, first,} \hlkwc{last} \hlstd{=} \hlnum{1000000L}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\code{text} is a character vector, \code{first} indicates the first element to be replaced, and \code{last} indicates the last element to be replaced
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substring()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# same as 'substr'}
+\hlkwd{substring}\hlstd{(}\hlstr{"ABCDEF"}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "BCD"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{substr}\hlstd{(}\hlstr{"ABCDEF"}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "BCD"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# extract each letter}
+\hlkwd{substring}\hlstd{(}\hlstr{"ABCDEF"}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{6}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{6}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "A" "B" "C" "D" "E" "F"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replace substrings with \code{substring()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# multiple replacement with recycling}
+\hlstd{txt} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"another"}\hlstd{,} \hlstr{"dummy"}\hlstd{,} \hlstr{"example"}\hlstd{)}
+
+\hlkwd{substring}\hlstd{(txt,} \hlnum{1}\hlopt{:}\hlnum{3}\hlstd{)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{" "}\hlstd{,} \hlstr{"zzz"}\hlstd{)}
+
+\hlstd{txt}
+\end{alltt}
+\begin{verbatim}
+## [1] " nother" "dzzzy"   "ex mple"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Set Operations}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+
+We can apply functions such as set union, intersection, difference, equality and membership, on \code{"character"} vectors.
+
+\begin{center}
+  \begin{tabular}{l l}
+  \hline
+  Function & Description \\
+    \hline
+    \code{union()} & set union \\
+    \code{intersect()} & intersection \\
+    \code{setdiff()} & set difference \\
+    \code{setequal()} & equal sets \\
+    \code{identical()} & exact equality \\
+    \code{is.element()} & is element \\
+    \code{\%in\%()} & contains \\
+    \code{sort()} & sorting \\
+    \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Union}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# two character vectors}
+\hlstd{set1} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"some"}\hlstd{,} \hlstr{"random"}\hlstd{,} \hlstr{"words"}\hlstd{,} \hlstr{"some"}\hlstd{)}
+
+\hlstd{set2} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"some"}\hlstd{,} \hlstr{"many"}\hlstd{,} \hlstr{"none"}\hlstd{,} \hlstr{"few"}\hlstd{)}
+
+\hlcom{# union of set1 and set2}
+\hlkwd{union}\hlstd{(set1, set2)}
+\end{alltt}
+\begin{verbatim}
+## [1] "some"   "random" "words"  "many"   "none"   "few"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Intersection}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# two character vectors}
+\hlstd{set3} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"some"}\hlstd{,} \hlstr{"random"}\hlstd{,} \hlstr{"few"}\hlstd{,} \hlstr{"words"}\hlstd{)}
+
+\hlstd{set4} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"some"}\hlstd{,} \hlstr{"many"}\hlstd{,} \hlstr{"none"}\hlstd{,} \hlstr{"few"}\hlstd{)}
+
+\hlcom{# intersect of set3 and set4}
+\hlkwd{intersect}\hlstd{(set3, set4)}
+\end{alltt}
+\begin{verbatim}
+## [1] "some" "few"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Set Difference}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# two character vectors}
+\hlstd{set5} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"some"}\hlstd{,} \hlstr{"random"}\hlstd{,} \hlstr{"few"}\hlstd{,} \hlstr{"words"}\hlstd{)}
+
+\hlstd{set6} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"some"}\hlstd{,} \hlstr{"many"}\hlstd{,} \hlstr{"none"}\hlstd{,} \hlstr{"few"}\hlstd{)}
+
+\hlcom{# difference between set5 and set6}
+\hlkwd{setdiff}\hlstd{(set5, set6)}
+\end{alltt}
+\begin{verbatim}
+## [1] "random" "words"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Set Equality}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# three character vectors}
+\hlstd{set7} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"some"}\hlstd{,} \hlstr{"random"}\hlstd{,} \hlstr{"strings"}\hlstd{)}
+\hlstd{set8} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"some"}\hlstd{,} \hlstr{"many"}\hlstd{,} \hlstr{"none"}\hlstd{,} \hlstr{"few"}\hlstd{)}
+\hlstd{set9} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"strings"}\hlstd{,} \hlstr{"random"}\hlstd{,} \hlstr{"some"}\hlstd{)}
+
+\hlcom{# set7 == set8?}
+\hlkwd{setequal}\hlstd{(set7, set8)}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlcom{# set7 == set9?}
+\hlkwd{setequal}\hlstd{(set7, set9)}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Element Membership}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# three vectors}
+\hlstd{set10} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"some"}\hlstd{,} \hlstr{"stuff"}\hlstd{,} \hlstr{"to"}\hlstd{,} \hlstr{"play"}\hlstd{,} \hlstr{"with"}\hlstd{)}
+\hlstd{elem1} \hlkwb{<-} \hlstr{"play"}
+\hlstd{elem2} \hlkwb{<-} \hlstr{"many"}
+
+\hlcom{# elem1 in set10?}
+\hlkwd{is.element}\hlstd{(elem1, set10)}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlcom{# elem2 in set10?}
+\hlkwd{is.element}\hlstd{(elem2, set10)}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Element Membership}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# elem1 in set10?}
+\hlstd{elem1} \hlopt{%in%} \hlstd{set10}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlcom{# elem2 in set10?}
+\hlstd{elem2} \hlopt{%in%} \hlstd{set10}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Sorting}
+
+\code{sort()} arranges elements in alphabetical order
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{set11} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"random"}\hlstd{,} \hlstr{"words"}\hlstd{,} \hlstr{"multiple"}\hlstd{)}
+
+\hlcom{# sort (decreasingly)}
+\hlkwd{sort}\hlstd{(set11)}
+\end{alltt}
+\begin{verbatim}
+## [1] "multiple" "random"   "words"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# sort (increasingly)}
+\hlkwd{sort}\hlstd{(set11,} \hlkwc{decreasing} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "words"    "random"   "multiple"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

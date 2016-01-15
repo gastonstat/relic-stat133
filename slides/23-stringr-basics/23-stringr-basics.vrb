@@ -1,0 +1,24 @@
+\frametitle{Word extraction with \code{word()}}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# some sentence}
+\hlstd{change} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Be the change"}\hlstd{,} \hlstr{"you want to be"}\hlstd{)}
+
+\hlcom{# extract last word}
+\hlkwd{word}\hlstd{(change,} \hlopt{-}\hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "change" "be"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# extract all but the first words}
+\hlkwd{word}\hlstd{(change,} \hlnum{2}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "the change" "want to be"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

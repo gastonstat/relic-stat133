@@ -1,0 +1,173 @@
+---
+title: "Stat 133: Regex"
+author: "Gaston Sanchez"
+output: html_document
+---
+
+## Getting Started with Regular Expressions
+
+Here's a vector with some character strings:
+```{r}
+# vector of strings
+animals <- c('dog', 'cat', 'bird', 'dolphin', 'lion',
+             'zebra', 'tiger', 'wolf', 'whale', 'eagle',
+             'pig', 'osprey', 'kangaroo', 'koala')
+```
+
+
+### Matching Literal Characters
+
+Matching `dog`
+```{r, eval=FALSE}
+# 'dog'
+grep('dog', animals, value = TRUE)
+```
+
+Animals containing letter `d`
+```{r, eval=FALSE}
+# 'd'
+grep('d', animals, value = TRUE)
+```
+
+
+### Some Special Characters
+
+The vertical bar is the __OR__ operator. Animals with letters `c` _OR_ `d`
+```{r, eval=FALSE}
+# 'c' or 'd'
+grep('c|d', animals, value = TRUE)
+```
+
+Dot `.` represents __any__ character:
+```{r, eval=FALSE}
+# match any character
+grep('.', animals, value = TRUE)
+```
+
+
+### Character Classes
+
+Character classes are specified inside brackets `[]`. For example, here's how to get animals with letters `c` or `d`
+```{r, eval=FALSE}
+# 'c' or 'd'
+grep('[cd]', animals, value = TRUE)
+```
+
+A caret `^` at the begining of a class indicates negation.
+```{r, eval=FALSE}
+# anything but 'cat'
+grep('[^cat]', animals, value = TRUE)
+```
+
+
+### Position Matching
+
+A caret `^` at the begining of a pattern is used to match characters in the starting position. To get animals starting with `d`
+```{r, eval=FALSE}
+# start with 'd'
+grep('^d', animals, value = TRUE)
+```
+
+A `$` sign used at the end of the pattern indicates the last position. To get animals ending with `n`
+```{r, eval=FALSE}
+# end with 'd'
+grep('n$', animals, value = TRUE)
+```
+
+
+### Quantifiers
+
+Quantifiers specify how many repetitions of the pattern.   
+
+  * `*`: matches at least 0 times.   
+  * `+`: matches at least 1 times.     
+  * `?`: matches at most 1 times.    
+  * `{n}`: matches exactly n times.    
+  * `{n,}`: matches at least n times.    
+  * `{n,m}`: matches between n and m times.     
+
+```{r, eval=FALSE}
+# at least 0 or more 'o'
+grep('o*', animals, value = TRUE)
+
+# at least 1 'o'
+grep('o+', animals, value = TRUE)
+
+# at most 1 'o'
+# (what's hapenning here?)
+grep('o?', animals, value = TRUE)
+
+# exactly 2 'o'
+grep('o{2}', animals, value = TRUE)
+```
+
+
+### More examples
+
+Animals with one `o`, but not two `o`'s together
+```{r, eval=FALSE}
+# animals with no two 'o' together
+grep('o.[^o]', animals, value = TRUE)
+```
+
+Animals containing both ```a``` and ```e```
+```{r, eval=FALSE}
+# containing both 'a' and 'e'
+grep('(a.*e)|(e.*a)', animals, value = TRUE)
+```
+
+Animals with more than 1 vowel
+```{r, eval=FALSE}
+grep('[aeiou].*[aeiou]', animals, value = TRUE)
+```
+
+If you want to get animals that don't contain `d`:
+```{r, eval=FALSE}
+# which names have 'd'
+grep('d', animals)
+# excluding those names with 'd'
+animals[-grep('d', animals)]
+```
+
+
+
+-----
+
+## More Regex
+
+Here's another vector with character strings
+```{r}
+files <- c('sales1.csv', 'orders.csv', 'sales2.csv',
+           'sales3.csv', 'europe.csv', 
+           'na1.csv', 'na2.csv', 'sa.csv', 'ca.csv')
+```
+
+
+### Character and POSIX classes
+
+```{r, eval=FALSE}
+# file names with numbers
+grep('[0123456789]', files, value = TRUE)
+
+# equivalently
+grep('[0-9]', files, value = TRUE)
+
+# equivalently
+grep('[[:digit:]]', files, value = TRUE)
+```
+
+
+### Replacing characters
+
+```{r, eval=FALSE}
+# changing 'csv' extension into 'txt' extension
+sub('csv', 'txt', files)
+```
+
+```{r, eval=FALSE}
+# separate file name from file extension
+# (we need to escape the dot character)
+strsplit(files, '\\.')
+```
+
+

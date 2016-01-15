@@ -1,0 +1,21 @@
+\frametitle{Exercise}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# 3 smallest numbers}
+\hlkwd{sort}\hlstd{(a)[}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] -2.214700 -1.989352 -1.804959
+\end{verbatim}
+\begin{alltt}
+\hlcom{# 3 largest numbers}
+\hlkwd{sort}\hlstd{(a,} \hlkwc{decreasing} \hlstd{=} \hlnum{TRUE}\hlstd{)[}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 2.401618 2.172612 1.980400
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

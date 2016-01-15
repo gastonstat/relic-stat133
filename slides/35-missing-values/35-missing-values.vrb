@@ -1,0 +1,13 @@
+\frametitle{Looking at missing values}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# visualizations}
+\hlkwd{marginplot}\hlstd{(ozone[ ,}\hlkwd{c}\hlstd{(}\hlstr{'T9'}\hlstd{,} \hlstr{'maxO3'}\hlstd{)])}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}marginplot"{}}}\end{kframe}
+\end{knitrout}
+

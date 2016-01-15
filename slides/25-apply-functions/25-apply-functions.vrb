@@ -1,0 +1,21 @@
+\frametitle{\code{sweep()} median}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# mean height and weight}
+\hlstd{hw_median} \hlkwb{<-} \hlkwd{apply}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],} \hlnum{2}\hlstd{, median)}
+
+\hlcom{# centering height and weight}
+\hlkwd{sweep}\hlstd{(df[ ,}\hlkwd{c}\hlstd{(}\hlstr{'height'}\hlstd{,} \hlstr{'weight'}\hlstd{)],} \hlnum{2}\hlstd{, hw_median)}
+\end{alltt}
+\begin{verbatim}
+##   height weight
+## 1  0.135     15
+## 2 -0.085    -13
+## 3 -0.625    -30
+## 4  0.085     13
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

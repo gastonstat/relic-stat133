@@ -1,0 +1,19 @@
+\frametitle{De Mere's Game 2}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{counts} \hlkwb{<-} \hlnum{0}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{games) \{}
+  \hlkwa{if} \hlstd{(}\hlkwd{any}\hlstd{(results[i, ]} \hlopt{==} \hlnum{12}\hlstd{))}
+    \hlstd{counts} \hlkwb{<-} \hlstd{counts} \hlopt{+} \hlnum{1}
+\hlstd{\}}
+
+\hlstd{counts} \hlopt{/} \hlstd{games}  \hlcom{# proportion of wins}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.493
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+

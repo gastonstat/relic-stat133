@@ -1,0 +1,1051 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+
+\input{../LaTeX/header.tex}
+
+%------------------------------------------------
+% end of header
+%------------------------------------------------
+
+\title{Character Vectors and Factors}
+\subtitle{STAT 133}
+\author{\href{http://www.gastonsanchez.com}{Gaston Sanchez}}
+\institute{Department of Statistics, UC{\textendash}Berkeley}
+\date{\href{http://www.gastonsanchez.com}{\tt \scriptsize \color{foreground} gastonsanchez.com}
+\\[-4pt]
+\href{http://github.com/gastonstat/stat133}{\tt \scriptsize \color{foreground} github.com/gastonstat/stat133}
+\\[-4pt]
+{\scriptsize Course web: \href{http://www.gastonsanchez.com/stat133}{\tt gastonsanchez.com/stat133}}
+}
+
+\begin{document}
+<<setup, include=FALSE>>=
+# smaller font size for chunks
+opts_chunk$set(size = 'footnotesize')
+#thm <- knit_theme$get("bclear")
+#knit_theme$set(thm)
+options(width=78)
+@
+
+{
+  \setbeamertemplate{footline}{} % no page number here
+  \frame{
+    \titlepage
+  } 
+}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Character Vectors}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We express character strings using single or double quotes:
+<<eval = FALSE>>=
+# string with single quotes
+'a character string using single quotes'
+@
+
+<<eval = FALSE>>=
+# string with double quotes
+"a character string using double quotes"
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We can insert single quotes in a string with double quotes, and vice versa:
+<<eval = FALSE>>=
+# single quotes within double quotes
+"The 'R' project for statistical computing"
+@
+
+<<eval = FALSE>>=
+# double quotes within single quotes
+'The "R" project for statistical computing'
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Character Basics}
+
+We cannot insert single quotes in a string with single quotes, neither we can insert double quotes in a string with double quotes (Don't do this!):
+<<eval = FALSE>>=
+# don't do this!
+"This "is" totally unacceptable"
+@
+                                                            
+<<eval = FALSE>>=
+# don't do this!
+'This 'is' absolutely wrong'
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{character()}}
+
+Besides the single quotes or double quotes, R provides the function \code{character()} to create vectors of type character. 
+
+<<>>=
+# character vector of 5 elements
+a <- character(5)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty string}
+
+The most basic string is the \textbf{empty string} produced by consecutive quotation marks: \code{""}. 
+<<empty_string>>=
+# empty string
+empty_str <- ""
+
+empty_str
+@
+Technically, \code{""} is a string with no characters in it, hence the name \textit{empty string}.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty character vector}
+
+Another basic string structure is the \textbf{empty character vector} produced by \code{character(0)}:
+<<empty_char_vector>>=
+# empty character vector
+empty_chr <- character(0)
+
+empty_chr
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty character vector}
+
+Do not to confuse the empty character vector \code{character(0)} with the empty string \code{""}; they have different lengths:
+<<empty_str_char_lengths>>=
+# length of empty string
+length(empty_str)
+
+# length of empty character vector
+length(empty_chr)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{More on \code{character()}}
+
+Once an empty character object has been created, new components may be added to it simply by giving it an index value outside its previous range:
+<<empty_vector_ex1>>=
+# another example
+example <- character(0)
+example
+
+# add first element
+example[1] <- "first"
+example
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Empty character vector}
+
+We can add more elements without the need to follow a consecutive index range:
+<<empty_vector_ex2>>=
+example[4] <- "fourth"
+example
+length(example)
+@
+R fills the missing indices with missing values \code{NA}.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{is.character()}}
+
+To test if an object is of type \code{"character"} you use the function \code{is.character()}:
+<<is_character>>=
+# define two objects 'a' and 'b'
+a <- "test me"
+b <- 8 + 9
+
+# are 'a' and 'b' characters?
+is.character(a)
+
+is.character(b)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{as.character()}}
+
+R allows you to convert non-character objects into character strings with the function \code{as.character()}:
+<<>>=
+b
+
+# converting 'b' into character
+as.character(b)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Replicate elements}
+
+You can use the function {\hilit \code{rep()}} to create character vectors of replicated elements:
+<<eval = FALSE>>=
+rep("a", times = 5)
+rep(c("a", "b", "c"), times = 2)
+rep(c("a", "b", "c"), times = c(3, 2, 1))
+rep(c("a", "b", "c"), each = 2)
+rep(c("a", "b", "c"), length.out = 5)
+rep(c("a", "b", "c"), each = 2, times = 2)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Function \code{paste()}}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+The function \code{paste()} is perhaps one of the most important functions that we can use to create and build strings. 
+
+\begin{verbatim}
+ paste(..., sep = " ", collapse = NULL)
+\end{verbatim}
+
+\code{paste()} takes one or more R objects, converts them to \code{"character"}, and then it concatenates (pastes) them to form one or several character strings.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+Simple example using \code{paste()}:
+<<paste_string_ex1>>=
+# paste
+PI <- paste("The life of", pi)
+
+PI
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+The default separator is a blank space (\code{sep = " "}). But you can select another character, for example \code{sep = "-"}:
+<<paste_string_ex2>>=
+# paste
+tobe <- paste("to", "be", "or", "not", "to", "be", sep = "-")
+
+tobe
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+If we give \code{paste()} objects of different length, then the recycling rule is applied:
+<<paste_string_ex3>>=
+# paste with objects of different lengths
+paste("X", 1:5, sep = ".")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste()}}
+
+To see the effect of the \code{collapse} argument, let's compare the difference with collapsing and without it:
+<<paste_string_ex4>>=
+# paste with collapsing
+paste(1:3, c("!", "?", "+"), sep = '', collapse = "")
+# paste without collapsing
+paste(1:3, c("!", "?", "+"), sep = '')
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{paste0()}}
+
+There's also the function \code{paste0()} which is the equivalent of
+\begin{verbatim}
+ paste(..., sep = "", collapse)
+\end{verbatim}
+
+<<paste0>>=
+# collapsing with paste0
+paste0("let's", "collapse", "all", "these", "words")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{More coming soon}
+
+{\large We'll talk more about handling character strings in a couple of weeks}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Factors}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Factors}
+
+\bi 
+  \item A similar structure to vectors are \textbf{factors}
+  \item factors are used for handling categorial (i.e. qualitative) variables
+  \item they are represented as objects of class \code{"factor"}
+  \item internally, factors are stored as integers
+  \item factors behave much like vectors (but they are not vectors)
+\ei
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Categorical Variables and Factors}
+
+\bb{Types of Categorical (qualitative) variables}
+\pause
+\bbi 
+  \item Binary (2 categories)
+  \item Nominal (there's no order of categories)
+  \item Ordinal (categories have an order)
+\ei
+\eb
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Factors}
+
+To create a factor we use the function {\hilit \code{factor()}}
+<<>>=
+# 
+cols <- c("blue", "red", "blue", "gray", "red")
+cols <- factor(cols)
+cols
+@
+
+The different values in a factor are called \textbf{levels}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Binary Factors}
+
+Since factors represent categorical variables, we can have binary, nominal and ordinal factors
+<<>>=
+# binary factors have two levels
+yes_no <- factor(c("yes", "yes", "no", "yes", "no"))
+yes_no
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Nominal Factors}
+
+Nominal factors have unordered categories
+<<>>=
+# nominal factor
+food <- factor(c("burger", "pizza", "burrito", 
+                 "pizza", "burrito", "pizza"))
+food
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Ordinal Factors}
+
+Ordinal factors have ordered categories or levels; to create an ordered factor we need to specify the levels in the desired order
+<<>>=
+# ordinal factor
+sizes <- factor(c("md", "sm", "md", "lg", "sm", "lg"),
+                levels = c("sm", "md", "lg"),
+                ordered = TRUE)
+sizes
+@
+Note that the levels are ordered
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Ordinal Factors}
+
+When creating ordinal factors, always specify the desired order of the \code{levels}, otherwise R will arrange them in alphanumeric order
+<<>>=
+# ordinal factor
+bad_sizes <- factor(c("md", "sm", "md", "lg", "sm", "lg"),
+                ordered = TRUE)
+
+bad_sizes
+@
+Note that the levels are arranged in alphanumeric order (not really what we want)
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{About Factors}
+
+We can use various functions to get information about a factor:
+<<>>=
+length(sizes)
+nlevels(sizes)
+levels(sizes)
+is.ordered(sizes)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Function \code{levels()}}
+
+\bi
+  \item besides the argument \code{levels} of \code{factor()}, there is also the function \code{levels()}
+  \item \code{levels()} lets you have access to the categories
+  \item you can use \code{levels()} to \textbf{get} the categories
+  \item you can use \code{levels()} to \textbf{set} the categorie\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{levels()}}
+
+<<>>=
+# size levels
+levels(sizes)
+
+# setting new levels
+levels(sizes) <- c("Small", "Medium", "Large")
+sizes
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{nlevels()}}
+
+\code{nlevels()} returns the number of levels of a factor. In other words, \code{nlevels()} returns the length of the attribute \code{levels}:
+<<>>=
+# nlevels()
+nlevels(food)
+
+# equivalent to
+length(levels(food))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Merging levels}
+
+\bi
+  \item Sometimes we may need to ``merge'' or collapse two or more different levels into one single level
+  \item We can achieve this by using the function \code{levels()}
+  \item Assign a new vector of levels containing repeated values for those categories that we wish to merge
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging levels}
+
+Combine categories \code{Small} and \code{Medium} into a new level \code{Sm-Md}. Here's how to do it:
+<<>>=
+# merging some levels
+levels(sizes) <- c("Sm-Md", "Sm-Md", "Large")
+
+sizes
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Merging levels}
+
+Here's another example using a list:
+<<>>=
+set.seed(222)
+y <- sample(letters[1:5], 15, rep = TRUE)
+v <- as.factor(y)
+
+new_levels <- list(I = c("a", "e"), II = c("b", "c", "d"))
+levels(v) <- new_levels
+
+v
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Unclassing factors}
+
+\bi
+  \item Factors are stored as vectors of integers (for efficiency reasons)
+  \item Even though a factor may be displayed with string labels, the way it is stored internally is as integers
+  \item Sometimes you'll nee to know what numbers are associated to each level values
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Unclassing factors}
+
+<<>>=
+# some factor
+xfactor <- factor(c(22, 11, 44, 33, 11, 22, 44))
+xfactor
+
+# unclassing a factor
+unclass(xfactor)
+@
+Note that the \code{levels} \code{("11" "22" "33" "44")} were mapped to the vector of integers \code{(1 2 3 4)}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Unclassing factors}
+
+Although rarely used, there can be some cases in which what you need to do is revert the integer values in order to get the original factor levels. This is only possible when the levels of the factor are themselves numeric. To accomplish this use the following command:
+<<revert_levels>>=
+# recovering numeric levels
+as.numeric(levels(xfactor))[xfactor]
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dropping Levels}
+
+\bi
+  \item It is common to get a sample or subset of a factor
+  \item The obtained factor may have less levels that the original factor
+  \item When this happens, we may want to drop unused levels
+  \item This can be achieved with the function \code{droplevels()}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Dropping Levels with \code{droplevels()}}
+
+<<>>=
+# original factor
+vowels <- factor(c('a', 'a', 'e', 'i', 'o', 'u', 'i'))
+
+# subset
+subvowels <- vowels[1:4]
+subvowels
+
+# drop unused levels
+droplevels(subvowels)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Categorizing Quantitative Variables}
+
+\bi
+  \item A common task is getting a categorical variable from a quantitative variable
+  \item In other words, discretize or categorize a quantitative variable
+  \item For this task R provides the function \code{cut()}
+  \item The idea is to \textit{cut} values into intervals
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cut()}}
+
+Continuous values are converted into intervals, which in turn will be the levels of the generated factor
+
+\begin{verbatim}
+  cut(x, breaks, labels = NULL, include.lowest = FALSE,
+      right = TRUE, dig.lab = 3, ordered_result = FALSE, ...)
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Function \code{cut()}}
+
+Arguments of \code{cut()}
+\bi
+ \item \code{x} a numeric vector which is to be converted to a factor by cutting.
+ \item \code{breaks} numeric vector giving the number of intervals into which \code{x} is to be cut.
+ \item \code{labels} labels for the levels of the resulting category.
+ \item \code{include.lowest} logical indicating if values equal to the lowest 'breaks' point should be included.
+ \item \code{right} logical, indicating if the intervals should be closed on the right.
+ \item \code{dig.lab} integer which is used when labels are not given.
+ \item \code{ordered\_result} logical: should the result be an ordered factor?
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cut()}}
+
+<<using_cut>>=
+# cutting a quantitative variable
+set.seed(321)
+income <- round(runif(n = 1000, min = 100, max = 500), 2)
+
+# cut income in 5 classes
+income_level <- cut(x = income, breaks = 5)
+table(income_level)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cut()}}
+
+By default, \code{cut()} has its argument \code{right} set to \code{TRUE}. This means that the intervals are open on the left (and closed on the right):
+<<cut_ex1_right>>=
+# using other cutting break points
+income_breaks <- seq(from = 100, to = 500, by = 100)
+income_a <- cut(x = income, breaks = income_breaks)
+
+table(income_a)
+sum(table(income_a))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{cut()}}
+
+To change the default way in which intervals are open and closed you can set \code{right = FALSE}. This option produces intervals closed on the left and open on the right:
+<<cut_ex1_left>>=
+# using other cutting break points
+income_b <- cut(x = income, breaks = income_breaks, 
+                right = FALSE)
+
+table(income_b)
+sum(table(income_b))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{gl()}}
+
+In addition to the function \code{factor()}, there's \code{gl()}. This function generates factors by specifying a pattern of levels:
+
+\begin{verbatim}
+gl(n, k, length = n*k, labels = seq_len(x), 
+   ordered = FALSE)
+\end{verbatim}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{gl()}}
+
+<<gl_ex1>>=
+# factor with gl()
+num_levs <- 4
+num_reps <- 3
+
+simple_factor <- gl(num_levs, num_reps)
+simple_factor
+@
+
+The main inputs of \code{gl()} are \code{n} and \code{k}, that is, the number of levels and the number of replications of each level.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{gl()}}
+
+Here's another example setting the arguments \code{labels} and \code{length}:
+<<gl_ex2>>=
+# another factor with gl()
+girl_boy <- gl(2, 4, labels = c("girl", "boy"), length = 7)
+girl_boy
+@
+By default, the total number of elements is 8 (\code{n=2} $\times$ \code{k=4}). Four \code{girl}'s and four \code{boy}'s. But since we set the argument \code{length = 7}, we only got three \code{boy}'s.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{gl()}}
+
+<<gl_ex3>>=
+# frequencies (counts)
+table(girl_boy)
+
+# frequencies (percents)
+prop.table(table(girl_boy))
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{center}
+\Huge{\hilit{Dates}}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Dates}
+
+\bi
+  \item Dates and times are very common in data analysis
+  \item We can distinguish between dates, and date-times
+  \item Dates consist of year, month and day: \code{2015-06-11}
+  \item Date-times consist of both a date and a specific time: \code{2015-06-11 09:35:24}
+  \item R provides various options and packages for dealing with date and time data
+  \item There are 3 date and times classes that come with R: \code{POSIXct}, \code{POSIXlt}, \code{Date}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{POSIX Dates}
+
+\bi
+  \item POSIX stands for \textbf{Portable Operating System Interface}
+  \item POSIX is a family of standards for the design of operating systems
+  \item It is especially used for operating systems that are compatible with Unix
+  \item There is a POSIX format for date-times
+  \item POSIX date-times allow modification of time zones
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{POSIX Dates}
+
+\bi
+  \item There are two POSIX classes to store date-times: \code{POSIXct} (calendar time) and \code{POSIXlt} (list)
+  \item \code{POSIXct} date-times values are given as number of seconds since January 1, 1970, in the Coordinated Universal Time (UTC) zone
+  \item \code{POSIXlt} date-times values are stored as a list with elements for second, minute, hour, day, month, and year
+  \item the \code{POSIXct} is the usual choice for storing date-times in R
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{POSIX Dates}
+
+The function \code{Sys.time()} gives the current date and time in \code{POSIXct} format
+<<>>=
+# current date and time
+Sys.time()
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{POSIXct} Dates}
+
+<<>>=
+# current date and time
+now_ct <- Sys.time()
+
+now_ct
+class(now_ct)
+@
+Even  though the date is displayed like a \code{character}, the class \code{POSIXct} is not stored as characters.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{POSIXct} Dates}
+
+<<>>=
+# unclass 'now_ct'
+unclass(now_ct)
+@
+Unclassing a \code{POSIXct} date-time gives you the number of seconds from January 1, 1970
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{POSIXct} Dates}
+
+<<>>=
+# from POSIXct to POSIXlt
+now_lt <- as.POSIXlt(now_ct)
+
+now_lt
+@
+The print display of a \code{POSIXlt} date-time is similar to \code{POSIXct}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{POSIXlt} Dates}
+
+<<>>=
+# POSIXlt
+nlt <- unclass(now_lt)
+class(nlt)
+nlt[1:5]
+names(nlt)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{POSIXlt} Dates}
+
+You can access indivual components of a \code{POSIXlt} object using list indexing:
+<<>>=
+# POSIXlt
+now_lt$sec
+now_lt$min
+now_lt$year
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{\code{Date} class}
+
+\bi
+  \item Besides \code{POSIXct} and \code{POSIXlt}, there is a third class called \code{Date}
+  \item \code{Date} stored dates as the number of days since January 1, 1970
+  \item \code{Date} class only contains date (no times)
+  \item If you don't care about times, then \code{Date} is a good option to use
+  \item See the documentation in \code{help(Date)} 
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\code{Date} class}
+
+The function \code{as.Date()} allows a variety of input formats. For instance, we can convert a \code{POSIXct} date-time into a \code{Date}
+<<>>=
+# from POSIXlt to Date
+now_date <- as.Date(now_ct)
+
+now_date
+
+class(now_date)
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{as.Date()}}
+
+<<>>=
+as.Date("2015-6-8")
+as.Date("2015-06-8")
+as.Date("2015/6/8")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Function \code{as.Date()}}
+
+<<>>=
+as.Date("6/8/2015", format = "%m/%d/%Y")
+as.Date("6/8/2015", format = "%m/%d/%Y")
+as.Date("June 8, 2015", format = "%B %d, %Y")
+as.Date("8JUNE15", format = "%d%b%y")
+@
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Format codes for dates}
+
+\begin{center}
+ \begin{tabular}{l l}
+  \hline
+   code & value \\
+  \hline
+  \code{\%d} & day of the month (decimal number) \\  
+  \code{\%m} & month (decimal number) \\
+  \code{\%b} & month (abbrevaited) \\
+  \code{\%B} & month (full name) \\
+  \code{\%y} & year (2 digit) \\
+  \code{\%Y} & year (4 digit) \\
+  \hline
+ \end{tabular}
+\end{center}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Useful Packages}
+
+\bi
+  \item There are many other date and time classes provided in various R packages
+  \item Two common packages for working with dates are \code{"chron"} and \code{"lubridate"}
+  \item {\tiny \url{http://cran.r-project.org/web/packages/lubridate/vignettes/lubridate.html}}
+\ei
+
+\end{frame}
+
+%------------------------------------------------
+
+\end{document}

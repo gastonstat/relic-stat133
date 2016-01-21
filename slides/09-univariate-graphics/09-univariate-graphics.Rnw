@@ -176,7 +176,7 @@ par(op)
 \frametitle{Predominant Color in Flags}
 
 <<echo=FALSE>>=
-flag_file <- "/Users/Gaston/Documents/stat133/stat133/datasets/flags.csv"
+flag_file <- "~/Dropbox/course_stat133/datasets/flags.csv"
 
 flags <- read.csv(flag_file)
 # hues (main color)
@@ -500,7 +500,7 @@ par(op)
 \begin{frame}[fragile]
 \frametitle{NFL Ticket prices (2013)}
 <<echo = FALSE>>=
-tick_file <- "/Users/Gaston/Documents/stat133/stat133/datasets/tickets.csv"
+tick_file <- "~/Dropbox/course_stat133/datasets/tickets.csv"
 ticks <- read.csv(tick_file, row.names = 1)
 print(cbind(ticks[1:16, ], ticks[17:32, ]), print.gap = 2)
 tickets <- ticks$tickets

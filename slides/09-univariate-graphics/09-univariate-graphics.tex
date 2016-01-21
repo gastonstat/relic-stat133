@@ -214,24 +214,22 @@ Quantitative Variable
 \begin{frame}[fragile]
 \frametitle{Predominant Color in Flags}
 
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning in file(file, "{}rt"{}): cannot open file '/Users/Gaston/Documents/stat133/stat133/datasets/flags.csv': No such file or directory}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, "{}rt"{}): cannot open the connection}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in table(flags\$mainhue): object 'flags' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(flags): object 'flags' not found}}\end{kframe}
-\end{knitrout}
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data.frame(color = names(hues), count = as.numeric(hues), percent = round(100 * : object 'hues' not found}}\end{kframe}
+\begin{verbatim}
+##     color  count  percent
+## 1   black      5     2.58
+## 2    blue     40    20.62
+## 3   brown      2     1.03
+## 4    gold     19     9.79
+## 5   green     31    15.98
+## 6  orange      4     2.06
+## 7     red     71    36.60
+## 8   white     22    11.34
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -242,14 +240,14 @@ Quantitative Variable
 \frametitle{Bar-chart example}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-4-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in barplot(hues, border = NA, axes = FALSE, ylim = c(0, 75)): object 'hues' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 75, 10), las = 2): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(x, y = as.vector(hues) + 2, labels = hues): object 'x' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -260,14 +258,14 @@ Quantitative Variable
 \frametitle{Bar-chart: predominant color in flags}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-5-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in barplot(hues/nf, border = NA, axes = FALSE, ylim = c(0, 0.4)): object 'hues' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 0.4, 0.1), las = 2, labels = paste(seq(0, : plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(x, y = as.vector(hues/nf) + 0.01, labels = paste(100 * round(hues/nf, : object 'x' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -278,14 +276,14 @@ Quantitative Variable
 \frametitle{Bar-chart: predominant color in flags}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-6-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in sort(hues): object 'hues' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 75, 10), las = 2): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(x, y = as.vector(hues)[order(hues)] + 3, labels = sort(hues)): object 'x' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -296,14 +294,14 @@ Quantitative Variable
 \frametitle{Bar-chart: predominant color in flags}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-7-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in sort(hues, decreasing = TRUE): object 'hues' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 75, 10), las = 2): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(x, y = as.vector(hues)[order(hues, decreasing = TRUE)] + : object 'x' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -314,14 +312,14 @@ Quantitative Variable
 \frametitle{Bar-chart: predominant color in flags}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-8-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in sort(hues, decreasing = TRUE): object 'hues' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(0, 75, 10)): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.vector(hues): object 'hues' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -352,18 +350,14 @@ Quantitative Variable
 \frametitle{Dot-chart: predominant color in flags}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-9-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.vector(hues): object 'hues' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.graphicsAnnot(text): object 'hues' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(0, 80, 10), line = 0.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in segments(rep(0, 8), 1:8, rep(80, 8), 1:8, lty = 2, col = "{}grey"{}): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.vector(hues): object 'hues' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -374,18 +368,14 @@ Quantitative Variable
 \frametitle{Ranked Dot-charts}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-10-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.vector(hues): object 'hues' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.graphicsAnnot(text): object 'hues' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(0, 80, 10), line = 0.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in segments(rep(0, 8), 1:8, rep(80, 8), 1:8, lty = 2, col = "{}grey"{}): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.vector(hues): object 'hues' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -422,16 +412,14 @@ Quantitative Variable
 \frametitle{Bar-chart with Pareto Line}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-11-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'hues' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.vector(relhues): object 'relhues' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in sort(relhues, decreasing = TRUE): object 'relhues' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 100, 10), las = 2, cex.axis = 0.8, : plot.new has not been called yet}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -442,16 +430,14 @@ Quantitative Variable
 \frametitle{Bar-chart with Pareto Line}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-12-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in sort(relhues, decreasing = TRUE): object 'relhues' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 100, 10), las = 2, cex.axis = 0.8, : plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in points(x, y = cumhues, pch = 19, col = "{}gray50"{}): object 'x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(x, y = cumhues, labels = paste(cumhues, "{}\%"{}, sep = "{}"{}), : object 'x' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -462,18 +448,14 @@ Quantitative Variable
 \frametitle{Bar-chart with Pareto Line}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-13-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in sort(relhues, decreasing = TRUE): object 'relhues' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 100, 10), las = 2, cex.axis = 0.8, : plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lines(x, y = cumhues, col = rgb(255/255, 99/255, 71/255, 0.8), : object 'x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in points(x, y = cumhues, pch = 19, col = "{}gray50"{}): object 'x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(x, y = cumhues, labels = paste(cumhues, "{}\%"{}, sep = "{}"{}), : object 'x' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -504,10 +486,14 @@ Quantitative Variable
 \frametitle{Pie Chart}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.6\linewidth,height=.6\linewidth]{figure/unnamed-chunk-14-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in pie(hues, col = names(hues)): object 'hues' not found}}\end{kframe}
+
 \end{knitrout}
 
 \end{frame}
@@ -518,12 +504,14 @@ Quantitative Variable
 \frametitle{Donut Chart}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.6\linewidth,height=.6\linewidth]{figure/unnamed-chunk-15-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in pie(hues, col = names(hues)): object 'hues' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot.xy(xy.coords(x, y), type = type, ...): plot.new has not been called yet}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -552,15 +540,26 @@ Quantitative Variable
 \frametitle{NFL Ticket prices (2013)}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning in file(file, "{}rt"{}): cannot open file '/Users/Gaston/Documents/stat133/stat133/datasets/tickets.csv': No such file or directory}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, "{}rt"{}): cannot open the connection}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in cbind(ticks[1:16, ], ticks[17:32, ]): object 'ticks' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'ticks' not found}}\end{kframe}
+\begin{verbatim}
+##        teams  tickets       teams  tickets
+## 1    cowboys   110.20     falcons    83.71
+## 2   patriots   117.84     vikings    78.69
+## 3     giants   111.69        rams    74.49
+## 4      bears   103.60    seahawks    71.21
+## 5       jets   110.28   cardinals    79.56
+## 6   redskins    94.80    dolphins    71.14
+## 7     ravens   100.19     raiders    64.80
+## 8     eagles    93.01      titans    65.28
+## 9     texans    88.98       lions    67.60
+## 10  chargers    84.55     bengals    68.96
+## 11  steelers    81.13     jaguars    68.44
+## 12   packers    82.61      chiefs    64.92
+## 13     49ers    83.54  buccaneers    63.59
+## 14    saints    74.99       bills    57.75
+## 15   broncos    84.27    panthers    66.84
+## 16     colts    86.32      browns    54.20
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -634,18 +633,14 @@ Histograms provide a way of viewing the general distribution of values in a quan
 \begin{frame}[fragile]
 \frametitle{NFL Ticket prices (2013)}
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-18-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in hist(tickets, breaks = seq(50, 120, 10), col = "{}gray70"{}, xlab = "{}"{}, : object 'tickets' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(50, 120, 10)): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 8, 2), las = 2): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}frequency"{}, side = 2, line = 2, cex = 0.9): plot.new has not been called yet}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -685,14 +680,14 @@ Histograms provide a way of viewing the general distribution of values in a quan
 \begin{frame}[fragile]
 \frametitle{Histogram with 4 bins}
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-19-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in hist(tickets, breaks = c(54, 70, 86, 102, 118), col = "{}gray70"{}, : object 'tickets' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(54, 124, 8)): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 12, 2), las = 2): plot.new has not been called yet}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -702,48 +697,14 @@ Histograms provide a way of viewing the general distribution of values in a quan
 \begin{frame}[fragile]
 \frametitle{Histograms with different bins}
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.9\linewidth,height=.7\linewidth]{figure/unnamed-chunk-20-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in hist(tickets, breaks = c(50, 70, 90, 110, 130), col = "{}gray70"{}, : object 'tickets' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(50, 130, 10)): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 14, 2), las = 2): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}frequency"{}, side = 2, line = 2, cex = 0.9): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in hist(tickets, breaks = c(40, 60, 80, 100, 120, 140), col = "{}gray70"{}, : object 'tickets' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(40, 140, 20)): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 14, 2), las = 2): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}frequency"{}, side = 2, line = 2, cex = 0.9): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in hist(tickets, breaks = seq(50, 130, by = 12), col = "{}gray70"{}, : object 'tickets' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(50, 130, by = 12), cex = 0.8): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 14, 2), las = 2): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}frequency"{}, side = 2, line = 2, cex = 0.9): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in hist(tickets, breaks = seq(50, 120, 10), col = "{}gray70"{}, xlab = "{}"{}, : object 'tickets' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(50, 120, 10)): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 14, 2), las = 2): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}frequency"{}, side = 2, line = 2, cex = 0.9): plot.new has not been called yet}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -753,28 +714,14 @@ Histograms provide a way of viewing the general distribution of values in a quan
 \begin{frame}[fragile]
 \frametitle{Avoid too few and too many bins}
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.9\linewidth,height=.7\linewidth]{figure/unnamed-chunk-21-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in hist(tickets, breaks = c(50, 80, 110, 140), col = "{}gray70"{}, xlab = "{}"{}, : object 'tickets' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = c(50, 80, 110, 140)): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 16, 2), las = 2): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}frequency"{}, side = 2, line = 2, cex = 0.9): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in hist(tickets, breaks = seq(50, 120, 5), col = "{}gray70"{}, xlab = "{}"{}, : object 'tickets' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(50, 120, 5)): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 6, 1), las = 2): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}frequency"{}, side = 2, line = 2, cex = 0.9): plot.new has not been called yet}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -892,16 +839,14 @@ Histograms provide a way of viewing the general distribution of values in a quan
 \begin{frame}[fragile]
 \frametitle{NFL Ticket Prices}
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.9\linewidth,height=.7\linewidth]{figure/unnamed-chunk-22-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in boxplot(tickets, horizontal = TRUE, axes = FALSE, border = "{}white"{}): object 'tickets' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(50, 120, 5), line = -1, col.axis = "{}gray35"{}): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in points(tickets, rep(1, length(tickets)), pch = 19, col = hsv(0.6, : object 'tickets' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -911,20 +856,14 @@ Histograms provide a way of viewing the general distribution of values in a quan
 \begin{frame}[fragile]
 \frametitle{5 number summary}
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.9\linewidth,height=.7\linewidth]{figure/unnamed-chunk-23-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in boxplot(tickets, horizontal = TRUE, axes = FALSE, border = "{}white"{}): object 'tickets' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(50, 120, 5), line = -1, col.axis = "{}gray35"{}): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in points(tickets, rep(1, length(tickets)), pch = 19, col = hsv(0.6, : object 'tickets' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in summary(tickets): object 'tickets' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in summary(tickets): object 'tickets' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -934,16 +873,14 @@ Histograms provide a way of viewing the general distribution of values in a quan
 \begin{frame}[fragile]
 \frametitle{Box plot}
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.9\linewidth,height=.7\linewidth]{figure/unnamed-chunk-24-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in boxplot(tickets, horizontal = TRUE, axes = FALSE): object 'tickets' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(50, 120, 5), line = -1, col.axis = "{}gray35"{}): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2.5): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in points(tickets, rep(1, length(tickets)), pch = 19, col = hsv(0.6, : object 'tickets' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -953,14 +890,14 @@ Histograms provide a way of viewing the general distribution of values in a quan
 \begin{frame}[fragile]
 \frametitle{Box plot}
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.9\linewidth,height=.7\linewidth]{figure/unnamed-chunk-25-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in boxplot(tickets, horizontal = TRUE, axes = FALSE, range = 0): object 'tickets' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(50, 120, 5), line = -1, col.axis = "{}gray35"{}): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2.5): plot.new has not been called yet}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -997,19 +934,14 @@ Call an observation a suspected outlier if it falls more than {\hilit 1.5 x IQR}
 \begin{frame}[fragile]
 \frametitle{Density Curve}
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in density(tickets): object 'tickets' not found}}\end{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
 {\centering \includegraphics[width=.8\linewidth,height=.6\linewidth]{figure/unnamed-chunk-26-1} 
 
 }
 
 
-\begin{kframe}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in xy.coords(x, y): object 'dens' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}
@@ -1096,34 +1028,14 @@ Call an observation a suspected outlier if it falls more than {\hilit 1.5 x IQR}
 \begin{frame}[fragile]
 \frametitle{Ogive}
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.9\linewidth,height=.65\linewidth]{figure/unnamed-chunk-27-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in hist(tickets, plot = FALSE): object 'tickets' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'abs\_freq' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'abs\_freq' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'rel\_freq' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(x\$breaks, y = c(0, cum\_absfreq[-8]), axes = FALSE, main = "{}"{}, : object 'x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 1, at = seq(50, 120, 10), line = -0.7): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}price"{}, side = 1, line = 2): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(side = 2, at = seq(0, 32, 2), las = 2, line = -1, cex.axis = 0.9): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext("{}cumulative frequency"{}, side = 2, line = 1.5, cex = 0.9): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lines(x\$breaks, y = c(0, cum\_absfreq[-8]), lwd = 4, col = rgb(255/255, : object 'x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in points(x\$breaks, y = c(0, cum\_absfreq[-8]), pch = 19, col = "{}gray40"{}, : object 'x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(x\$breaks, y = c(0, cum\_absfreq[-8]), pos = 3, cex = 0.9, : object 'x' not found}}\end{kframe}
 \end{knitrout}
 
 \end{frame}

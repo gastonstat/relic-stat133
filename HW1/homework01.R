@@ -158,13 +158,13 @@ par(op)
 # how many different teams have played the superbowl?
 
 
-# teams that have played the superbowl and have never lost
+# names of teams that have played the superbowl and have never lost
 
 
-# teams that have played the superbowl and have never won
+# names of teams that have played the superbowl and have never won
 
 
-# teams that have played the superbowl (both won and lost)?
+# names of teams that have played the superbowl (either won or lost)?
 
 
 # how many teams have both won and lost the superbowl?

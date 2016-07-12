@@ -19,7 +19,7 @@ author:
 paginate:         5
 
 # Custom vars
-version:          Fall 2015
+version:          Fall 2016
 
 github:
-  repo:           https://github.com/gastonstat/stat133
+  repo:           https://github.com/ucb-stat133/stat133-fall-2016

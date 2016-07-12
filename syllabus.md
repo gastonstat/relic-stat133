@@ -3,11 +3,10 @@ layout: page
 title: Syllabus
 ---
 
-- Statistics 133: Concepts in Computing with Data<br>
-- Fall 2015, Lec 001 and 002<br> 
-- University of California, Berkeley
-- _I reserve the right to make changes of this syllabus_
 
+<p class="message">
+  I reserve the right to make changes to the syllabus
+</p>
 
 
 ### About this course
@@ -25,7 +24,7 @@ Please make sure you can access the online and free resources above remotely.
 - __Introduction to Data Technologies​__ (by Paul Murrell): [https://www.stat.auckland.ac.nz/~paul/ItDT/](https://www.stat.auckland.ac.nz/~paul/ItDT/)
 
 
-### Grading
+### Grading Structure
 
 - 10% participation
 - 15% lab
@@ -34,14 +33,43 @@ Please make sure you can access the online and free resources above remotely.
 - 25% projects
 
 
-### Attendance and behavior in class
+### Pop Quiz policy
 
-You are expected to attend all lectures. Any known or potential extracurricular conflicts should be discussed in person with the instructor during the first week of classes, or as soon as they arise. Cell phones are to be turned off during class time, unless otherwise specified by the instructor. Any cell phone activity will cause you to lose participation points.
+- There will be written pop quizzes during lab (between 4 and 5 approx)
+- I will drop the lowest quiz score
+- No makeup quizzes (no exceptions)
+
+
+### Project Policy
+
+- There will be three projects (one each month)
+- If you fail to submit one project, you will fail the course
+- I will give you a list of project requirements
+- Mmeeting all requirements gives you a B, but does not guarantee an A
+- We are expecting that you add value and personal touch to each project
+- Projects 2 and 3 cannot be done individually (you need to COLLABORATE!)
+
+
+### Attendance Policy
+
+You are expected to attend all lab discussions. Cell phones are to be turned off during lectures and labs, unless otherwise specified by the instructor. Any cell phone activity will cause you to lose participation points.
 
 
 ### Submission of assignments
 
 Assignments, both homework and individual projects, will be accepted by electronic submission to the designated location. No late submissions will be accepted. Changes to this policy are possible only by prior arrangement with the instructor in person.
+
+
+### <a name="email-policy"></a>Email Policy
+
+- You should only use email as a tool to set up a one-on-one meeting with me if Office hours conflict with your schedule.
+- Use the subject line __Meeting Request__.
+- Your message should include at least two times when you would like to meet and a brief (one-two sentence) description of the reason for the meeting.
+- Email sent for any other reason will NOT be considered or acknowledge.
+- Do NOT expect me to reply right away (I may not reply on time).
+- If you have an emergency, talk to me later during class or office hours.
+- I strongly encourage you to ask questions about the syllabus, covered material, and assignments during class time or lab discussions. 
+- Our conversations should take place in person rather than via email, thus allowing us to get to know each other better and fostering a more collegial learning atmosphere.
 
 
 ### Academic Honest Policy

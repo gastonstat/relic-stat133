@@ -8,15 +8,15 @@ Tentative calendar of lectures, Fall 2016
 <table>
   <thead>
     <tr>
-      <td>Week</td>
-      <td>Dates</td>
-      <td>Topic</td>
+      <th>Week</th>
+      <th>Dates</th>
+      <th>Topic</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td align="center">1</td>
-      <td align="center">
+      <td>1</td>
+      <td>
         Aug-30<br>
         Sep-01</td>
       <td>
@@ -25,8 +25,8 @@ Tentative calendar of lectures, Fall 2016
       </td>
     </tr>
     <tr>
-      <td align="center">2</td>
-      <td align="center">
+      <td>2</td>
+      <td>
         Sep-06<br>
         Sep-08</td>
       <td>
@@ -35,8 +35,8 @@ Tentative calendar of lectures, Fall 2016
       </td>
     </tr>
     <tr>
-      <td align="center">3</td>
-      <td align="center">
+      <td>3</td>
+      <td>
         Sep-13<br>
         Sep-15</td>
       <td>
@@ -45,8 +45,8 @@ Tentative calendar of lectures, Fall 2016
       </td>
     </tr>
     <tr>
-      <td align="center">4</td>
-      <td align="center">
+      <td>4</td>
+      <td>
         Sep-20<br>
         Sep-22</td>
        <td>
@@ -55,18 +55,18 @@ Tentative calendar of lectures, Fall 2016
       </td>
    </tr>
     <tr>
-      <td align="center">5</td>
-      <td align="center">
-        Sep 27<br>
-        Oct 2</td>
+      <td>5</td>
+      <td>
+        Sep-27<br>
+        Oct-02</td>
       <td>
         Control Flow Structures<br>
         Gettings started with Functions
       </td>
     </tr>
     <tr>
-      <td align="center">6</td>
-      <td align="center">
+      <td>6</td>
+      <td>
         Oct-04<br>
         Oct-06</td>
       <td>
@@ -75,8 +75,8 @@ Tentative calendar of lectures, Fall 2016
       </td>
     </tr>
     <tr>
-      <td align="center">7</td>
-      <td align="center">
+      <td>7</td>
+      <td>
         Oct-11<br>
         Oct-13</td>
       <td>
@@ -86,8 +86,8 @@ Tentative calendar of lectures, Fall 2016
     </tr>
     </tr>
     <tr>
-      <td align="center">8</td>
-      <td align="center">
+      <td>8</td>
+      <td>
         Oct-18<br>
         Oct-20</td>
       <td>

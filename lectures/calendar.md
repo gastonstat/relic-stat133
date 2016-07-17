@@ -8,9 +8,9 @@ Tentative calendar of lectures, Fall 2016
 <table>
   <thead>
     <tr>
-      <th>Week</th>
-      <th>Dates</th>
-      <th>Topic</th>
+      <th align="left">Week</th>
+      <th align="left">Dates</th>
+      <th align="left">Topic</th>
     </tr>
   </thead>
   <tbody>
@@ -53,7 +53,7 @@ Tentative calendar of lectures, Fall 2016
         What happens in a graphic? <br>
         Grammar of Graphics
       </td>
-   </tr>
+    </tr>
     <tr>
       <td>5</td>
       <td>
@@ -83,7 +83,6 @@ Tentative calendar of lectures, Fall 2016
         Regular Expressions 1</a> <br>
         Regular Expressinos 2</a>
       </td>
-    </tr>
     </tr>
     <tr>
       <td>8</td>

@@ -18,7 +18,7 @@ Tentative calendar of lectures, Fall 2016
       <td>1</td>
       <td>
         Aug-30<br>
-        Sep-01<br>
+        Sep-01</td>
       <td>
         R basics<br>
         Data types and data structures<br>

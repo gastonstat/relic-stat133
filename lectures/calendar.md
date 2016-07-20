@@ -18,10 +18,10 @@ Tentative calendar of lectures, Fall 2016
       <td>1</td>
       <td>
         Aug-30<br>
-        Sep-01</td>
+        Sep-01<br>
       <td>
-        R basics <br>
-        Data types and data structures
+        R basics<br>
+        Data types and data structures<br>
       </td>
     </tr>
     <tr>
@@ -70,8 +70,8 @@ Tentative calendar of lectures, Fall 2016
         Oct-04<br>
         Oct-06</td>
       <td>
-        Text and character strings <br>
-        Processing strings
+        More about functions <br>
+        Text and character strings
       </td>
     </tr>
     <tr>
@@ -80,8 +80,8 @@ Tentative calendar of lectures, Fall 2016
         Oct-11<br>
         Oct-13</td>
       <td>
-        Regular Expressions 1</a> <br>
-        Regular Expressinos 2</a>
+        Regular Expressions 1 <br>
+        Regular Expressions 2
       </td>
     </tr>
     <tr>
@@ -92,6 +92,76 @@ Tentative calendar of lectures, Fall 2016
       <td>
         Good Habits <br>
         <b>Midterm Test</b>
+      </td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>
+        Oct-25<br>
+        Oct-27</td>
+      <td>
+        tba: simulations <br>
+        tba: bootstrapping, resampling
+      </td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>
+        Nov-01<br>
+        Nov-03</td>
+      <td>
+        tba: filesystem, command line <br>
+        tba: R in noninteractive mode
+      </td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>
+        Nov-08<br>
+        Nov-10</td>
+      <td>
+        tba: XML <br>
+        tba: web scraping
+      </td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>
+        Nov-15<br>
+        Nov-17</td>
+      <td>
+        tba: unstructure data <br>
+        tba: text, xml, json?
+      </td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>
+        Nov-22<br>
+        Nov-24</td>
+      <td>
+        tba: final project <br>
+        <em>Thanksgiving</em>
+      </td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>
+        Nov-29<br>
+        Dec-01</td>
+      <td>
+        tba: SQL <br>
+        tba: SQL
+      </td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>
+        Dec-06<br>
+        Dec-08</td>
+      <td>
+        RRR week <br>
+        RRR week
       </td>
     </tr>
   </tbody>

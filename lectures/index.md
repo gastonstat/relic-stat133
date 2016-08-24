@@ -17,6 +17,14 @@ Tentative calendar of lectures, Fall 2016
   </thead>
   <tbody>
     <tr>
+      <td>0</td>
+      <td>
+        Aug-25<br>
+      <td>
+        About the course
+      </td>
+    </tr>
+    <tr>
       <td>1</td>
       <td>
         Aug-30<br>

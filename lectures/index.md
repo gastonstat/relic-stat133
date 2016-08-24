@@ -161,7 +161,7 @@ Tentative calendar of lectures, Fall 2016
         Dec-01</td>
       <td>
         tba: SQL <br>
-        tba: SQL
+        tba: SQL, Final Project 
       </td>
     </tr>
     <tr>

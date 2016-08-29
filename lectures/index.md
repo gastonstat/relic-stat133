@@ -52,7 +52,7 @@ Tentative calendar of lectures, Fall 2016
         Sep-15</td>
       <td>
         Data Visualization <br>
-        Colors
+        Representing Data
       </td>
     </tr>
     <tr>
@@ -61,8 +61,8 @@ Tentative calendar of lectures, Fall 2016
         Sep-20<br>
         Sep-22</td>
        <td>
-        What happens in a graphic? <br>
-        Grammar of Graphics
+        Grammar of Graphics <br>
+        Colors
       </td>
     </tr>
     <tr>

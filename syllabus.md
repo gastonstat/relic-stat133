@@ -32,9 +32,26 @@ There is no required textbook for this course. Instead, there are various
 resources that you can check (see list below). I will also point out other 
 appropriate resources during the course.
 
-- __Stat 133 Class Notes__ ​(by Phil Spector): [http://www.stat.berkeley](http://www.stat.berkeley.edu/~s133/resources.html)
-- __Data Manipulation with R__ (by Phil Spector): [​http://www.springer.com/us/book/9780387747309](​http://www.springer.com/us/book/9780387747309)
-- __Introduction to Data Technologies​__ (by Paul Murrell): [https://www.stat.auckland.ac.nz/~paul/ItDT/](https://www.stat.auckland.ac.nz/~paul/ItDT/)
+- __Data Manipulation__
+	+ __Stat 133 Class Notes__ ​(by Phil Spector): [http://www.stat.berkeley](http://www.stat.berkeley.edu/~s133/resources.html)
+	+ __Data Manipulation with R__ (by Phil Spector): [​http://www.springer.com/us/book/9780387747309](​http://www.springer.com/us/book/9780387747309)
+	+ __Hands-On Programming with R__ (by Garret Grolemund)
+
+- __Graphics and Data Visualization__
+	+ __ggplot2: Elegant Graphics for Data Analysis__ (by Hadley Wickham)
+	+ __R Graphics Cookbook__ (by Winston Chang)
+	+ __R Graphics__ (by Paul Murrell)
+	+ __Data Points: Visualization That Means Something__ (by Nathan Yau)
+	+ __Now You See It: Simple Visualization Techniques for Quantitative Analysis__ (by Stephen Few)
+
+- __Data  Technologies__
+	+ __Introduction to Data Technologies​__ (by Paul Murrell): [https://www.stat.auckland.ac.nz/~paul/ItDT/](https://www.stat.auckland.ac.nz/~paul/ItDT/)
+	+ __XML and Data Technologies for Data Sciences with R__ (by Deb Nolan and Duncan Temple Lang)
+	+ __Data Science in R__ (by Deb Nolan and Duncan Temple Lang)
+
+- __UNIX and Bash shell__
+	+ __Learn Enough Command Line to Be Dangerous__ (by Michael Hartl) [https://www.learnenough.com/command-line-tutorial](https://www.learnenough.com/command-line-tutorial)
+	+ __The LInux Command Line__ (by William Shotts) [http://linuxcommand.org/tlcl.php](http://linuxcommand.org/tlcl.php)
 
 Please make sure you can access the online and free resources above remotely.
 

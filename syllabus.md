@@ -51,7 +51,7 @@ appropriate resources during the course.
 
 - __UNIX and Bash shell__
 	+ __Learn Enough Command Line to Be Dangerous__ (by Michael Hartl) [https://www.learnenough.com/command-line-tutorial](https://www.learnenough.com/command-line-tutorial)
-	+ __The LInux Command Line__ (by William Shotts) [http://linuxcommand.org/tlcl.php](http://linuxcommand.org/tlcl.php)
+	+ __The Linux Command Line__ (by William Shotts) [http://linuxcommand.org/tlcl.php](http://linuxcommand.org/tlcl.php)
 
 Please make sure you can access the online and free resources above remotely.
 

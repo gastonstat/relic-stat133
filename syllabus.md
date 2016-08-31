@@ -113,6 +113,8 @@ but does not guarantee an A
 ### Attendance Policy
 
 - You are expected to attend all lab discussions.
+- In order to get the 10% of lab attendance, you must attend at least 
+10 labs.
 - Cell phones are to be turned off during lectures and labs.
 - Any cell phone activity will cause you to lose participation points.
 

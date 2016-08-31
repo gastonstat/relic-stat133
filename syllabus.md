@@ -17,6 +17,7 @@ you to a variety of programs and technologies that are useful for acquiring,
 cleaning, manipulating, organizing, exploring, visualizing, and analyzing data, 
 as well as reporting findings. 
 
+__Overview of Course:__ 
 We'll begin with an overview of the R language, which you will use extensively 
 throughout this course. Then we'll move on to other useful tools, including 
 working with regular expressions, basic UNIX tools, XML, and SQL. Because this 
@@ -28,7 +29,7 @@ assignments and individual project.
 
 ### Resources
 
-There is no required textbook for this course. Instead, there are various 
+There is no required textbook. Instead, there are various 
 resources that you can check (see list below). I will also point out other 
 appropriate resources during the course.
 
@@ -73,6 +74,32 @@ Please make sure you can access the online and free resources above remotely.
 - No makeup quizzes (no exceptions)
 
 
+## Homework Policy
+
+The grading scheme for HW assignment is:
+
+- 0 = no credit (i.e. no submission)
+- 1 = partial credit (you did some or even most of the problems but not all)
+- 2 = satisfactory (you tried everything but there were pieces of what you
+ did that didn't solve one or more problems in a complete way
+- 3 = full credit
+
+Submission of assignments:
+
+- Please submit your `.Rmd` file and your knitted file (html or pdf) to
+bCourses.
+- If you have trouble generating (knitting) the pdf, then knit your Rmd 
+file as html and then export it as pdf.
+- In addition to submitting your files, please __print a physical copy__ 
+of the knitted document and turn it in to the GSI during lab.
+- __The physical copy is the actual work that will be graded!__
+- The electronic html/pdf file is just for reference and comparison 
+purposes in case something does not get printed or does not get rendered
+apropriately in the physical copy.
+- No late submissions will be accepted. Changes to this policy are possible only by prior arrangement with the instructor in person.
+
+
+
 ### Project Policy
 
 - There will be two projects: one midterm and one final
@@ -90,9 +117,10 @@ but does not guarantee an A
 - Any cell phone activity will cause you to lose participation points.
 
 
-### Submission of assignments
+### Incomplete Policy
 
-Assignments, both homework and individual projects, will be accepted by electronic submission to the designated location. No late submissions will be accepted. Changes to this policy are possible only by prior arrangement with the instructor in person.
+Under emergency/special circumstances, students may petition me to receive an
+incomplete grade. Please clearly state your reasoning in your comments to me.
 
 
 ### <a name="email-policy"></a>Email Policy
@@ -114,6 +142,40 @@ Homework and projects must be done independently. You may discuss the HW with ot
 For exams, cheating includes, but is not limited to, bringing written or electronic materials into an exam or quiz, using written or electronic materials during an exam or quiz, copying off another person's exam or quiz, allowing someone to copy off of your exam or quiz, and having someone take an exam or quiz for you. Any evidence of cheating will result in a minimum penalty of a score of zero (0) on the assignment or examination. Depending on the severity of the infraction, cheating may result in an F for the course grade.
 
 
-### Disability
+### Statement on Accommodation
 
-If you need accommodations for any physical, psychological, or learning disability, please speak to me after class or during office hours. Please make arrangements in a timely manner (through DSP) so that I can make the appropriate accommodations.
+If you need accommodations for any physical, psychological, or learning 
+disability, or if you want me to have emergency medical information, 
+please speak to me privately, either after class or during my office hours. 
+
+If you need accommodations for any physical, psychological, or learning disability, please speak to me after class or during office hours. Please make arrangements in a timely manner (through DSP) so that we can work out
+acceptable accommodations.
+
+If there are any conflicts with the due dates of the exams or assignments 
+for religious reasons, travel for campus sponsored extracurricular activities, 
+medical and graduate school interviews, or for other reasons, please contact me.
+
+
+### Safe, Supportive, and Inclusive Environment
+
+Whenever a faculty member, staff member, post-doc, or GSI is responsible for 
+the supervision of a student, a personal relationship between them of a 
+romantic or sexual nature, even if consensual, is against university policy. 
+Any such relationship jeopardizes the integrity of the educational process.
+
+Although faculty and staff can act as excellent resources for students, you 
+should be aware that they are required to report any violations of this campus 
+policy. If you wish to have a confidential discussion on matters related to 
+this policy, you may contact the __Confidential Care Advocates__ on campus for 
+support related to counseling or sensitive issues. Appointments can be
+made by calling (510) 642-1988.
+
+The classroom, lab, and work place should be safe and inclusive environments 
+for everyone. The Office for the Prevention of Harassment and Discrimination 
+(OPHD) is responsible for ensuring the University provides an environment for 
+faculty, staff and students that is free from discrimination and harassment on 
+the basis of categories including race, color, national origin, age, sex, 
+gender, gender identity, and sexual orientation. Questions or concerns? 
+Call (510) 643-7985, email `ask_ophd@berkeley.edu`, or go to 
+[http://survivorsupport.berkeley.edu](http://survivorsupport.berkeley.edu/).
+

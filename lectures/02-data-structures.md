@@ -7,6 +7,10 @@ title: "Data Structures 1"
   Data Types and Vectors
 </p>
 
+### Slides
+
+<a href="https://docs.google.com/presentation/d/1TZRjIvfBfG_3vjj7bmb6B_oyR7k0lxge7V_Ih2B1mwo/pub?start=false&loop=false&delayms=3000" target="_blank">Data Types and Vectors</a>
+
 
 ### Data Types
 

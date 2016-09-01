@@ -7,6 +7,10 @@ title: "R Basics"
   Basics of R and RStudio
 </p>
 
+### Slides
+
+<a href="https://docs.google.com/presentation/d/1n4Wo6lhYIeUi6XPhE7BVhX6cgfcTHkr1_uap0GWmD5Q/pub?start=false&loop=false&delayms=3000" target="_blank">Introduction</a>
+
 
 ### R Software
 

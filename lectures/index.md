@@ -41,7 +41,7 @@ Tentative calendar of lectures, Fall 2016
         Sep-06<br>
         Sep-08</td>
       <td>
-        Data tables<br>
+        <a href="03-data-table-basics">Data tables</a><br>
         Data structures: Lists and Data Frames 
       </td>
     </tr>

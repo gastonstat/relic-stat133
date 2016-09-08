@@ -15,7 +15,7 @@ title: "Data Tables"
 ### Data Tables
 
 - Basics of Data Tables:
-	+ Importanec of tables
+	+ Importance of tables
 	+ Storing information in a table
 	+ Spreadsheet inconveniences
 	+ Tables in plain text formats

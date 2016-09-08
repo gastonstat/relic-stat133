@@ -32,7 +32,7 @@ Tentative calendar of lectures, Fall 2016
         Sep-01</td>
       <td>
         <a href="01-R-basics">R basics</a><br>
-        <a href="02-data-structures">Data structures: vectors and arrays</a><br>
+        <a href="02-data-structures">Data structures: vectors and arrays</a>
       </td>
     </tr>
     <tr>
@@ -42,7 +42,7 @@ Tentative calendar of lectures, Fall 2016
         Sep-08</td>
       <td>
         <a href="03-data-table-basics">Data tables</a><br>
-        Data structures: Lists and Data Frames 
+        <a href="04-lists-data-frames">Data structures: Lists and Data Frames</a>
       </td>
     </tr>
     <tr>

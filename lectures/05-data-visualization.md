@@ -24,4 +24,4 @@ title: "Intro to Data Visualization"
 ### Resources
 
 - __[Data Points](http://site.ebrary.com/lib/berkeley/Doc?id=10680771)__ by Nathan Yau
-- __Now you see it: simple visualization techniques for quantitative analysis by Stephen Few
+- __Now you see it: simple visualization techniques for quantitative analysis__ by Stephen Few

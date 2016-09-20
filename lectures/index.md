@@ -55,7 +55,7 @@ Tentative calendar of lectures, Fall 2016
         Sep-15</td>
       <td>
         <a href="05-data-visualization">Data Visualization</a><br>
-        <a href="06-representing-data">Representing Data</a>
+        <a href="06-effective-charts">Effective Charts</a>
       </td>
     </tr>
     <tr>

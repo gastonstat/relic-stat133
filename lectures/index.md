@@ -39,10 +39,13 @@ Tentative calendar of lectures, Fall 2016
       <td>2</td>
       <td>
         Sep-06<br>
-        Sep-08</td>
+        Sep-08<br>
+        Sep-09
+      </td>
       <td>
         <a href="03-data-table-basics">Data tables</a><br>
-        <a href="04-lists-data-frames">Data structures: Lists and Data Frames</a>
+        <a href="04-lists-data-frames">Data structures: Lists and Data Frames</a><br>
+        HW01: Basics of Rmd files
       </td>
     </tr>
     <tr>
@@ -59,10 +62,13 @@ Tentative calendar of lectures, Fall 2016
       <td>4</td>
       <td>
         Sep-20<br>
-        Sep-22</td>
+        Sep-22<br>
+        Sep-23
+      </td>
        <td>
         Grammar of Graphics <br>
-        Colors
+        Colors<br>
+        HW02: Tables and basic data objects
       </td>
     </tr>
     <tr>

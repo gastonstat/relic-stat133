@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "Representing Data"
+title: "Effective Charts"
 ---
 
 <p class="message">
@@ -8,8 +8,6 @@ title: "Representing Data"
 </p>
 
 ### Slides
-
-<a href="https://docs.google.com/presentation/d/1ean4aV-pxqf5LLuixscE2y1tX0venZH8jK7-FB3kSfo/pub?start=false&loop=false&delayms=3000" target="_blank">Representing Data</a>
 
 <a href="https://docs.google.com/presentation/d/1ean4aV-pxqf5LLuixscE2y1tX0venZH8jK7-FB3kSfo/pub?start=false&loop=false&delayms=3000" target="_blank">Effective Statistical Charts</a>
 

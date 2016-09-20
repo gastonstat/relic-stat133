@@ -66,7 +66,7 @@ Tentative calendar of lectures, Fall 2016
         Sep-23
       </td>
        <td>
-        Grammar of Graphics <br>
+        <a href="07-grammar-graphics">Grammar of Graphics</a><br>
         Colors<br>
         <em>HW02: Tables and basic data objects</em>
       </td>

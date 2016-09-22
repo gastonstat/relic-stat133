@@ -75,10 +75,13 @@ Tentative calendar of lectures, Fall 2016
       <td>5</td>
       <td>
         Sep-27<br>
-        Oct-02</td>
+        Sep-29<br>
+        Sep-30
+      </td>
       <td>
         Control Flow Structures<br>
-        Getting started with Functions
+        Getting started with Functions<br>
+        Quiz 1
       </td>
     </tr>
     <tr>

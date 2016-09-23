@@ -81,38 +81,45 @@ Tentative calendar of lectures, Fall 2016
       <td>
         Control Flow Structures<br>
         Getting started with Functions<br>
-        Quiz 1
+        <em>Quiz 1</em>
       </td>
     </tr>
     <tr>
       <td>6</td>
       <td>
         Oct-04<br>
-        Oct-06</td>
+        Oct-06<br>
+        Oct-07
+      </td>
       <td>
-        More about functions <br>
-        Text and character strings
+        More about functions<br>
+        Text and character strings<br>
+        <em>HW03: Functions</em>
       </td>
     </tr>
     <tr>
       <td>7</td>
       <td>
         Oct-11<br>
-        Oct-13</td>
+        Oct-13<br>
+        Oct-14
+      </td>
       <td>
-        Regular Expressions 1 <br>
-        Regular Expressions 2
+        Regular Expressions 1<br>
+        Regular Expressions 2<br>
+        <em>Quiz 2</em>
       </td>
     </tr>
     <tr>
       <td>8</td>
       <td>
         Oct-18<br>
-        Oct-20</td>
-        Oct-21<br>
+        Oct-20<br>
+        Oct-21
+      </td>
       <td>
         Good Habits <br>
-        <b>Midterm Test</b><br>
+        Programming Concepts<br>
         <em>Midterm Project</em>
       </td>
     </tr>

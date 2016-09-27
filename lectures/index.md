@@ -79,7 +79,7 @@ Tentative calendar of lectures, Fall 2016
         Sep-30
       </td>
       <td>
-        <a href="09-functions">Getting started with Functions</a><br>
+        <a href="09-functions1">Getting started with Functions</a><br>
         Control Flow Structures<br>
         <em>Quiz 1</em>
       </td>

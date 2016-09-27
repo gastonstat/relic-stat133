@@ -67,7 +67,7 @@ Tentative calendar of lectures, Fall 2016
       </td>
        <td>
         <a href="07-grammar-graphics">Grammar of Graphics</a><br>
-        Colors<br>
+        <a href="08-colors">Colors</a><br>
         <em>HW02: Tables and basic data objects</em>
       </td>
     </tr>
@@ -79,8 +79,8 @@ Tentative calendar of lectures, Fall 2016
         Sep-30
       </td>
       <td>
+        <a href="09-functions">Getting started with Functions</a><br>
         Control Flow Structures<br>
-        Getting started with Functions<br>
         <em>Quiz 1</em>
       </td>
     </tr>

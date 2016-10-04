@@ -92,7 +92,7 @@ Tentative calendar of lectures, Fall 2016
         Oct-07
       </td>
       <td>
-        More about functions<br>
+        <a href="10-functions2">More about functions</a><br>
         Text and character strings<br>
         <em>HW03: Functions</em>
       </td>

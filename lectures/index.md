@@ -137,10 +137,12 @@ Tentative calendar of lectures, Fall 2016
       <td>10</td>
       <td>
         Nov-01<br>
-        Nov-03</td>
+        Nov-03<br>
+        Nov-04</td>
       <td>
         tba: filesystem, command line <br>
-        tba: R in noninteractive mode
+        tba: R in noninteractive mode<br>
+        <em>Quiz 3</em>
       </td>
     </tr>
     <tr>
@@ -157,10 +159,12 @@ Tentative calendar of lectures, Fall 2016
       <td>12</td>
       <td>
         Nov-15<br>
-        Nov-17</td>
+        Nov-17<br>
+        Nov-18</td>
       <td>
         tba: unstructure data <br>
-        tba: text, xml, json?
+        tba: text, xml, json?<br>
+        <em>Quiz 4</em>
       </td>
     </tr>
     <tr>
@@ -191,6 +195,14 @@ Tentative calendar of lectures, Fall 2016
       <td>
         RRR week <br>
         RRR week
+      </td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>
+        Dec-14</td>
+      <td>
+        <b>Final Exam</b>
       </td>
     </tr>
   </tbody>

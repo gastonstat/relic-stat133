@@ -105,8 +105,8 @@ Tentative calendar of lectures, Fall 2016
         Oct-14
       </td>
       <td>
-        <a href="13-regex">Regular Expressions 1</a><br>
-        Regular Expressions (cont'd<br>
+        <a href="13-regex)">Regular Expressions</a><br>
+        Regular Expressions (cont'd)<br>
         <em>Quiz 2</em>
       </td>
     </tr>

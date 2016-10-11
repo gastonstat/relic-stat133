@@ -36,4 +36,4 @@ title: "Strings basics 1"
 	+ abbreviating string with `abbreviate()`
 	+ substrings of a character vector with `substring()`
 	+ substrings of a character vector with `substr()`
-
+- Intro to the R package `"stringr"`

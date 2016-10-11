@@ -105,8 +105,8 @@ Tentative calendar of lectures, Fall 2016
         Oct-14
       </td>
       <td>
-        Regular Expressions 1<br>
-        Regular Expressions 2<br>
+        <a href="13-regex">Regular Expressions 1</a><br>
+        Regular Expressions (cont'd<br>
         <em>Quiz 2</em>
       </td>
     </tr>
@@ -115,12 +115,14 @@ Tentative calendar of lectures, Fall 2016
       <td>
         Oct-18<br>
         Oct-20<br>
+        Oct-20<br>
         Oct-21
       </td>
       <td>
         Good Habits <br>
         Programming Concepts<br>
-        <em>Midterm Project</em>
+        <b>Midterm Project</b> (due midnight Oct-20)<br>
+        <em>No lab</em>
       </td>
     </tr>
     <tr>

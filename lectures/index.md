@@ -118,7 +118,7 @@ Tentative calendar of lectures, Fall 2016
         Oct-21
       </td>
       <td>
-        Good Habits <br>
+        <a href="14-good-habits">Good Habits</a><br>
         Programming Concepts<br>
         <b>Midterm Project</b> due at the beginning of lab<br>
       </td>

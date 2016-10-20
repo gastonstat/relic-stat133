@@ -119,7 +119,7 @@ Tentative calendar of lectures, Fall 2016
       </td>
       <td>
         <a href="14-good-habits">Good Habits</a><br>
-        Programming Concepts<br>
+        <a href="15-shiny">Intro to the R package shiny</a><br>
         <b>Midterm Project</b> due at the beginning of lab<br>
       </td>
     </tr>

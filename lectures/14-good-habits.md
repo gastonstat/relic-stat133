@@ -35,4 +35,5 @@ Donald Knuth's <a href="http://www.literateprogramming.com/" target="_blank">Lit
 - Develop your own style:
     + trial and error
     + it takes time and practice
+- Document sooner than later
 

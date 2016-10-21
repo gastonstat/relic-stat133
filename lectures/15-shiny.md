@@ -16,7 +16,8 @@ You can find various tutorials about shiny from RStudio:
 
 ### Tutorial
 
-Garret Grolemund's __How to start with Shiny, Part 1__, available at: <a href="bit.ly/shiny-quickstart-1" target="_blank">bit.ly/shiny-quickstart-1</a>
+Garret Grolemund's __How to start with Shiny, Part 1__ materials
+are available in this link: <a href="http://bit.ly/shiny-quickstart-1" target="_blank">bit.ly/shiny-quickstart-1</a>
 
 
 ### App template

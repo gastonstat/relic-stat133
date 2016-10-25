@@ -129,8 +129,8 @@ Tentative calendar of lectures, Fall 2016
         Oct-25<br>
         Oct-27</td>
       <td>
-        tba: simulations <br>
-        tba: bootstrapping, resampling
+        <a href="https://github.com/ucb-stat133/stat133-fall-2016/blob/master/notes/17-simulations/17-simulations.pdf" target="_blank">simulations</a><br>
+        random numbers
       </td>
     </tr>
     <tr>

@@ -130,7 +130,7 @@ Tentative calendar of lectures, Fall 2016
         Oct-27</td>
       <td>
         <a href="https://github.com/ucb-stat133/stat133-fall-2016/blob/master/notes/17-simulations/17-simulations.pdf" target="_blank">simulations</a><br>
-        random numbers
+        <a href="https://github.com/ucb-stat133/stat133-fall-2016/blob/master/notes/18-random-numbers/18-random-numbers.pdf" target="_blank">random numbers</a>
       </td>
     </tr>
     <tr>

@@ -140,7 +140,7 @@ Tentative calendar of lectures, Fall 2016
         Nov-03<br>
         Nov-04</td>
       <td>
-        filesystem, command line <br>
+        <a href="20-command-line">Filesystem and the command line</a><br>
         R in noninteractive mode<br>
         <em>Quiz 3</em>
       </td>

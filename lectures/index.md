@@ -140,8 +140,8 @@ Tentative calendar of lectures, Fall 2016
         Nov-03<br>
         Nov-04</td>
       <td>
-        tba: filesystem, command line <br>
-        tba: R in noninteractive mode<br>
+        filesystem, command line <br>
+        R in noninteractive mode<br>
         <em>Quiz 3</em>
       </td>
     </tr>
@@ -149,10 +149,13 @@ Tentative calendar of lectures, Fall 2016
       <td>11</td>
       <td>
         Nov-08<br>
-        Nov-10</td>
+        Nov-10<br>
+        Nov-11
+      </td>
       <td>
-        tba: XML <br>
-        tba: web scraping
+        XML <br>
+        <em>HW04: Functions</em>, web scraping<br>
+        No lab (holiday)
       </td>
     </tr>
     <tr>

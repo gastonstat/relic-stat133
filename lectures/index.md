@@ -141,7 +141,7 @@ Tentative calendar of lectures, Fall 2016
         Nov-04</td>
       <td>
         <a href="20-command-line">Filesystem and the command line</a><br>
-        R in noninteractive mode<br>
+        <a href="20-command-line">Command line (cont'd)</a><br>
         <em>Quiz 3</em>
       </td>
     </tr>
@@ -153,9 +153,9 @@ Tentative calendar of lectures, Fall 2016
         Nov-11
       </td>
       <td>
-        XML <br>
-        <em>HW04: Functions</em>, web scraping<br>
-        No lab (holiday)
+        <a href="https://github.com/ucb-stat133/stat133-fall-2016/blob/master/notes/21-xml/21-xml.pdf" target="_blank">XML</a><br>
+        R Package XML<br>
+        <em>HW04: Command Line</em>; No lab (holiday)
       </td>
     </tr>
     <tr>

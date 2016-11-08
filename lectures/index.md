@@ -29,7 +29,8 @@ Tentative calendar of lectures, Fall 2016
       <td>1</td>
       <td>
         Aug-30<br>
-        Sep-01</td>
+        Sep-01
+      </td>
       <td>
         <a href="01-R-basics">R basics</a><br>
         <a href="02-data-structures">Data structures: vectors and arrays</a>
@@ -52,7 +53,8 @@ Tentative calendar of lectures, Fall 2016
       <td>3</td>
       <td>
         Sep-13<br>
-        Sep-15</td>
+        Sep-15
+      </td>
       <td>
         <a href="05-data-visualization">Data Visualization</a><br>
         <a href="06-effective-charts">Effective Charts</a>
@@ -120,14 +122,15 @@ Tentative calendar of lectures, Fall 2016
       <td>
         <a href="14-good-habits">Good Habits</a><br>
         <a href="15-shiny">Intro to the R package shiny</a><br>
-        <b>Midterm Project</b> due at the beginning of lab<br>
+        <b>Midterm Project</b> due at the beginning of lab
       </td>
     </tr>
     <tr>
       <td>9</td>
       <td>
         Oct-25<br>
-        Oct-27</td>
+        Oct-27
+      </td>
       <td>
         <a href="https://github.com/ucb-stat133/stat133-fall-2016/blob/master/notes/17-simulations/17-simulations.pdf" target="_blank">simulations</a><br>
         <a href="https://github.com/ucb-stat133/stat133-fall-2016/blob/master/notes/18-random-numbers/18-random-numbers.pdf" target="_blank">random numbers</a>
@@ -138,7 +141,8 @@ Tentative calendar of lectures, Fall 2016
       <td>
         Nov-01<br>
         Nov-03<br>
-        Nov-04</td>
+        Nov-04
+      </td>
       <td>
         <a href="20-command-line">Filesystem and the command line</a><br>
         <a href="20-command-line">Command line (cont'd)</a><br>
@@ -163,9 +167,10 @@ Tentative calendar of lectures, Fall 2016
       <td>
         Nov-15<br>
         Nov-17<br>
-        Nov-18</td>
+        Nov-18
+      </td>
       <td>
-        tba: unstructure data <br>
+        tba: unstructure data<br>
         tba: text, xml, json?<br>
         <em>Quiz 4</em>
       </td>
@@ -174,9 +179,10 @@ Tentative calendar of lectures, Fall 2016
       <td>13</td>
       <td>
         Nov-22<br>
-        Nov-24</td>
+        Nov-24
+      </td>
       <td>
-        tba: final project <br>
+        Q&A's final project <br>
         <em>Thanksgiving</em>
       </td>
     </tr>
@@ -184,17 +190,21 @@ Tentative calendar of lectures, Fall 2016
       <td>14</td>
       <td>
         Nov-29<br>
-        Dec-01</td>
+        Dec-01<br>
+        Dec-02
+      </td>
       <td>
         tba: SQL <br>
-        tba: SQL, Final Project 
+        tba: SQL<br>
+        <b>Final Project</b>
       </td>
     </tr>
     <tr>
       <td>15</td>
       <td>
         Dec-06<br>
-        Dec-08</td>
+        Dec-08
+      </td>
       <td>
         RRR week <br>
         RRR week
@@ -203,7 +213,8 @@ Tentative calendar of lectures, Fall 2016
     <tr>
       <td>16</td>
       <td>
-        Dec-14</td>
+        Dec-14
+      </td>
       <td>
         <b>Final Exam</b>
       </td>

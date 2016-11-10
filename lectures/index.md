@@ -158,7 +158,7 @@ Tentative calendar of lectures, Fall 2016
       </td>
       <td>
         <a href="https://github.com/ucb-stat133/stat133-fall-2016/blob/master/notes/21-xml/21-xml.pdf" target="_blank">XML</a><br>
-        <a href="https://github.com/ucb-stat133/stat133-fall-2016/blob/master/notes/22-parsing-xml/22-parsing-xml.pdf" target="_blank">R Package XML<a/><br>
+        <a href="https://github.com/ucb-stat133/stat133-fall-2016/blob/master/notes/22-parsing-xml/22-parsing-xml.pdf" target="_blank">R Package XML</a><br>
         <em>HW04: Command Line</em>; No lab (holiday)
       </td>
     </tr>

@@ -182,7 +182,7 @@ Tentative calendar of lectures, Fall 2016
         Nov-24
       </td>
       <td>
-        <a href="https://www.jstatsoft.org/index.php/jss/article/view/v059i10/v59i10.pdf" target="_blank">Tidy Data</a><br>
+        <a href="https://github.com/gastonstat/tutorial-R-noninteractive" target="_blank">R in non-interactive mode</a><br>
         <em>Thanksgiving</em>
       </td>
     </tr>

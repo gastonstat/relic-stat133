@@ -170,8 +170,8 @@ Tentative calendar of lectures, Fall 2016
         Nov-18
       </td>
       <td>
-        tba: unstructure data<br>
-        tba: text, xml, json?<br>
+        PCA for final project<br>
+        <a href="https://github.com/ucb-stat133/stat133-fall-2016/blob/master/notes/23-merging-tables/23-merging-tables.pdf" target="_blank">Merging data tables</a><br>
         <em>Quiz 4</em>
       </td>
     </tr>
@@ -182,7 +182,7 @@ Tentative calendar of lectures, Fall 2016
         Nov-24
       </td>
       <td>
-        Q&A's final project <br>
+        <a href="https://www.jstatsoft.org/index.php/jss/article/view/v059i10/v59i10.pdf" target="_blank">Tidy Data</a><br>
         <em>Thanksgiving</em>
       </td>
     </tr>
